@@ -21,21 +21,21 @@ import { TbMatrix, TbBulb } from "react-icons/tb";
 import { MdDashboardCustomize } from "react-icons/md";
 import { TbCategory, TbReportAnalytics, TbDiscount } from "react-icons/tb";
 
-export interface SubmenuItem {
+export interface ISubmenuItem {
     label: string;
     href: string;
     icon?: React.ElementType;
 }
 
-export interface MenuItem {
+export interface IMenuItem {
     label: string;
     href?: string;
-    icon: React.ElementType;
-    submenu?: SubmenuItem[];
+    icon?: React.ElementType;
+    submenu?: ISubmenuItem[];
 }
 
 export interface MenuGroup {
-    menu: MenuItem[];
+    menu: IMenuItem[];
 }
 
 export interface MenuData {
@@ -102,7 +102,7 @@ export const adminMenuData: MenuData = {
 
 
 
-export const navItems: MenuItem[] = [
+export const navItems: IMenuItem[] = [
     {
         label: "Features",
         href: "/features",
