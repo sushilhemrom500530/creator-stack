@@ -5,23 +5,10 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
 import { RiMenu3Fill } from "react-icons/ri";
 import Image from "next/image";
-import { IMenuItem } from "@/data";
+import { IMenuItem, navItems } from "@/data";
 
 
 
-const navLinks: IMenuItem[] = [
-    { label: "About Us", href: "/about-us" },
-    { label: "Orbit Export", href: "/orbit-export" },
-    { label: "Orbit Import", href: "/orbit-import" },
-    {
-        label: "Business Connect",
-        submenu: [
-            { label: "Connect to Partners", href: "/business-connect/partners" },
-            { label: "KIMVUKA", href: "/business-connect/kimvuka" },
-        ],
-    },
-    { label: "Contact Us", href: "/contact-us" },
-];
 
 function NavbarContent() {
     const pathname = usePathname();
@@ -57,8 +44,8 @@ function NavbarContent() {
     const isActive = (href?: string) => !!href && pathname === href;
 
     const navContainerClass = `sticky inset-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? "bg-primary/90 backdrop-blur-md shadow-md py-3"
-        : "bg-primary py-4"
+        ? "bg-nural/90 backdrop-blur-md shadow-md py-3"
+        : "bg-nural py-4"
         }`;
 
     return (
@@ -66,13 +53,13 @@ function NavbarContent() {
             <nav className={navContainerClass}>
                 <div className="container mx-auto flex items-center justify-between px-6">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center select-none shrink-0">
+                    <Link href="/" className="flex text-white items-center select-none shrink-0">
                         Logo
                     </Link>
 
                     {/* Desktop Nav Links */}
                     <div className="hidden lg:flex items-center gap-8">
-                        {navLinks.map((item) =>
+                        {navItems.map((item) =>
                             item.submenu ? (
                                 <div key={item.label} className="relative group">
                                     <button className="flex items-center gap-1 text-sm font-medium text-white/90 hover:text-light-primary transition-colors cursor-pointer">
@@ -95,14 +82,6 @@ function NavbarContent() {
                                         </div>
                                     </div>
                                 </div>
-                            ) : item.label === "Contact Us" ? (
-                                <button
-                                    key={item.label}
-                                    onClick={() => setContactOpen(true)}
-                                    className="text-sm font-medium text-white/90 hover:text-light-primary transition-colors cursor-pointer"
-                                >
-                                    {item.label}
-                                </button>
                             ) : (
                                 <Link
                                     key={item.label}
@@ -120,22 +99,6 @@ function NavbarContent() {
 
                     {/* Right side: Language toggle + Sign In */}
                     <div className="flex items-center gap-4">
-                        {/* EN | FR toggle */}
-                        <div className="hidden sm:flex items-center rounded-full border border-[#E2E8F0] overflow-hidden text-xs font-semibold">
-                            {(["EN", "FR"] as const).map((l) => (
-                                <button
-                                    key={l}
-                                    onClick={() => setLang(l)}
-                                    className={`px-3 py-1.5 transition-colors cursor-pointer ${lang === l
-                                        ? "text-light-primary"
-                                        : "text-white/80 hover:text-white"
-                                        }`}
-                                >
-                                    {l}
-                                </button>
-                            ))}
-                        </div>
-
                         {/* Sign In */}
                         <Link href="/auth/login">
                             <button className="font-semibold text-sm px-6 py-2 rounded-full bg-light-primary hover:bg-light-secondary text-white transition-colors cursor-pointer">
@@ -167,11 +130,11 @@ function NavbarContent() {
           so it can't add horizontal scroll when slid off-screen */}
             <div className="fixed inset-0 z-[999] overflow-x-hidden pointer-events-none lg:hidden">
                 <aside
-                    className={`pointer-events-auto absolute top-0 right-0 w-72 h-full bg-primary text-white shadow-xl transform transition-transform duration-300 ease-in-out
+                    className={`pointer-events-auto absolute top-0 right-0 w-72 h-full bg-nural text-white shadow-xl transform transition-transform duration-300 ease-in-out
             ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="flex justify-between items-center py-4 px-5 border-b border-white/10">
+                    <div className="flex text-white justify-between items-center py-4 px-5 border-b border-white/10">
                         Logo
                         <button
                             onClick={toggleMenu}
@@ -186,7 +149,7 @@ function NavbarContent() {
                     </div>
 
                     <div className="flex flex-col p-5 gap-2">
-                        {navLinks.map((item) =>
+                        {navItems.map((item) =>
                             item.submenu ? (
                                 <div key={item.label}>
                                     <button
@@ -218,17 +181,6 @@ function NavbarContent() {
                                         </div>
                                     )}
                                 </div>
-                            ) : item.label === "Contact Us" ? (
-                                <button
-                                    key={item.label}
-                                    onClick={() => {
-                                        setMenuOpen(false);
-                                        setContactOpen(true);
-                                    }}
-                                    className="px-3 py-2.5 rounded-lg text-sm font-medium text-left text-white/90 hover:bg-white/5 transition-colors"
-                                >
-                                    {item.label}
-                                </button>
                             ) : (
                                 <Link
                                     key={item.label}
