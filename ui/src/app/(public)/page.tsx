@@ -1,9 +1,11 @@
 import BannerSection from "@/components/home/banner";
+import PerformanceTeamsSection from "@/components/home/performance-teams";
 
 export default function HomePage() {
     return (
-        <div className="flex flex-col gap-0 pb-16 bg-white min-h-screen">
+        <div>
             <BannerSection />
+            <PerformanceTeamsSection />
         </div>
     );
 }
