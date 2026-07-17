@@ -36,8 +36,8 @@ function NavbarContent() {
     const isActive = (href?: string) => !!href && pathname === href;
 
     const navContainerClass = `fixed inset-x-0 top-0 w-full z-50 transition-all duration-300 ${isScrolled
-            ? "bg-[#100e16]/80 backdrop-blur-lg border-b border-white/5 py-4"
-            : "bg-transparent py-6"
+        ? "bg-[#100e16]/80 backdrop-blur-lg border-b border-white/5 py-4"
+        : "bg-transparent py-6"
         }`;
 
     return (
@@ -131,8 +131,8 @@ function NavbarContent() {
                                     href={item.href!}
                                     onClick={() => setMenuOpen(false)}
                                     className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all ${active
-                                            ? "text-white bg-violet-600/20 border border-violet-600/30"
-                                            : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                        ? "text-white bg-violet-600/20 border border-violet-600/30"
+                                        : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
                                         }`}
                                 >
                                     {item.label}

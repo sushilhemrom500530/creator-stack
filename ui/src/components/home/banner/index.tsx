@@ -2,12 +2,12 @@ import { Play } from "lucide-react";
 
 export default function BannerSection() {
   return (
-    <section className="relative w-full min-h-screen bg-[#100e16] flex items-center pt-28 pb-16 overflow-hidden">
+    <section className="relative w-full min-h-screen bg-[#100e16] flex justify-center items-center pt-28 pb-16 overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-[10%] left-0 w-[600px] h-[600px] bg-violet-600/30 blur-[140px] rounded-full pointer-events-none -translate-x-1/2" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#14b8a6]/10 blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-12 items-center">
+      <div className="px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-12 justify-between items-center">
 
         {/* Left Content */}
         <div className="flex flex-col items-start gap-7">
@@ -18,7 +18,7 @@ export default function BannerSection() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-[2.75rem] leading-[1.1] sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-2">
+          <h1 className="text-[2.75rem] leading-[1.1] sm:text-6xl lg:text-5xl font-bold tracking-normal text-white mb-2">
             Manage Every Social<br className="hidden lg:block" /> Platform From <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-violet-100 italic font-serif tracking-normal">One</span><br />
             <span className="text-[#e2d4f9]">Intelligent Dashboard</span>
           </h1>
