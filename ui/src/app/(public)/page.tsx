@@ -1,6 +1,7 @@
 import BannerSection from "@/components/home/banner";
 import PerformanceTeamsSection from "@/components/home/performance-teams";
 import { DominateSection } from "@/components/home/dominate";
+import PricingSection from "@/components/home/pricing";
 
 export default function HomePage() {
     return (
@@ -8,6 +9,7 @@ export default function HomePage() {
             <BannerSection />
             <PerformanceTeamsSection />
             <DominateSection />
+            <PricingSection />
         </div>
     );
 }

@@ -1,66 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Sparkles, PlaySquare, Activity, ArrowRight } from "lucide-react";
+import { TypingEffect } from "@/components/typing-effect";
 
-// Typing animation component
-const TypingEffect = () => {
-    const [text, setText] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
-    const targetText = "Generating viral hook...";
 
-    useEffect(() => {
-        let isCancelled = false;
-
-        const animate = async () => {
-            while (!isCancelled) {
-                // Phase 1: Loading
-                setIsLoading(true);
-                setText("");
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                if (isCancelled) break;
-
-                // Phase 2: Typing
-                setIsLoading(false);
-                for (let i = 1; i <= targetText.length; i++) {
-                    if (isCancelled) break;
-                    setText(targetText.slice(0, i));
-                    await new Promise(resolve => setTimeout(resolve, 50));
-                }
-
-                if (isCancelled) break;
-
-                // Phase 3: Pause
-                await new Promise(resolve => setTimeout(resolve, 3000));
-            }
-        };
-
-        animate();
-
-        return () => {
-            isCancelled = true;
-        };
-    }, []);
-
-    return (
-        <div className="bg-[#2c2443]/40 border border-[#483a6b] rounded-md px-3 py-2 mt-4 text-xs font-mono text-[#a694d4] flex items-center h-8 relative shadow-inner overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-transparent pointer-events-none" />
-            {isLoading ? (
-                <div className="flex space-x-1 items-center opacity-80 z-10">
-                    <div className="w-1.5 h-1.5 bg-[#a694d4] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-1.5 h-1.5 bg-[#a694d4] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-1.5 h-1.5 bg-[#a694d4] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-            ) : (
-                <span className="z-10 tracking-wide flex items-center">
-                    {text}
-                    <span className="animate-pulse ml-[1px] font-bold text-violet-300">|</span>
-                </span>
-            )}
-        </div>
-    );
-};
 
 export function DominateSection() {
     return (
