@@ -23,7 +23,7 @@ export function ThreeStepSection() {
     ];
 
     return (
-        <section className="relative w-full py-24 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#0a0a0c] via-[#0E0C15] to-[#12101b] border-t border-white/5">
+        <section className="relative w-full py-24 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#100e16] via-[#0a0a0c] to-[#09090b]">
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
             <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-violet-600/5 blur-[150px] rounded-full pointer-events-none" />
 
