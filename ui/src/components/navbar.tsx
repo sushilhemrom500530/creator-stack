@@ -54,7 +54,7 @@ function NavbarContent() {
                     {/* Desktop Nav Links */}
                     <div className="hidden lg:flex items-center gap-10">
                         {navItems.map((item, index) => {
-                            const active = isActive(item.href) || index === 0; // Highlight first element as in mockup
+                            const active = isActive(item.href)
                             return (
                                 <Link
                                     key={item.label}
