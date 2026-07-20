@@ -1,6 +1,4 @@
-import React from 'react';
-
-export default function FeaturesPage() {
+export default function SolutionsPage() {
     return (
         <main className="bg-[#0a0614] min-h-screen text-white">
             {/* Hero Section */}

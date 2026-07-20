@@ -103,11 +103,11 @@ export const adminMenuData: MenuData = {
 
 
 export const navItems: IMenuItem[] = [
-    {
-        label: "Features",
-        href: "/features",
-        icon: CalendarDays,
-    },
+    // {
+    //     label: "Features",
+    //     href: "/features",
+    //     icon: CalendarDays,
+    // },
     {
         label: "Solutions",
         href: "/solutions",
@@ -127,5 +127,10 @@ export const navItems: IMenuItem[] = [
         label: "Blog",
         href: "/blogs",
         icon: Bell,
+    },
+    {
+        label: "About Us",
+        href: "/about-us",
+        icon: User,
     },
 ];
