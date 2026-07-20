@@ -43,6 +43,60 @@ export interface MenuData {
 }
 
 
+export const userMenuData: MenuData = {
+    linkData: [
+        {
+            menu: [
+                {
+                    label: "Dashboard",
+                    href: "/dashboard/orbit-export",
+                    icon: LayoutDashboard,
+                },
+                {
+                    label: "My Products",
+                    href: "/dashboard/orbit-export/my-products",
+                    icon: MdDashboardCustomize,
+                },
+                {
+                    label: "Inventory",
+                    href: "/dashboard/orbit-export/inventory",
+                    icon: TbCategory,
+                },
+                {
+                    label: "Export Journey",
+                    href: "/dashboard/orbit-export/export-journey",
+                    icon: Ticket,
+                },
+
+                {
+                    label: "Sales",
+                    href: "/dashboard/orbit-export/sales",
+                    icon: Users,
+                },
+                {
+                    label: "Message",
+                    href: "/dashboard/message",
+                    icon: ShieldCheck,
+                },
+                {
+                    label: "Notifications",
+                    href: "/dashboard/notifications",
+                    icon: Bell,
+                },
+                {
+                    label: "Contract &Compliance",
+                    href: "/dashboard/orbit-export/contract-compliance",
+                    icon: MessageSquareWarning,
+                },
+                {
+                    label: "My Account",
+                    href: "/dashboard/orbit-export/my-account",
+                    icon: UserRound,
+                },
+            ],
+        },
+    ],
+};
 export const adminMenuData: MenuData = {
     linkData: [
         {
