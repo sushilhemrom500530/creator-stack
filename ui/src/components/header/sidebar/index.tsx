@@ -12,6 +12,8 @@ import logout from "@/assets/dashboard/logout.svg";
 import Link from "next/link";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { adminMenuData, userMenuData } from "@/data";
+import type { MenuProps } from 'antd';
+import { Dropdown } from 'antd';
 
 const user = {
     name: "Sushil Hemrom",
@@ -21,7 +23,6 @@ const user = {
 
 export default function Sidebar({ navOpened, setNavOpened }: any) {
     const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
     // const { logoutUser } = useAuthService();
     const pathname = usePathname();
     // const { user } = useAuthStore();
@@ -37,6 +38,47 @@ export default function Sidebar({ navOpened, setNavOpened }: any) {
     const handleSubmenuToggle = (label: string): void => {
         setOpenSubmenu((prev) => (prev === label ? null : label));
     };
+
+    const profileMenuItems: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <Link href="/dashboard" className="flex items-center gap-3 px-1 py-1 text-sm font-medium text-[#43464A] hover:text-primary transition-colors">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </Link>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <Link href="/dashboard/settings" className="flex items-center gap-3 px-1 py-1 text-sm font-medium text-[#43464A] hover:text-primary transition-colors">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Settings
+                </Link>
+            ),
+        },
+        {
+            type: 'divider',
+        },
+        {
+            key: '3',
+            label: (
+                <div
+                    // onClick={logoutUser}
+                    className="flex items-center gap-3 px-1 py-1 text-sm font-medium text-red-600 transition-colors w-full text-left"
+                >
+                    <Image src={logout} alt="logout" width={16} height={16} />
+                    Log Out
+                </div>
+            ),
+        },
+    ];
 
     return (
         <>
@@ -81,52 +123,23 @@ export default function Sidebar({ navOpened, setNavOpened }: any) {
                         </nav>
                     </div>
 
-                    <div className="relative mt-auto border-t border-[#E5E7EB] shrink-0 bg-white">
-                        {isProfileOpen && (
-                            <div className="absolute bottom-[105%] left-2 right-2 z-50">
-                                <div className="bg-white border border-[#E5E7EB] rounded-xl shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden">
-                                    <Link onClick={() => setIsProfileOpen(false)} href="/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#43464A] hover:bg-slate-50 hover:text-primary transition-colors">
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                                        </svg>
-                                        Dashboard
-                                    </Link>
-                                    <Link onClick={() => setIsProfileOpen(false)} href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#43464A] hover:bg-slate-50 hover:text-primary transition-colors">
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        Settings
-                                    </Link>
-                                    <div className="h-[1px] bg-[#E5E7EB] w-full"></div>
-                                    <button
-                                        // onClick={logoutUser}
-                                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors w-full text-left"
-                                    >
-                                        <Image src={logout} alt="logout" width={16} height={16} />
-                                        Log Out
-                                    </button>
+                    <div className="mt-auto border-t border-[#E5E7EB] shrink-0 bg-white">
+                        <Dropdown menu={{ items: profileMenuItems }} trigger={['click']} placement="topLeft">
+                            <button className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
+                                <div className="flex items-center gap-3 overflow-hidden">
+                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex flex-shrink-0 items-center justify-center text-primary font-bold text-lg">
+                                        {user?.name?.charAt(0) || "U"}
+                                    </div>
+                                    <div className="flex flex-col items-start truncate overflow-hidden">
+                                        <span className="text-sm font-semibold text-[#1A1D1F] truncate text-left block w-full">{user?.name}</span>
+                                        <span className="text-xs text-[#6F767E] truncate text-left block w-full">{user?.email}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-
-                        <button
-                            onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
-                        >
-                            <div className="flex items-center gap-3 overflow-hidden">
-                                <div className="w-10 h-10 rounded-full bg-primary/10 flex flex-shrink-0 items-center justify-center text-primary font-bold text-lg">
-                                    {user?.name?.charAt(0) || "U"}
-                                </div>
-                                <div className="flex flex-col items-start truncate overflow-hidden">
-                                    <span className="text-sm font-semibold text-[#1A1D1F] truncate text-left block w-full">{user?.name}</span>
-                                    <span className="text-xs text-[#6F767E] truncate text-left block w-full">{user?.email}</span>
-                                </div>
-                            </div>
-                            <svg className={`w-4 h-4 flex-shrink-0 text-[#6F767E] transition-transform duration-200 ${isProfileOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                            </svg>
-                        </button>
+                                <svg className="w-4 h-4 flex-shrink-0 text-[#6F767E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                </svg>
+                            </button>
+                        </Dropdown>
                     </div>
                 </div>
             </div>
