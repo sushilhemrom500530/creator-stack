@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export interface ISubmenuItem {
     label: string;
@@ -15,4 +15,8 @@ export interface INavItemProps {
     handleSubmenuToggle: (label: string) => void;
     closeAllSubmenus: () => void;
     setNavOpened: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface IDashboardLayoutProps {
+    children: ReactNode;
 }
