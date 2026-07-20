@@ -46,8 +46,8 @@ function NavbarContent() {
                 <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-1 group select-none shrink-0">
-                        <span className="text-white text-2xl font-bold tracking-tight">
-                            SocialFlow <span className="text-[#a78bfa] group-hover:text-[#c4b5fd] transition-colors">AI</span>
+                        <span className="text-white text-2xl font-bold tracking-tight font-serif">
+                            Creator <span className="text-[#a78bfa] group-hover:text-[#c4b5fd] transition-colors">Stack</span>
                         </span>
                     </Link>
 
@@ -112,7 +112,7 @@ function NavbarContent() {
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex text-white justify-between items-center py-5 px-6 border-b border-white/10">
-                        <span className="text-xl font-bold tracking-tight">SocialFlow AI</span>
+                        <span className="text-xl font-bold tracking-tight font-serif">Creator Stack</span>
                         <button
                             onClick={toggleMenu}
                             className="cursor-pointer text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors"

@@ -14,6 +14,8 @@ import { FaHandHoldingDollar } from "react-icons/fa6";
 import { adminMenuData, userMenuData } from "@/data";
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
+import { SiSpringCreators } from "react-icons/si";
+import { RiStackFill } from "react-icons/ri";
 
 const user = {
     name: "Sushil Hemrom",
@@ -98,13 +100,21 @@ export default function Sidebar({ navOpened, setNavOpened }: any) {
         `}
             >
                 <div className="flex flex-col h-full pt-28 lg:pt-0">
-                    <div className="px-2 flex items-center justify-center hidden lg:block mb-5">
-                        <Image src={logo} alt="icon" width={170} height={120} />
+                    <div className="px-6 flex items-center justify-start hidden lg:flex mb-6 mt-4">
+                        <Link href="/dashboard" className="flex items-center gap-2 group">
+                            <div className="relative text-primary transition-transform group-hover:scale-105 flex items-center justify-center">
+                                <SiSpringCreators className="w-7 h-7" />
+                                <RiStackFill className="w-3.5 h-3.5 absolute -bottom-1 -right-1 text-orange-500" />
+                            </div>
+                            <span className="text-xl font-bold font-serif tracking-tight text-[#1A1D1F]">
+                                Creator Stack
+                            </span>
+                        </Link>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
                         <nav>
                             {menuLinks?.map((section, sIndex) => (
-                                <div key={sIndex} className="space-y-4 mb-4">
+                                <div key={sIndex} className="space-y-1.5 mb-2">
                                     {section?.menu?.map((item, index) => (
                                         <NavItem
                                             key={index}

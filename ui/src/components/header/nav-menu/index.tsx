@@ -20,7 +20,7 @@ export default function NavItem({
 }: INavItemProps) {
     const pathname = usePathname();
 
-    const activeClass = "bg-primary text-white";
+    const activeClass = "border-e-[3px] border-e-primary bg-primary/10 text-primary";
     const inactiveClass = "text-[#43464A] hover:text-primary hover:bg-primary/10";
 
     const isSubmenuOpen = openSubmenu === label;
@@ -51,20 +51,20 @@ export default function NavItem({
                 {!submenu ? (
                     <Link
                         href={href || "#"}
-                        className="flex items-center gap-3 w-full text-lg font-medium px-5 py-2"
+                        className="flex items-center gap-3 w-full text-base font-medium px-5 py-2"
                         onClick={() => setNavOpened(false)}
                     >
-                        {Icon && <Icon size={22} />}
+                        {Icon && <Icon />}
                         <span>{label}</span>
                     </Link>
                 ) : (
                     <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-3 text-lg font-medium">
-                            {Icon && <Icon size={22} />}
+                        <div className="flex items-center gap-3 text-base font-medium">
+                            {Icon && <Icon />}
                             <span>{label}</span>
                         </div>
                         <ChevronDown
-                            size={18}
+                            size={16}
                             className={`transition-transform duration-300 ${isSubmenuOpen ? "rotate-180" : ""
                                 }`}
                         />
@@ -94,7 +94,7 @@ export default function NavItem({
                                         : "text-white/80 hover:bg-white/10 hover:text-white"
                                         }`}
                                 >
-                                    {SubIcon && <SubIcon size={18} />}
+                                    {SubIcon && <SubIcon />}
                                     <span>{item.label}</span>
                                 </Link>
                             );

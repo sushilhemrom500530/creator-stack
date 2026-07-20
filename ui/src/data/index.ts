@@ -49,50 +49,50 @@ export const userMenuData: MenuData = {
             menu: [
                 {
                     label: "Dashboard",
-                    href: "/dashboard/orbit-export",
+                    href: "/dashboard",
                     icon: LayoutDashboard,
                 },
                 {
-                    label: "My Products",
-                    href: "/dashboard/orbit-export/my-products",
+                    label: "Create Post",
+                    href: "/dashboard/create-post",
                     icon: MdDashboardCustomize,
                 },
                 {
-                    label: "Inventory",
-                    href: "/dashboard/orbit-export/inventory",
+                    label: "Posts",
+                    href: "/dashboard/posts",
                     icon: TbCategory,
                 },
                 {
-                    label: "Export Journey",
-                    href: "/dashboard/orbit-export/export-journey",
+                    label: "Calendar",
+                    href: "/dashboard/calendar",
                     icon: Ticket,
                 },
 
                 {
-                    label: "Sales",
-                    href: "/dashboard/orbit-export/sales",
+                    label: "Analytics",
+                    href: "/dashboard/analytics",
                     icon: Users,
                 },
                 {
-                    label: "Message",
-                    href: "/dashboard/message",
+                    label: "Media Library",
+                    href: "/dashboard/media-library",
                     icon: ShieldCheck,
+                },
+                {
+                    label: "AI Assistant",
+                    href: "/dashboard/ai-assistant",
+                    icon: TbBulb,
+                },
+                {
+                    label: "Connected Accounts",
+                    href: "/dashboard/connected-accounts",
+                    icon: TbBulb,
                 },
                 {
                     label: "Notifications",
                     href: "/dashboard/notifications",
                     icon: Bell,
-                },
-                {
-                    label: "Contract &Compliance",
-                    href: "/dashboard/orbit-export/contract-compliance",
-                    icon: MessageSquareWarning,
-                },
-                {
-                    label: "My Account",
-                    href: "/dashboard/orbit-export/my-account",
-                    icon: UserRound,
-                },
+                }
             ],
         },
     ],

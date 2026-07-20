@@ -11,8 +11,8 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-8 mb-20">
                     {/* Brand Info */}
                     <div className="col-span-1 md:col-span-1 pr-4">
-                        <h3 className="text-white text-xl font-bold mb-6 tracking-tight">
-                            SocialFlow AI
+                        <h3 className="text-white text-xl font-bold mb-6 tracking-tight font-serif">
+                            Creator Stack
                         </h3>
                         <p className="text-gray-400 text-[13px] leading-relaxed pr-8">
                             Precision social engineering for teams that demand excellence. Built by market leaders for future icons.
@@ -71,7 +71,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4">
                     <p className="text-gray-500 text-[10px] font-bold tracking-widest uppercase">
-                        © 2024 SOCIALFLOW AI. ENGINEERING SOCIAL SUCCESS.
+                        © 2024 CREATOR STACK. ENGINEERING SOCIAL SUCCESS.
                     </p>
                     <div className="flex gap-8">
                         <Link href="#" className="text-gray-500 hover:text-gray-300 text-[10px] font-bold tracking-widest uppercase transition-colors">

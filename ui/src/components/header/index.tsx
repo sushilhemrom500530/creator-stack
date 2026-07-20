@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 // import user_icon from "../../assets/user.svg";
+import logo from "@/assets/dashboard/logo.png";
 
 import { IoMdMenu } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
@@ -40,7 +41,7 @@ export default function Header({ navOpened, setNavOpened }: any) {
                         </div>
                         <div className="flex w-10 md:w-14 xl:w-auto flex-1 items-center gap-2 cursor-pointer">
                             <Image
-                                src={""}
+                                src={logo}
                                 alt="logo"
                                 width={36}
                                 height={36}
