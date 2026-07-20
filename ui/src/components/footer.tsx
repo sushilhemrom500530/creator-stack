@@ -11,9 +11,9 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-8 mb-20">
                     {/* Brand Info */}
                     <div className="col-span-1 md:col-span-1 pr-4">
-                        <h3 className="text-white text-xl font-bold mb-6 tracking-tight font-serif">
-                            Creator Stack
-                        </h3>
+                        <span className="text-white text-2xl font-bold tracking-tight font-serif">
+                            Creator <span className="text-[#a78bfa] group-hover:text-[#c4b5fd] transition-colors">Stack</span>
+                        </span>
                         <p className="text-gray-400 text-[13px] leading-relaxed pr-8">
                             Precision social engineering for teams that demand excellence. Built by market leaders for future icons.
                         </p>

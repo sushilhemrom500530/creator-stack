@@ -16,6 +16,7 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import { SiSpringCreators } from "react-icons/si";
 import { RiStackFill } from "react-icons/ri";
+import Logo from "@/components/reuseable/logo";
 
 const user = {
     name: "Sushil Hemrom",
@@ -100,15 +101,17 @@ export default function Sidebar({ navOpened, setNavOpened }: any) {
         `}
             >
                 <div className="flex flex-col h-full pt-28 lg:pt-0">
-                    <div className="px-6 flex items-center justify-start hidden lg:flex mb-6 mt-4">
+                    <div className="hidden lg:block mb-6 border-b border-b-[#E5E7EB]">
                         <Link href="/dashboard" className="flex items-center gap-2 group">
-                            <div className="relative text-primary transition-transform group-hover:scale-105 flex items-center justify-center">
+                            <Logo className="h-[74px]" />
+
+                            {/* <div className="relative text-primary transition-transform group-hover:scale-105 flex items-center justify-center">
                                 <SiSpringCreators className="w-7 h-7" />
-                                <RiStackFill className="w-3.5 h-3.5 absolute -bottom-1 -right-1 text-orange-500" />
                             </div>
                             <span className="text-xl font-bold font-serif tracking-tight text-[#1A1D1F]">
-                                Creator Stack
+                                C S
                             </span>
+                            <RiStackFill className="w-7 h-7 text-orange-500" /> */}
                         </Link>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">

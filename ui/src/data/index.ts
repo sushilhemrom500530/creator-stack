@@ -163,6 +163,11 @@ export const navItems: IMenuItem[] = [
     //     icon: CalendarDays,
     // },
     {
+        label: "Home",
+        href: "/",
+        icon: Ticket,
+    },
+    {
         label: "Solutions",
         href: "/solutions",
         icon: Ticket,
@@ -182,9 +187,9 @@ export const navItems: IMenuItem[] = [
         href: "/blogs",
         icon: Bell,
     },
-    {
-        label: "About Us",
-        href: "/about-us",
-        icon: User,
-    },
+    // {
+    //     label: "About Us",
+    //     href: "/about-us",
+    //     icon: User,
+    // },
 ];
