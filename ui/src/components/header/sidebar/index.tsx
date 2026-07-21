@@ -18,17 +18,18 @@ import { SiSpringCreators } from "react-icons/si";
 import { RiStackFill } from "react-icons/ri";
 import Logo from "@/components/reuseable/logo";
 
-const user = {
-    name: "Sushil Hemrom",
-    email: "sushil@gmail.com",
-    role: "user",
-};
-
-export default function Sidebar({ navOpened, setNavOpened }: any) {
+export default function Sidebar({ navOpened, setNavOpened, user: propUser }: any) {
     const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
     // const { logoutUser } = useAuthService();
     const pathname = usePathname();
     // const { user } = useAuthStore();
+
+    const defaultUser = {
+        name: "Sushil Hemrom",
+        email: "sushil@gmail.com",
+        role: "user",
+    };
+    const user = propUser || defaultUser;
 
     const menuLinks = user?.role === "user"
         ? userMenuData?.linkData

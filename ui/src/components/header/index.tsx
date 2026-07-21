@@ -6,7 +6,7 @@ import logo from "@/assets/dashboard/logo.png";
 import { IoMdMenu } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 
-export default function Header({ navOpened, setNavOpened }: any) {
+export default function Header({ navOpened, setNavOpened, user }: any) {
     return (
         <div className="sticky inset-y-0 left-0 z-30 w-full border-b border-b-[#E5E7EB] h-20  bg-[#FFFFFF] [transition:0.5s]">
             <header className="flex items-center justify-between px-4 py-[19px]">
@@ -48,7 +48,7 @@ export default function Header({ navOpened, setNavOpened }: any) {
                                 className="w-9 h-9 rounded-full "
                             />
                             <h1 className="text-lg text-black font-medium hidden xl:block">
-                                Tamal
+                                {user?.name || "Tamal"}
                             </h1>
                         </div>
                     </div>
