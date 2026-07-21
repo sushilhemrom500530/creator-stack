@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { User, ShieldCheck, Mail, Key } from "lucide-react";
 import Overview from "@/components/dashboard/user/overview";
+import UserOverviewContent from "@/components/dashboard/user/overview/content";
 
 export default function UserDashboardPage() {
     const [userState, setUserState] = useState({
@@ -49,6 +50,8 @@ export default function UserDashboardPage() {
             </div>
 
             <Overview />
+
+            <UserOverviewContent />
 
         </div>
     );

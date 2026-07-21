@@ -11,6 +11,7 @@ import {
     Sparkles,
     ArrowRight
 } from "lucide-react";
+import UserOverviewContent from "./content";
 
 interface StatItem {
     label: string;
@@ -116,10 +117,10 @@ export default function Overview() {
                                 </span>
                                 <span
                                     className={`text-xs font-semibold px-2 py-0.5 rounded-full ${stat.changeType === "positive"
-                                            ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                                            : stat.changeType === "info"
-                                                ? "bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400"
-                                                : "bg-slate-50 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"
+                                        ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                                        : stat.changeType === "info"
+                                            ? "bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                                            : "bg-slate-50 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"
                                         }`}
                                 >
                                     {stat.change}
@@ -155,8 +156,8 @@ export default function Overview() {
                                     key={tab}
                                     onClick={() => setSelectedTab(tab)}
                                     className={`px-3 py-1 text-xs font-semibold rounded-lg capitalize transition-all duration-300 ${selectedTab === tab
-                                            ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
-                                            : "text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-350"
+                                        ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
+                                        : "text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-350"
                                         }`}
                                 >
                                     {tab}
