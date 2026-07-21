@@ -54,43 +54,43 @@ export const userMenuData: MenuData = {
                 },
                 {
                     label: "Create Post",
-                    href: "/dashboard/create-post",
+                    href: "/user/create-post",
                     icon: MdDashboardCustomize,
                 },
                 {
                     label: "Posts",
-                    href: "/dashboard/posts",
+                    href: "/user/posts",
                     icon: TbCategory,
                 },
                 {
                     label: "Calendar",
-                    href: "/dashboard/calendar",
+                    href: "/user/calendar",
                     icon: Ticket,
                 },
 
                 {
                     label: "Analytics",
-                    href: "/dashboard/analytics",
+                    href: "/user/analytics",
                     icon: Users,
                 },
                 {
                     label: "Media Library",
-                    href: "/dashboard/media-library",
+                    href: "/user/media-library",
                     icon: ShieldCheck,
                 },
                 {
                     label: "AI Assistant",
-                    href: "/dashboard/ai-assistant",
+                    href: "/user/ai-assistant",
                     icon: TbBulb,
                 },
                 {
                     label: "Connected Accounts",
-                    href: "/dashboard/connected-accounts",
+                    href: "/user/connected-accounts",
                     icon: TbBulb,
                 },
                 {
                     label: "Notifications",
-                    href: "/dashboard/notifications",
+                    href: "/user/notifications",
                     icon: Bell,
                 }
             ],
