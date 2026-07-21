@@ -49,7 +49,7 @@ export const userMenuData: MenuData = {
             menu: [
                 {
                     label: "Dashboard",
-                    href: "/dashboard",
+                    href: "/user/dashboard",
                     icon: LayoutDashboard,
                 },
                 {
