@@ -16,8 +16,15 @@ import {
     BarChart3,
     ClipboardList,
     MessageSquareWarning,
+    LifeBuoy,
+    Database,
+    Activity,
+    Bot,
+    Flag,
+    FileText,
+    BadgeDollarSign,
 } from "lucide-react";
-import { TbMatrix, TbBulb } from "react-icons/tb";
+import { TbMatrix, TbBulb, TbServer, TbAffiliate, TbWorld } from "react-icons/tb";
 import { MdDashboardCustomize } from "react-icons/md";
 import { TbCategory, TbReportAnalytics, TbDiscount } from "react-icons/tb";
 
@@ -97,6 +104,8 @@ export const userMenuData: MenuData = {
         },
     ],
 };
+
+
 export const adminMenuData: MenuData = {
     linkData: [
         {
@@ -107,45 +116,84 @@ export const adminMenuData: MenuData = {
                     icon: LayoutDashboard,
                 },
                 {
-                    label: "My Products",
-                    href: "/dashboard/orbit-export/my-products",
-                    icon: MdDashboardCustomize,
-                },
-                {
-                    label: "Inventory",
-                    href: "/dashboard/orbit-export/inventory",
-                    icon: TbCategory,
-                },
-                {
-                    label: "Export Journey",
-                    href: "/dashboard/orbit-export/export-journey",
-                    icon: Ticket,
-                },
-
-                {
-                    label: "Sales",
-                    href: "/dashboard/orbit-export/sales",
+                    label: "Users",
+                    href: "/admin/users",
                     icon: Users,
                 },
                 {
-                    label: "Message",
-                    href: "/dashboard/message",
-                    icon: ShieldCheck,
+                    label: "Workspaces",
+                    href: "/admin/workspaces",
+                    icon: TbAffiliate,
+                },
+                {
+                    label: "Connected Platforms",
+                    href: "/admin/connected-platforms",
+                    icon: TbWorld,
+                },
+                {
+                    label: "Posts",
+                    href: "/admin/posts",
+                    icon: FileText,
+                },
+                {
+                    label: "Analytics",
+                    href: "/admin/analytics",
+                    icon: BarChart3,
+                },
+                {
+                    label: "AI Management",
+                    href: "/admin/ai-management",
+                    icon: Bot,
+                },
+                {
+                    label: "Subscriptions",
+                    href: "/admin/subscriptions",
+                    icon: CreditCard,
+                },
+                {
+                    label: "Transactions",
+                    href: "/admin/transactions",
+                    icon: BadgeDollarSign,
+                },
+                {
+                    label: "Reports",
+                    href: "/admin/reports",
+                    icon: Flag,
                 },
                 {
                     label: "Notifications",
-                    href: "/dashboard/notifications",
+                    href: "/admin/notifications",
                     icon: Bell,
                 },
                 {
-                    label: "Contract &Compliance",
-                    href: "/dashboard/orbit-export/contract-compliance",
-                    icon: MessageSquareWarning,
+                    label: "System Health",
+                    href: "/admin/system-health",
+                    icon: Activity,
                 },
                 {
-                    label: "My Account",
-                    href: "/dashboard/orbit-export/my-account",
-                    icon: UserRound,
+                    label: "API & Integrations",
+                    href: "/admin/api-integrations",
+                    icon: TbServer,
+                },
+                {
+                    label: "Audit Logs",
+                    href: "/admin/audit-logs",
+                    icon: Database,
+                },
+                {
+                    label: "Roles & Permissions",
+                    href: "/admin/roles-permissions",
+                    icon: ShieldCheck,
+                },
+                {
+                    label: "Support Tickets",
+                    href: "/admin/support-tickets",
+                    icon: LifeBuoy,
+                },
+                {
+                    label: "Settings",
+                    href: "/admin/settings",
+                    icon: Settings,
                 },
             ],
         },
