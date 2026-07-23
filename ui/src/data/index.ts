@@ -103,7 +103,7 @@ export const adminMenuData: MenuData = {
             menu: [
                 {
                     label: "Dashboard",
-                    href: "/dashboard/orbit-export",
+                    href: "/admin/dashboard",
                     icon: LayoutDashboard,
                 },
                 {
