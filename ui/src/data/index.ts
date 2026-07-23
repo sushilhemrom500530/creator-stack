@@ -171,11 +171,6 @@ export const adminMenuData: MenuData = {
                     icon: Activity,
                 },
                 {
-                    label: "API & Integrations",
-                    href: "/admin/api-integrations",
-                    icon: TbServer,
-                },
-                {
                     label: "Audit Logs",
                     href: "/admin/audit-logs",
                     icon: Database,
@@ -186,8 +181,8 @@ export const adminMenuData: MenuData = {
                     icon: ShieldCheck,
                 },
                 {
-                    label: "Support Tickets",
-                    href: "/admin/support-tickets",
+                    label: "Support",
+                    href: "/admin/support",
                     icon: LifeBuoy,
                 },
                 {
