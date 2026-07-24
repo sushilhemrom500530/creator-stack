@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    PenSquare, 
-    Image as ImageIcon, 
-    Calendar, 
-    Sparkles, 
-    Send, 
-    Clock, 
-    CheckCircle2, 
+import {
+    PenSquare,
+    Image as ImageIcon,
+    Calendar,
+    Sparkles,
+    Send,
+    Clock,
+    CheckCircle2,
     Globe
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
@@ -35,8 +35,15 @@ export default function CreatePostComponent() {
         }, 800);
     };
 
+    const handleApplyOptimization = () => {
+        const hashtag = " #GenerativeAI";
+        if (!content.includes("#GenerativeAI")) {
+            setContent((prev) => (prev ? prev + hashtag : "🚀 Exciting updates coming up!" + hashtag));
+        }
+    };
+
     return (
-        <div className="p-6 max-w-6xl mx-auto space-y-6">
+        <div className="p-6 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
@@ -45,8 +52,8 @@ export default function CreatePostComponent() {
                     <p className="text-slate-500 text-sm mt-1">Draft, schedule, and publish content across all your social channels</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button 
-                        onClick={handleAiGenerate} 
+                    <button
+                        onClick={handleAiGenerate}
                         disabled={isGenerating}
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-sm shadow-md hover:opacity-90 transition disabled:opacity-50"
                     >
@@ -75,11 +82,10 @@ export default function CreatePostComponent() {
                                     <button
                                         key={p.id}
                                         onClick={() => togglePlatform(p.id)}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                                            isSelected 
-                                                ? `${p.color} text-white shadow-sm ring-2 ring-offset-1 ring-slate-300` 
-                                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                        }`}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${isSelected
+                                            ? `${p.color} text-white shadow-sm ring-2 ring-offset-1 ring-slate-300`
+                                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                            }`}
                                     >
                                         <Icon className="w-4 h-4" />
                                         {p.name}
@@ -139,26 +145,48 @@ export default function CreatePostComponent() {
                     </div>
                 </div>
 
-                {/* Live Preview Column */}
+                {/* Live Preview & AI Recommendation Column */}
                 <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4 sticky top-6">
-                        <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Live Content Preview
-                        </h2>
-                        
-                        <div className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">
-                                    SH
+                    <div className="space-y-6 sticky top-6">
+                        {/* Live Content Preview */}
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                            <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Live Content Preview
+                            </h2>
+
+                            <div className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 space-y-3">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-9 h-9 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">
+                                        SH
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-bold text-slate-800">Sushil Hemrom</h4>
+                                        <p className="text-xs text-slate-400">@sushilhemrom • Just now</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="text-sm font-bold text-slate-800">Sushil Hemrom</h4>
-                                    <p className="text-xs text-slate-400">@sushilhemrom • Just now</p>
-                                </div>
+                                <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed min-h-[60px]">
+                                    {content || "Your post content preview will appear here..."}
+                                </p>
                             </div>
-                            <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                                {content || "Your post content preview will appear here..."}
+                        </div>
+
+                        {/* AI Recommendation Card */}
+                        <div className="bg-[#151629] p-5 rounded-2xl border border-purple-500/20 text-white space-y-4 shadow-lg">
+                            <div className="flex items-center gap-2.5">
+                                <Sparkles className="w-4 h-4 text-purple-400" />
+                                <span className="text-purple-300 font-semibold text-sm">AI Recommendation</span>
+                            </div>
+                            <p className="text-slate-300 text-sm leading-relaxed">
+                                &ldquo;Based on your recent engagement, adding 3 specific hashtags related to{" "}
+                                <span className="font-bold text-white">#GenerativeAI</span> could increase reach by{" "}
+                                <span className="text-emerald-400 font-bold">14.2%</span>.&rdquo;
                             </p>
+                            <button
+                                onClick={handleApplyOptimization}
+                                className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 text-xs font-semibold transition-all hover:border-purple-500/40 hover:text-white cursor-pointer"
+                            >
+                                Apply Optimization
+                            </button>
                         </div>
                     </div>
                 </div>
