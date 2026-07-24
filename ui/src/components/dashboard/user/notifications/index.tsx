@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    Bell, 
-    CheckCheck, 
-    Clock, 
-    MessageSquare, 
-    Share2, 
-    Sparkles, 
-    ShieldCheck, 
-    Trash2 
+import {
+    Bell,
+    CheckCheck,
+    Clock,
+    MessageSquare,
+    Share2,
+    Sparkles,
+    ShieldCheck,
+    Trash2
 } from "lucide-react";
 
 export default function NotificationsComponent() {
@@ -29,7 +29,7 @@ export default function NotificationsComponent() {
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto space-y-6">
+        <div className="p-6 space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <div>
@@ -57,9 +57,8 @@ export default function NotificationsComponent() {
                         return (
                             <div
                                 key={item.id}
-                                className={`p-5 flex items-start justify-between gap-4 transition ${
-                                    item.read ? "bg-white" : "bg-blue-50/30"
-                                }`}
+                                className={`p-5 flex items-start justify-between gap-4 transition ${item.read ? "bg-white" : "bg-blue-50/30"
+                                    }`}
                             >
                                 <div className="flex items-start gap-4">
                                     <div className={`p-3 rounded-xl ${item.color}`}>
