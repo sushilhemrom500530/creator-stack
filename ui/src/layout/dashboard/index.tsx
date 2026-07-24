@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
 
             {/* top and children content  */}
             <div
-                className={`flex flex-col flex-1 min-w-0 lg:ml-[288px] transition-all duration-300`}
+                className={`flex flex-col flex-1 min-w-0 lg:ml-64 transition-all duration-300`}
             >
                 <Header navOpened={navOpened} setNavOpened={setNavOpened} user={user} />
                 {/* min-h-[calc(100vh-48px)]  */}
