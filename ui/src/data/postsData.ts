@@ -38,6 +38,7 @@ export interface PostItem {
     id: string;
     title?: string;
     content: string;
+    thumbnail?: string;
     platforms: Array<"twitter" | "linkedin" | "facebook" | "instagram">;
     status: "published" | "scheduled" | "draft" | "failed";
     publishedAt: string;
@@ -53,9 +54,10 @@ export interface PostItem {
 
 export const MOCK_POSTS_DATA: PostItem[] = [
     {
-        id: "12",
+        id: "SF-9021",
         title: "Creator Stack Tools Official Launch",
         content: "🚀 Exciting news! We are launching our latest Creator Stack tools today. Automate your post workflow, track real-time analytics, and boost engagement effortlessly! #CreatorEconomy #TechInnovation #GenerativeAI",
+        thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80",
         platforms: ["twitter", "linkedin", "facebook", "instagram"],
         status: "published",
         publishedAt: "2026-07-24 14:30",
@@ -97,9 +99,10 @@ export const MOCK_POSTS_DATA: PostItem[] = [
         }
     },
     {
-        id: "1",
-        title: "5 Content Strategy Tips for 2026",
+        id: "SF-8812",
+        title: "Behind the scenes: Crafting the perfect user experience",
         content: "Content strategy 101: Consistency beats intensity every single time. Here are 5 quick tips to level up your social media presence in 2026 🧵👇 #ContentStrategy #Growth",
+        thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=150&q=80",
         platforms: ["twitter", "instagram", "facebook"],
         status: "published",
         publishedAt: "2026-07-23 09:15",
@@ -132,8 +135,8 @@ export const MOCK_POSTS_DATA: PostItem[] = [
         }
     },
     {
-        id: "2",
-        title: "Behind the scenes: AI Workflows",
+        id: "SF-7644",
+        title: "New product launch announcement & roadmap",
         content: "Behind the scenes of building AI-assisted content workflows. Generative AI is not replacing creators—it is amplifying their reach! 🧠✨ #GenerativeAI #FutureOfWork",
         platforms: ["linkedin", "twitter"],
         status: "scheduled",
@@ -141,18 +144,20 @@ export const MOCK_POSTS_DATA: PostItem[] = [
         metrics: { views: "0", likes: 0, comments: 0, shares: 0, engagementRate: "0%" }
     },
     {
-        id: "3",
-        title: "Weekly Social ROI Poll",
+        id: "SF-9201",
+        title: "Sustainability meets digital craftsmanship",
         content: "Weekly poll: What social channel is driving the highest ROI for your brand this quarter? Drop your thoughts below! 📊",
+        thumbnail: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=150&q=80",
         platforms: ["twitter", "linkedin"],
         status: "draft",
         publishedAt: "Draft",
         metrics: { views: "0", likes: 0, comments: 0, shares: 0, engagementRate: "0%" }
     },
     {
-        id: "4",
+        id: "SF-4510",
         title: "Cross-Channel Analytics Announcement",
         content: "Product announcement: New cross-channel analytics integration is now live for all pro tier creators. Check your dashboard for live insights!",
+        thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=150&q=80",
         platforms: ["facebook", "instagram"],
         status: "published",
         publishedAt: "2026-07-21 16:45",
@@ -177,7 +182,7 @@ export const MOCK_POSTS_DATA: PostItem[] = [
         }
     },
     {
-        id: "5",
+        id: "SF-3102",
         title: "Failed Token Retry Post",
         content: "Failed to publish post due to expired platform authentication token. Please reconnect your account.",
         platforms: ["facebook"],

@@ -18,7 +18,9 @@ import {
     Plus,
     Edit3,
     Trash2,
-    ThumbsUp
+    RotateCcw,
+    Image as ImageIcon,
+    Sparkles
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
 import { MOCK_POSTS_DATA, PostItem } from "@/data/postsData";
@@ -58,12 +60,19 @@ export default function UserPosts() {
     const filteredPosts = posts.filter((post) => {
         const matchesSearch =
             post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+            (post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            post.id.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesChannel =
             channelFilter === "all" || post.platforms.includes(channelFilter as any);
         const matchesStatus = statusFilter === "all" || post.status === statusFilter;
         return matchesSearch && matchesChannel && matchesStatus;
     });
+
+    const resetFilters = () => {
+        setSearchTerm("");
+        setChannelFilter("all");
+        setStatusFilter("all");
+    };
 
     const renderPlatformBadge = (platform: string) => {
         switch (platform) {
@@ -71,7 +80,7 @@ export default function UserPosts() {
                 return (
                     <Tag
                         key="twitter"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-sky-200 text-sky-600 bg-sky-50"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-sky-200 text-sky-600 bg-sky-50 shadow-xs"
                     >
                         <FaTwitter className="w-3.5 h-3.5" /> Twitter / X
                     </Tag>
@@ -80,7 +89,7 @@ export default function UserPosts() {
                 return (
                     <Tag
                         key="linkedin"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-blue-200 text-blue-600 bg-blue-50"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-blue-200 text-blue-600 bg-blue-50 shadow-xs"
                     >
                         <FaLinkedin className="w-3.5 h-3.5" /> LinkedIn
                     </Tag>
@@ -89,7 +98,7 @@ export default function UserPosts() {
                 return (
                     <Tag
                         key="facebook"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-blue-200 text-blue-600 bg-blue-50"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-blue-200 text-blue-600 bg-blue-50 shadow-xs"
                     >
                         <FaFacebook className="w-3.5 h-3.5" /> Facebook
                     </Tag>
@@ -98,7 +107,7 @@ export default function UserPosts() {
                 return (
                     <Tag
                         key="instagram"
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-pink-200 text-pink-600 bg-pink-50"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border-pink-200 text-pink-600 bg-pink-50 shadow-xs"
                     >
                         <FaInstagram className="w-3.5 h-3.5" /> Instagram
                     </Tag>
@@ -112,44 +121,67 @@ export default function UserPosts() {
         switch (status) {
             case "published":
                 return (
-                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border-emerald-200">
+                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border-emerald-200">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Published
                     </Tag>
                 );
             case "scheduled":
                 return (
-                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border-blue-200">
+                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border-blue-200">
                         <Clock className="w-3.5 h-3.5" /> Scheduled
                     </Tag>
                 );
             case "draft":
                 return (
-                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border-slate-200">
+                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border-slate-200">
                         <PenSquare className="w-3.5 h-3.5" /> Draft
                     </Tag>
                 );
             case "failed":
                 return (
-                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border-rose-200">
+                    <Tag className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border-rose-200">
                         <AlertCircle className="w-3.5 h-3.5" /> Failed
                     </Tag>
                 );
         }
     };
 
-    // Antd Table Columns Definition
+    // Antd Table Columns Definition with Thumbnail & Caption Column matching screenshot
     const columns: ColumnsType<PostItem> = [
         {
-            title: "Post Content",
+            title: "Thumbnail",
+            dataIndex: "thumbnail",
+            key: "thumbnail",
+            width: "110px",
+            render: (_, record) => (
+                <div className="w-14 h-11 rounded-xl bg-slate-900 border border-slate-700/80 overflow-hidden flex items-center justify-center shadow-inner group relative shrink-0">
+                    {record.thumbnail ? (
+                        <img
+                            src={record.thumbnail}
+                            alt="Thumbnail"
+                            className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-slate-800/90 flex items-center justify-center text-slate-500">
+                            <ImageIcon className="w-4 h-4 text-slate-400" />
+                        </div>
+                    )}
+                </div>
+            ),
+        },
+        {
+            title: "Caption",
             dataIndex: "content",
             key: "content",
             width: "35%",
             render: (_, record) => (
                 <div className="space-y-1">
-                    {record.title && (
-                        <h4 className="text-sm font-bold text-slate-800 line-clamp-1">{record.title}</h4>
-                    )}
-                    <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed">{record.content}</p>
+                    <h4 className="text-sm font-bold text-slate-800 line-clamp-1 hover:text-primary transition cursor-pointer">
+                        {record.title || record.content}
+                    </h4>
+                    <p className="text-slate-400 font-mono text-[11px] tracking-wide">
+                        ID: {record.id}
+                    </p>
                 </div>
             ),
         },
@@ -157,9 +189,9 @@ export default function UserPosts() {
             title: "Posted Channels",
             dataIndex: "platforms",
             key: "platforms",
-            width: "25%",
+            width: "22%",
             render: (platforms: string[]) => (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1.5">
                     {platforms.map((platform) => renderPlatformBadge(platform))}
                 </div>
             ),
@@ -168,7 +200,7 @@ export default function UserPosts() {
             title: "Status",
             dataIndex: "status",
             key: "status",
-            width: "12%",
+            width: "13%",
             render: (status: PostItem["status"]) => renderStatusTag(status),
         },
         {
@@ -177,7 +209,7 @@ export default function UserPosts() {
             key: "publishedAt",
             width: "14%",
             render: (date: string) => (
-                <span className="text-xs text-slate-500 flex items-center gap-1">
+                <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-slate-400" /> {date}
                 </span>
             ),
@@ -186,7 +218,7 @@ export default function UserPosts() {
             title: "Actions",
             key: "action",
             align: "right",
-            width: "14%",
+            width: "12%",
             render: (_, record) => (
                 <div className="flex items-center justify-end gap-1.5">
                     {/* View Details button */}
@@ -296,43 +328,66 @@ export default function UserPosts() {
                 </div>
             </div>
 
-            {/* Antd Filter Bar */}
-            <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
-                <Input
-                    prefix={<Search className="w-4 h-4 text-slate-400 mr-2" />}
-                    placeholder="Search posts or hashtags..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full md:w-80 h-10 rounded-xl border-slate-200"
-                    allowClear
-                />
+            {/* REFINED PROFESSIONAL FILTER SECTION */}
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div className="flex items-center gap-2">
+                        <Filter className="w-4 h-4 text-primary" />
+                        <h3 className="text-sm font-bold text-slate-800">Filter & Refine Posts</h3>
+                        <span className="px-2 py-0.5 rounded-full bg-slate-100 text-[11px] font-semibold text-slate-600">
+                            {filteredPosts.length} results
+                        </span>
+                    </div>
 
-                <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <Select
-                        value={channelFilter}
-                        onChange={(value) => setChannelFilter(value)}
-                        className="w-40 h-10"
-                        options={[
-                            { value: "all", label: "All Channels" },
-                            { value: "twitter", label: "Twitter / X" },
-                            { value: "linkedin", label: "LinkedIn" },
-                            { value: "facebook", label: "Facebook" },
-                            { value: "instagram", label: "Instagram" },
-                        ]}
+                    {(searchTerm || channelFilter !== "all" || statusFilter !== "all") && (
+                        <button
+                            onClick={resetFilters}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 transition cursor-pointer"
+                        >
+                            <RotateCcw className="w-3.5 h-3.5" /> Reset Filters
+                        </button>
+                    )}
+                </div>
+
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    {/* Search Input */}
+                    <Input
+                        prefix={<Search className="w-4 h-4 text-slate-400 mr-2" />}
+                        placeholder="Search post content, title, or ID (e.g. SF-9021)..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full md:!w-96 h-10 rounded-xl border-slate-200 shadow-xs"
+                        allowClear
                     />
 
-                    <Select
-                        value={statusFilter}
-                        onChange={(value) => setStatusFilter(value)}
-                        className="w-36 h-10"
-                        options={[
-                            { value: "all", label: "All Statuses" },
-                            { value: "published", label: "Published" },
-                            { value: "scheduled", label: "Scheduled" },
-                            { value: "draft", label: "Draft" },
-                            { value: "failed", label: "Failed" },
-                        ]}
-                    />
+                    {/* Filter Dropdowns */}
+                    <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        <Select
+                            value={channelFilter}
+                            onChange={(value) => setChannelFilter(value)}
+                            className="w-44 h-10"
+                            options={[
+                                { value: "all", label: "🌐 All Channels" },
+                                { value: "twitter", label: "𝕏 Twitter / X" },
+                                { value: "linkedin", label: "💼 LinkedIn" },
+                                { value: "facebook", label: "📘 Facebook" },
+                                { value: "instagram", label: "📸 Instagram" },
+                            ]}
+                        />
+
+                        <Select
+                            value={statusFilter}
+                            onChange={(value) => setStatusFilter(value)}
+                            className="w-40 h-10"
+                            options={[
+                                { value: "all", label: "⚡ All Statuses" },
+                                { value: "published", label: "✅ Published" },
+                                { value: "scheduled", label: "🕒 Scheduled" },
+                                { value: "draft", label: "📝 Draft" },
+                                { value: "failed", label: "❌ Failed" },
+                            ]}
+                        />
+                    </div>
                 </div>
             </div>
 
