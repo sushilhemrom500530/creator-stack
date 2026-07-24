@@ -8,7 +8,7 @@ import {
     Radio,
     Activity
 } from "lucide-react";
-import mapImg from "@/assets/dashboard/map.png";
+import mapImg from "@/assets/dashboard/map-light.png";
 
 interface CountryStat {
     id: string;
