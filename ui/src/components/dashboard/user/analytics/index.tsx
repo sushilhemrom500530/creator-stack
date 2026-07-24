@@ -17,7 +17,7 @@ import {
     Sparkles
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
-import WorldMapDashboard from "./global-map";
+import WorldMapDashboard from "../../../common/global-map";
 
 // Dynamically import ApexCharts with SSR disabled for Next.js
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });

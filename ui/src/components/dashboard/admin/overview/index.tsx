@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Table, Tag, Tooltip, Switch, message, Popconfirm, Progress } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { message } from "antd";
 import {
     TrendingUp,
     Users,
@@ -15,36 +13,19 @@ import {
     Activity,
     Globe,
     RefreshCw,
-    Sliders,
-    PauseCircle,
-    PlayCircle,
-    Search,
     Zap,
     BarChart3,
     PieChart,
-    Bell,
     Clock,
     UserCheck,
     Radio,
     Send,
-    HardDrive
 } from "lucide-react";
-import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa6";
+import WorldMapDashboard from "@/components/common/global-map";
 
 // Dynamically import ApexCharts with SSR disabled
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-interface SocialStackHub {
-    id: string;
-    name: string;
-    handleCount: string;
-    dailyVolume: string;
-    errorRate: string;
-    status: "Healthy" | "Warning" | "Maintenance";
-    icon: any;
-    color: string;
-    enabled: boolean;
-}
 
 export default function AdminOverview() {
 
@@ -340,41 +321,11 @@ export default function AdminOverview() {
             </div>
 
             {/* 4. REGIONAL GROWTH & RECENT PLATFORM ACTIVITY */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Growth by Region (6 Cols) */}
-                <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
-                            <Globe className="w-4 h-4 text-primary" /> Geographic Creator Reach
-                        </h3>
-                        <span className="text-xs font-semibold text-slate-400">Global Breakdown</span>
-                    </div>
-
-                    <div className="space-y-4 text-xs">
-                        {[
-                            { flag: "🇺🇸", region: "North America", count: "5,392 creators", percent: 42, color: "bg-blue-500" },
-                            { flag: "🇪🇺", region: "Europe & UK", count: "3,595 creators", percent: 28, color: "bg-purple-500" },
-                            { flag: "🇸🇬", region: "Asia Pacific (APAC)", count: "2,311 creators", percent: 18, color: "bg-emerald-500" },
-                            { flag: "🇧🇷", region: "Latin America (LATAM)", count: "1,027 creators", percent: 8, color: "bg-amber-500" },
-                            { flag: "🌍", region: "Middle East & Other", count: "515 creators", percent: 4, color: "bg-slate-400" },
-                        ].map((item, idx) => (
-                            <div key={idx} className="space-y-1.5">
-                                <div className="flex items-center justify-between text-slate-700">
-                                    <span className="font-bold flex items-center gap-2">
-                                        <span className="text-base">{item.flag}</span> {item.region}
-                                    </span>
-                                    <span className="font-mono text-slate-500">{item.count} ({item.percent}%)</span>
-                                </div>
-                                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div className={`h-full ${item.color} rounded-full`} style={{ width: `${item.percent}%` }}></div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <WorldMapDashboard />
 
                 {/* Recent Platform Activity Log (6 Cols) */}
-                <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
                     <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                             <Activity className="w-4 h-4 text-emerald-600" /> Platform Security & Activity Log
