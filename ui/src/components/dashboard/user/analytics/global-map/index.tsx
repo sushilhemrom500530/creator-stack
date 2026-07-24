@@ -1,354 +1,384 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+    Globe,
+    Radio,
+    Activity
+} from "lucide-react";
+import mapImg from "@/assets/dashboard/map.png";
 
-interface CountryData {
+interface CountryStat {
     id: string;
     name: string;
-    label: string;
-    x: number; // percentage X position on map canvas
-    y: number; // percentage Y position on map canvas
-    progress: number;
-    value: string;
-    subValue?: string;
-    color: "cyan" | "purple" | "pink";
+    code: string;
+    flag: string;
+    percentage: number;
+    reach: string;
+    users: number;
+    latency: number;
+    cities: string[];
+    topPos: { x: string; y: string }; // Position on map in percentage
+    color: string;
 }
 
-const COUNTRIES: CountryData[] = [
+const STATIC_COUNTRIES: CountryStat[] = [
     {
-        id: "usa",
-        name: "USA",
-        label: "USA",
-        x: 23,
-        y: 38,
-        progress: 84,
-        value: "39.8K",
-        subValue: "Active Users",
-        color: "cyan",
+        id: "USA",
+        name: "United States",
+        code: "US",
+        flag: "🇺🇸",
+        percentage: 47,
+        reach: "39.8K",
+        users: 39820,
+        latency: 18,
+        cities: ["New York", "San Francisco", "Chicago"],
+        topPos: { x: "24%", y: "38%" },
+        color: "from-blue-500 via-indigo-500 to-purple-500"
     },
     {
-        id: "uk",
-        name: "United Kingdom",
-        label: "UK",
-        x: 47.5,
-        y: 28,
-        progress: 68,
-        value: "14.2K",
-        subValue: "Traffic Share",
-        color: "purple",
-    },
-    {
-        id: "germany",
-        name: "Germany",
-        label: "GERMANY",
-        x: 50.5,
-        y: 32,
-        progress: 72,
-        value: "18.5K",
-        subValue: "Conversion",
-        color: "cyan",
-    },
-    {
-        id: "japan",
+        id: "JPN",
         name: "Japan",
-        label: "JAPAN",
-        x: 82,
-        y: 41,
-        progress: 47,
-        value: "22.1K",
-        subValue: "Growth Rate",
-        color: "pink",
+        code: "JP",
+        flag: "🇯🇵",
+        percentage: 19,
+        reach: "16.2K",
+        users: 16200,
+        latency: 55,
+        cities: ["Tokyo", "Osaka", "Kyoto"],
+        topPos: { x: "82%", y: "36%" },
+        color: "from-pink-500 to-rose-500"
     },
-];
-
-// Additional glowing nodes for visual density
-const NODES = [
-    { x: 18, y: 22, color: "cyan" },
-    { x: 28, y: 72, color: "cyan" },
-    { x: 31, y: 82, color: "cyan" },
-    { x: 44, y: 44, color: "cyan" },
-    { x: 49, y: 64, color: "cyan" },
-    { x: 53, y: 78, color: "cyan" },
-    { x: 57, y: 48, color: "cyan" },
-    { x: 70, y: 44, color: "pink" },
-    { x: 74, y: 35, color: "cyan" },
-    { x: 81, y: 81, color: "pink" },
+    {
+        id: "DEU",
+        name: "Germany",
+        code: "DE",
+        flag: "🇩🇪",
+        percentage: 18,
+        reach: "14.8K",
+        users: 14890,
+        latency: 20,
+        cities: ["Berlin", "Munich", "Frankfurt"],
+        topPos: { x: "50%", y: "29%" },
+        color: "from-purple-500 to-indigo-600"
+    },
+    {
+        id: "GBR",
+        name: "United Kingdom",
+        code: "GB",
+        flag: "🇬🇧",
+        percentage: 15,
+        reach: "12.4K",
+        users: 12450,
+        latency: 22,
+        cities: ["London", "Manchester"],
+        topPos: { x: "46%", y: "26%" },
+        color: "from-sky-500 to-blue-600"
+    },
+    {
+        id: "IND",
+        name: "India",
+        code: "IN",
+        flag: "🇮🇳",
+        percentage: 24,
+        reach: "20.5K",
+        users: 20500,
+        latency: 75,
+        cities: ["Bengaluru", "Mumbai", "Delhi"],
+        topPos: { x: "69%", y: "48%" },
+        color: "from-emerald-500 to-teal-600"
+    },
+    {
+        id: "BRA",
+        name: "Brazil",
+        code: "BR",
+        flag: "🇧🇷",
+        percentage: 11,
+        reach: "9.4K",
+        users: 9410,
+        latency: 110,
+        cities: ["São Paulo", "Rio de Janeiro"],
+        topPos: { x: "34%", y: "68%" },
+        color: "from-amber-500 to-orange-500"
+    }
 ];
 
 export default function WorldMapDashboard() {
-    const [activeCountry, setActiveCountry] = useState<CountryData | null>(
-        COUNTRIES[0]
-    );
-    const [hoveredCountry, setHoveredCountry] = useState<CountryData | null>(
-        null
-    );
+    const [hoveredCountry, setHoveredCountry] = useState<CountryStat | null>(null);
+    const [selectedCountry, setSelectedCountry] = useState<CountryStat>(STATIC_COUNTRIES[0]);
 
-    const displayCountry = hoveredCountry || activeCountry || COUNTRIES[0];
+    const activeDisplay = hoveredCountry || selectedCountry;
 
     return (
-        <div className="relative min-h-screen w-full bg-[#0a0c14] text-white flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden select-none font-sans">
-            {/* Background Radial Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-to-r from-purple-900/20 via-cyan-900/20 to-pink-900/20 blur-[120px] rounded-full pointer-events-none" />
-
-            {/* Main Container */}
-            <div className="relative w-full max-w-6xl aspect-[16/9] rounded-3xl border border-white/10 bg-[#0d0f1a]/80 backdrop-blur-xl shadow-2xl p-6 overflow-hidden">
-
-                {/* World Map SVG Canvas */}
-                <div className="relative w-full h-full">
-                    {/* Base World Map Silhouette */}
-                    <svg
-                        viewBox="0 0 1000 500"
-                        className="w-full h-full opacity-25 text-slate-500 fill-current"
-                    >
-                        {/* Simplified Map Outline */}
-                        <path d="M150,120 Q180,100 220,130 T280,180 Q250,220 200,200 Z M220,250 Q260,260 280,320 T240,420 Q200,380 210,300 Z M450,120 Q500,100 540,140 T480,220 Q440,180 450,120 Z M420,230 Q480,220 520,280 T480,400 Q430,350 420,230 Z M580,100 Q700,80 850,120 T800,280 Q700,260 600,220 Z M750,340 Q820,330 840,400 T780,440 Z" />
-                    </svg>
-
-                    {/* Connection Arcs SVG Layer */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                        <defs>
-                            <linearGradient id="cyanArc" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.8" />
-                                <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
-                            </linearGradient>
-                            <linearGradient id="purpleArc" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#a855f7" stopOpacity="0.8" />
-                                <stop offset="100%" stopColor="#ec4899" stopOpacity="0.2" />
-                            </linearGradient>
-                        </defs>
-
-                        {/* Dynamic Animated Arcs */}
-                        <path
-                            d="M 230 190 Q 350 100 475 140"
-                            fill="none"
-                            stroke="url(#cyanArc)"
-                            strokeWidth="1.5"
-                            strokeDasharray="4 4"
-                            className="animate-pulse"
-                        />
-                        <path
-                            d="M 230 190 Q 520 80 820 205"
-                            fill="none"
-                            stroke="url(#purpleArc)"
-                            strokeWidth="1.5"
-                        />
-                        <path
-                            d="M 475 140 Q 650 120 820 205"
-                            fill="none"
-                            stroke="url(#cyanArc)"
-                            strokeWidth="1.5"
-                        />
-                    </svg>
-
-                    {/* Static Glowing Network Nodes */}
-                    {NODES.map((node, i) => (
-                        <div
-                            key={i}
-                            className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                            style={{ left: `${node.x}%`, top: `${node.y}%` }}
-                        >
-                            <div
-                                className={`w-2 h-2 rounded-full ${node.color === "pink"
-                                    ? "bg-pink-400 shadow-[0_0_10px_#ec4899]"
-                                    : "bg-cyan-400 shadow-[0_0_10px_#22d3ee]"
-                                    }`}
-                            />
+        <div className="relative z-0 isolate w-full h-full bg-white text-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 font-sans flex flex-col justify-between select-none">
+            {/* Light Mode Header Control Toolbar */}
+            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 pb-3.5 gap-3 border-b border-slate-100 bg-slate-50/80">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-blue-50 border border-blue-100 text-blue-600">
+                        <Globe className="w-5 h-5 animate-spin-slow text-blue-600" />
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <h2 className="text-lg font-bold tracking-tight text-slate-800">
+                                Global Geography
+                            </h2>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                <Radio className="w-2.5 h-2.5 animate-pulse text-emerald-500" /> LIVE FEED
+                            </span>
                         </div>
-                    ))}
+                        <p className="text-xs text-slate-500">Audience progression & country traffic breakdown</p>
+                    </div>
+                </div>
+            </div>
 
-                    {/* Interactive Country Markers */}
-                    {COUNTRIES.map((country) => {
+            {/* Main Interactive Map Viewport */}
+            <div className="relative flex-1 w-full min-h-[300px] overflow-hidden flex items-center justify-center bg-[#090b14]">
+                {/* Background World Map Image */}
+                <div className="absolute inset-0 w-full h-full">
+                    <Image
+                        src={mapImg}
+                        alt="Global Map Analytics"
+                        fill
+                        priority
+                        className="object-cover object-center opacity-95"
+                    />
+                    {/* Soft gradient vignetting */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#090b14] via-transparent to-[#090b14]/30" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#090b14]/50 via-transparent to-[#090b14]/50" />
+                </div>
+
+                {/* SVG ARCS OVERLAY (Connecting USA to Europe & Asia) */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 1000 500" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="arcGradCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.9" />
+                            <stop offset="100%" stopColor="#a855f7" stopOpacity="0.9" />
+                        </linearGradient>
+                        <linearGradient id="arcGradPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#a855f7" stopOpacity="0.9" />
+                            <stop offset="100%" stopColor="#ec4899" stopOpacity="0.9" />
+                        </linearGradient>
+                    </defs>
+
+                    {/* USA (240, 190) -> UK (460, 130) */}
+                    <path d="M 240 190 Q 350 110 460 130" fill="none" stroke="url(#arcGradCyan)" strokeWidth="1.8" strokeDasharray="4 2" className="animate-pulse" />
+
+                    {/* USA (240, 190) -> Germany (500, 145) */}
+                    <path d="M 240 190 Q 370 120 500 145" fill="none" stroke="url(#arcGradCyan)" strokeWidth="1.8" />
+
+                    {/* USA (240, 190) -> Japan (820, 180) */}
+                    <path d="M 240 190 Q 530 50 820 180" fill="none" stroke="url(#arcGradPurple)" strokeWidth="2" />
+
+                    {/* Germany (500, 145) -> Japan (820, 180) */}
+                    <path d="M 500 145 Q 660 80 820 180" fill="none" stroke="url(#arcGradPurple)" strokeWidth="1.5" strokeDasharray="3 2" />
+
+                    {/* USA (240, 190) -> Brazil (340, 340) */}
+                    <path d="M 240 190 Q 270 270 340 340" fill="none" stroke="url(#arcGradCyan)" strokeWidth="1.5" />
+                </svg>
+
+                {/* COUNTRY HOTSPOT NODES PLACED ON MAP */}
+                <div className="absolute inset-0 z-20 pointer-events-none">
+                    {STATIC_COUNTRIES.map((country) => {
                         const isHovered = hoveredCountry?.id === country.id;
-                        const isActive = activeCountry?.id === country.id;
+                        const isSelected = selectedCountry?.id === country.id;
 
                         return (
                             <div
                                 key={country.id}
-                                className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 group"
-                                style={{ left: `${country.x}%`, top: `${country.y}%` }}
+                                style={{ left: country.topPos.x, top: country.topPos.y }}
+                                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer group"
                                 onMouseEnter={() => setHoveredCountry(country)}
                                 onMouseLeave={() => setHoveredCountry(null)}
-                                onClick={() => setActiveCountry(country)}
+                                onClick={() => setSelectedCountry(country)}
                             >
-                                {/* Pulse Ring */}
-                                <div
-                                    className={`absolute -inset-3 rounded-full opacity-75 animate-ping ${country.color === "cyan"
-                                        ? "bg-cyan-500/30"
-                                        : country.color === "purple"
-                                            ? "bg-purple-500/30"
-                                            : "bg-pink-500/30"
-                                        }`}
-                                />
+                                {/* Glowing Pulsing Aura */}
+                                <div className="relative flex items-center justify-center">
+                                    <span className="absolute w-7 h-7 rounded-full bg-cyan-400/30 animate-ping" />
+                                    <span className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_#00f2fe] border-2 border-white group-hover:scale-125 transition" />
 
-                                {/* Country Node Dot */}
-                                <div
-                                    className={`relative w-4 h-4 rounded-full border-2 transition-all duration-300 ${isHovered || isActive
-                                        ? "scale-125 border-white bg-white shadow-[0_0_20px_#22d3ee]"
-                                        : country.color === "cyan"
-                                            ? "border-cyan-300 bg-cyan-500 shadow-[0_0_12px_#06b6d4]"
-                                            : country.color === "purple"
-                                                ? "border-purple-300 bg-purple-500 shadow-[0_0_12px_#a855f7]"
-                                                : "border-pink-300 bg-pink-500 shadow-[0_0_12px_#ec4899]"
-                                        }`}
-                                />
-
-                                {/* Country Badge Label */}
-                                <span
-                                    className={`absolute left-1/2 -translate-x-1/2 top-5 px-2 py-0.5 text-[10px] font-bold tracking-wider rounded border backdrop-blur-md transition-all duration-200 ${isHovered || isActive
-                                        ? "bg-white text-black border-white shadow-lg"
-                                        : "bg-black/60 text-white/80 border-white/20 group-hover:border-white/50"
-                                        }`}
-                                >
-                                    {country.label}
-                                </span>
-
-                                {/* Hover Tooltip / Card Preview */}
-                                <AnimatePresence>
-                                    {isHovered && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                                            className="absolute bottom-8 left-1/2 -translate-x-1/2 w-48 p-3 rounded-xl bg-[#141828]/90 border border-white/20 backdrop-blur-md shadow-2xl pointer-events-none z-30"
-                                        >
-                                            <div className="flex justify-between items-center mb-1.5">
-                                                <span className="text-xs font-semibold text-white">
-                                                    {country.name}
-                                                </span>
-                                                <span className="text-xs font-bold text-cyan-400">
-                                                    {country.progress}%
-                                                </span>
-                                            </div>
-
-                                            {/* Hover Dynamic Progress Bar */}
-                                            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                                <motion.div
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${country.progress}%` }}
-                                                    transition={{ duration: 0.4 }}
-                                                    className="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-full"
-                                                />
-                                            </div>
-
-                                            <div className="mt-2 flex justify-between items-center text-[11px] text-slate-400">
-                                                <span>{country.subValue || "Metric"}</span>
-                                                <span className="text-white font-medium">
-                                                    {country.value}
-                                                </span>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                    {/* Country Label Tag */}
+                                    <div className="absolute top-4 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-md bg-white/95 border border-slate-200/90 backdrop-blur-md shadow-md text-[10px] font-bold text-slate-800 whitespace-nowrap group-hover:border-blue-500 transition">
+                                        {country.flag} {country.name}
+                                    </div>
+                                </div>
                             </div>
                         );
                     })}
                 </div>
 
-                {/* Floating Glassmorphism Widgets */}
+                {/* ============================================================ */}
+                {/* LIGHT MODE FLOATING GLASS CARDS MATCHING REFERENCE IMAGE */}
+                {/* ============================================================ */}
 
-                {/* Bottom Left: Progress & Stats Card */}
-                <div className="absolute bottom-6 left-6 w-56 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-xl">
-                    <div className="flex justify-between items-center text-xs text-slate-400 mb-2">
-                        <span>{displayCountry.name}</span>
-                        <span className="font-bold text-white">
-                            {displayCountry.progress}%
-                        </span>
+                {/* 1. BOTTOM LEFT CARD (USA / POR Stat Box) */}
+                <div className="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-xl border border-slate-200/90 p-3.5 rounded-2xl shadow-xl w-44 sm:w-48">
+                    {/* Top Gradient Progress Bar */}
+                    <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3 p-[1px] border border-slate-300/60">
+                        <div className="w-3/4 h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full" />
                     </div>
 
-                    {/* Animated Gradient Bar */}
-                    <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-3">
-                        <motion.div
-                            key={displayCountry.id}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${displayCountry.progress}%` }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                            className="h-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500"
-                        />
-                    </div>
-
-                    <div className="flex justify-between items-end">
-                        <div>
-                            <p className="text-[10px] text-slate-400 uppercase tracking-wider">
-                                Total Value
-                            </p>
-                            <p className="text-lg font-bold text-white">
-                                {displayCountry.value}
-                            </p>
+                    {/* Stats Rows */}
+                    <div className="space-y-2 text-xs">
+                        <div className="flex items-center justify-between">
+                            <span className="font-semibold text-slate-500 tracking-wider">USA</span>
+                            <span className="font-bold text-slate-900 tracking-wide">39.8K</span>
                         </div>
-                        <div className="text-right">
-                            <p className="text-[10px] text-slate-400 uppercase tracking-wider">
-                                Region
-                            </p>
-                            <p className="text-xs font-semibold text-cyan-400">
-                                {displayCountry.label}
-                            </p>
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                            <span className="font-semibold text-slate-500 tracking-wider">POR</span>
+                            <span className="font-bold text-slate-700 tracking-wide">3,068</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Center-Right: Gauge Meter Widget */}
-                <div className="absolute bottom-6 left-[58%] -translate-x-1/2 w-20 h-20 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-xl flex items-center justify-center">
+                {/* 2. BOTTOM CENTER DONUT PROGRESS GAUGE ("62") */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 bg-white/95 backdrop-blur-xl border border-slate-200/90 p-2.5 rounded-2xl shadow-xl w-20 h-20 flex items-center justify-center">
                     <div className="relative w-14 h-14 flex items-center justify-center">
-                        <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                             <path
-                                className="text-white/10"
+                                className="text-slate-100"
                                 strokeWidth="3.5"
                                 stroke="currentColor"
                                 fill="none"
                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                             />
                             <path
-                                className="text-cyan-400"
-                                strokeDasharray={`${displayCountry.progress}, 100`}
                                 strokeWidth="3.5"
+                                strokeDasharray="62, 100"
                                 strokeLinecap="round"
-                                stroke="currentColor"
+                                stroke="#2563eb"
                                 fill="none"
                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                             />
                         </svg>
-                        <span className="absolute text-sm font-bold text-white">
-                            {displayCountry.progress}
-                        </span>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-sm font-extrabold text-slate-900">62</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Right: Sparkline Card */}
-                <div className="absolute bottom-20 right-6 w-44 p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-xl">
-                    <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-semibold text-slate-300">
-                            {displayCountry.label}
-                        </span>
-                        <span className="text-xs font-bold text-cyan-400">
-                            {displayCountry.progress}%
-                        </span>
+                {/* 3. MIDDLE RIGHT CARD (USA 47% Sparkline Card) */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/95 backdrop-blur-xl border border-slate-200/90 p-3 rounded-2xl shadow-xl w-36 sm:w-40">
+                    <div className="flex items-center justify-between mb-1.5">
+                        <span className="w-6 h-1 rounded-full bg-slate-200 inline-block" />
                     </div>
 
-                    {/* Mini Sparkline Graph */}
-                    <div className="h-10 w-full mt-2">
-                        <svg className="w-full h-full overflow-visible" viewBox="0 0 100 40">
+                    {/* Sparkline Curve */}
+                    <div className="w-full h-6 mb-1.5">
+                        <svg className="w-full h-full overflow-visible" viewBox="0 0 100 30">
                             <path
-                                d="M 0 30 Q 25 35 50 20 T 100 5"
+                                d="M 0 25 Q 25 20, 50 15 T 100 5 L 100 30 L 0 30 Z"
+                                fill="rgba(37, 99, 235, 0.15)"
+                            />
+                            <path
+                                d="M 0 25 Q 25 20, 50 15 T 100 5"
                                 fill="none"
-                                stroke="url(#sparklineGrad)"
+                                stroke="#2563eb"
                                 strokeWidth="2.5"
                                 strokeLinecap="round"
                             />
-                            <defs>
-                                <linearGradient
-                                    id="sparklineGrad"
-                                    x1="0%"
-                                    y1="0%"
-                                    x2="100%"
-                                    y2="0%"
-                                >
-                                    <stop offset="0%" stopColor="#a855f7" />
-                                    <stop offset="100%" stopColor="#22d3ee" />
-                                </linearGradient>
-                            </defs>
                         </svg>
                     </div>
+
+                    <div className="flex items-baseline justify-between text-xs pt-1 border-t border-slate-100">
+                        <span className="font-medium text-slate-500">USA</span>
+                        <span className="font-bold text-blue-600 text-xs">47%</span>
+                    </div>
+                </div>
+
+                {/* 4. HOVER / SELECTION COUNTRY DETAILS CARD */}
+                <AnimatePresence>
+                    {activeDisplay && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute top-3 right-3 z-30 bg-white/95 backdrop-blur-2xl border border-blue-200/80 p-3.5 rounded-2xl shadow-xl w-52 sm:w-56 text-left"
+                        >
+                            <div className="flex items-center justify-between mb-2 pb-2 border-b border-slate-100">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xl">{activeDisplay.flag}</span>
+                                    <div>
+                                        <h3 className="text-xs font-bold text-slate-900 leading-tight">
+                                            {activeDisplay.name}
+                                        </h3>
+                                        <span className="text-[9px] text-slate-400 font-mono">
+                                            ISO: {activeDisplay.code}
+                                        </span>
+                                    </div>
+                                </div>
+                                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-200">
+                                    {activeDisplay.percentage}% SHARE
+                                </span>
+                            </div>
+
+                            {/* Progress bar */}
+                            <div className="space-y-2 text-[11px]">
+                                <div>
+                                    <div className="flex justify-between text-slate-500 mb-1">
+                                        <span>Audience Traffic</span>
+                                        <span className="text-blue-600 font-bold">{activeDisplay.reach}</span>
+                                    </div>
+                                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                        <div
+                                            className={`bg-gradient-to-r ${activeDisplay.color} h-full rounded-full transition-all duration-500`}
+                                            style={{ width: `${activeDisplay.percentage}%` }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between pt-1 text-[10px] text-slate-500">
+                                    <span>Latency: <strong className="text-emerald-600">{activeDisplay.latency}ms</strong></span>
+                                    <span>Status: <strong className="text-blue-600">Optimal</strong></span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+
+            {/* LIGHT MODE STATIC COUNTRY PROGRESS SECTION */}
+            <div className="relative z-20 p-4 bg-slate-50/70 border-t border-slate-100">
+                <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <Activity className="w-3.5 h-3.5 text-blue-600" />
+                        Top Geographic Countries & Progress
+                    </h4>
+                    <span className="text-[10px] font-semibold text-slate-400">Live Breakdown</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    {STATIC_COUNTRIES.map((country) => (
+                        <div
+                            key={country.id}
+                            onClick={() => setSelectedCountry(country)}
+                            className={`p-2.5 rounded-xl border transition cursor-pointer ${selectedCountry.id === country.id
+                                ? "bg-white border-blue-500/80 shadow-sm ring-1 ring-blue-500/20"
+                                : "bg-white/80 border-slate-200/80 hover:border-slate-300"
+                                }`}
+                        >
+                            <div className="flex items-center justify-between text-xs mb-1">
+                                <span className="flex items-center gap-1.5 text-slate-800 font-semibold text-[11px] truncate">
+                                    <span>{country.flag}</span> {country.name}
+                                </span>
+                                <span className="text-blue-600 font-bold text-[11px]">{country.percentage}%</span>
+                            </div>
+
+                            {/* Light Mode Static Progress Bar */}
+                            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1.5">
+                                <div
+                                    className={`bg-gradient-to-r ${country.color} h-full rounded-full`}
+                                    style={{ width: `${country.percentage}%` }}
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between text-[9px] text-slate-400 mt-1.5">
+                                <span>{country.reach} users</span>
+                                <span className="text-slate-500">{country.latency}ms</span>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

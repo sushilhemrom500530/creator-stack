@@ -232,9 +232,9 @@ export default function AnalyticsComponent() {
             </div>
 
             {/* Apex Charts Section: Left (Growth & Engagement) & Right (Audience Geo) */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
                 {/* Growth & Engagement Chart */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between h-full space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                             <h3 className="text-lg font-bold text-slate-800">Audience Growth & Engagement</h3>
@@ -250,7 +250,7 @@ export default function AnalyticsComponent() {
                         </div>
                     </div>
 
-                    <div className="h-72 w-full pt-2">
+                    <div className="flex-1 w-full pt-2 min-h-[300px]">
                         {isMounted && (
                             <Chart
                                 options={growthChartOptions}
@@ -263,8 +263,9 @@ export default function AnalyticsComponent() {
                 </div>
 
                 {/* Audience Geo Dynamic Map Visualizer Card */}
-                <WorldMapDashboard />
-
+                <div className="h-full">
+                    <WorldMapDashboard />
+                </div>
             </div>
 
             {/* Refined Top Performing Content */}

@@ -1,14 +1,12 @@
 "use client";
 import Image from "next/image";
-// import user_icon from "../../assets/user.svg";
 import logo from "@/assets/dashboard/logo.png";
-
 import { IoMdMenu } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 
 export default function Header({ navOpened, setNavOpened, user }: any) {
     return (
-        <div className="sticky inset-y-0 left-0 z-30 w-full border-b border-b-[#E5E7EB] h-20  bg-[#FFFFFF] [transition:0.5s]">
+        <div className="sticky inset-y-0 left-0 z-10 w-full border-b border-b-[#E5E7EB] h-20  bg-[#FFFFFF] [transition:0.5s]">
             <header className="flex items-center justify-between px-4 py-[19px]">
                 {/* left side  */}
                 <div className="flex items-center justify-between w-full">
