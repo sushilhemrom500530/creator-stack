@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
     const [user, setUser] = useState({
         name: "Sushil Hemrom",
         email: "sushil@gmail.com",
-        role: "user",
+        role: "admin",
     });
 
     useEffect(() => {

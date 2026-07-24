@@ -10,16 +10,11 @@ import {
     RefreshCw,
     Settings,
     ShieldCheck,
-    Sliders,
     Search,
     Zap,
-    ExternalLink,
-    AlertTriangle,
-    TrendingUp,
     Users,
     Lock,
     Check,
-    Trash2
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaTiktok, FaPinterest } from "react-icons/fa6";
 
