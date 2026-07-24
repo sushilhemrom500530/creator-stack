@@ -1,17 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { 
-    Folder, 
-    UploadCloud, 
-    Image as ImageIcon, 
-    Video, 
-    FileText, 
-    MoreVertical, 
-    Trash2, 
-    Download, 
+import {
+    Folder,
+    FolderPlus,
+    UploadCloud,
+    Image as ImageIcon,
+    Video,
+    FileText,
+    MoreVertical,
+    Trash2,
+    Download,
     Search,
-    HardDrive
+    HardDrive,
+    Megaphone,
+    Sparkles
 } from "lucide-react";
 
 export default function MediaLibraryComponent() {
@@ -34,19 +37,91 @@ export default function MediaLibraryComponent() {
     });
 
     return (
-        <div className="p-6 max-w-6xl mx-auto space-y-6">
+        <div className="p-6 space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                 <div>
+                    <span className="text-[11px] font-bold text-primary tracking-widest uppercase mb-1 block">
+                        CENTRAL ASSETS
+                    </span>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                         <Folder className="w-7 h-7 text-primary" /> Media Assets Library
                     </h1>
                     <p className="text-slate-500 text-sm mt-1">Manage, organize, and store your media files for post publishing</p>
                 </div>
-                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition shadow-md self-start sm:self-auto">
+
+                {/* Actions: Upload Media */}
+                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition shadow-md cursor-pointer">
                     <UploadCloud className="w-4 h-4" />
                     Upload Media
                 </button>
+            </div>
+
+            {/* Resource Collections & Folder Cards Stats Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Brand Assets */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                    <div className="flex items-center justify-between">
+                        <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-105 transition">
+                            <Folder className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+                            124 items
+                        </span>
+                    </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-800">Brand Assets</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">124 items • 1.2 GB</p>
+                    </div>
+                </div>
+
+                {/* Q4 Campaigns */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                    <div className="flex items-center justify-between">
+                        <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl group-hover:scale-105 transition">
+                            <Megaphone className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
+                            42 items
+                        </span>
+                    </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-800">Q4 Campaigns</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">42 items • 850 MB</p>
+                    </div>
+                </div>
+
+                {/* Video Content */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                    <div className="flex items-center justify-between">
+                        <div className="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-105 transition">
+                            <Video className="w-5 h-5" />
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-100">
+                            18 items
+                        </span>
+                    </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-800">Video Content</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">18 items • 4.5 GB</p>
+                    </div>
+                </div>
+
+                {/* Smart Collections */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                    <div className="flex items-center justify-between">
+                        <div className="p-3 bg-amber-50 text-amber-600 rounded-xl group-hover:scale-105 transition">
+                            <Sparkles className="w-5 h-5" />
+                        </div>
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200 animate-pulse">
+                            AI ANALYZING
+                        </span>
+                    </div>
+                    <div>
+                        <h3 className="text-base font-bold text-slate-800">Smart Collections</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">Auto-tagged assets</p>
+                    </div>
+                </div>
             </div>
 
             {/* Controls Bar */}
@@ -62,18 +137,17 @@ export default function MediaLibraryComponent() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
-                                activeTab === tab.id
-                                    ? "bg-primary text-white shadow-xs"
-                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                            }`}
+                            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${activeTab === tab.id
+                                ? "bg-primary text-white shadow-xs"
+                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                }`}
                         >
                             {tab.label}
                         </button>
                     ))}
                 </div>
 
-                {/* Search & Storage Usage */}
+                {/* Search */}
                 <div className="flex items-center gap-3">
                     <div className="relative flex-1 md:w-64">
                         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -120,10 +194,10 @@ export default function MediaLibraryComponent() {
                                     {getIcon()}
                                 </div>
                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
-                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100">
+                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
                                         <Download className="w-4 h-4" />
                                     </button>
-                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50">
+                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>
