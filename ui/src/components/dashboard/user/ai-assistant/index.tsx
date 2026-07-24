@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
     Sparkles,
     Bot,
@@ -17,13 +17,15 @@ import {
     ArrowUp,
     Zap,
     Plus,
-    RotateCcw
+    X,
+    FileImage
 } from "lucide-react";
 
 interface ChatMessage {
     id: string;
     sender: "user" | "ai";
     text: string;
+    attachmentName?: string;
     categoryTitle?: string;
     cards?: Array<{ number: string; title: string; desc: string }>;
     actionPills?: string[];
@@ -35,8 +37,11 @@ export default function AiAssistantComponent() {
     const [loading, setLoading] = useState(false);
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const [selectedPreviewMessage, setSelectedPreviewMessage] = useState<ChatMessage | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    // Initial messages state (empty by default so header + templates show; when a message is sent, templates hide)
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Initial messages state
     const [messages, setMessages] = useState<ChatMessage[]>([]);
 
     const templates = [
@@ -46,26 +51,46 @@ export default function AiAssistantComponent() {
         { label: "Blog Outline", icon: FileText, query: "Create a structured blog post outline about digital creator monetization." },
     ];
 
+    const handleFileClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
+    const removeSelectedFile = () => {
+        setSelectedFile(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
     const handleSendMessage = (customText?: string) => {
         const query = customText || prompt;
-        if (!query.trim()) return;
+        if (!query.trim() && !selectedFile) return;
 
         const userMsg: ChatMessage = {
             id: `user-${Date.now()}`,
             sender: "user",
-            text: query,
+            text: query || `Uploaded file: ${selectedFile?.name}`,
+            attachmentName: selectedFile?.name,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
 
         setMessages(prev => [...prev, userMsg]);
         setPrompt("");
+        setSelectedFile(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
         setLoading(true);
 
         setTimeout(() => {
             const aiMsg: ChatMessage = {
                 id: `ai-${Date.now()}`,
                 sender: "ai",
-                text: `Here is a preliminary Content Strategy framework built for "${query}":`,
+                text: `Here is a preliminary Content Strategy framework built for "${query || userMsg.text}":`,
                 categoryTitle: "STRATEGY BRAINSTORMING",
                 cards: [
                     {
@@ -99,6 +124,7 @@ export default function AiAssistantComponent() {
         setMessages([]);
         setSelectedPreviewMessage(null);
         setPrompt("");
+        setSelectedFile(null);
     };
 
     const activePreview = selectedPreviewMessage || messages.filter(m => m.sender === "ai").slice(-1)[0];
@@ -106,7 +132,16 @@ export default function AiAssistantComponent() {
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-6">
 
-            {/* 1. TOP HEADER SECTION (Hidden when active chat session starts) */}
+            {/* Hidden File Input Element */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*,video/*,.pdf,.doc,.docx"
+            />
+
+            {/* 1. TOP HEADER SECTION (Shown initially, hides when chat starts) */}
             {messages.length === 0 && (
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
                     <div>
@@ -118,7 +153,7 @@ export default function AiAssistantComponent() {
                 </div>
             )}
 
-            {/* 2. QUICK TEMPLATE CARDS (Hidden when active chat session starts) */}
+            {/* 2. QUICK TEMPLATE CARDS (Shown initially, hides when chat starts) */}
             {messages.length === 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     {templates.map((tmpl, idx) => {
@@ -144,9 +179,9 @@ export default function AiAssistantComponent() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                 {/* Left Column: Light Theme Chat Stream (7 Cols) */}
-                <div className="lg:col-span-7 space-y-4 bg-white text-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 flex flex-col justify-between min-h-[580px]">
+                <div className="lg:col-span-7 space-y-4 bg-white text-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 flex flex-col justify-between min-h-[480px]">
 
-                    {/* Header bar when chat is active */}
+                    {/* Header bar */}
                     <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center">
@@ -170,100 +205,117 @@ export default function AiAssistantComponent() {
                         )}
                     </div>
 
-                    {/* Initial Welcome Banner inside Chat (Shows when empty) */}
-                    {messages.length === 0 && (
-                        <div className="text-center py-10 space-y-3 bg-purple-50/60 border border-purple-100 rounded-2xl p-6">
-                            <div className="w-12 h-12 rounded-2xl bg-white border border-purple-200 text-purple-600 flex items-center justify-center mx-auto shadow-xs">
+                    {/* Initial Welcome Banner (Nicely centered when no messages exist) */}
+                    {messages.length === 0 ? (
+                        <div className="flex-1 flex flex-col items-center justify-center text-center py-8 space-y-3 bg-purple-50/50 border border-purple-100 rounded-2xl p-6 my-2">
+                            <div className="w-12 h-12 rounded-2xl bg-white border border-purple-200 text-purple-600 flex items-center justify-center shadow-xs">
                                 <Sparkles className="w-6 h-6 animate-pulse text-purple-600" />
                             </div>
                             <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                                 How can I help your social flow today?
                             </h2>
-                            <p className="text-xs text-slate-500 max-w-md mx-auto">
+                            <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
                                 Ask me to generate copy, analyze trends, or create a full month of content strategy.
                             </p>
                         </div>
-                    )}
+                    ) : (
+                        /* Messages Stream */
+                        <div className="space-y-5 flex-1 overflow-y-auto max-h-[460px] pr-1 my-2">
+                            {messages.map((msg) => {
+                                const isUser = msg.sender === "user";
 
-                    {/* Messages Stream */}
-                    <div className="space-y-5 flex-1 overflow-y-auto max-h-[460px] pr-1">
-                        {messages.map((msg) => {
-                            const isUser = msg.sender === "user";
+                                if (isUser) {
+                                    return (
+                                        <div key={msg.id} className="flex flex-col items-end gap-1">
+                                            <div className="max-w-md bg-slate-900 text-white p-4 rounded-2xl rounded-tr-xs text-xs sm:text-sm leading-relaxed shadow-sm space-y-2">
+                                                {msg.attachmentName && (
+                                                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-cyan-300 font-mono">
+                                                        <FileImage className="w-3.5 h-3.5" />
+                                                        {msg.attachmentName}
+                                                    </div>
+                                                )}
+                                                <p>{msg.text}</p>
+                                            </div>
+                                        </div>
+                                    );
+                                }
 
-                            if (isUser) {
                                 return (
-                                    <div key={msg.id} className="flex justify-end">
-                                        <div className="max-w-md bg-slate-900 text-white p-4 rounded-2xl rounded-tr-xs text-xs sm:text-sm leading-relaxed shadow-sm">
-                                            {msg.text}
+                                    <div key={msg.id} className="space-y-3 cursor-pointer" onClick={() => setSelectedPreviewMessage(msg)}>
+                                        {/* AI Message Container Light Theme */}
+                                        <div className="bg-slate-50/90 border border-slate-200/90 p-5 rounded-2xl space-y-4 shadow-xs hover:border-purple-300 transition">
+                                            {/* Category Tag Header */}
+                                            {msg.categoryTitle && (
+                                                <div className="flex items-center gap-1.5 text-purple-700 font-mono text-[11px] font-bold tracking-widest uppercase">
+                                                    <Zap className="w-3.5 h-3.5 text-purple-600" />
+                                                    {msg.categoryTitle}
+                                                </div>
+                                            )}
+
+                                            <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+                                                {msg.text}
+                                            </p>
+
+                                            {/* Cards Grid */}
+                                            {msg.cards && (
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                                    {msg.cards.map((card, cIdx) => (
+                                                        <div key={cIdx} className="bg-white border border-slate-200/90 p-3.5 rounded-xl space-y-1 shadow-xs hover:border-slate-300 transition">
+                                                            <span className="text-[11px] font-bold text-purple-600 block font-mono">
+                                                                {card.number}. {card.title}
+                                                            </span>
+                                                            <p className="text-xs text-slate-600 leading-normal">
+                                                                {card.desc}
+                                                            </p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Action Pills */}
+                                            {msg.actionPills && (
+                                                <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-200/60">
+                                                    {msg.actionPills.map((pill, pIdx) => (
+                                                        <button
+                                                            key={pIdx}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleSendMessage(`Run: ${pill}`);
+                                                            }}
+                                                            className="px-3 py-1.5 rounded-full bg-white hover:bg-purple-50 text-slate-700 hover:text-purple-700 border border-slate-200 text-xs font-semibold transition cursor-pointer shadow-xs"
+                                                        >
+                                                            {pill}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
-                            }
+                            })}
 
-                            return (
-                                <div key={msg.id} className="space-y-3 cursor-pointer" onClick={() => setSelectedPreviewMessage(msg)}>
-                                    {/* AI Message Container Light Theme */}
-                                    <div className="bg-slate-50/90 border border-slate-200/90 p-5 rounded-2xl space-y-4 shadow-xs hover:border-purple-300 transition">
-                                        {/* Category Tag Header */}
-                                        {msg.categoryTitle && (
-                                            <div className="flex items-center gap-1.5 text-purple-700 font-mono text-[11px] font-bold tracking-widest uppercase">
-                                                <Zap className="w-3.5 h-3.5 text-purple-600" />
-                                                {msg.categoryTitle}
-                                            </div>
-                                        )}
-
-                                        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-                                            {msg.text}
-                                        </p>
-
-                                        {/* Cards Grid */}
-                                        {msg.cards && (
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                                                {msg.cards.map((card, cIdx) => (
-                                                    <div key={cIdx} className="bg-white border border-slate-200/90 p-3.5 rounded-xl space-y-1 shadow-xs hover:border-slate-300 transition">
-                                                        <span className="text-[11px] font-bold text-purple-600 block font-mono">
-                                                            {card.number}. {card.title}
-                                                        </span>
-                                                        <p className="text-xs text-slate-600 leading-normal">
-                                                            {card.desc}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        {/* Action Pills */}
-                                        {msg.actionPills && (
-                                            <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-200/60">
-                                                {msg.actionPills.map((pill, pIdx) => (
-                                                    <button
-                                                        key={pIdx}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleSendMessage(`Run: ${pill}`);
-                                                        }}
-                                                        className="px-3 py-1.5 rounded-full bg-white hover:bg-purple-50 text-slate-700 hover:text-purple-700 border border-slate-200 text-xs font-semibold transition cursor-pointer shadow-xs"
-                                                    >
-                                                        {pill}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+                            {loading && (
+                                <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 p-4 rounded-2xl w-fit border border-slate-200">
+                                    <RefreshCw className="w-4 h-4 animate-spin text-purple-600" />
+                                    SocialFlow AI is crafting your output...
                                 </div>
-                            );
-                        })}
-
-                        {loading && (
-                            <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 p-4 rounded-2xl w-fit border border-slate-200">
-                                <RefreshCw className="w-4 h-4 animate-spin text-purple-600" />
-                                SocialFlow AI is crafting your output...
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
 
                     {/* Bottom Floating Chat Input Bar */}
-                    <div className="relative pt-2">
+                    <div className="relative pt-2 space-y-2">
+                        {/* File Attachment Pill Preview if selected */}
+                        {selectedFile && (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 border border-purple-200 text-xs text-purple-700 font-medium w-fit">
+                                <FileImage className="w-3.5 h-3.5 text-purple-600" />
+                                <span className="truncate max-w-[200px]">{selectedFile.name}</span>
+                                <button onClick={removeSelectedFile} className="p-0.5 hover:bg-purple-200/60 rounded-full text-purple-700 cursor-pointer">
+                                    <X className="w-3 h-3" />
+                                </button>
+                            </div>
+                        )}
+
                         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 flex items-center justify-between gap-3 shadow-xs focus-within:border-primary transition">
                             <input
                                 type="text"
@@ -275,15 +327,25 @@ export default function AiAssistantComponent() {
                             />
 
                             <div className="flex items-center gap-1.5 shrink-0">
-                                <button className="p-2 text-slate-400 hover:text-slate-600 transition cursor-pointer rounded-lg hover:bg-slate-200/60">
+                                <button
+                                    type="button"
+                                    onClick={handleFileClick}
+                                    title="Attach File"
+                                    className="p-2 text-slate-400 hover:text-slate-600 transition cursor-pointer rounded-lg hover:bg-slate-200/60"
+                                >
                                     <Paperclip className="w-4 h-4" />
                                 </button>
-                                <button className="p-2 text-slate-400 hover:text-slate-600 transition cursor-pointer rounded-lg hover:bg-slate-200/60">
+                                <button
+                                    type="button"
+                                    title="Voice Input"
+                                    className="p-2 text-slate-400 hover:text-slate-600 transition cursor-pointer rounded-lg hover:bg-slate-200/60"
+                                >
                                     <Mic className="w-4 h-4" />
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() => handleSendMessage()}
-                                    disabled={!prompt.trim() || loading}
+                                    disabled={(!prompt.trim() && !selectedFile) || loading}
                                     className="p-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white transition shadow-sm disabled:opacity-50 cursor-pointer"
                                 >
                                     <ArrowUp className="w-4 h-4" />
