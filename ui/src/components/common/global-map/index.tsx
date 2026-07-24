@@ -141,6 +141,7 @@ export default function WorldMapDashboard() {
                         src={mapImg}
                         alt="Global Map Analytics"
                         fill
+                        sizes="100vw"
                         priority
                         className="object-cover object-center opacity-95"
                     />
