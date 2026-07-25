@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import {
+    App,
     Table,
     Tag,
     Dropdown,
@@ -14,7 +15,6 @@ import {
     Popconfirm,
     Tooltip,
     Badge,
-    message,
     ConfigProvider,
     Form,
     MenuProps,
@@ -195,7 +195,8 @@ const INITIAL_USERS: UserType[] = [
     },
 ];
 
-export default function Users() {
+function UsersContent() {
+    const { message } = App.useApp();
     // State management
     const [users, setUsers] = useState<UserType[]>(INITIAL_USERS);
     const [searchText, setSearchText] = useState("");
@@ -536,26 +537,7 @@ export default function Users() {
     ];
 
     return (
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorPrimary: "#7C3AED",
-                    borderRadius: 12,
-                    colorBgContainer: "#ffffff",
-                    fontFamily: "var(--font-geist-sans), 'DM Sans', sans-serif",
-                },
-                components: {
-                    Table: {
-                        headerBg: "#F8FAFC",
-                        headerColor: "#475569",
-                        headerSplitColor: "transparent",
-                        rowHoverBg: "#FAF5FF",
-                        borderColor: "#F1F5F9",
-                    },
-                },
-            }}
-        >
-            <div className="space-y-6 bg-slate-50/60 p-6 rounded-3xl min-h-screen">
+        <div className="space-y-6 bg-slate-50/60 p-6 rounded-3xl min-h-screen">
                 {/* 1. Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
                     <div>
@@ -1011,6 +993,33 @@ export default function Users() {
                     </Form>
                 </Modal>
             </div>
+    );
+}
+
+export default function Users() {
+    return (
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#7C3AED",
+                    borderRadius: 12,
+                    colorBgContainer: "#ffffff",
+                    fontFamily: "var(--font-geist-sans), 'DM Sans', sans-serif",
+                },
+                components: {
+                    Table: {
+                        headerBg: "#F8FAFC",
+                        headerColor: "#475569",
+                        headerSplitColor: "transparent",
+                        rowHoverBg: "#FAF5FF",
+                        borderColor: "#F1F5F9",
+                    },
+                },
+            }}
+        >
+            <App>
+                <UsersContent />
+            </App>
         </ConfigProvider>
     );
 }

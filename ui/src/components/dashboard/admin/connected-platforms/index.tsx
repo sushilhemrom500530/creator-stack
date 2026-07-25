@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import {
+    App,
     Modal,
     Drawer,
     Button,
@@ -10,7 +11,6 @@ import {
     Tag,
     Select,
     ConfigProvider,
-    message,
     Tooltip,
     Form,
     Badge,
@@ -270,7 +270,10 @@ function PlatformApexSparkline({
     );
 }
 
-export default function ConnectedPlatforms() {
+function ConnectedPlatformsContent() {
+    // Use context-bound message from Ant Design App hook
+    const { message } = App.useApp();
+
     const [platforms, setPlatforms] = useState<PlatformItem[]>(INITIAL_PLATFORMS);
     const [filterStatus, setFilterStatus] = useState<string>("ALL");
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -405,6 +408,373 @@ export default function ConnectedPlatforms() {
     }, [platforms, filterStatus]);
 
     return (
+        <div className="space-y-8 bg-slate-50/60 p-6 sm:p-8 rounded-3xl min-h-screen">
+            {/* 1. Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
+                <div>
+                    <div className="flex items-center gap-3 mb-2">
+                        <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
+                            GATEWAY CONTROL
+                        </span>
+
+                        {/* Dynamic System Status Indicator matching screenshot */}
+                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border ${systemStatus.color}`}>
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+                            </span>
+                            {systemStatus.text}
+                        </div>
+                    </div>
+
+                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+                        Platform Monitor
+                    </h1>
+                    <p className="text-sm text-slate-500 mt-1">
+                        Real-time status monitoring and API health telemetry for all connected social ecosystems.
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    {/* Status Filter buttons */}
+                    <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/60">
+                        {(["ALL", "HEALTHY", "WARNING", "CRITICAL"] as const).map((st) => (
+                            <button
+                                key={st}
+                                onClick={() => setFilterStatus(st)}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${
+                                    filterStatus === st
+                                        ? "bg-white text-purple-700 shadow-xs"
+                                        : "text-slate-600 hover:text-slate-900"
+                                }`}
+                            >
+                                {st}
+                            </button>
+                        ))}
+                    </div>
+
+                    <Button
+                        icon={<RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-purple-600" : ""}`} />}
+                        onClick={handleRefreshAll}
+                        className="h-11 px-4 rounded-2xl font-bold border-slate-200 hover:border-purple-300 cursor-pointer"
+                    >
+                        Refresh
+                    </Button>
+                </div>
+            </div>
+
+            {/* 2. Platform Monitor Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {filteredPlatforms.map((platform) => {
+                    const IconComponent = platform.icon;
+                    const isCritical = platform.status === "CRITICAL";
+                    const isWarning = platform.status === "WARNING";
+
+                    return (
+                        <div
+                            key={platform.id}
+                            className={`bg-white rounded-3xl p-6 border transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between space-y-5 relative overflow-hidden group ${
+                                isCritical
+                                    ? "border-rose-300 ring-1 ring-rose-200"
+                                    : isWarning
+                                    ? "border-amber-300 ring-1 ring-amber-200"
+                                    : "border-slate-200/80 hover:border-purple-200"
+                            }`}
+                        >
+                            {/* Card Header: Identical Icon Container (w-12 h-12) & Status Dot */}
+                            <div className="flex items-start justify-between">
+                                <div className={`w-12 h-12 rounded-2xl ${platform.iconBg} ${platform.iconColor} border border-slate-100 shadow-xs flex items-center justify-center shrink-0`}>
+                                    <IconComponent className="w-6 h-6" />
+                                </div>
+
+                                {/* Status Badge Top Right */}
+                                <div className="flex items-center gap-1.5">
+                                    <span className={`w-2 h-2 rounded-full ${
+                                        isCritical
+                                            ? "bg-rose-500 animate-ping"
+                                            : isWarning
+                                            ? "bg-amber-500"
+                                            : "bg-emerald-500"
+                                    }`} />
+                                    <span className={`text-[11px] font-extrabold tracking-wider ${
+                                        isCritical
+                                            ? "text-rose-600"
+                                            : isWarning
+                                            ? "text-amber-600"
+                                            : "text-emerald-600"
+                                    }`}>
+                                        {platform.status}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Platform Title & Endpoint Subtitle */}
+                            <div>
+                                <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-purple-700 transition">
+                                    {platform.name}
+                                </h3>
+                                <p className={`text-xs font-medium mt-0.5 truncate ${
+                                    isCritical ? "text-rose-600 font-semibold" : isWarning ? "text-amber-600 font-semibold" : "text-slate-400"
+                                }`}>
+                                    {platform.endpoint}
+                                </p>
+                            </div>
+
+                            {/* Interactive ApexChart Sparkline with hover tooltip label & value */}
+                            <div className="py-1">
+                                <PlatformApexSparkline
+                                    data={platform.chartSeries}
+                                    status={platform.status}
+                                    unit={platform.chartUnit}
+                                    metricType={platform.metricType}
+                                />
+                            </div>
+
+                            {/* Key Metrics Grid (2 rows) */}
+                            <div className="space-y-2 pt-1 border-t border-slate-100 text-xs">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-slate-400 font-medium">Active Users</span>
+                                    <span className="font-extrabold text-slate-900 font-mono">{platform.activeUsers}</span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-slate-400 font-medium">{platform.metricType}</span>
+                                    <span className={`font-extrabold font-mono ${
+                                        isCritical
+                                            ? "text-rose-600"
+                                            : isWarning
+                                            ? "text-amber-600"
+                                            : "text-slate-800"
+                                    }`}>
+                                        {platform.metricValue}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="pt-2">
+                                {isCritical ? (
+                                    <Button
+                                        type="primary"
+                                        block
+                                        size="large"
+                                        onClick={() => handleReconnect(platform.id, platform.name)}
+                                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
+                                    >
+                                        Reconnect
+                                    </Button>
+                                ) : isWarning ? (
+                                    <Button
+                                        type="primary"
+                                        block
+                                        size="large"
+                                        onClick={() => handleResolve(platform.id, platform.name)}
+                                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
+                                    >
+                                        Resolve
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        block
+                                        size="large"
+                                        onClick={() => handleOpenConfigure(platform)}
+                                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border-0 rounded-2xl h-11 cursor-pointer transition"
+                                    >
+                                        Configure
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
+
+                {/* 3. Add Platform Dashed Card */}
+                <div
+                    onClick={() => setIsAddPlatformOpen(true)}
+                    className="bg-white rounded-3xl p-6 border-2 border-dashed border-slate-300 hover:border-purple-500 hover:bg-purple-50/20 transition-all duration-300 flex flex-col items-center justify-center text-center cursor-pointer min-h-[340px] group shadow-2xs"
+                >
+                    <div className="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-purple-100 text-slate-500 group-hover:text-purple-600 flex items-center justify-center transition-all transform group-hover:scale-105 mb-4 border border-slate-200/60 shrink-0">
+                        <Plus className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-purple-700 transition">
+                        Add Platform
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-2 max-w-[200px] leading-relaxed">
+                        Integrate new social media APIs, custom webhooks, or OAuth apps
+                    </p>
+                </div>
+            </div>
+
+            {/* 4. Configure Platform Drawer */}
+            <Drawer
+                title={
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-purple-100 text-purple-700">
+                            <Sliders className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <h3 className="text-base font-bold text-slate-900">{selectedPlatform?.name} Settings</h3>
+                            <p className="text-xs text-slate-500 font-mono">{selectedPlatform?.endpoint}</p>
+                        </div>
+                    </div>
+                }
+                placement="right"
+                onClose={() => setIsConfigureOpen(false)}
+                open={isConfigureOpen}
+                size="large"
+            >
+                {selectedPlatform && (
+                    <div className="space-y-6 text-sm">
+                        {/* Health Banner */}
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <span className="text-xs font-bold text-slate-400 uppercase">Gateway Health</span>
+                                <div className="mt-1 flex items-center gap-2">
+                                    <Tag color="success" className="rounded-full font-bold px-3 py-0.5">
+                                        {selectedPlatform.status}
+                                    </Tag>
+                                    <span className="text-xs font-mono text-slate-600">
+                                        {selectedPlatform.metricType}: {selectedPlatform.metricValue}
+                                    </span>
+                                </div>
+                            </div>
+                            <Button
+                                size="small"
+                                onClick={() => message.success("Ping successful! Latency: 98ms")}
+                                className="font-bold text-xs rounded-xl"
+                            >
+                                Ping API
+                            </Button>
+                        </div>
+
+                        {/* API Credentials */}
+                        <div className="space-y-4 pt-2">
+                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
+                                API & Webhook Config
+                            </h4>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-slate-700">Client ID / App ID</label>
+                                <Input
+                                    value={`app_${selectedPlatform.id}_98410294`}
+                                    readOnly
+                                    suffix={<Key className="w-4 h-4 text-slate-400" />}
+                                    className="rounded-xl font-mono text-xs h-10"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-slate-700">Webhook Endpoint URL</label>
+                                <Input
+                                    value={`https://api.creatorstack.io/v1/webhooks/${selectedPlatform.id}`}
+                                    readOnly
+                                    suffix={<Globe className="w-4 h-4 text-slate-400" />}
+                                    className="rounded-xl font-mono text-xs h-10"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <div className="flex justify-between items-center text-xs">
+                                    <span className="font-bold text-slate-700">Rate Limit Quota</span>
+                                    <span className="font-mono text-purple-600 font-bold">{selectedPlatform.rateLimitUsage}% Used</span>
+                                </div>
+                                <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                                    <div
+                                        className="h-full bg-purple-600 rounded-full"
+                                        style={{ width: `${selectedPlatform.rateLimitUsage}%` }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="pt-6 space-y-3 border-t border-slate-100">
+                            <Button
+                                block
+                                icon={<RefreshCw className="w-4 h-4" />}
+                                onClick={() => message.success("Rotated Secret Key successfully!")}
+                                className="rounded-xl font-bold h-11"
+                            >
+                                Rotate OAuth Secret
+                            </Button>
+                            <Button
+                                block
+                                danger
+                                icon={<XCircle className="w-4 h-4" />}
+                                onClick={() => {
+                                    setPlatforms(platforms.filter((p) => p.id !== selectedPlatform.id));
+                                    setIsConfigureOpen(false);
+                                    message.success(`Disconnected ${selectedPlatform.name}`);
+                                }}
+                                className="rounded-xl font-bold h-11"
+                            >
+                                Disconnect Platform Gateway
+                            </Button>
+                        </div>
+                    </div>
+                )}
+            </Drawer>
+
+            {/* 5. Add Platform Modal */}
+            <Modal
+                title={<span className="text-lg font-bold text-slate-900">Integrate New Platform</span>}
+                open={isAddPlatformOpen}
+                onCancel={() => setIsAddPlatformOpen(false)}
+                footer={null}
+                destroyOnHidden
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleAddPlatformSubmit}
+                    initialValues={{ type: "Discord" }}
+                    className="mt-4 space-y-4"
+                >
+                    <Form.Item
+                        name="name"
+                        label={<span className="font-semibold text-xs text-slate-700">Platform Display Name</span>}
+                        rules={[{ required: true, message: "Please enter platform name" }]}
+                    >
+                        <Input placeholder="e.g. Discord Community Bot" className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="type"
+                        label={<span className="font-semibold text-xs text-slate-700">Integration Type</span>}
+                    >
+                        <Select
+                            options={[
+                                { label: "Discord Bot API", value: "Discord" },
+                                { label: "Twitch Broadcast Stream", value: "Twitch" },
+                                { label: "Meta Threads Graph", value: "Threads" },
+                                { label: "Custom Webhook Endpoint", value: "Webhook" },
+                            ]}
+                            className="h-10"
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="endpoint"
+                        label={<span className="font-semibold text-xs text-slate-700">Endpoint / Version Subtitle</span>}
+                    >
+                        <Input placeholder="e.g. OAuth 2.0 Bot Connector" className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
+                        <Button onClick={() => setIsAddPlatformOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                            Cancel
+                        </Button>
+                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                            Connect Platform
+                        </Button>
+                    </div>
+                </Form>
+            </Modal>
+        </div>
+    );
+}
+
+export default function ConnectedPlatforms() {
+    return (
         <ConfigProvider
             theme={{
                 token: {
@@ -415,368 +785,9 @@ export default function ConnectedPlatforms() {
                 },
             }}
         >
-            <div className="space-y-8 bg-slate-50/60 p-6 sm:p-8 rounded-3xl min-h-screen">
-                {/* 1. Header Section */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
-                    <div>
-                        <div className="flex items-center gap-3 mb-2">
-                            <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
-                                GATEWAY CONTROL
-                            </span>
-
-                            {/* Dynamic System Status Indicator matching screenshot */}
-                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border ${systemStatus.color}`}>
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
-                                </span>
-                                {systemStatus.text}
-                            </div>
-                        </div>
-
-                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                            Platform Monitor
-                        </h1>
-                        <p className="text-sm text-slate-500 mt-1">
-                            Real-time status monitoring and API health telemetry for all connected social ecosystems.
-                        </p>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        {/* Status Filter buttons */}
-                        <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200/60">
-                            {(["ALL", "HEALTHY", "WARNING", "CRITICAL"] as const).map((st) => (
-                                <button
-                                    key={st}
-                                    onClick={() => setFilterStatus(st)}
-                                    className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${
-                                        filterStatus === st
-                                            ? "bg-white text-purple-700 shadow-xs"
-                                            : "text-slate-600 hover:text-slate-900"
-                                    }`}
-                                >
-                                    {st}
-                                </button>
-                            ))}
-                        </div>
-
-                        <Button
-                            icon={<RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-purple-600" : ""}`} />}
-                            onClick={handleRefreshAll}
-                            className="h-11 px-4 rounded-2xl font-bold border-slate-200 hover:border-purple-300 cursor-pointer"
-                        >
-                            Refresh
-                        </Button>
-                    </div>
-                </div>
-
-                {/* 2. Platform Monitor Cards Grid (Matching reference screenshot with identical icon sizes & ApexCharts) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {filteredPlatforms.map((platform) => {
-                        const IconComponent = platform.icon;
-                        const isCritical = platform.status === "CRITICAL";
-                        const isWarning = platform.status === "WARNING";
-
-                        return (
-                            <div
-                                key={platform.id}
-                                className={`bg-white rounded-3xl p-6 border transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between space-y-5 relative overflow-hidden group ${
-                                    isCritical
-                                        ? "border-rose-300 ring-1 ring-rose-200"
-                                        : isWarning
-                                        ? "border-amber-300 ring-1 ring-amber-200"
-                                        : "border-slate-200/80 hover:border-purple-200"
-                                }`}
-                            >
-                                {/* Card Header: Identical Icon Container (w-12 h-12) & Status Dot */}
-                                <div className="flex items-start justify-between">
-                                    <div className={`w-12 h-12 rounded-2xl ${platform.iconBg} ${platform.iconColor} border border-slate-100 shadow-xs flex items-center justify-center shrink-0`}>
-                                        <IconComponent className="w-6 h-6" />
-                                    </div>
-
-                                    {/* Status Badge Top Right */}
-                                    <div className="flex items-center gap-1.5">
-                                        <span className={`w-2 h-2 rounded-full ${
-                                            isCritical
-                                                ? "bg-rose-500 animate-ping"
-                                                : isWarning
-                                                ? "bg-amber-500"
-                                                : "bg-emerald-500"
-                                        }`} />
-                                        <span className={`text-[11px] font-extrabold tracking-wider ${
-                                            isCritical
-                                                ? "text-rose-600"
-                                                : isWarning
-                                                ? "text-amber-600"
-                                                : "text-emerald-600"
-                                        }`}>
-                                            {platform.status}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Platform Title & Endpoint Subtitle */}
-                                <div>
-                                    <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-purple-700 transition">
-                                        {platform.name}
-                                    </h3>
-                                    <p className={`text-xs font-medium mt-0.5 truncate ${
-                                        isCritical ? "text-rose-600 font-semibold" : isWarning ? "text-amber-600 font-semibold" : "text-slate-400"
-                                    }`}>
-                                        {platform.endpoint}
-                                    </p>
-                                </div>
-
-                                {/* Interactive ApexChart Sparkline with hover tooltip label & value */}
-                                <div className="py-1">
-                                    <PlatformApexSparkline
-                                        data={platform.chartSeries}
-                                        status={platform.status}
-                                        unit={platform.chartUnit}
-                                        metricType={platform.metricType}
-                                    />
-                                </div>
-
-                                {/* Key Metrics Grid (2 rows) matching screenshot */}
-                                <div className="space-y-2 pt-1 border-t border-slate-100 text-xs">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-slate-400 font-medium">Active Users</span>
-                                        <span className="font-extrabold text-slate-900 font-mono">{platform.activeUsers}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-slate-400 font-medium">{platform.metricType}</span>
-                                        <span className={`font-extrabold font-mono ${
-                                            isCritical
-                                                ? "text-rose-600"
-                                                : isWarning
-                                                ? "text-amber-600"
-                                                : "text-slate-800"
-                                        }`}>
-                                            {platform.metricValue}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="pt-2">
-                                    {isCritical ? (
-                                        <Button
-                                            type="primary"
-                                            block
-                                            size="large"
-                                            onClick={() => handleReconnect(platform.id, platform.name)}
-                                            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
-                                        >
-                                            Reconnect
-                                        </Button>
-                                    ) : isWarning ? (
-                                        <Button
-                                            type="primary"
-                                            block
-                                            size="large"
-                                            onClick={() => handleResolve(platform.id, platform.name)}
-                                            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
-                                        >
-                                            Resolve
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            block
-                                            size="large"
-                                            onClick={() => handleOpenConfigure(platform)}
-                                            className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border-0 rounded-2xl h-11 cursor-pointer transition"
-                                        >
-                                            Configure
-                                        </Button>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
-
-                    {/* 3. Add Platform Dashed Card (Matching rightmost card with identical w-12 h-12 icon size) */}
-                    <div
-                        onClick={() => setIsAddPlatformOpen(true)}
-                        className="bg-white rounded-3xl p-6 border-2 border-dashed border-slate-300 hover:border-purple-500 hover:bg-purple-50/20 transition-all duration-300 flex flex-col items-center justify-center text-center cursor-pointer min-h-[340px] group shadow-2xs"
-                    >
-                        <div className="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-purple-100 text-slate-500 group-hover:text-purple-600 flex items-center justify-center transition-all transform group-hover:scale-105 mb-4 border border-slate-200/60 shrink-0">
-                            <Plus className="w-6 h-6" />
-                        </div>
-                        <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-purple-700 transition">
-                            Add Platform
-                        </h3>
-                        <p className="text-xs text-slate-500 mt-2 max-w-[200px] leading-relaxed">
-                            Integrate new social media APIs, custom webhooks, or OAuth apps
-                        </p>
-                    </div>
-                </div>
-
-                {/* 4. Configure Platform Modal */}
-                <Drawer
-                    title={
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-xl bg-purple-100 text-purple-700">
-                                <Sliders className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h3 className="text-base font-bold text-slate-900">{selectedPlatform?.name} Settings</h3>
-                                <p className="text-xs text-slate-500 font-mono">{selectedPlatform?.endpoint}</p>
-                            </div>
-                        </div>
-                    }
-                    placement="right"
-                    onClose={() => setIsConfigureOpen(false)}
-                    open={isConfigureOpen}
-                    size="large"
-                >
-                    {selectedPlatform && (
-                        <div className="space-y-6 text-sm">
-                            {/* Health Banner */}
-                            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                                <div>
-                                    <span className="text-xs font-bold text-slate-400 uppercase">Gateway Health</span>
-                                    <div className="mt-1 flex items-center gap-2">
-                                        <Tag color="success" className="rounded-full font-bold px-3 py-0.5">
-                                            {selectedPlatform.status}
-                                        </Tag>
-                                        <span className="text-xs font-mono text-slate-600">
-                                            {selectedPlatform.metricType}: {selectedPlatform.metricValue}
-                                        </span>
-                                    </div>
-                                </div>
-                                <Button
-                                    size="small"
-                                    onClick={() => message.success("Ping successful! Latency: 98ms")}
-                                    className="font-bold text-xs rounded-xl"
-                                >
-                                    Ping API
-                                </Button>
-                            </div>
-
-                            {/* API Credentials */}
-                            <div className="space-y-4 pt-2">
-                                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
-                                    API & Webhook Config
-                                </h4>
-
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-slate-700">Client ID / App ID</label>
-                                    <Input
-                                        value={`app_${selectedPlatform.id}_98410294`}
-                                        readOnly
-                                        suffix={<Key className="w-4 h-4 text-slate-400" />}
-                                        className="rounded-xl font-mono text-xs h-10"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-slate-700">Webhook Endpoint URL</label>
-                                    <Input
-                                        value={`https://api.creatorstack.io/v1/webhooks/${selectedPlatform.id}`}
-                                        readOnly
-                                        suffix={<Globe className="w-4 h-4 text-slate-400" />}
-                                        className="rounded-xl font-mono text-xs h-10"
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-center text-xs">
-                                        <span className="font-bold text-slate-700">Rate Limit Quota</span>
-                                        <span className="font-mono text-purple-600 font-bold">{selectedPlatform.rateLimitUsage}% Used</span>
-                                    </div>
-                                    <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
-                                        <div
-                                            className="h-full bg-purple-600 rounded-full"
-                                            style={{ width: `${selectedPlatform.rateLimitUsage}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Actions */}
-                            <div className="pt-6 space-y-3 border-t border-slate-100">
-                                <Button
-                                    block
-                                    icon={<RefreshCw className="w-4 h-4" />}
-                                    onClick={() => message.success("Rotated Secret Key successfully!")}
-                                    className="rounded-xl font-bold h-11"
-                                >
-                                    Rotate OAuth Secret
-                                </Button>
-                                <Button
-                                    block
-                                    danger
-                                    icon={<XCircle className="w-4 h-4" />}
-                                    onClick={() => {
-                                        setPlatforms(platforms.filter((p) => p.id !== selectedPlatform.id));
-                                        setIsConfigureOpen(false);
-                                        message.success(`Disconnected ${selectedPlatform.name}`);
-                                    }}
-                                    className="rounded-xl font-bold h-11"
-                                >
-                                    Disconnect Platform Gateway
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </Drawer>
-
-                {/* 5. Add Platform Modal */}
-                <Modal
-                    title={<span className="text-lg font-bold text-slate-900">Integrate New Platform</span>}
-                    open={isAddPlatformOpen}
-                    onCancel={() => setIsAddPlatformOpen(false)}
-                    footer={null}
-                    destroyOnHidden
-                >
-                    <Form
-                        form={form}
-                        layout="vertical"
-                        onFinish={handleAddPlatformSubmit}
-                        initialValues={{ type: "Discord" }}
-                        className="mt-4 space-y-4"
-                    >
-                        <Form.Item
-                            name="name"
-                            label={<span className="font-semibold text-xs text-slate-700">Platform Display Name</span>}
-                            rules={[{ required: true, message: "Please enter platform name" }]}
-                        >
-                            <Input placeholder="e.g. Discord Community Bot" className="rounded-xl h-10" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="type"
-                            label={<span className="font-semibold text-xs text-slate-700">Integration Type</span>}
-                        >
-                            <Select
-                                options={[
-                                    { label: "Discord Bot API", value: "Discord" },
-                                    { label: "Twitch Broadcast Stream", value: "Twitch" },
-                                    { label: "Meta Threads Graph", value: "Threads" },
-                                    { label: "Custom Webhook Endpoint", value: "Webhook" },
-                                ]}
-                                className="h-10"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="endpoint"
-                            label={<span className="font-semibold text-xs text-slate-700">Endpoint / Version Subtitle</span>}
-                        >
-                            <Input placeholder="e.g. OAuth 2.0 Bot Connector" className="rounded-xl h-10" />
-                        </Form.Item>
-
-                        <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                            <Button onClick={() => setIsAddPlatformOpen(false)} className="rounded-xl font-semibold cursor-pointer">
-                                Cancel
-                            </Button>
-                            <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
-                                Connect Platform
-                            </Button>
-                        </div>
-                    </Form>
-                </Modal>
-            </div>
+            <App>
+                <ConnectedPlatformsContent />
+            </App>
         </ConfigProvider>
     );
 }
