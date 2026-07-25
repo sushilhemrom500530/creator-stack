@@ -166,19 +166,9 @@ export const adminMenuData: MenuData = {
                     icon: Bell,
                 },
                 {
-                    label: "System Health",
-                    href: "/admin/system-health",
-                    icon: Activity,
-                },
-                {
                     label: "Audit Logs",
                     href: "/admin/audit-logs",
                     icon: Database,
-                },
-                {
-                    label: "Roles & Permissions",
-                    href: "/admin/roles-permissions",
-                    icon: ShieldCheck,
                 },
                 {
                     label: "Support",
