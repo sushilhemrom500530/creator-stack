@@ -1,4 +1,5 @@
-import NotificationsComponent from "@/components/dashboard/user/notifications";
+import NotificationsComponent from "@/components/common/notifications";
+
 
 export default function UserNotificationsPage() {
     return (

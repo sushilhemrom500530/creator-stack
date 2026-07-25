@@ -1,9 +1,9 @@
-import Notifications from "@/components/dashboard/admin/notifications";
+import NotificationsComponent from "@/components/common/notifications";
 
 export default function NotificationsPage() {
     return (
         <div>
-            <Notifications />
+            <NotificationsComponent />
         </div>
     );
 }
