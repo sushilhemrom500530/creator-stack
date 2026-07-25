@@ -555,7 +555,7 @@ export default function Users() {
                 },
             }}
         >
-            <div className="space-y-6 bg-slate-50/60 p-4 sm:p-6 md:p-8 rounded-3xl min-h-screen">
+            <div className="space-y-6 bg-slate-50/60 p-6 rounded-3xl min-h-screen">
                 {/* 1. Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
                     <div>
@@ -568,18 +568,6 @@ export default function Users() {
                         <p className="text-xs sm:text-sm text-slate-500 mt-1">
                             Manage team members, assign creator permissions, and oversee enterprise tier subscriptions.
                         </p>
-                    </div>
-
-                    <div className="flex items-center gap-3 shrink-0">
-                        <Button
-                            type="primary"
-                            size="large"
-                            icon={<Plus className="w-4 h-4" />}
-                            onClick={() => setIsCreateModalOpen(true)}
-                            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 shadow-md hover:shadow-purple-200 font-bold px-5 rounded-xl text-sm h-11 flex items-center gap-2 cursor-pointer transition-all"
-                        >
-                            Create User
-                        </Button>
                     </div>
                 </div>
 
