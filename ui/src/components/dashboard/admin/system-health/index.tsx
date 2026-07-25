@@ -1,0 +1,7 @@
+export default function SystemHealth() {
+    return (
+        <div>
+            <h1>System Health</h1>
+        </div>
+    );
+}
