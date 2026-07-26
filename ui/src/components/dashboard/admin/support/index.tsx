@@ -258,9 +258,9 @@ export default function Support() {
     };
 
     return (
-        <div className="h-[calc(100vh-80px)] font-sans p-6 flex flex-col overflow-hidden">
+        <div className="font-sans p-6 flex flex-col">
             {/* Header Title */}
-            <div className="flex justify-between items-center mb-4 pb-3 border-b border-slate-200/60 shrink-0">
+            <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-200/60 shrink-0">
                 <div>
                     <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Customer Support Console</h1>
                     <p className="text-slate-500 mt-0.5 text-xs font-medium">
@@ -276,10 +276,10 @@ export default function Support() {
             </div>
 
             {/* Main Split Grid (Sidebar + Console) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0 overflow-hidden items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
                 {/* --- LEFT SIDEBAR (Ticket List) - 5 Spans --- */}
-                <div className="lg:col-span-5 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs flex flex-col h-full overflow-hidden">
+                <div className="lg:col-span-5 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs flex flex-col h-[80vh] overflow-hidden">
                     {/* Tabs Bar matching image */}
                     <div className="bg-slate-100 p-1.5 rounded-2xl flex items-center justify-between mb-4 shrink-0">
                         <button
@@ -381,7 +381,7 @@ export default function Support() {
                 </div>
 
                 {/* --- RIGHT CONSOLE (Active Ticket Chat & Reply) - 7 Spans --- */}
-                <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-full overflow-hidden justify-between">
+                <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-[80vh] overflow-hidden justify-between">
                     
                     {/* 1. Header Bar of Active Ticket */}
                     <div className="shrink-0">

@@ -215,16 +215,16 @@ function UsersContent() {
 
     // Toggle Suspend / Activate user status
     const handleToggleUserStatus = (userId: string) => {
-        setUsers((prevUsers) =>
-            prevUsers.map((user) => {
-                if (user.id === userId) {
-                    const newStatus = user.status === "Suspended" ? "Active" : "Suspended";
-                    message.success(`User ${user.name} account is now ${newStatus}`);
-                    return { ...user, status: newStatus };
-                }
-                return user;
-            })
-        );
+        const targetUser = users.find((user) => user.id === userId);
+        if (targetUser) {
+            const newStatus = targetUser.status === "Suspended" ? "Active" : "Suspended";
+            setUsers((prevUsers) =>
+                prevUsers.map((user) =>
+                    user.id === userId ? { ...user, status: newStatus } : user
+                )
+            );
+            message.success(`User ${targetUser.name} account is now ${newStatus}`);
+        }
     };
 
     // Delete User
