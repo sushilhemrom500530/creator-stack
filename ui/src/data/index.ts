@@ -149,6 +149,18 @@ export const adminMenuData: MenuData = {
                     label: "Subscriptions",
                     href: "/admin/subscriptions",
                     icon: CreditCard,
+                    submenu: [
+                        {
+                            label: "Subscription Plans",
+                            href: "/admin/subscription-plans",
+                            icon: CreditCard,
+                        },
+                        {
+                            label: "Subscribers",
+                            href: "/admin/subscribers",
+                            icon: BadgeDollarSign,
+                        },
+                    ],
                 },
                 {
                     label: "Transactions",

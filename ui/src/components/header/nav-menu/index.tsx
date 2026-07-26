@@ -51,16 +51,16 @@ export default function NavItem({
                 {!submenu ? (
                     <Link
                         href={href || "#"}
-                        className="flex items-center gap-3 w-full text-base font-medium px-5 py-2"
+                        className="flex items-center gap-3 w-full text-sm font-medium px-5 py-2"
                         onClick={() => setNavOpened(false)}
                     >
-                        {Icon && <Icon />}
+                        {Icon && <Icon size={16} />}
                         <span>{label}</span>
                     </Link>
                 ) : (
-                    <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-3 text-base font-medium">
-                            {Icon && <Icon />}
+                    <div className="flex items-center justify-between w-full px-5 py-2 cursor-pointer">
+                        <div className="flex items-center gap-3 text-sm font-medium">
+                            {Icon && <Icon size={16} />}
                             <span>{label}</span>
                         </div>
                         <ChevronDown
@@ -89,12 +89,11 @@ export default function NavItem({
                                     key={index}
                                     href={item.href || "#"}
                                     onClick={() => setNavOpened(false)}
-                                    className={`flex items-center gap-3 px-5 py-2 rounded-s text-base font-medium transition-colors ${isActive
-                                        ? "bg-white text-black"
-                                        : "text-white/80 hover:bg-white/10 hover:text-white"
+                                    className={`flex items-center gap-3 px-5 py-2 rounded-s text-sm font-medium transition-colors ${isActive
+                                        ? activeClass : inactiveClass
                                         }`}
                                 >
-                                    {SubIcon && <SubIcon />}
+                                    {SubIcon && <SubIcon size={16} />}
                                     <span>{item.label}</span>
                                 </Link>
                             );
