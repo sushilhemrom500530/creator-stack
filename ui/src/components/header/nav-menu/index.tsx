@@ -20,8 +20,8 @@ export default function NavItem({
 }: INavItemProps) {
     const pathname = usePathname();
 
-    const activeClass = "border-e-[3px] border-e-primary bg-primary/10 text-primary";
-    const inactiveClass = "text-[#43464A] hover:text-primary hover:bg-primary/10";
+    const activeClass = "border-e-[1.5px] border-e-primary !bg-primary/10 !text-primary";
+    const inactiveClass = "!text-[#43464A] hover:!text-primary hover:!bg-primary/10";
 
     const isSubmenuOpen = openSubmenu === label;
 
@@ -45,21 +45,21 @@ export default function NavItem({
         <div className="relative w-full">
             <div
                 onClick={submenu ? () => handleSubmenuToggle(label) : handleClick}
-                className={`w-full flex items-centercursor-pointer transition-all ${isParentActive ? activeClass : inactiveClass
+                className={`w-full flex items-center cursor-pointer transition-all ${isParentActive ? activeClass : inactiveClass
                     }`}
             >
                 {!submenu ? (
                     <Link
                         href={href || "#"}
-                        className="flex items-center gap-3 w-full text-sm font-medium px-5 py-2"
+                        className={`flex items-center gap-3 w-full text-sm font-medium px-5 py-2 ${isParentActive ? activeClass : inactiveClass}`}
                         onClick={() => setNavOpened(false)}
                     >
                         {Icon && <Icon size={16} />}
                         <span>{label}</span>
                     </Link>
                 ) : (
-                    <div className="flex items-center justify-between w-full px-5 py-2 cursor-pointer">
-                        <div className="flex items-center gap-3 text-sm font-medium">
+                    <div className={`flex items-center justify-between w-full px-5 py-2 cursor-pointer font-medium ${isParentActive ? activeClass : inactiveClass}`}>
+                        <div className="flex items-center gap-3 text-sm">
                             {Icon && <Icon size={16} />}
                             <span>{label}</span>
                         </div>

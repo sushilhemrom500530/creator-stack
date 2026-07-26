@@ -1,9 +1,12 @@
 import DashboardLayout from "@/layout/dashboard";
+import AntdThemeProvider from "@/providers/antd-theme";
 
 export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <DashboardLayout>
-            {children}
-        </DashboardLayout>
+        <AntdThemeProvider>
+            <DashboardLayout>
+                {children}
+            </DashboardLayout>
+        </AntdThemeProvider>
     );
 }
