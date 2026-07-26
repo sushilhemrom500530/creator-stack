@@ -1000,7 +1000,7 @@ function WorkspacesContent() {
                         </div>
                     )
                 }
-                width={500}
+                size="large"
                 open={isDetailDrawerOpen}
                 onClose={() => setIsDetailDrawerOpen(false)}
                 className=""
