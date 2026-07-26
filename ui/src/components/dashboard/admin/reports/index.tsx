@@ -196,11 +196,11 @@ export default function Reports() {
     const aiCount = reports.filter((r) => r.aiFlagged).length;
 
     return (
-        <div className="min-h-screen font-sans p-6">
+        <div className="min-h-screen p-6">
             {/* --- Header Section --- */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4 border-b border-slate-200/60">
                 <div>
-                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Reports Management</h1>
+                    <h1 className="text-3xl font-bold text-slate-900">Reports Management</h1>
                     <p className="text-slate-500 mt-1 text-sm font-medium">
                         Oversee system-wide user safety, content moderation, and abuse prevention.
                     </p>
@@ -209,7 +209,7 @@ export default function Reports() {
                 <div className="flex items-center gap-3">
                     <Button
                         icon={<Filter className="w-4 h-4 text-slate-600" />}
-                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 shadow-2xs flex items-center gap-2"
+                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 shadow-2xs flex items-center gap-2 cursor-pointer"
                         onClick={() => message.info("Filter parameters applied")}
                     >
                         Filters
@@ -218,7 +218,7 @@ export default function Reports() {
                         type="primary"
                         icon={<Download className="w-4 h-4" />}
                         onClick={handleExportCSV}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-sm border-none"
+                        className="bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-10 px-5 flex items-center gap-2 shadow-sm border-none cursor-pointer"
                     >
                         Export CSV
                     </Button>
@@ -230,13 +230,13 @@ export default function Reports() {
                 {/* Pending Reviews */}
                 <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
                     <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Pending Reviews</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">Pending Reviews</span>
                         <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600">
                             <Clock className="w-4 h-4" />
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-extrabold text-slate-900">124</span>
+                        <span className="text-3xl font-bold text-slate-900">124</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-xs font-bold text-rose-600">
                         <Activity className="w-3.5 h-3.5" />
@@ -247,31 +247,31 @@ export default function Reports() {
                 {/* Resolved Today */}
                 <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
                     <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Resolved Today</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">Resolved Today</span>
                         <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600">
                             <CheckCircle2 className="w-4 h-4" />
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-extrabold text-emerald-600">842</span>
+                        <span className="text-3xl font-bold text-emerald-600">842</span>
                     </div>
                     <div className="text-xs font-bold text-slate-500">
-                        Efficiency: <span className="text-emerald-700 font-extrabold">94.2%</span>
+                        Efficiency: <span className="text-emerald-700 font-bold">94.2%</span>
                     </div>
                 </div>
 
                 {/* Spam Detected (AI) */}
                 <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition relative overflow-hidden">
                     <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Spam Detected (AI)</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">Spam Detected (AI)</span>
                         <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600">
                             <Bot className="w-4 h-4" />
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-extrabold text-slate-900">5.2k</span>
+                        <span className="text-3xl font-bold text-slate-900">5.2k</span>
                     </div>
-                    <div className="inline-flex items-center gap-1 text-[10px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full uppercase">
                         <Sparkles className="w-3 h-3 text-indigo-500" /> AI Protected
                     </div>
                 </div>
@@ -279,15 +279,15 @@ export default function Reports() {
                 {/* Avg Response Time */}
                 <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
                     <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Avg. Response Time</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">Avg. Response Time</span>
                         <div className="p-2 rounded-xl bg-amber-50 border border-amber-100 text-amber-600">
                             <Zap className="w-4 h-4" />
                         </div>
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-extrabold text-slate-900">1.4h</span>
+                        <span className="text-3xl font-bold text-slate-900">1.4h</span>
                     </div>
-                    <div className="inline-flex items-center gap-1 text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full uppercase">
                         <Check className="w-3 h-3 text-emerald-600" /> Within SLA
                     </div>
                 </div>
@@ -295,7 +295,7 @@ export default function Reports() {
 
             {/* --- Main 2-Column Section --- */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* --- LEFT COLUMN: Reports Table Card (2 Spans) --- */}
                 <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
                     <div>
@@ -304,31 +304,28 @@ export default function Reports() {
                             <div className="flex items-center gap-6">
                                 <button
                                     onClick={() => setActiveTab("all")}
-                                    className={`pb-2 text-sm font-extrabold transition-all border-b-2 ${
-                                        activeTab === "all"
-                                            ? "border-indigo-600 text-indigo-600"
-                                            : "border-transparent text-slate-400 hover:text-slate-600"
-                                    }`}
+                                    className={`pb-2 text-sm font-bold transition-all border-b-2 cursor-pointer ${activeTab === "all"
+                                        ? "border-indigo-600 text-indigo-600"
+                                        : "border-transparent text-slate-400 hover:text-slate-600"
+                                        }`}
                                 >
                                     All Reports ({reports.length})
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("pending")}
-                                    className={`pb-2 text-sm font-extrabold transition-all border-b-2 flex items-center gap-1.5 ${
-                                        activeTab === "pending"
-                                            ? "border-indigo-600 text-indigo-600"
-                                            : "border-transparent text-slate-400 hover:text-slate-600"
-                                    }`}
+                                    className={`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "pending"
+                                        ? "border-indigo-600 text-indigo-600"
+                                        : "border-transparent text-slate-400 hover:text-slate-600"
+                                        }`}
                                 >
                                     Pending ({pendingCount})
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("ai")}
-                                    className={`pb-2 text-sm font-extrabold transition-all border-b-2 flex items-center gap-1.5 ${
-                                        activeTab === "ai"
-                                            ? "border-indigo-600 text-indigo-600"
-                                            : "border-transparent text-slate-400 hover:text-slate-600"
-                                    }`}
+                                    className={`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "ai"
+                                        ? "border-indigo-600 text-indigo-600"
+                                        : "border-transparent text-slate-400 hover:text-slate-600"
+                                        }`}
                                 >
                                     Flagged by AI ({aiCount})
                                 </button>
@@ -340,7 +337,7 @@ export default function Reports() {
                                 prefix={<Search className="w-3.5 h-3.5 text-slate-400 mr-1" />}
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
-                                className="w-full sm:w-56 rounded-xl border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white text-xs"
+                                className="w-full sm:!w-56 rounded-xl border-slate-200 bg-slate-50 hover:border-slate-300 focus:bg-white text-xs"
                             />
                         </div>
 
@@ -348,7 +345,7 @@ export default function Reports() {
                         <div className="overflow-x-auto">
                             <table className="w-full text-left border-collapse">
                                 <thead>
-                                    <tr className="border-b border-slate-100 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
+                                    <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase">
                                         <th className="py-3 px-4">Report Type</th>
                                         <th className="py-3 px-4">Source / User</th>
                                         <th className="py-3 px-4">Timestamp</th>
@@ -366,7 +363,7 @@ export default function Reports() {
                                                         {row.icon}
                                                     </div>
                                                     <div>
-                                                        <h4 className="text-sm font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
                                                             {row.type}
                                                         </h4>
                                                         <span className="text-[10px] font-bold text-slate-400">
@@ -381,8 +378,8 @@ export default function Reports() {
                                                 <div className="flex items-center gap-2.5">
                                                     <Avatar src={row.userAvatar} size={32} className="bg-slate-200 shrink-0 border border-slate-200" />
                                                     <div>
-                                                        <h5 className="text-xs font-extrabold text-slate-900">{row.username}</h5>
-                                                        <span className="text-[10px] font-mono text-slate-400">{row.userId}</span>
+                                                        <h5 className="text-xs font-bold text-slate-900">{row.username}</h5>
+                                                        <span className="text-[10px] text-slate-400">{row.userId}</span>
                                                     </div>
                                                 </div>
                                             </td>
@@ -395,17 +392,17 @@ export default function Reports() {
                                             {/* Status */}
                                             <td className="py-4 px-4 text-center">
                                                 {row.status === "PENDING" && (
-                                                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-rose-700 bg-rose-100 border border-rose-200 rounded-full">
+                                                    <span className="inline-block px-3 py-1 text-[10px] font-bold text-rose-700 bg-rose-100 border border-rose-200 rounded-full">
                                                         PENDING
                                                     </span>
                                                 )}
                                                 {row.status === "RESOLVED" && (
-                                                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full">
+                                                    <span className="inline-block px-3 py-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full">
                                                         RESOLVED
                                                     </span>
                                                 )}
                                                 {row.status === "ESCALATED" && (
-                                                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-purple-700 bg-purple-100 border border-purple-200 rounded-full">
+                                                    <span className="inline-block px-3 py-1 text-[10px] font-bold text-purple-700 bg-purple-100 border border-purple-200 rounded-full">
                                                         ESCALATED
                                                     </span>
                                                 )}
@@ -423,7 +420,7 @@ export default function Reports() {
                                                                 setSelectedReport(row);
                                                                 setIsDetailModalOpen(true);
                                                             }}
-                                                            className="hover:bg-slate-100 rounded-lg"
+                                                            className="hover:bg-slate-100 rounded-lg cursor-pointer"
                                                         />
                                                     </Tooltip>
                                                     {row.status === "PENDING" && (
@@ -433,7 +430,7 @@ export default function Reports() {
                                                                 size="small"
                                                                 icon={<Check className="w-4 h-4 text-emerald-600" />}
                                                                 onClick={() => handleResolve(row.id)}
-                                                                className="hover:bg-emerald-50 rounded-lg"
+                                                                className="hover:bg-emerald-50 rounded-lg cursor-pointer"
                                                             />
                                                         </Tooltip>
                                                     )}
@@ -450,26 +447,26 @@ export default function Reports() {
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-100 mt-6 text-xs text-slate-500 font-medium">
                         <span>Showing {filteredReports.length} of 124 reports</span>
                         <div className="flex items-center gap-1.5">
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">&lt;</Button>
-                            <Button size="small" type="primary" className="rounded-lg text-xs font-bold bg-indigo-600">1</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">2</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">3</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">&gt;</Button>
+                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&lt;</Button>
+                            <Button size="small" type="primary" className="rounded-lg text-xs font-bold bg-indigo-600 cursor-pointer">1</Button>
+                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">2</Button>
+                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">3</Button>
+                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&gt;</Button>
                         </div>
                     </div>
                 </div>
 
                 {/* --- RIGHT COLUMN (1 Span) --- */}
                 <div className="flex flex-col gap-6">
-                    
+
                     {/* 1. System Resolution Health */}
                     <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs">
-                        <h2 className="text-lg font-extrabold text-slate-900 mb-5">System Resolution Health</h2>
-                        
+                        <h2 className="text-lg font-bold text-slate-900 mb-5">System Resolution Health</h2>
+
                         <div className="space-y-4">
                             {/* Resolved */}
                             <div>
-                                <div className="flex justify-between items-center text-xs font-extrabold mb-1">
+                                <div className="flex justify-between items-center text-xs font-bold mb-1">
                                     <span className="text-slate-700">Resolved</span>
                                     <span className="text-emerald-600">86%</span>
                                 </div>
@@ -478,7 +475,7 @@ export default function Reports() {
 
                             {/* Pending */}
                             <div>
-                                <div className="flex justify-between items-center text-xs font-extrabold mb-1">
+                                <div className="flex justify-between items-center text-xs font-bold mb-1">
                                     <span className="text-slate-700">Pending</span>
                                     <span className="text-indigo-600">12%</span>
                                 </div>
@@ -487,7 +484,7 @@ export default function Reports() {
 
                             {/* Escalated */}
                             <div>
-                                <div className="flex justify-between items-center text-xs font-extrabold mb-1">
+                                <div className="flex justify-between items-center text-xs font-bold mb-1">
                                     <span className="text-slate-700">Escalated</span>
                                     <span className="text-rose-500">2%</span>
                                 </div>
@@ -500,11 +497,11 @@ export default function Reports() {
                     <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs">
                         <div className="flex items-center gap-2 text-indigo-600 mb-3">
                             <Sparkles className="w-5 h-5 text-indigo-500" />
-                            <h2 className="text-lg font-extrabold text-slate-900">AI Insights</h2>
+                            <h2 className="text-lg font-bold text-slate-900">AI Insights</h2>
                         </div>
 
                         {/* Quote Box */}
-                        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 mb-5 text-xs text-slate-600 font-medium italic leading-relaxed">
+                        <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 mb-5 text-xs text-slate-600 font-medium">
                             "System detected a 40% surge in bot-like behavior from IP range 192.x.x.x. Automatic rate-limiting has been applied to 42 accounts."
                         </div>
 
@@ -513,13 +510,13 @@ export default function Reports() {
                                 <span className="font-bold text-slate-500 flex items-center gap-1.5">
                                     <Shield className="w-4 h-4 text-emerald-500" /> Accuracy Rate
                                 </span>
-                                <span className="font-extrabold text-slate-900">99.2%</span>
+                                <span className="font-bold text-slate-900">99.2%</span>
                             </div>
                             <div className="flex justify-between items-center text-xs">
                                 <span className="font-bold text-slate-500 flex items-center gap-1.5">
                                     <Zap className="w-4 h-4 text-amber-500" /> AI Mitigation Time
                                 </span>
-                                <span className="font-extrabold text-emerald-600">&lt; 1s</span>
+                                <span className="font-bold text-emerald-600">&lt; 1s</span>
                             </div>
                         </div>
                     </div>
@@ -527,13 +524,13 @@ export default function Reports() {
                     {/* 3. Recent Moderator Actions */}
                     <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex-1 flex flex-col justify-between">
                         <div>
-                            <h2 className="text-lg font-extrabold text-slate-900 mb-4">Recent Moderator Actions</h2>
-                            
+                            <h2 className="text-lg font-bold text-slate-900 mb-4">Recent Moderator Actions</h2>
+
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3 text-xs">
                                     <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 shrink-0"></div>
                                     <div>
-                                        <h4 className="font-extrabold text-slate-900">Sarah Jenkins resolved #8210</h4>
+                                        <h4 className="font-bold text-slate-900">Sarah Jenkins resolved #8210</h4>
                                         <p className="text-[11px] text-slate-400 font-medium">Decision: Permanent Ban</p>
                                         <span className="text-[10px] text-slate-400">2 mins ago</span>
                                     </div>
@@ -542,7 +539,7 @@ export default function Reports() {
                                 <div className="flex items-start gap-3 text-xs">
                                     <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div>
                                     <div>
-                                        <h4 className="font-extrabold text-slate-900">AI Agent flagged @bot_4421</h4>
+                                        <h4 className="font-bold text-slate-900">AI Agent flagged @bot_4421</h4>
                                         <p className="text-[11px] text-slate-400 font-medium">Pattern: Bulk Messaging</p>
                                         <span className="text-[10px] text-slate-400">15 mins ago</span>
                                     </div>
@@ -551,7 +548,7 @@ export default function Reports() {
                                 <div className="flex items-start gap-3 text-xs">
                                     <div className="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0"></div>
                                     <div>
-                                        <h4 className="font-extrabold text-slate-900">Marco Rossi reviewed #7712</h4>
+                                        <h4 className="font-bold text-slate-900">Marco Rossi reviewed #7712</h4>
                                         <p className="text-[11px] text-slate-400 font-medium">Decision: Warning Sent</p>
                                         <span className="text-[10px] text-slate-400">1 hour ago</span>
                                     </div>
@@ -562,7 +559,7 @@ export default function Reports() {
                         <div className="pt-4 border-t border-slate-100 mt-4 text-center">
                             <button
                                 onClick={() => message.info("Opening full system audit logs...")}
-                                className="text-xs font-extrabold text-indigo-600 hover:text-indigo-700 flex items-center justify-center gap-1 w-full"
+                                className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center justify-center gap-1 w-full cursor-pointer"
                             >
                                 View Audit Logs <ArrowUpRight className="w-3.5 h-3.5" />
                             </button>
@@ -578,19 +575,19 @@ export default function Reports() {
                 title={
                     <div className="flex items-center gap-2">
                         <ShieldAlert className="w-5 h-5 text-indigo-600" />
-                        <span className="font-extrabold text-slate-900">Report Ticket #{selectedReport?.ticketId}</span>
+                        <span className="font-bold text-slate-900">Report Ticket #{selectedReport?.ticketId}</span>
                     </div>
                 }
                 open={isDetailModalOpen}
                 onCancel={() => setIsDetailModalOpen(false)}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsDetailModalOpen(false)} className="rounded-xl font-bold">
+                    <Button key="cancel" onClick={() => setIsDetailModalOpen(false)} className="rounded-xl font-bold cursor-pointer">
                         Close
                     </Button>,
                     <Button
                         key="escalate"
                         onClick={() => selectedReport && handleEscalate(selectedReport.id)}
-                        className="rounded-xl font-bold border-rose-200 text-rose-600 hover:bg-rose-50"
+                        className="rounded-xl font-bold border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
                     >
                         Escalate
                     </Button>,
@@ -598,7 +595,7 @@ export default function Reports() {
                         key="resolve"
                         type="primary"
                         onClick={() => selectedReport && handleResolve(selectedReport.id)}
-                        className="bg-emerald-600 hover:bg-emerald-700 font-bold rounded-xl border-none"
+                        className="bg-emerald-600 hover:bg-emerald-700 font-bold rounded-xl border-none cursor-pointer"
                     >
                         Mark as Resolved
                     </Button>,
@@ -609,9 +606,9 @@ export default function Reports() {
                         <div className="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-200">
                             <div>
                                 <span className="text-slate-400 font-bold uppercase block text-[10px]">Report Type</span>
-                                <span className="font-extrabold text-slate-900 text-sm">{selectedReport.type}</span>
+                                <span className="font-bold text-slate-900 text-sm">{selectedReport.type}</span>
                             </div>
-                            <span className="px-3 py-1 text-[10px] font-extrabold bg-rose-100 text-rose-700 rounded-full border border-rose-200">
+                            <span className="px-3 py-1 text-[10px] font-bold bg-rose-100 text-rose-700 rounded-full border border-rose-200">
                                 {selectedReport.severity}
                             </span>
                         </div>
@@ -621,15 +618,15 @@ export default function Reports() {
                             <div className="flex items-center gap-2">
                                 <Avatar src={selectedReport.userAvatar} />
                                 <div>
-                                    <span className="font-extrabold text-slate-900 block">{selectedReport.username}</span>
-                                    <span className="text-slate-400 font-mono text-[10px]">{selectedReport.userId}</span>
+                                    <span className="font-bold text-slate-900 block">{selectedReport.username}</span>
+                                    <span className="text-slate-400 text-[10px]">{selectedReport.userId}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div>
                             <span className="text-slate-400 font-bold uppercase block text-[10px] mb-1">Incident Summary</span>
-                            <p className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-slate-700 font-medium leading-relaxed">
+                            <p className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-slate-700 font-medium">
                                 {selectedReport.description || "System flag triggered by telemetry engine."}
                             </p>
                         </div>
