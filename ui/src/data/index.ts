@@ -166,11 +166,6 @@ export const adminMenuData: MenuData = {
                     icon: Bell,
                 },
                 {
-                    label: "Audit Logs",
-                    href: "/admin/audit-logs",
-                    icon: Database,
-                },
-                {
                     label: "Support",
                     href: "/admin/support",
                     icon: LifeBuoy,
