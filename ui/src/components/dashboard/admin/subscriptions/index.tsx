@@ -24,7 +24,6 @@ import {
     Layers,
     ChevronDown,
     ChevronUp,
-    X,
 } from "lucide-react";
 
 // Plan Tier Data Structure
@@ -194,7 +193,7 @@ function SubscriptionsContent() {
             isPopular: values.isPopular || false,
             connectedLimit: Number(values.connectedLimit) || 5,
             aiPostsLimit: Number(values.aiPostsLimit) || 500,
-            badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+            badgeColor: "bg-primary/10 text-primary border-primary/20",
         };
 
         let updatedPlans = [...plans];
@@ -298,7 +297,7 @@ function SubscriptionsContent() {
                     <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-gray-200 dark:border-zinc-800 text-xs">
                         <button
                             onClick={() => setBillingCycle("monthly")}
-                            className={`px-3 py-1.5 rounded-lg font-bold transition-all ${billingCycle === "monthly"
+                            className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all ${billingCycle === "monthly"
                                 ? "bg-background text-foreground shadow-sm"
                                 : "text-muted-foreground hover:text-foreground"
                                 }`}
@@ -307,8 +306,8 @@ function SubscriptionsContent() {
                         </button>
                         <button
                             onClick={() => setBillingCycle("annual")}
-                            className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${billingCycle === "annual"
-                                ? "bg-emerald-500 text-black shadow-sm"
+                            className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${billingCycle === "annual"
+                                ? "bg-primary text-primary-foreground shadow-sm"
                                 : "text-muted-foreground hover:text-foreground"
                                 }`}
                         >
@@ -320,7 +319,7 @@ function SubscriptionsContent() {
                         type="primary"
                         icon={<Plus className="w-4 h-4" />}
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-emerald-600 hover:bg-emerald-500 border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-600/20 text-xs sm:text-sm"
+                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 text-xs sm:text-sm"
                     >
                         Create New Plan
                     </Button>
@@ -329,7 +328,7 @@ function SubscriptionsContent() {
 
             {/* Top Stat Overview Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-emerald-500/40 transition-all flex items-center justify-between">
+                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-primary/40 transition-all flex items-center justify-between">
                     <div>
                         <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
                             ACTIVE PLAN TIERS
@@ -338,12 +337,12 @@ function SubscriptionsContent() {
                             {stats.totalPlans} Tiers
                         </h4>
                     </div>
-                    <div className="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0">
                         <Layers className="w-5 h-5" />
                     </div>
                 </div>
 
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-cyan-500/40 transition-all flex items-center justify-between">
+                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-amber-500/40 transition-all flex items-center justify-between">
                     <div>
                         <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
                             FEATURED HIGHLIGHT
@@ -352,12 +351,12 @@ function SubscriptionsContent() {
                             {stats.popularPlan}
                         </h4>
                     </div>
-                    <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
                         <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
                     </div>
                 </div>
 
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-purple-500/40 transition-all flex items-center justify-between">
+                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-secondary/40 transition-all flex items-center justify-between">
                     <div>
                         <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
                             AVERAGE TIER PRICE
@@ -366,7 +365,7 @@ function SubscriptionsContent() {
                             {stats.avgMonthlyPrice} /mo
                         </h4>
                     </div>
-                    <div className="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-500 flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-secondary/80 text-secondary-foreground border border-border flex items-center justify-center shrink-0">
                         <DollarSign className="w-5 h-5" />
                     </div>
                 </div>
@@ -376,7 +375,7 @@ function SubscriptionsContent() {
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-lg sm:text-xl font-extrabold text-foreground flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-emerald-500" />
+                        <Shield className="w-5 h-5 text-primary" />
                         Available Subscription Tiers
                     </h2>
                 </div>
@@ -392,13 +391,13 @@ function SubscriptionsContent() {
                             <div
                                 key={plan.id}
                                 className={`relative bg-card border rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl ${plan.isPopular
-                                    ? "border-emerald-500/60 shadow-lg shadow-emerald-500/5 ring-1 ring-emerald-500/30"
+                                    ? "border-primary/60 shadow-lg shadow-primary/5 ring-1 ring-primary/30"
                                     : "border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700"
                                     }`}
                             >
                                 {plan.isPopular && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-emerald-500 text-black font-extrabold text-[10px] tracking-wider uppercase shadow-md flex items-center gap-1">
-                                        <Star className="w-3 h-3 fill-black text-black" />
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-primary-foreground font-extrabold text-[10px] tracking-wider uppercase shadow-md flex items-center gap-1">
+                                        <Star className="w-3 h-3 fill-primary-foreground text-primary-foreground" />
                                         <span>MOST POPULAR</span>
                                     </div>
                                 )}
@@ -412,7 +411,7 @@ function SubscriptionsContent() {
                                             <Tooltip title="Edit Plan">
                                                 <button
                                                     onClick={() => handleOpenEdit(plan)}
-                                                    className="p-1.5 rounded-lg text-muted-foreground hover:text-emerald-500 hover:bg-muted/80 transition-colors"
+                                                    className="cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted/80 transition-colors"
                                                 >
                                                     <Edit3 className="w-4 h-4" />
                                                 </button>
@@ -426,7 +425,7 @@ function SubscriptionsContent() {
                                                 cancelText="Cancel"
                                                 okButtonProps={{ danger: true }}
                                             >
-                                                <button className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-muted/80 transition-colors">
+                                                <button className="cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-muted/80 transition-colors">
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </Popconfirm>
@@ -476,7 +475,7 @@ function SubscriptionsContent() {
                                     <div className="space-y-2.5">
                                         {visibleFeatures.map((feat, idx) => (
                                             <div key={idx} className="flex items-start gap-2 text-xs font-medium text-foreground">
-                                                <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                                                <Check className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                                                 <span>{feat}</span>
                                             </div>
                                         ))}
@@ -484,7 +483,7 @@ function SubscriptionsContent() {
                                         {plan.features.length > 4 && (
                                             <button
                                                 onClick={() => toggleExpandCard(plan.id)}
-                                                className="mt-2 text-[11px] font-bold text-emerald-500 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+                                                className="cursor-pointer mt-2 text-[11px] font-bold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
                                             >
                                                 {isExpanded ? (
                                                     <>
@@ -506,7 +505,7 @@ function SubscriptionsContent() {
                                 <div className="mt-6 pt-4 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between">
                                     <button
                                         onClick={() => handleTogglePopular(plan.id)}
-                                        className="text-xs font-semibold text-muted-foreground hover:text-emerald-500 transition-colors flex items-center gap-1"
+                                        className="cursor-pointer text-xs font-semibold text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
                                     >
                                         <Star className={`w-3.5 h-3.5 ${plan.isPopular ? "fill-amber-500 text-amber-500" : ""}`} />
                                         <span>{plan.isPopular ? "Featured" : "Set Popular"}</span>
@@ -517,7 +516,7 @@ function SubscriptionsContent() {
                                         size="small"
                                         icon={<Edit3 className="w-3.5 h-3.5" />}
                                         onClick={() => handleOpenEdit(plan)}
-                                        className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl text-xs font-semibold"
+                                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl text-xs font-semibold"
                                     >
                                         Edit Tier
                                     </Button>
@@ -532,7 +531,7 @@ function SubscriptionsContent() {
             <Modal
                 title={
                     <div className="flex items-center gap-2 text-base sm:text-lg font-bold text-foreground pb-2 border-b border-gray-200 dark:border-zinc-800">
-                        <Plus className="w-5 h-5 text-emerald-500" />
+                        <Plus className="w-5 h-5 text-primary" />
                         <span>Create Subscription Plan</span>
                     </div>
                 }
@@ -635,27 +634,27 @@ function SubscriptionsContent() {
                                     type="primary"
                                     onClick={handleAddCreateFeature}
                                     icon={<Plus className="w-4 h-4" />}
-                                    className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
+                                    className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
                                 >
                                     Add
                                 </Button>
                             </div>
 
                             {/* Features List with Checkmark and Delete/Trash icons */}
-                            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <div className="space-y-2">
                                 {createFeatures.map((feat, idx) => (
                                     <div
                                         key={idx}
                                         className="flex items-center justify-between p-2.5 rounded-xl bg-muted/40 border border-gray-200 dark:border-zinc-800 text-xs font-semibold text-foreground"
                                     >
                                         <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                                            <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                                            <Check className="w-4 h-4 text-primary shrink-0" />
                                             <span className="truncate">{feat}</span>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveCreateFeature(idx)}
-                                            className="p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
+                                            className="cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
                                             title="Delete Feature"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -681,13 +680,13 @@ function SubscriptionsContent() {
                         </Form.Item>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                            <Button onClick={() => setIsCreateModalOpen(false)} className="rounded-xl text-xs sm:text-sm">
+                            <Button onClick={() => setIsCreateModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
                                 Cancel
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                             >
                                 Deploy Plan Tier
                             </Button>
@@ -700,7 +699,7 @@ function SubscriptionsContent() {
             <Modal
                 title={
                     <div className="flex items-center gap-2 text-base sm:text-lg font-bold text-foreground pb-2 border-b border-gray-200 dark:border-zinc-800">
-                        <Edit3 className="w-5 h-5 text-emerald-500" />
+                        <Edit3 className="w-5 h-5 text-primary" />
                         <span>Edit Pricing Tier</span>
                     </div>
                 }
@@ -792,27 +791,27 @@ function SubscriptionsContent() {
                                     type="primary"
                                     onClick={handleAddEditFeature}
                                     icon={<Plus className="w-4 h-4" />}
-                                    className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
+                                    className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
                                 >
                                     Add
                                 </Button>
                             </div>
 
                             {/* Features List with Checkmark and Delete/Trash icons */}
-                            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <div className="space-y-2">
                                 {editFeatures.map((feat, idx) => (
                                     <div
                                         key={idx}
                                         className="flex items-center justify-between p-2.5 rounded-xl bg-muted/40 border border-gray-200 dark:border-zinc-800 text-xs font-semibold text-foreground"
                                     >
                                         <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                                            <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                                            <Check className="w-4 h-4 text-primary shrink-0" />
                                             <span className="truncate">{feat}</span>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveEditFeature(idx)}
-                                            className="p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
+                                            className="cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
                                             title="Delete Feature"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -832,13 +831,13 @@ function SubscriptionsContent() {
                         </Form.Item>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                            <Button onClick={() => setIsEditModalOpen(false)} className="rounded-xl text-xs sm:text-sm">
+                            <Button onClick={() => setIsEditModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
                                 Cancel
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                             >
                                 Save Plan Changes
                             </Button>
