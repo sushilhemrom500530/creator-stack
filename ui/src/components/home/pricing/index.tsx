@@ -53,40 +53,47 @@ export default function PricingSection() {
                     </button>
                 </div>
 
-                {/* Business Plan (Recommended) */}
-                <div className={`relative rounded-[2.5rem] p-8 lg:p-10 border flex flex-col h-[540px] transform md:-translate-y-2 shadow-2xl ${isLight
-                    ? "bg-slate-900 text-white border-violet-500/40 shadow-violet-500/20"
-                    : "bg-black text-white border-purple-500/30 shadow-[0_0_80px_-20px_rgba(168,85,247,0.2)]"
+                {/* Business Plan (Recommended Hero Card - Glass Blur & Premium Gradient Overlay) */}
+                <div className={`relative rounded-[2.5rem] p-8 lg:p-10 border flex flex-col h-[540px] transform md:-translate-y-2 transition-all duration-300 ${isLight
+                    ? "bg-white/80 backdrop-blur-2xl text-slate-900 border-2 border-violet-500/40 shadow-[0_20px_50px_rgba(139,92,246,0.18)] hover:border-violet-500/70 hover:shadow-[0_25px_60px_rgba(139,92,246,0.25)]"
+                    : "bg-black/90 backdrop-blur-xl text-white border-purple-500/30 shadow-[0_0_80px_-20px_rgba(168,85,247,0.2)]"
                     }`}>
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                        <span className="bg-white text-purple-900 text-[9px] font-bold tracking-widest uppercase py-2 px-5 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                    {/* Ambient Glow Overlay - overflow hidden contained here */}
+                    <div className={`absolute inset-0 pointer-events-none rounded-[2.5rem] overflow-hidden ${isLight ? "bg-gradient-to-b from-violet-500/10 via-purple-500/5 to-transparent" : "bg-gradient-to-b from-purple-500/10 to-transparent"}`} />
+
+                    {/* Floating Recommended Badge */}
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
+                        <span className={`text-[9px] font-bold tracking-widest uppercase py-1.5 px-5 rounded-full shadow-lg border whitespace-nowrap block ${isLight
+                            ? "bg-gradient-to-r from-violet-600 to-indigo-600 text-white border-violet-400/30 shadow-violet-500/40"
+                            : "bg-white text-purple-900 border-white/50 shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                            }`}>
                             Recommended
                         </span>
                     </div>
 
-                    <div className="mb-8 mt-2">
-                        <h3 className="text-gray-200 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Business</h3>
+                    <div className="mb-8 mt-2 relative z-10">
+                        <h3 className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-4 ${isLight ? "text-violet-700" : "text-gray-200"}`}>Business</h3>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-5xl font-serif font-semibold">$149</span>
-                            <span className="text-gray-400 text-xs">/mo</span>
+                            <span className={`text-5xl font-serif font-extrabold ${isLight ? "text-slate-900" : "text-white"}`}>$149</span>
+                            <span className={`text-xs font-semibold ${isLight ? "text-slate-500" : "text-gray-400"}`}>/mo</span>
                         </div>
                     </div>
 
-                    <ul className="flex flex-col gap-6 mb-12 flex-1">
+                    <ul className="flex flex-col gap-6 mb-12 flex-1 relative z-10">
                         {[
                             'Unlimited Accounts',
                             'Full Agentic Co-Pilot',
                             'White-label Reports',
                             'Priority AI Server'
                         ].map((feature, i) => (
-                            <li key={i} className="flex items-center gap-3 text-sm text-gray-200">
-                                <CheckCircle2 className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                            <li key={i} className={`flex items-center gap-3 text-sm font-semibold ${isLight ? "text-slate-800" : "text-gray-200"}`}>
+                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 ${isLight ? "text-violet-600" : "text-purple-400"}`} />
                                 {feature}
                             </li>
                         ))}
                     </ul>
 
-                    <button className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-semibold transition-colors mt-auto shadow-lg cursor-pointer">
+                    <button className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-bold transition-all transform hover:scale-[1.02] shadow-[0_4px_25px_rgba(139,92,246,0.4)] cursor-pointer relative z-10">
                         Scale Now
                     </button>
                 </div>
