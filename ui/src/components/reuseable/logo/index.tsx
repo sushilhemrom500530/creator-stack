@@ -1,14 +1,16 @@
 import Image from "next/image";
-import logo from "@/assets/dashboard/logo.svg";
+import light_logo from "@/assets/dashboard/light.png";
+import dark_logo from "@/assets/dashboard/light.png";
+// import logo from "@/assets/dashboard/logo.svg";
 
-export default function Logo({ className = "w-full h-20" }: { className?: string }) {
+export default function Logo({ className = "w-full h-14" }: { className?: string }) {
     return (
         <Image
-            src={logo}
+            src={light_logo}
             alt="logo"
             width={0}
             height={0}
-            className={`${className}`}
+            className={`${className} object-contain`}
         />
     )
 }

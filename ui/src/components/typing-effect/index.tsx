@@ -39,14 +39,12 @@ export const TypingEffect = () => {
     }, [phase, displayedText, targetText]);
 
     return (
-        <div className={`rounded-md px-3 py-2 mt-4 text-xs font-mono flex items-center h-8 relative shadow-inner overflow-hidden border transition-colors ${
-            isLight
-                ? "bg-violet-50/90 border-violet-200 text-violet-900 font-semibold"
-                : "bg-[#2c2443]/40 border-[#483a6b] text-[#a694d4]"
-        }`}>
-            <div className={`absolute inset-0 pointer-events-none ${
-                isLight ? "bg-gradient-to-r from-violet-200/30 to-transparent" : "bg-gradient-to-r from-violet-500/10 to-transparent"
-            }`} />
+        <div className={`rounded-md px-3 py-2 mt-4 text-xs font-mono flex items-center h-8 relative shadow-inner overflow-hidden border transition-colors ${isLight
+            ? "bg-violet-50/90 border-violet-200 text-violet-900 font-semibold"
+            : "bg-[#2c2443]/40 border-[#483a6b] text-[#a694d4]"
+            }`}>
+            <div className={`absolute inset-0 pointer-events-none ${isLight ? "bg-gradient-to-r from-violet-200/30 to-transparent" : "bg-gradient-to-r from-violet-500/10 to-transparent"
+                }`} />
 
             {phase === "loading" ? (
                 <div className="flex space-x-1 items-center opacity-80 z-10 w-full">
@@ -62,4 +60,4 @@ export const TypingEffect = () => {
             )}
         </div>
     );
-};
+};
