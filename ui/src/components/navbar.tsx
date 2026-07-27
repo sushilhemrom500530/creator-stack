@@ -2,17 +2,19 @@
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, Sun, Moon } from "lucide-react";
 import { RiMenu3Fill } from "react-icons/ri";
 import { IMenuItem, navItems } from "@/data";
+import { useTheme } from "@/providers/mode-theme";
 
 function NavbarContent() {
     const pathname = usePathname();
+    const { theme, toggleTheme } = useTheme();
+    const isLight = theme === "light";
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
 
@@ -36,7 +38,9 @@ function NavbarContent() {
     const isActive = (href?: string) => !!href && pathname === href;
 
     const navContainerClass = `fixed inset-x-0 top-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? "bg-[#100e16]/80 backdrop-blur-lg border-b border-white/5 py-4"
+        ? isLight
+            ? "bg-white/85 backdrop-blur-lg border-b border-slate-200/80 py-4 shadow-sm"
+            : "bg-[#100e16]/80 backdrop-blur-lg border-b border-white/5 py-4"
         : "bg-transparent py-6"
         }`;
 
@@ -46,34 +50,60 @@ function NavbarContent() {
                 <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-1 group select-none shrink-0">
-                        <span className="text-white text-2xl font-bold tracking-tight font-serif">
-                            Creator <span className="text-[#a78bfa] group-hover:text-[#c4b5fd] transition-colors">Stack</span>
+                        <span className={`text-2xl font-bold tracking-tight font-serif ${isLight ? "text-slate-900" : "text-white"}`}>
+                            Creator <span className="text-violet-600 group-hover:text-violet-500 transition-colors">Stack</span>
                         </span>
                     </Link>
 
                     {/* Desktop Nav Links */}
                     <div className="hidden lg:flex items-center gap-10">
-                        {navItems.map((item, index) => {
-                            const active = isActive(item.href)
+                        {navItems.map((item) => {
+                            const active = isActive(item.href);
                             return (
                                 <Link
                                     key={item.label}
                                     href={item.href!}
-                                    className={`relative text-[15px] font-semibold transition-colors ${active ? "text-white" : "text-gray-400 hover:text-white"
+                                    className={`relative text-[15px] font-semibold transition-colors ${active
+                                        ? isLight
+                                            ? "text-slate-900 font-bold"
+                                            : "text-white font-bold"
+                                        : isLight
+                                            ? "text-slate-600 hover:text-slate-900"
+                                            : "text-gray-400 hover:text-white"
                                         }`}
                                 >
                                     {item.label}
                                     {active && (
-                                        <span className="absolute -bottom-1.5 left-0 w-full h-[2px] bg-[#a855f7] rounded-full" />
+                                        <span className="absolute -bottom-1.5 left-0 w-full h-[2px] bg-violet-600 rounded-full" />
                                     )}
                                 </Link>
-                            )
+                            );
                         })}
                     </div>
 
-                    {/* Right side: Login + Get Started */}
-                    <div className="hidden lg:flex items-center gap-8">
-                        <Link href="/auth/login" className="text-[15px] font-semibold text-white/90 hover:text-white transition-colors">
+                    {/* Right side: Theme Toggle + Login + Get Started */}
+                    <div className="hidden lg:flex items-center gap-6">
+                        {/* Theme Toggle Button */}
+                        <button
+                            onClick={toggleTheme}
+                            aria-label="Toggle Light and Dark Mode"
+                            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${isLight
+                                ? "bg-slate-100 hover:bg-slate-200 border-slate-300/80 text-slate-800 shadow-sm"
+                                : "bg-white/5 hover:bg-white/10 border-white/10 text-violet-300 hover:text-violet-200"
+                                }`}
+                        >
+                            {isLight ? (
+                                <Moon size={18} className="text-slate-800 transition-transform duration-300 hover:rotate-12" />
+                            ) : (
+                                <Sun size={18} className="text-amber-300 transition-transform duration-300 hover:rotate-45" />
+                            )}
+                        </button>
+
+                        <Link
+                            href="/auth/login"
+                            className={`text-[15px] font-semibold transition-colors ${isLight ? "text-slate-700 hover:text-slate-900" : "text-white/90 hover:text-white"
+                                }`}
+                        >
                             Login
                         </Link>
                         <Link href="/auth/register">
@@ -83,14 +113,27 @@ function NavbarContent() {
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="flex items-center lg:hidden">
+                    {/* Mobile Controls (Theme Toggle + Menu Button) */}
+                    <div className="flex items-center gap-3 lg:hidden">
                         <button
-                            className="text-white cursor-pointer flex items-center justify-center backdrop-blur-md p-2 rounded-lg bg-white/5 border border-white/10"
+                            onClick={toggleTheme}
+                            aria-label="Toggle Theme"
+                            className={`p-2 rounded-lg border transition-colors cursor-pointer flex items-center justify-center ${isLight
+                                ? "bg-slate-100 border-slate-300 text-slate-800"
+                                : "bg-white/5 border-white/10 text-amber-300"
+                                }`}
+                        >
+                            {isLight ? <Moon size={18} /> : <Sun size={18} />}
+                        </button>
+                        <button
+                            className={`cursor-pointer flex items-center justify-center backdrop-blur-md p-2 rounded-lg border ${isLight
+                                ? "bg-slate-100 border-slate-200 text-slate-900"
+                                : "text-white bg-white/5 border-white/10"
+                                }`}
                             onClick={toggleMenu}
                             aria-label="Open menu"
                         >
-                            <RiMenu3Fill size={22} className={menuOpen ? "text-violet-400" : ""} />
+                            <RiMenu3Fill size={22} className={menuOpen ? "text-violet-500" : ""} />
                         </button>
                     </div>
                 </div>
@@ -107,15 +150,19 @@ function NavbarContent() {
             {/* Mobile Sidebar */}
             <div className="fixed inset-0 z-[999] overflow-x-hidden pointer-events-none lg:hidden">
                 <aside
-                    className={`pointer-events-auto absolute top-0 right-0 w-72 h-full bg-[#100e16] border-l border-white/10 text-white shadow-2xl transform transition-transform duration-300 ease-in-out
-                    ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+                    className={`pointer-events-auto absolute top-0 right-0 w-72 h-full border-l shadow-2xl transform transition-transform duration-300 ease-in-out ${isLight ? "bg-white border-slate-200 text-slate-900" : "bg-[#100e16] border-white/10 text-white"
+                        } ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="flex text-white justify-between items-center py-5 px-6 border-b border-white/10">
+                    <div className={`flex justify-between items-center py-5 px-6 border-b ${isLight ? "border-slate-200 text-slate-900" : "border-white/10 text-white"
+                        }`}>
                         <span className="text-xl font-bold tracking-tight font-serif">Creator Stack</span>
                         <button
                             onClick={toggleMenu}
-                            className="cursor-pointer text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors"
+                            className={`cursor-pointer rounded-full p-2 transition-colors ${isLight
+                                ? "text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200"
+                                : "text-white/70 hover:text-white bg-white/5 hover:bg-white/10"
+                                }`}
                             aria-label="Close menu"
                         >
                             <X size={18} />
@@ -131,8 +178,12 @@ function NavbarContent() {
                                     href={item.href!}
                                     onClick={() => setMenuOpen(false)}
                                     className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all ${active
-                                        ? "text-white bg-violet-600/20 border border-violet-600/30"
-                                        : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                        ? isLight
+                                            ? "text-violet-700 bg-violet-50 border border-violet-200"
+                                            : "text-white bg-violet-600/20 border border-violet-600/30"
+                                        : isLight
+                                            ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-transparent"
+                                            : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
                                         }`}
                                 >
                                     {item.label}
@@ -140,9 +191,14 @@ function NavbarContent() {
                             );
                         })}
 
-                        <div className="h-px w-full bg-white/10 my-4" />
+                        <div className={`h-px w-full my-4 ${isLight ? "bg-slate-200" : "bg-white/10"}`} />
 
-                        <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-center text-sm font-semibold text-white">
+                        <Link
+                            href="/auth/login"
+                            onClick={() => setMenuOpen(false)}
+                            className={`px-4 py-3 text-center text-sm font-semibold ${isLight ? "text-slate-800" : "text-white"
+                                }`}
+                        >
                             Login
                         </Link>
                         <Link href="/auth/register" onClick={() => setMenuOpen(false)}>
