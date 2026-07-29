@@ -1,0 +1,210 @@
+@reference "../../../styles/style.globals.css";
+
+/* Main Section */
+.dominate-section {
+    @apply relative w-full py-24 flex flex-col items-center justify-center overflow-hidden border-t transition-colors duration-300;
+}
+
+.dominate-section.is-light {
+    @apply bg-white border-slate-200/80;
+}
+
+.dominate-section.is-dark {
+    @apply bg-[#100e16] border-white/5;
+}
+
+/* Background Ambient Glows */
+.dominate-glow-blob {
+    @apply absolute rounded-full pointer-events-none;
+}
+
+.dominate-glow-top-left {
+    @apply top-[20%] left-[-10%] w-[500px] h-[500px] blur-[130px];
+}
+
+.dominate-glow-top-left.is-light {
+    @apply bg-violet-300/30;
+}
+
+.dominate-glow-top-left.is-dark {
+    @apply bg-violet-600/10;
+}
+
+.dominate-glow-bottom-right {
+    @apply bottom-[10%] right-[-5%] w-[400px] h-[400px] blur-[120px];
+}
+
+.dominate-glow-bottom-right.is-light {
+    @apply bg-violet-300/30;
+}
+
+.dominate-glow-bottom-right.is-dark {
+    @apply bg-violet-600/10;
+}
+
+/* Header Section */
+.dominate-header {
+    @apply container mx-auto px-6 relative z-10 flex flex-col items-center;
+}
+
+.dominate-title {
+    @apply text-4xl md:text-5xl font-serif font-bold mb-6 text-center tracking-tight;
+}
+
+.dominate-title.is-light {
+    @apply text-slate-900;
+}
+
+.dominate-title.is-dark {
+    @apply text-white;
+}
+
+.dominate-subtitle {
+    @apply text-[15px] md:text-[17px] text-center max-w-2xl mb-16 tracking-wide;
+}
+
+.dominate-subtitle.is-light {
+    @apply text-slate-600;
+}
+
+.dominate-subtitle.is-dark {
+    @apply text-gray-400;
+}
+
+/* Bento Grid Container */
+.dominate-bento-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-5 w-full mt-12;
+}
+
+/* Card Base & Variants */
+.dominate-card {
+    @apply border rounded-3xl p-8 flex flex-col shadow-lg transition-colors;
+}
+
+.dominate-card.is-light {
+    @apply bg-slate-50/90 border-slate-200/90 hover:border-violet-300 shadow-slate-100;
+}
+
+.dominate-card.is-dark {
+    @apply bg-[#171520] border-white/5 hover:border-white/10;
+}
+
+.dominate-card-wide {
+    @apply col-span-1 md:col-span-2 flex-col md:flex-row gap-8 items-center;
+}
+
+.dominate-card-single {
+    @apply col-span-1;
+}
+
+.dominate-card-body {
+    @apply flex-1 flex flex-col justify-center;
+}
+
+.dominate-card-title {
+    @apply font-bold text-[17px] mb-2;
+}
+
+.dominate-card-title.is-light {
+    @apply text-slate-900;
+}
+
+.dominate-card-title.is-dark {
+    @apply text-white;
+}
+
+.dominate-card-desc {
+    @apply text-[13px] leading-[1.6];
+}
+
+.dominate-card-desc.is-light {
+    @apply text-slate-600;
+}
+
+.dominate-card-desc.is-dark {
+    @apply text-gray-400;
+}
+
+/* Icon Box */
+.dominate-icon-wrapper {
+    @apply w-11 h-11 rounded-xl flex items-center justify-center mb-5 relative transition-transform;
+}
+
+.dominate-icon-glow {
+    @apply absolute inset-0 rounded-xl blur-md transition-opacity;
+}
+
+/* Primary Action Button */
+.dominate-action-btn {
+    @apply text-[13px] font-bold flex items-center gap-1.5 w-fit transition-colors;
+}
+
+.dominate-action-btn.is-light {
+    @apply text-violet-700 hover:text-violet-900;
+}
+
+.dominate-action-btn.is-dark {
+    @apply text-violet-300 hover:text-violet-100;
+}
+
+.dominate-action-btn-icon {
+    @apply w-3.5 h-3.5 transition-transform;
+}
+
+/* Mockup Elements */
+.dominate-mockup-box {
+    @apply rounded-2xl border p-4 flex flex-col justify-center relative shadow-inner;
+}
+
+.dominate-mockup-box.is-light {
+    @apply bg-white border-slate-200;
+}
+
+.dominate-mockup-box.is-dark {
+    @apply bg-[#221f2d]/50 border-white/5;
+}
+
+.dominate-mockup-skeleton-sm {
+    @apply w-[60%] h-1.5 rounded-full mb-2.5;
+}
+
+.dominate-mockup-skeleton-sm.is-light {
+    @apply bg-slate-300;
+}
+
+.dominate-mockup-skeleton-sm.is-dark {
+    @apply bg-gray-500/20;
+}
+
+.dominate-mockup-skeleton-lg {
+    @apply w-[90%] h-1.5 rounded-full mb-5;
+}
+
+.dominate-mockup-skeleton-lg.is-light {
+    @apply bg-slate-200;
+}
+
+.dominate-mockup-skeleton-lg.is-dark {
+    @apply bg-gray-500/10;
+}
+
+/* Voice Synthesis Mockup */
+.dominate-voice-badge {
+    @apply text-[8px] font-bold tracking-wider px-2 py-1 rounded-sm border;
+}
+
+.dominate-voice-badge-pro.is-light {
+    @apply bg-slate-100 text-slate-700 border-slate-300;
+}
+
+.dominate-voice-badge-pro.is-dark {
+    @apply text-gray-400 bg-black/40 border-gray-700/50;
+}
+
+.dominate-voice-badge-luxury.is-light {
+    @apply bg-violet-100 text-violet-800 border-violet-200;
+}
+
+.dominate-voice-badge-luxury.is-dark {
+    @apply text-violet-200 bg-violet-900/40 border-violet-500/30;
+}
