@@ -2,25 +2,21 @@
 
 import { CheckCircle2 } from 'lucide-react';
 import { useTheme } from '@/providers/mode-theme';
+import { Title } from '@/components/reuseable/title';
 
 export default function PricingSection() {
     const { theme } = useTheme();
     const isLight = theme === "light";
 
     return (
-        <section className={`py-24 px-6 md:px-12 lg:px-24 flex flex-col items-center transition-colors duration-300 ${isLight ? "bg-slate-100/80 text-slate-900" : "bg-[#09090b] text-white"
+        <section className={`py-24 px-6 md:px-12 lg:px-24 flex flex-col items-center transition-colors duration-300 ${isLight ? "bg-slate-100/80 text-slate-900" : "bg-nural text-white"
             }`}>
-            <div className="text-center mb-16 max-w-2xl">
-                <h2 className={`text-sm font-bold uppercase tracking-[0.2em] mb-4 ${isLight ? "text-violet-600" : "text-violet-400"
-                    }`}>
-                    Elite Access Plans
-                </h2>
-                <p className={`text-base font-medium ${isLight ? "text-slate-600" : "text-gray-300"}`}>
-                    Simple, transparent, and built to scale with your ambition.
-                </p>
-            </div>
+            <Title
+                title="Elite Access Plans"
+                description="Simple, transparent, and built to scale with your ambition."
+            />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8 w-full max-w-5xl items-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-8 w-full max-w-5xl items-center mt-20">
                 {/* Starter Plan */}
                 <div className={`rounded-[2rem] p-8 lg:p-10 border flex flex-col h-[500px] transition-colors ${isLight ? "bg-white border-slate-200/80 shadow-lg" : "bg-[#111113] border-white/5 hover:border-white/10"
                     }`}>

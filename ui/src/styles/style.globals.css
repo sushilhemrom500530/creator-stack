@@ -7,6 +7,8 @@
     --color-secondary: #14B8A6;
     --color-teriary: #8B5CF6;
     --color-nural: #09090B;
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
 }
 
 :root {
@@ -14,9 +16,14 @@
     --foreground: #171717;
 }
 
+.dark {
+    --background: #09090b;
+    --foreground: #ededed;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: #0a0a0a;
+        --background: #09090b;
         --foreground: #ededed;
     }
 }
@@ -210,4 +217,8 @@ body {
     background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 24px 24px, 24px 24px;
     background-position: center center;
     animation: tableGridWave 15s ease-in-out infinite alternate;
+}
+
+.dark-card-bg {
+    @apply bg-[#171520] border-white/5;
 }
