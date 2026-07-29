@@ -8,8 +8,6 @@ import { useTheme } from "@/providers/mode-theme";
 export default function Logo({ className = "w-full h-14" }: { className?: string }) {
     const { theme } = useTheme();
 
-
-
     return (
         <Image
             src={theme === "light" ? light_logo : dark_logo}
