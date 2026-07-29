@@ -12,10 +12,10 @@ export default function BannerSection() {
       {/* Background Glows */}
       <div className={`absolute top-[10%] left-0 w-[600px] h-[600px] blur-[140px] rounded-full pointer-events-none -translate-x-1/2 ${isLight ? "bg-violet-400/20" : "bg-violet-600/30"
         }`} />
-      <div className={`absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-violet-400/20" : "bg-[#14b8a6]/10"
+      <div className={`absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-violet-400/20" : "bg-violet-400/10"
         }`} />
 
-      <div className="px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-12 justify-between items-center">
+      <div className="px-4 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-12 justify-between items-center container mx-auto">
 
         {/* Left Content */}
         <div className="flex flex-col items-start gap-7">

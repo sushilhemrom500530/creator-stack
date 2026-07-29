@@ -40,15 +40,15 @@ function NavbarContent() {
 
     const navContainerClass = `fixed inset-x-0 top-0 w-full z-50 transition-all duration-300 ${isScrolled
         ? isLight
-            ? "bg-white/85 backdrop-blur-lg py-2.5 shadow-sm"
-            : "bg-[#100e16]/80 backdrop-blur-lg py-2.5"
+            ? "bg-white/85 backdrop-blur-lg py-2 shadow-sm"
+            : "bg-[#100e16]/80 backdrop-blur-lg py-2"
         : "bg-transparent py-3.5"
         }`;
 
     return (
         <>
             <nav className={navContainerClass}>
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8">
+                <div className="container mx-auto flex items-center justify-between px-6 lg:px-8">
                     {/* Logo */}
                     <Link href="/">
                         <Logo />
