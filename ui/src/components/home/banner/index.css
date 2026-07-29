@@ -1,0 +1,179 @@
+@reference "../../../styles/style.globals.css";
+
+/* Banner Section Base Container */
+.banner-section {
+    @apply relative w-full min-h-screen flex justify-center items-center pt-28 pb-16 overflow-hidden transition-colors duration-300;
+}
+
+/* Ambient Glows */
+.banner-glow-left {
+    @apply absolute top-[10%] left-0 w-[600px] h-[600px] blur-[140px] rounded-full pointer-events-none -translate-x-1/2;
+}
+
+.banner-glow-left.is-light {
+    @apply bg-violet-400/20;
+}
+
+.banner-glow-left.is-dark {
+    @apply bg-violet-600/30;
+}
+
+.banner-glow-right {
+    @apply absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none;
+}
+
+.banner-glow-right.is-light {
+    @apply bg-violet-400/20;
+}
+
+.banner-glow-right.is-dark {
+    @apply bg-violet-400/10;
+}
+
+/* Version Badge */
+.banner-badge {
+    @apply flex items-center gap-2.5 px-4 py-1.5 rounded-full border shadow-sm backdrop-blur-md;
+}
+
+.banner-badge.is-light {
+    @apply bg-teal-50 border-teal-200;
+}
+
+.banner-badge.is-dark {
+    @apply bg-white/5 border-white/10;
+}
+
+.banner-badge-dot {
+    @apply w-2 h-2 rounded-full bg-[#14b8a6] animate-pulse;
+}
+
+.banner-badge-text {
+    @apply text-[11px] font-bold text-[#0d9488] tracking-wider;
+}
+
+/* Headline & Typography */
+.banner-headline {
+    @apply text-[2.75rem] leading-[1.1] sm:text-6xl lg:text-5xl font-bold tracking-normal mb-2;
+}
+
+.banner-headline.is-light {
+    @apply text-slate-900;
+}
+
+.banner-headline.is-dark {
+    @apply text-white;
+}
+
+.banner-headline-gradient {
+    @apply text-transparent bg-clip-text italic font-serif tracking-normal;
+}
+
+.banner-headline-gradient.is-light {
+    @apply bg-gradient-to-r from-violet-700 to-indigo-600;
+}
+
+.banner-headline-gradient.is-dark {
+    @apply bg-gradient-to-r from-violet-300 to-violet-100;
+}
+
+.banner-headline-sub {
+    @apply text-violet-800;
+}
+
+.banner-headline-sub.is-dark {
+    @apply text-[#e2d4f9];
+}
+
+.banner-subtitle {
+    @apply text-lg max-w-lg leading-relaxed;
+}
+
+.banner-subtitle.is-light {
+    @apply text-slate-600;
+}
+
+.banner-subtitle.is-dark {
+    @apply text-gray-400;
+}
+
+/* Buttons */
+.banner-btn-start {
+    @apply px-8 py-3.5 rounded-xl bg-violet-600 text-white font-bold text-[15px] hover:bg-violet-500 transition-all transform hover:scale-105 cursor-pointer shadow-[0_0_20px_rgba(139,92,246,0.3)];
+}
+
+.banner-btn-demo {
+    @apply flex items-center gap-3 px-6 py-3.5 rounded-xl border font-semibold text-[15px] transition-all cursor-pointer;
+}
+
+.banner-btn-demo.is-light {
+    @apply border-slate-300 text-slate-800 bg-white/80 hover:bg-slate-100 shadow-sm;
+}
+
+.banner-btn-demo.is-dark {
+    @apply border-white/10 text-white hover:bg-white/5;
+}
+
+.banner-play-circle {
+    @apply w-8 h-8 rounded-full bg-[#14b8a6]/10 flex items-center justify-center border border-[#14b8a6]/20 transition-colors;
+}
+
+/* Glass Panel & Mockups */
+.banner-glass-panel {
+    @apply relative w-full max-w-[550px] mx-auto aspect-[4/3] rounded-3xl backdrop-blur-3xl border overflow-hidden flex flex-col p-6 isolate transition-colors;
+}
+
+.banner-glass-panel.is-light {
+    @apply bg-white/80 border-slate-200/90 shadow-[0_20px_50px_rgba(124,58,237,0.12)];
+}
+
+.banner-glass-panel.is-dark {
+    @apply bg-[#23212d]/40 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)];
+}
+
+.banner-floating-icon {
+    @apply absolute w-14 h-14 rounded-2xl border flex items-center justify-center shadow-lg z-20;
+}
+
+.banner-floating-icon.is-light {
+    @apply bg-white border-slate-200;
+}
+
+.banner-floating-icon.is-dark {
+    @apply bg-[#14121c] border-white/5;
+}
+
+.banner-stat-box {
+    @apply rounded-xl border p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 backdrop-blur-sm relative overflow-hidden;
+}
+
+.banner-stat-box.is-light {
+    @apply bg-white border-slate-200 shadow-sm;
+}
+
+.banner-stat-box.is-dark {
+    @apply bg-[#2a2835]/50 border-white/5;
+}
+
+.banner-stat-title {
+    @apply text-3xl font-bold tracking-tight drop-shadow-sm z-10;
+}
+
+.banner-stat-title.is-light {
+    @apply text-slate-900;
+}
+
+.banner-stat-title.is-dark {
+    @apply text-white;
+}
+
+.banner-stat-sub {
+    @apply text-[9px] uppercase font-bold tracking-widest mt-1 z-10;
+}
+
+.banner-stat-sub.is-light {
+    @apply text-slate-500;
+}
+
+.banner-stat-sub.is-dark {
+    @apply text-gray-400;
+}
