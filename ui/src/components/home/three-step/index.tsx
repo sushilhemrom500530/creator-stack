@@ -42,7 +42,7 @@ export function ThreeStepSection() {
             <div className={`absolute top-0 right-0 w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-indigo-300/15" : "bg-indigo-600/5"}`} />
             <div className={`absolute bottom-0 left-[-10%] w-[500px] h-[500px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-violet-300/15" : "bg-violet-600/5"}`} />
 
-            <div className="max-w-5xl w-full mx-auto px-6 relative z-10 flex flex-col items-start lg:px-12">
+            <div className="max-w-5xl w-full mx-auto relative z-10 flex flex-col items-start px-4 lg:px-8">
                 <div className="mb-16 max-w-2xl mx-auto w-full">
                     <Title
                         title="Three Steps to Supremacy"

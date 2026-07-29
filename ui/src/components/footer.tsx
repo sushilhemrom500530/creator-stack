@@ -16,7 +16,7 @@ export default function Footer() {
             <div className={`absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none -z-10 ${isLight ? "bg-purple-500/10" : "bg-purple-600/10"
                 }`} />
 
-            <div className="max-w-[1200px] mx-auto px-6 lg:px-12 relative z-10">
+            <div className="container mx-auto px-4 lg:px-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-8 mb-20">
                     {/* Brand Info */}
                     <div className="col-span-1 md:col-span-1 pr-4">
