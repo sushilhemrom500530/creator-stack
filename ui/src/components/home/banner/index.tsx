@@ -8,12 +8,11 @@ export default function BannerSection() {
   const isLight = theme === "light";
 
   return (
-    <section className={`relative w-full min-h-screen flex justify-center items-center pt-28 pb-16 overflow-hidden transition-colors duration-300 ${isLight ? "bg-gradient-to-b from-slate-50 via-violet-50/30 to-white" : "bg-[#100e16]"
-      }`}>
+    <section className={`relative w-full min-h-screen flex justify-center items-center pt-28 pb-16 overflow-hidden transition-colors duration-300 ${isLight ? "hero-bg-pattern" : "hero-bg-pattern-dark"}`}>
       {/* Background Glows */}
       <div className={`absolute top-[10%] left-0 w-[600px] h-[600px] blur-[140px] rounded-full pointer-events-none -translate-x-1/2 ${isLight ? "bg-violet-400/20" : "bg-violet-600/30"
         }`} />
-      <div className={`absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-teal-400/20" : "bg-[#14b8a6]/10"
+      <div className={`absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-violet-400/20" : "bg-[#14b8a6]/10"
         }`} />
 
       <div className="px-6 lg:px-8 relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-12 justify-between items-center">
