@@ -222,3 +222,47 @@ body {
 .dark-card-bg {
     @apply bg-[#171520] border-white/5;
 }
+
+/* Shared Tagline Badge Component */
+.tagline-badge,
+.solutions-tagline-badge,
+.pricing-tagline-badge {
+    @apply inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border backdrop-blur-md mb-8;
+}
+
+.tagline-badge.is-light,
+.solutions-tagline-badge.is-light,
+.pricing-tagline-badge.is-light {
+    @apply bg-slate-200/60 border-slate-300/60;
+}
+
+.tagline-badge.is-dark,
+.solutions-tagline-badge.is-dark,
+.pricing-tagline-badge.is-dark {
+    @apply bg-white/5 border-white/10;
+}
+
+.tagline-dot,
+.solutions-tagline-dot,
+.pricing-tagline-dot {
+    @apply w-2 h-2 rounded-full bg-violet-500 animate-pulse;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.8);
+}
+
+.tagline-text,
+.solutions-tagline-text,
+.pricing-tagline-text {
+    @apply text-xs font-bold tracking-widest uppercase;
+}
+
+.tagline-text.is-light,
+.solutions-tagline-text.is-light,
+.pricing-tagline-text.is-light {
+    @apply text-violet-700;
+}
+
+.tagline-text.is-dark,
+.solutions-tagline-text.is-dark,
+.pricing-tagline-text.is-dark {
+    @apply text-[#B3A1C9];
+}

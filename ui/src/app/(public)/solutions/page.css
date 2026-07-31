@@ -1,0 +1,287 @@
+@reference "../../../styles/style.globals.css";
+
+/* Main Page Container */
+.solutions-page-main {
+    @apply min-h-screen transition-colors duration-300 selection:bg-[#9747FF]/30;
+}
+
+.solutions-page-main.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-white text-slate-900;
+}
+
+.solutions-page-main.is-dark {
+    @apply bg-[#0a0614] text-white;
+}
+
+/* Hero Section */
+.solutions-hero-section {
+    @apply relative w-full min-h-[70vh] flex flex-col items-center justify-center pt-40 pb-16 px-4 overflow-hidden text-center;
+}
+
+.solutions-hero-glow {
+    @apply absolute inset-0 flex items-center justify-center pointer-events-none;
+}
+
+.solutions-hero-glow-blob {
+    @apply w-[600px] h-[600px] rounded-full blur-[120px];
+}
+
+.solutions-hero-glow-blob.is-light {
+    @apply bg-purple-300/30;
+}
+
+.solutions-hero-glow-blob.is-dark {
+    @apply bg-purple-900/20;
+}
+
+/* Tagline Badge */
+.solutions-tagline-badge {
+    @apply inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border backdrop-blur-md mb-8;
+}
+
+.solutions-tagline-dot {
+    @apply w-2 h-2 rounded-full bg-violet-500 animate-pulse;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.8);
+}
+
+.solutions-tagline-badge.is-light {
+    @apply bg-slate-200/60 border-slate-300/60;
+}
+
+.solutions-tagline-badge.is-dark {
+    @apply bg-white/5 border-white/10;
+}
+
+.solutions-tagline-text {
+    @apply text-xs font-bold tracking-widest uppercase;
+}
+
+.solutions-tagline-text.is-light {
+    @apply text-violet-700;
+}
+
+.solutions-tagline-text.is-dark {
+    @apply text-[#B3A1C9];
+}
+
+/* Headings */
+.solutions-heading {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 font-serif;
+}
+
+.solutions-heading.is-light {
+    @apply text-slate-900;
+}
+
+.solutions-heading.is-dark {
+    @apply text-white;
+}
+
+.solutions-gradient-text {
+    @apply text-transparent bg-clip-text font-serif;
+}
+
+.solutions-gradient-text.is-light {
+    @apply bg-gradient-to-r from-violet-700 via-purple-600 to-indigo-600;
+}
+
+.solutions-gradient-text.is-dark {
+    @apply bg-gradient-to-r from-[#DDB9FF] via-[#B983FF] to-[#9747FF];
+}
+
+/* Description */
+.solutions-desc {
+    @apply text-lg md:text-xl max-w-[85%] mx-auto mb-10 leading-relaxed;
+}
+
+.solutions-desc.is-light {
+    @apply text-slate-600;
+}
+
+.solutions-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Action Buttons */
+.solutions-btn-primary {
+    @apply px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer;
+}
+
+.solutions-btn-primary.is-light {
+    @apply bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25);
+}
+
+.solutions-btn-primary.is-dark {
+    @apply bg-[#D4B5FF] hover:bg-[#E9D5FF] text-[#2D164E];
+}
+
+.solutions-btn-secondary {
+    @apply px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer;
+}
+
+.solutions-btn-secondary.is-light {
+    @apply bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800;
+}
+
+.solutions-btn-secondary.is-dark {
+    @apply bg-[#1A1625] hover:bg-[#2A243A] border border-white/5 text-white;
+}
+
+/* Features Section Base */
+.solutions-features-section {
+    @apply relative w-full max-w-7xl mx-auto py-24 px-6 md:px-12 flex flex-col gap-32;
+}
+
+.solutions-features-section.is-light {
+    @apply border-slate-200/80;
+}
+
+.solutions-features-section.is-dark {
+    @apply border-white/5;
+}
+
+/* Feature Headings & Text */
+.solutions-feature-title {
+    @apply text-3xl md:text-4xl font-bold font-serif mb-6;
+}
+
+.solutions-feature-title.is-light {
+    @apply text-slate-900;
+}
+
+.solutions-feature-title.is-dark {
+    @apply text-white;
+}
+
+.solutions-feature-desc {
+    @apply text-lg leading-relaxed mb-8;
+}
+
+.solutions-feature-desc.is-light {
+    @apply text-slate-600;
+}
+
+.solutions-feature-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.solutions-feature-item-text {
+    @apply text-base font-medium;
+}
+
+.solutions-feature-item-text.is-light {
+    @apply text-slate-700;
+}
+
+.solutions-feature-item-text.is-dark {
+    @apply text-[#d1cddb];
+}
+
+/* Vertical Badges */
+.solutions-vertical-badge {
+    @apply text-sm font-bold tracking-widest uppercase mb-4;
+}
+
+.solutions-vertical-badge.is-cyan.is-light {
+    @apply text-cyan-700;
+}
+
+.solutions-vertical-badge.is-cyan.is-dark {
+    @apply text-cyan-400;
+}
+
+.solutions-vertical-badge.is-orange.is-light {
+    @apply text-orange-600;
+}
+
+.solutions-vertical-badge.is-orange.is-dark {
+    @apply text-[#FF8A65];
+}
+
+.solutions-vertical-badge.is-purple.is-light {
+    @apply text-purple-700;
+}
+
+.solutions-vertical-badge.is-purple.is-dark {
+    @apply text-[#B388FF];
+}
+
+/* Bullet Dots */
+.solutions-bullet-dot.is-cyan.is-light {
+    @apply bg-cyan-600;
+}
+
+.solutions-bullet-dot.is-cyan.is-dark {
+    @apply bg-cyan-400;
+}
+
+.solutions-bullet-dot.is-orange.is-light {
+    @apply bg-orange-500;
+}
+
+.solutions-bullet-dot.is-orange.is-dark {
+    @apply bg-[#FF8A65];
+}
+
+.solutions-bullet-dot.is-purple.is-light {
+    @apply bg-purple-600;
+}
+
+.solutions-bullet-dot.is-purple.is-dark {
+    @apply bg-[#B388FF];
+}
+
+/* CTA Buttons */
+.solutions-feature-cta {
+    @apply font-semibold flex items-center gap-2 transition-colors cursor-pointer;
+}
+
+.solutions-feature-cta.is-cyan.is-light {
+    @apply text-cyan-700 hover:text-cyan-800;
+}
+
+.solutions-feature-cta.is-cyan.is-dark {
+    @apply text-cyan-400 hover:text-cyan-300;
+}
+
+.solutions-feature-cta.is-orange.is-light {
+    @apply text-orange-600 hover:text-orange-700;
+}
+
+.solutions-feature-cta.is-orange.is-dark {
+    @apply text-[#FF8A65] hover:text-[#ff9d7e];
+}
+
+.solutions-feature-cta.is-purple.is-light {
+    @apply text-purple-700 hover:text-purple-800;
+}
+
+.solutions-feature-cta.is-purple.is-dark {
+    @apply text-[#B388FF] hover:text-[#c4a1ff];
+}
+
+/* Image Containers */
+.solutions-image-card {
+    @apply relative w-full aspect-[4/3] rounded-2xl border overflow-hidden transition-all duration-300;
+}
+
+.solutions-image-card.is-light {
+    @apply border-slate-200/90 bg-white/90 shadow-xl shadow-slate-200/50;
+}
+
+.solutions-image-card.is-dark {
+    @apply border-white/10 bg-white/5;
+}
+
+.solutions-image {
+    @apply absolute inset-0 w-full h-full object-cover transition-opacity duration-500;
+}
+
+.solutions-image.is-light {
+    @apply opacity-90 hover:opacity-100;
+}
+
+.solutions-image.is-dark {
+    @apply opacity-30 mix-blend-luminosity hover:opacity-50;
+}
