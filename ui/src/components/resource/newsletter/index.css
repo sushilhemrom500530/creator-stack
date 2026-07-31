@@ -1,0 +1,65 @@
+@reference "../../../styles/style.globals.css";
+
+.newsletter-section {
+    @apply relative w-full max-w-5xl mx-auto py-24 px-6 md:px-12;
+}
+
+.newsletter-card {
+    @apply backdrop-blur-md border rounded-3xl p-10 md:p-16 text-center relative overflow-hidden transition-colors;
+}
+
+.newsletter-card.is-light {
+    @apply bg-white/90 border-slate-200/90 shadow-2xl shadow-slate-200/60;
+}
+
+.newsletter-card.is-dark {
+    @apply bg-[#15111F]/80 border-white/10;
+}
+
+.newsletter-title {
+    @apply text-3xl md:text-4xl font-bold font-serif mb-6;
+}
+
+.newsletter-title.is-light {
+    @apply text-slate-900;
+}
+
+.newsletter-title.is-dark {
+    @apply text-white;
+}
+
+.newsletter-desc {
+    @apply text-lg mb-10;
+}
+
+.newsletter-desc.is-light {
+    @apply text-slate-600;
+}
+
+.newsletter-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.newsletter-input {
+    @apply flex-1 rounded-xl py-4 px-5 transition-colors shadow-inner outline-none;
+}
+
+.newsletter-input.is-light {
+    @apply bg-slate-100/80 border border-slate-300/80 text-slate-900 placeholder:text-slate-400 focus:border-violet-600;
+}
+
+.newsletter-input.is-dark {
+    @apply bg-[#0a0614] border border-white/10 text-white placeholder:text-[#a19bb0]/50 focus:border-[#DDB9FF]/50;
+}
+
+.newsletter-btn {
+    @apply px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 whitespace-nowrap cursor-pointer;
+}
+
+.newsletter-btn.is-light {
+    @apply bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white;
+}
+
+.newsletter-btn.is-dark {
+    @apply bg-[#DDB9FF] hover:bg-[#E9D5FF] text-[#2D164E];
+}
