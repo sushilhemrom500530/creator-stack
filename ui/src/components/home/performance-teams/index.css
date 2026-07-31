@@ -1,0 +1,73 @@
+@reference "../../../styles/style.globals.css";
+
+/* Keyframe Marquee Animation */
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 40s linear infinite;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+/* Performance Teams Section Base Container */
+.perf-teams-section {
+    @apply w-full py-12 md:py-16 flex flex-col items-center justify-center border-t overflow-hidden transition-colors duration-300;
+}
+
+.perf-teams-section.is-light {
+    @apply bg-slate-100/70 border-slate-200/80;
+}
+
+.perf-teams-section.is-dark {
+    @apply bg-[#100e16] border-white/5 shadow-inner;
+}
+
+/* Heading Text */
+.perf-teams-heading {
+    @apply text-[10px] md:text-[11px] font-bold tracking-[0.2em] md:tracking-[0.25em] uppercase mb-10 text-center px-6 lg:px-8;
+}
+
+.perf-teams-heading.is-light {
+    @apply text-slate-500;
+}
+
+.perf-teams-heading.is-dark {
+    @apply text-gray-400 drop-shadow-sm;
+}
+
+/* Mask Container */
+.perf-teams-mask-container {
+    @apply w-full relative flex items-center overflow-hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* Marquee Track */
+.perf-teams-marquee-track {
+    @apply gap-x-12 md:gap-x-24 opacity-75 px-4;
+}
+
+/* Company Item */
+.perf-teams-item {
+    @apply font-serif font-extrabold text-2xl md:text-3xl transition-colors cursor-pointer tracking-tight whitespace-nowrap;
+}
+
+.perf-teams-item.is-light {
+    @apply text-slate-400 hover:text-slate-900;
+}
+
+.perf-teams-item.is-dark {
+    @apply text-gray-500 hover:text-gray-200 drop-shadow-md;
+}
