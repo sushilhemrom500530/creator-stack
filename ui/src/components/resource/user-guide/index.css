@@ -108,3 +108,44 @@
 .user-guide-link.is-dark {
     @apply text-white hover:text-[#DDB9FF] decoration-white/20;
 }
+
+/* Image Wrapper & Image styles */
+.user-guide-img-container {
+    @apply w-full aspect-[16/10] rounded-xl mb-6 overflow-hidden relative border transition-all;
+}
+
+.user-guide-img-container.is-purple.is-light {
+    @apply bg-purple-100/60 border-purple-200/60;
+}
+
+.user-guide-img-container.is-purple.is-dark {
+    @apply bg-purple-900/20 border-white/5;
+}
+
+.user-guide-img-container.is-blue.is-light {
+    @apply bg-blue-100/60 border-blue-200/60;
+}
+
+.user-guide-img-container.is-blue.is-dark {
+    @apply bg-blue-900/20 border-white/5;
+}
+
+.user-guide-img-container.is-cyan.is-light {
+    @apply bg-cyan-100/60 border-cyan-200/60;
+}
+
+.user-guide-img-container.is-cyan.is-dark {
+    @apply bg-cyan-900/20 border-white/5;
+}
+
+.user-guide-img {
+    @apply w-full h-full object-cover transition-all duration-500 group-hover:scale-105;
+}
+
+.user-guide-img.is-light {
+    @apply opacity-100 mix-blend-normal group-hover:opacity-95;
+}
+
+.user-guide-img.is-dark {
+    @apply opacity-60 mix-blend-screen group-hover:opacity-80;
+}

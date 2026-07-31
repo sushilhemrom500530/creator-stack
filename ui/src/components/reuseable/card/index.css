@@ -1,0 +1,102 @@
+@reference "../../../styles/style.globals.css";
+
+.reusable-card {
+    @apply rounded-2xl p-5 overflow-hidden border transition-all duration-300;
+}
+
+.reusable-card.is-light {
+    @apply bg-white/90 border-slate-200/80 hover:bg-white hover:border-violet-300;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.reusable-card.is-dark {
+    @apply bg-[#1A1625]/40 border-white/10 hover:bg-[#1A1625]/60 hover:border-white/20;
+}
+
+.reusable-card-img-container {
+    @apply w-full aspect-[16/10] rounded-xl mb-6 overflow-hidden relative border transition-all;
+}
+
+.reusable-card-img-container.is-purple.is-light {
+    @apply bg-purple-100/60 border-purple-200/60;
+}
+
+.reusable-card-img-container.is-purple.is-dark {
+    @apply bg-purple-900/20 border-white/5;
+}
+
+.reusable-card-img-container.is-blue.is-light {
+    @apply bg-blue-100/60 border-blue-200/60;
+}
+
+.reusable-card-img-container.is-blue.is-dark {
+    @apply bg-blue-900/20 border-white/5;
+}
+
+.reusable-card-img-container.is-cyan.is-light {
+    @apply bg-cyan-100/60 border-cyan-200/60;
+}
+
+.reusable-card-img-container.is-cyan.is-dark {
+    @apply bg-cyan-900/20 border-white/5;
+}
+
+.reusable-card-img {
+    @apply w-full h-full object-cover transition-all duration-500 group-hover:scale-105;
+}
+
+.reusable-card-img.is-light {
+    @apply opacity-100 mix-blend-normal group-hover:opacity-95;
+}
+
+.reusable-card-img.is-dark {
+    @apply opacity-60 mix-blend-screen group-hover:opacity-80;
+}
+
+.reusable-card-category {
+    @apply text-[10px] font-bold tracking-widest uppercase mb-2 block;
+}
+
+.reusable-card-category.is-light {
+    @apply text-violet-700;
+}
+
+.reusable-card-category.is-dark {
+    @apply text-[#B3A1C9];
+}
+
+.reusable-card-title {
+    @apply text-xl font-bold mb-3 font-serif;
+}
+
+.reusable-card-title.is-light {
+    @apply text-slate-900;
+}
+
+.reusable-card-title.is-dark {
+    @apply text-white;
+}
+
+.reusable-card-text {
+    @apply text-sm mb-6 leading-relaxed line-clamp-2;
+}
+
+.reusable-card-text.is-light {
+    @apply text-slate-600;
+}
+
+.reusable-card-text.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.reusable-card-link {
+    @apply text-sm font-medium transition-colors underline underline-offset-4 cursor-pointer;
+}
+
+.reusable-card-link.is-light {
+    @apply text-slate-900 hover:text-violet-700 decoration-slate-300;
+}
+
+.reusable-card-link.is-dark {
+    @apply text-white hover:text-[#DDB9FF] decoration-white/20;
+}

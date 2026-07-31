@@ -2,7 +2,41 @@
 
 import React from "react";
 import { useTheme } from "@/providers/mode-theme";
+import Card from "@/components/reuseable/card";
 import "./index.css";
+
+const GUIDE_CARDS_DATA = [
+    {
+        id: "onboarding",
+        category: "Getting Started",
+        title: "Onboarding Workshop",
+        description: "Learn how to connect your accounts and configure your first AI-driven content calendar in under 10 minutes.",
+        image: "https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=600&q=80",
+        imageAlt: "Guide 1",
+        variant: "purple",
+        buttonText: "Read Guide"
+    },
+    {
+        id: "methodology",
+        category: "Methodology",
+        title: "Audience Analysis",
+        description: "Deep dive into the neural networks behind our audience sentiment analysis and how to leverage it for viral reach.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+        imageAlt: "Guide 2",
+        variant: "blue",
+        buttonText: "Read Guide"
+    },
+    {
+        id: "strategy",
+        category: "Strategy",
+        title: "Multi-Channel Sync",
+        description: "Master the art of cross-platform narrative consistency using SocialFlow's automated tone adjustment algorithms.",
+        image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
+        imageAlt: "Guide 3",
+        variant: "cyan",
+        buttonText: "Read Guide"
+    }
+];
 
 export default function UserGuideSection() {
     const { theme } = useTheme();
@@ -24,38 +58,18 @@ export default function UserGuideSection() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Card 1 */}
-                <div className={`user-guide-card group ${themeClass}`}>
-                    <div className="w-full aspect-[16/10] rounded-xl bg-purple-900/20 mb-6 overflow-hidden relative border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&w=600&q=80" alt="Guide 1" className="w-full h-full object-cover opacity-60 mix-blend-screen group-hover:opacity-80 transition-opacity duration-500 group-hover:scale-105" />
-                    </div>
-                    <span className={`user-guide-category ${themeClass}`}>Getting Started</span>
-                    <h3 className={`user-guide-card-title ${themeClass}`}>Onboarding Workshop</h3>
-                    <p className={`user-guide-card-text ${themeClass}`}>Learn how to connect your accounts and configure your first AI-driven content calendar in under 10 minutes.</p>
-                    <button className={`user-guide-link ${themeClass}`}>Read Guide</button>
-                </div>
-
-                {/* Card 2 */}
-                <div className={`user-guide-card group ${themeClass}`}>
-                    <div className="w-full aspect-[16/10] rounded-xl bg-blue-900/20 mb-6 overflow-hidden relative border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Guide 2" className="w-full h-full object-cover opacity-60 mix-blend-screen group-hover:opacity-80 transition-opacity duration-500 group-hover:scale-105" />
-                    </div>
-                    <span className={`user-guide-category ${themeClass}`}>Methodology</span>
-                    <h3 className={`user-guide-card-title ${themeClass}`}>Audience Analysis</h3>
-                    <p className={`user-guide-card-text ${themeClass}`}>Deep dive into the neural networks behind our audience sentiment analysis and how to leverage it for viral reach.</p>
-                    <button className={`user-guide-link ${themeClass}`}>Read Guide</button>
-                </div>
-
-                {/* Card 3 */}
-                <div className={`user-guide-card group ${themeClass}`}>
-                    <div className="w-full aspect-[16/10] rounded-xl bg-cyan-900/20 mb-6 overflow-hidden relative border border-white/5">
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80" alt="Guide 3" className="w-full h-full object-cover opacity-60 mix-blend-screen group-hover:opacity-80 transition-opacity duration-500 group-hover:scale-105" />
-                    </div>
-                    <span className={`user-guide-category ${themeClass}`}>Strategy</span>
-                    <h3 className={`user-guide-card-title ${themeClass}`}>Multi-Channel Sync</h3>
-                    <p className={`user-guide-card-text ${themeClass}`}>Master the art of cross-platform narrative consistency using SocialFlow's automated tone adjustment algorithms.</p>
-                    <button className={`user-guide-link ${themeClass}`}>Read Guide</button>
-                </div>
+                {GUIDE_CARDS_DATA.map((card) => (
+                    <Card
+                        key={card.id}
+                        category={card.category}
+                        title={card.title}
+                        description={card.description}
+                        image={card.image}
+                        imageAlt={card.imageAlt}
+                        variant={card.variant}
+                        buttonText={card.buttonText}
+                    />
+                ))}
             </div>
         </section>
     );
