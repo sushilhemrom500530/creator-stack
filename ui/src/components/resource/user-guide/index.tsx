@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import { useTheme } from "@/providers/mode-theme";
-import Card from "@/components/reuseable/card";
 import "./index.css";
+import UserGuideCard from "@/components/reuseable/user-guide-card";
 
 const GUIDE_CARDS_DATA = [
     {
@@ -59,7 +58,7 @@ export default function UserGuideSection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {GUIDE_CARDS_DATA.map((card) => (
-                    <Card
+                    <UserGuideCard
                         key={card.id}
                         category={card.category}
                         title={card.title}

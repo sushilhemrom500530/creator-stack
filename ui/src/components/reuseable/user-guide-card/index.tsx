@@ -17,7 +17,7 @@ export interface CardProps {
     children?: React.ReactNode;
 }
 
-export function Card({
+export default function UserGuideCard({
     title,
     description,
     image,
@@ -57,4 +57,3 @@ export function Card({
     );
 }
 
-export default Card;
