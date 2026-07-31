@@ -1,0 +1,180 @@
+@reference "../../../styles/style.globals.css";
+
+/* FAQ Section Base Container */
+.faq-section {
+    @apply relative w-full py-24 flex flex-col items-center justify-center overflow-hidden transition-colors duration-300;
+}
+
+.faq-section.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-white;
+}
+
+.faq-section.is-dark {
+    @apply bg-gradient-to-b from-[#100e16] via-[#0a0a0c] to-[#09090b];
+}
+
+/* Background Glows */
+.faq-glow-top {
+    @apply absolute top-0 right-0 w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none;
+}
+
+.faq-glow-top.is-light {
+    @apply bg-indigo-300/15;
+}
+
+.faq-glow-top.is-dark {
+    @apply bg-indigo-600/5;
+}
+
+.faq-glow-bottom {
+    @apply absolute bottom-0 left-[-10%] w-[500px] h-[500px] blur-[150px] rounded-full pointer-events-none;
+}
+
+.faq-glow-bottom.is-light {
+    @apply bg-violet-300/15;
+}
+
+.faq-glow-bottom.is-dark {
+    @apply bg-violet-600/5;
+}
+
+/* Question Items / Buttons */
+.faq-question-btn {
+    @apply flex items-center justify-between p-5 rounded-2xl border text-left transition-all cursor-pointer flex-1;
+}
+
+.faq-question-btn.is-active.is-light {
+    @apply bg-violet-50/90 border-violet-300 shadow-md;
+}
+
+.faq-question-btn.is-active.is-dark {
+    @apply bg-[#171520]/80 border-violet-500/50 shadow-[0_0_20px_rgba(139,92,246,0.1)];
+}
+
+.faq-question-btn.is-inactive.is-light {
+    @apply bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50;
+}
+
+.faq-question-btn.is-inactive.is-dark {
+    @apply bg-[#111018] border-white/5 hover:border-white/10 hover:bg-[#15131d];
+}
+
+/* Question Title */
+.faq-question-title {
+    @apply text-[13px] font-bold;
+}
+
+.faq-question-title.is-active.is-light {
+    @apply text-violet-900;
+}
+
+.faq-question-title.is-active.is-dark {
+    @apply text-violet-300;
+}
+
+.faq-question-title.is-inactive.is-light {
+    @apply text-slate-800;
+}
+
+.faq-question-title.is-inactive.is-dark {
+    @apply text-white;
+}
+
+/* Chevron Icon */
+.faq-chevron {
+    @apply w-4 h-4 transition-transform;
+}
+
+.faq-chevron.is-active {
+    @apply translate-x-1;
+}
+
+.faq-chevron.is-active.is-light {
+    @apply text-violet-600;
+}
+
+.faq-chevron.is-active.is-dark {
+    @apply text-violet-400;
+}
+
+.faq-chevron.is-inactive.is-light {
+    @apply text-slate-400;
+}
+
+.faq-chevron.is-inactive.is-dark {
+    @apply text-gray-500;
+}
+
+/* Details Card */
+.faq-details-card {
+    @apply w-full md:w-[60%] flex flex-col justify-between rounded-3xl p-8 lg:p-10 border h-auto;
+}
+
+.faq-details-card.is-light {
+    @apply bg-white border-slate-200/90;
+}
+
+.faq-details-card.is-dark {
+    @apply bg-[#111018] border-white/5;
+}
+
+.faq-details-title {
+    @apply text-xl font-bold mb-4;
+}
+
+.faq-details-title.is-light {
+    @apply text-slate-900;
+}
+
+.faq-details-title.is-dark {
+    @apply text-white;
+}
+
+.faq-details-content {
+    @apply text-[14px] leading-relaxed;
+}
+
+.faq-details-content.is-light {
+    @apply text-slate-600;
+}
+
+.faq-details-content.is-dark {
+    @apply text-gray-400;
+}
+
+/* Visualization Box */
+.faq-vis-box {
+    @apply w-full mt-auto h-[220px] flex-shrink-0 border rounded-2xl flex flex-col items-center justify-center gap-4 group transition-colors;
+}
+
+.faq-vis-box.is-light {
+    @apply bg-slate-50 border-slate-200 hover:bg-slate-100;
+}
+
+.faq-vis-box.is-dark {
+    @apply bg-[#1a1825]/50 border-white/5 hover:bg-[#1a1825];
+}
+
+.faq-vis-icon {
+    @apply w-10 h-10 transition-colors;
+}
+
+.faq-vis-icon.is-light {
+    @apply text-slate-400 group-hover:text-violet-600;
+}
+
+.faq-vis-icon.is-dark {
+    @apply text-gray-600 group-hover:text-violet-500/50;
+}
+
+.faq-vis-text {
+    @apply text-[10px] font-bold tracking-[0.2em] uppercase transition-colors;
+}
+
+.faq-vis-text.is-light {
+    @apply text-slate-500 group-hover:text-slate-800;
+}
+
+.faq-vis-text.is-dark {
+    @apply text-gray-600 group-hover:text-gray-400;
+}
