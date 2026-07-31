@@ -1,0 +1,129 @@
+@reference "../../../styles/style.globals.css";
+
+/* Three Step Section Base Container */
+.three-step-section {
+    @apply relative w-full py-24 flex flex-col items-center justify-center overflow-hidden transition-colors duration-300;
+}
+
+.three-step-section.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-slate-100/70;
+}
+
+.three-step-section.is-dark {
+    @apply bg-gradient-to-b from-[#100e16] via-[#0a0a0c] to-[#09090b];
+}
+
+/* Background Glows */
+.three-step-glow-top {
+    @apply absolute top-0 right-0 w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none;
+}
+
+.three-step-glow-top.is-light {
+    @apply bg-indigo-300/15;
+}
+
+.three-step-glow-top.is-dark {
+    @apply bg-indigo-600/5;
+}
+
+.three-step-glow-bottom {
+    @apply absolute bottom-0 left-[-10%] w-[500px] h-[500px] blur-[150px] rounded-full pointer-events-none;
+}
+
+.three-step-glow-bottom.is-light {
+    @apply bg-violet-300/15;
+}
+
+.three-step-glow-bottom.is-dark {
+    @apply bg-violet-600/5;
+}
+
+/* Step Card Base */
+.three-step-card {
+    @apply relative rounded-[2rem] p-8 lg:p-10 border transition-all duration-500 overflow-hidden flex flex-col h-full hover:-translate-y-1;
+}
+
+.three-step-card.is-light {
+    @apply bg-white border-slate-200/90 shadow-lg shadow-slate-100 hover:border-violet-300;
+}
+
+.three-step-card.is-dark {
+    @apply border-white/5 hover:border-violet-500/30;
+}
+
+/* Inner Top-Right Glow */
+.three-step-glow-tr {
+    @apply absolute w-36 h-36 blur-2xl rounded-full pointer-events-none transition-transform duration-700;
+}
+
+.three-step-glow-tr.is-light {
+    @apply bg-violet-300/30 -right-8 -top-8;
+}
+
+.three-step-glow-tr.is-dark {
+    @apply bg-violet-600/10 -right-10 -top-10;
+}
+
+.three-step-card:hover .three-step-glow-tr {
+    @apply scale-125;
+}
+
+/* Inner Bottom-Left Glow (Light Mode) */
+.three-step-glow-bl {
+    @apply absolute -left-8 -bottom-8 w-36 h-36 blur-2xl rounded-full pointer-events-none transition-transform duration-700 bg-violet-300/25;
+}
+
+.three-step-card:hover .three-step-glow-bl {
+    @apply scale-125;
+}
+
+/* Large Step Number Overlay */
+.three-step-number {
+    @apply absolute right-6 top-8 text-8xl font-black select-none pointer-events-none transition-all duration-500;
+}
+
+.three-step-number.is-light {
+    @apply text-violet-900/[0.05];
+}
+
+.three-step-card:hover .three-step-number.is-light {
+    @apply text-violet-900/[0.09] scale-110;
+}
+
+.three-step-number.is-dark {
+    @apply text-white/[0.04];
+}
+
+.three-step-card:hover .three-step-number.is-dark {
+    @apply text-violet-400/[0.08] scale-110;
+}
+
+/* Icon Badge */
+.three-step-icon-badge {
+    @apply w-11 h-11 rounded-full border flex items-center justify-center mb-8 relative z-10 transition-colors duration-300;
+}
+
+/* Step Title & Description */
+.three-step-title {
+    @apply text-xl font-bold mb-4;
+}
+
+.three-step-title.is-light {
+    @apply text-slate-900;
+}
+
+.three-step-title.is-dark {
+    @apply text-white;
+}
+
+.three-step-desc {
+    @apply text-[13px] lg:text-sm leading-relaxed max-w-[90%];
+}
+
+.three-step-desc.is-light {
+    @apply text-slate-600;
+}
+
+.three-step-desc.is-dark {
+    @apply text-gray-400;
+}

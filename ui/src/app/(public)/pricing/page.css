@@ -1,0 +1,302 @@
+@reference "../../../styles/style.globals.css";
+
+/* Pricing Page Main Container */
+.pricing-page-main {
+    @apply min-h-screen transition-colors duration-300 selection:bg-[#9747FF]/30;
+}
+
+.pricing-page-main.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-white text-slate-900;
+}
+
+.pricing-page-main.is-dark {
+    @apply bg-[#0a0614] text-white;
+}
+
+/* Banner Section */
+.pricing-banner-section {
+    @apply relative w-full min-h-[45vh] flex flex-col items-center justify-center pt-32 pb-16 px-4 overflow-hidden text-center;
+}
+
+/* Ambient Glows */
+.pricing-banner-glow-center {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full blur-[100px] pointer-events-none;
+}
+
+.pricing-banner-glow-center.is-light {
+    @apply bg-violet-300/20;
+}
+
+.pricing-banner-glow-center.is-dark {
+    @apply bg-purple-900/15;
+}
+
+.pricing-banner-glow-right {
+    @apply absolute top-0 right-1/4 w-[300px] h-[300px] rounded-full blur-[80px] pointer-events-none;
+}
+
+.pricing-banner-glow-right.is-light {
+    @apply bg-indigo-300/20;
+}
+
+.pricing-banner-glow-right.is-dark {
+    @apply bg-blue-900/10;
+}
+
+/* Tagline Badge */
+.pricing-tagline-badge {
+    @apply inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border backdrop-blur-md mb-8;
+}
+
+.pricing-tagline-dot {
+    @apply w-2 h-2 rounded-full bg-violet-500 animate-pulse;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.8);
+}
+
+.pricing-tagline-badge.is-light {
+    @apply bg-slate-200/60 border-slate-300/60;
+}
+
+.pricing-tagline-badge.is-dark {
+    @apply bg-white/5 border-white/10;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.03);
+}
+
+.pricing-tagline-text {
+    @apply text-[11px] font-bold tracking-widest uppercase;
+}
+
+.pricing-tagline-text.is-light {
+    @apply text-violet-700;
+}
+
+.pricing-tagline-text.is-dark {
+    @apply text-[#B3A1C9];
+}
+
+/* Page Heading */
+.pricing-page-heading {
+    @apply text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 font-serif;
+}
+
+.pricing-page-heading.is-light {
+    @apply text-slate-900;
+}
+
+.pricing-page-heading.is-dark {
+    @apply text-white;
+}
+
+.pricing-page-gradient-text {
+    @apply text-transparent bg-clip-text;
+}
+
+.pricing-page-gradient-text.is-light {
+    @apply bg-gradient-to-r from-violet-700 via-purple-600 to-indigo-600;
+}
+
+.pricing-page-gradient-text.is-dark {
+    @apply bg-gradient-to-r from-[#DDB9FF] via-[#B983FF] to-[#9747FF];
+}
+
+/* Description */
+.pricing-page-desc {
+    @apply text-lg md:text-xl max-w-2xl mx-auto leading-relaxed;
+}
+
+.pricing-page-desc.is-light {
+    @apply text-slate-600;
+}
+
+.pricing-page-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Cards Section */
+.pricing-tiers-section {
+    @apply relative w-full max-w-7xl mx-auto py-16 px-6 md:px-12 mb-24;
+}
+
+/* Card Standard (Starter & Enterprise) */
+.pricing-tier-card-standard {
+    @apply rounded-3xl p-10 flex flex-col transition-all duration-500 relative z-0 h-full lg:h-[90%];
+}
+
+.pricing-tier-card-standard.is-starter {
+    @apply lg:rounded-r-none;
+}
+
+.pricing-tier-card-standard.is-enterprise {
+    @apply lg:rounded-l-none;
+}
+
+.pricing-tier-card-standard.is-light {
+    @apply bg-white/90 backdrop-blur-xl border border-slate-200/90 hover:border-violet-300;
+}
+
+.pricing-tier-card-standard.is-dark {
+    @apply bg-[#110D1A]/80 backdrop-blur-xl border border-white/10 hover:border-white/20;
+}
+
+/* Card Featured (Professional) */
+.pricing-tier-card-featured {
+    @apply rounded-3xl p-10 flex flex-col relative z-10 transform lg:scale-105 h-full overflow-hidden transition-all duration-500;
+}
+
+.pricing-tier-card-featured.is-light {
+    @apply bg-white border-2 border-violet-500/80 hover:border-violet-600;
+}
+
+.pricing-tier-card-featured.is-dark {
+    @apply bg-gradient-to-b from-[#1E1533] to-[#110D1A] border border-[#B983FF]/40;
+    box-shadow: 0 0 50px rgba(151, 71, 255, 0.15);
+}
+
+/* Glow inside Featured Card */
+.pricing-tier-featured-glow {
+    @apply absolute top-0 right-0 w-64 h-64 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none;
+}
+
+.pricing-tier-featured-glow.is-light {
+    @apply bg-violet-400/20;
+}
+
+.pricing-tier-featured-glow.is-dark {
+    @apply bg-purple-500/20;
+}
+
+.pricing-tier-featured-topbar {
+    @apply absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#DDB9FF] via-[#9747FF] to-[#DDB9FF];
+}
+
+/* Plan Title & Badge */
+.pricing-tier-title {
+    @apply text-2xl font-bold font-serif;
+}
+
+.pricing-tier-title.is-light {
+    @apply text-slate-900;
+}
+
+.pricing-tier-title.is-dark {
+    @apply text-white;
+}
+
+.pricing-tier-badge {
+    @apply text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full;
+}
+
+.pricing-tier-badge.is-light {
+    @apply bg-gradient-to-r from-violet-600 to-indigo-600 text-white;
+}
+
+.pricing-tier-badge.is-dark {
+    @apply bg-[#DDB9FF] text-[#2D164E];
+    box-shadow: 0 0 15px rgba(221, 185, 255, 0.4);
+}
+
+/* Tagline */
+.pricing-tier-tagline {
+    @apply text-sm h-10;
+}
+
+.pricing-tier-tagline.is-featured.is-light {
+    @apply text-violet-700 font-medium;
+}
+
+.pricing-tier-tagline.is-featured.is-dark {
+    @apply text-[#DDB9FF]/80;
+}
+
+.pricing-tier-tagline.is-standard.is-light {
+    @apply text-slate-600;
+}
+
+.pricing-tier-tagline.is-standard.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Pricing Values */
+.pricing-tier-price {
+    @apply font-bold font-mono;
+}
+
+.pricing-tier-price.is-featured {
+    @apply text-6xl text-slate-900 dark:text-white;
+}
+
+.pricing-tier-price.is-standard {
+    @apply text-5xl text-slate-900 dark:text-white;
+}
+
+.pricing-tier-price-period {
+    @apply font-medium;
+}
+
+.pricing-tier-price-period.is-light {
+    @apply text-slate-500;
+}
+
+.pricing-tier-price-period.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Feature Item Text */
+.pricing-tier-feature-text.is-featured.is-light {
+    @apply text-sm font-semibold text-slate-900;
+}
+
+.pricing-tier-feature-text.is-featured.is-dark {
+    @apply text-sm font-medium text-white;
+}
+
+.pricing-tier-feature-text.is-standard.is-light {
+    @apply text-sm text-slate-700;
+}
+
+.pricing-tier-feature-text.is-standard.is-dark {
+    @apply text-sm text-[#d1cddb];
+}
+
+/* Check Icons */
+.pricing-tier-check-icon.is-featured.is-light {
+    @apply w-5 h-5 text-violet-600 shrink-0 mt-0.5;
+}
+
+.pricing-tier-check-icon.is-featured.is-dark {
+    @apply w-5 h-5 text-[#4DE1C1] shrink-0 mt-0.5;
+}
+
+.pricing-tier-check-icon.is-standard.is-light {
+    @apply w-5 h-5 text-violet-600 shrink-0 mt-0.5;
+}
+
+.pricing-tier-check-icon.is-standard.is-dark {
+    @apply w-5 h-5 text-[#B983FF] shrink-0 mt-0.5;
+}
+
+/* Action Buttons */
+.pricing-tier-btn-standard {
+    @apply relative w-full py-4 rounded-xl font-bold transition-all duration-300 cursor-pointer;
+}
+
+.pricing-tier-btn-standard.is-light {
+    @apply bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800;
+}
+
+.pricing-tier-btn-standard.is-dark {
+    @apply bg-white/5 hover:bg-white/10 border border-white/10 text-white;
+}
+
+.pricing-tier-btn-featured {
+    @apply relative w-full py-4 rounded-xl font-bold transition-all duration-300 cursor-pointer;
+}
+
+.pricing-tier-btn-featured.is-light {
+    @apply bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white;
+}
+
+.pricing-tier-btn-featured.is-dark {
+    @apply bg-[#D4B5FF] hover:bg-[#E9D5FF] text-[#2D164E];
+    box-shadow: 0 0 20px rgba(212, 181, 255, 0.3);
+}

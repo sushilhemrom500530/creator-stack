@@ -1,35 +1,53 @@
-import React from 'react';
+"use client";
 
-const COMPARE_DATA = [
+import React from 'react';
+import { useTheme } from '@/providers/mode-theme';
+import "./index.css";
+
+interface CompareCell {
+    text: string;
+    muted?: boolean;
+    highlighted?: boolean;
+    featured?: boolean;
+}
+
+interface CompareRow {
+    feature: string;
+    starter: CompareCell;
+    business: CompareCell;
+    enterprise: CompareCell;
+}
+
+const COMPARE_DATA: CompareRow[] = [
     {
         feature: 'Monthly AI Tokens',
-        starter: { text: '50,000', className: 'text-[#d1cddb]' },
-        business: { text: '500,000', className: 'text-white font-bold' },
-        enterprise: { text: 'Unlimited', className: 'text-[#d1cddb]' }
+        starter: { text: '50,000' },
+        business: { text: '500,000', featured: true },
+        enterprise: { text: 'Unlimited' }
     },
     {
         feature: 'Fine-tuning Access',
-        starter: { text: '—', className: 'text-[#a19bb0]' },
-        business: { text: 'Included', className: 'text-[#DDB9FF] font-semibold' },
-        enterprise: { text: 'Advanced', className: 'text-[#d1cddb]' }
+        starter: { text: '—', muted: true },
+        business: { text: 'Included', highlighted: true },
+        enterprise: { text: 'Advanced' }
     },
     {
         feature: 'API Rate Limits',
-        starter: { text: '60 RPM', className: 'text-[#d1cddb]' },
-        business: { text: '1,200 RPM', className: 'text-[#d1cddb]' },
-        enterprise: { text: 'Custom', className: 'text-[#d1cddb]' }
+        starter: { text: '60 RPM' },
+        business: { text: '1,200 RPM' },
+        enterprise: { text: 'Custom' }
     },
     {
         feature: 'Data Retention',
-        starter: { text: '7 Days', className: 'text-[#d1cddb]' },
-        business: { text: '30 Days', className: 'text-[#d1cddb]' },
-        enterprise: { text: 'Customizable', className: 'text-[#d1cddb]' }
+        starter: { text: '7 Days' },
+        business: { text: '30 Days' },
+        enterprise: { text: 'Customizable' }
     },
     {
         feature: '24/7 Priority Support',
-        starter: { text: '—', className: 'text-[#a19bb0]' },
-        business: { text: '—', className: 'text-[#a19bb0]' },
-        enterprise: { text: 'Included', className: 'text-[#DDB9FF] font-semibold' }
+        starter: { text: '—', muted: true },
+        business: { text: '—', muted: true },
+        enterprise: { text: 'Included', highlighted: true }
     },
 ];
 
@@ -45,48 +63,70 @@ const FAQS = [
 ];
 
 export default function PricingCompareSection() {
-    return (
-        <section className="relative w-full max-w-7xl mx-auto py-16 px-6 md:px-12 mb-24">
+    const { theme } = useTheme();
+    const isLight = theme === "light";
+    const themeClass = isLight ? "is-light" : "is-dark";
 
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Compare Features</h2>
-                <p className="text-[#a19bb0] text-sm md:text-base">
+    const getCellClass = (cell: CompareCell) => {
+        if (cell.highlighted) return `pricing-compare-value-cell is-highlighted ${themeClass}`;
+        if (cell.featured) return `pricing-compare-value-cell is-featured ${themeClass}`;
+        if (cell.muted) return `pricing-compare-value-cell is-muted ${themeClass}`;
+        return `pricing-compare-value-cell is-normal ${themeClass}`;
+    };
+
+    return (
+        <section className="pricing-compare-section">
+
+            <div className="pricing-compare-header">
+                <h2 className={`pricing-compare-title ${themeClass}`}>
+                    Compare Features
+                </h2>
+                <p className={`pricing-compare-desc ${themeClass}`}>
                     Deep dive into our comprehensive feature set.
                 </p>
             </div>
 
             {/* Comparison Table */}
-            <div className="bg-[#1A1625]/60 border border-white/5 rounded-3xl p-6 md:p-10 mb-12 shadow-[0_0_40px_rgba(0,0,0,0.5)] overflow-x-auto overflow-y-hidden text-sm md:text-base">
-                <div className="min-w-[600px]">
+            <div className={`pricing-compare-table-container ${themeClass}`}>
+                <div className="pricing-compare-table-wrapper">
                     {/* Header Row */}
-                    <div className="grid grid-cols-4 gap-4 pb-6 border-b border-white/10 font-bold items-center sticky top-0 bg-[#1A1625]/0">
-                        <div className="text-white text-lg">Features</div>
-                        <div className="text-white text-lg text-center">Starter</div>
-                        <div className="text-[#DDB9FF] text-lg text-center">Business</div>
-                        <div className="text-white text-lg text-center">Enterprise</div>
+                    <div className={`pricing-compare-header-row ${themeClass}`}>
+                        <div className={`pricing-compare-th ${themeClass}`}>Features</div>
+                        <div className={`pricing-compare-th-col ${themeClass}`}>Starter</div>
+                        <div className={`pricing-compare-th-business ${themeClass}`}>Business</div>
+                        <div className={`pricing-compare-th-col ${themeClass}`}>Enterprise</div>
                     </div>
 
                     {/* Data Rows */}
-                    {COMPARE_DATA.map((row, index) => (
-                        <div
-                            key={index}
-                            className={`grid grid-cols-4 gap-4 py-8 items-center ${index !== COMPARE_DATA.length - 1 ? 'border-b border-white/5' : ''}`}
-                        >
-                            <div className="font-semibold text-white pl-1">{row.feature}</div>
-                            <div className={`text-center ${row.starter.className}`}>{row.starter.text}</div>
-                            <div className={`text-center ${row.business.className}`}>{row.business.text}</div>
-                            <div className={`text-center ${row.enterprise.className}`}>{row.enterprise.text}</div>
-                        </div>
-                    ))}
+                    {COMPARE_DATA.map((row, index) => {
+                        const hasBorder = index !== COMPARE_DATA.length - 1;
+                        return (
+                            <div
+                                key={index}
+                                className={`pricing-compare-data-row ${hasBorder ? `has-border ${themeClass}` : ''}`}
+                            >
+                                <div className={`pricing-compare-feature-cell ${themeClass}`}>{row.feature}</div>
+                                <div className={getCellClass(row.starter)}>
+                                    {row.starter.text}
+                                </div>
+                                <div className={getCellClass(row.business)}>
+                                    {row.business.text}
+                                </div>
+                                <div className={getCellClass(row.enterprise)}>
+                                    {row.enterprise.text}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
             {/* FAQs Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="pricing-compare-faq-grid">
                 {FAQS.map((faq, index) => (
-                    <div key={index} className="bg-[#1A1625]/40 border border-white/5 rounded-3xl p-8 hover:bg-[#1A1625]/60 transition-colors">
-                        <h4 className="text-[#DDB9FF] font-bold text-lg mb-4">{faq.question}</h4>
-                        <p className="text-[#a19bb0] text-sm leading-relaxed">{faq.answer}</p>
+                    <div key={index} className={`pricing-compare-faq-card ${themeClass}`}>
+                        <h4 className={`pricing-compare-faq-question ${themeClass}`}>{faq.question}</h4>
+                        <p className={`pricing-compare-faq-answer ${themeClass}`}>{faq.answer}</p>
                     </div>
                 ))}
             </div>
