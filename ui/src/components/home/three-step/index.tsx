@@ -36,7 +36,7 @@ export function ThreeStepSection() {
 
     return (
         <section className={`relative w-full py-24 flex flex-col items-center justify-center overflow-hidden transition-colors duration-300 ${isLight
-            ? "bg-gradient-to-b from-white via-slate-50 to-slate-100/70"
+            ? "bg-gradient-to-b from-slate-100/70 via-slate-50 to-slate-100/70"
             : "bg-gradient-to-b from-[#100e16] via-[#0a0a0c] to-[#09090b]"
             }`}>
             <div className={`absolute top-0 right-0 w-[600px] h-[600px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-indigo-300/15" : "bg-indigo-600/5"}`} />

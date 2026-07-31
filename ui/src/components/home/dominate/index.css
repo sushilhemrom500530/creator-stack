@@ -6,7 +6,7 @@
 }
 
 .dominate-section.is-light {
-    @apply bg-white border-slate-200/80;
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-slate-100/70 border-slate-200/80;
 }
 
 .dominate-section.is-dark {

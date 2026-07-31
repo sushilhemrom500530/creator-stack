@@ -16,7 +16,7 @@ export default function PricingSection() {
     const businessPrice = isYearly ? "$119" : "$149";
 
     return (
-        <section className={`py-24 px-6 md:px-12 lg:px-24 flex flex-col items-center relative overflow-hidden transition-colors duration-300 ${isLight ? "bg-slate-50/60 text-slate-900" : "bg-nural text-white"
+        <section className={`py-24 px-6 md:px-12 lg:px-24 flex flex-col items-center relative overflow-hidden transition-colors duration-300 ${isLight ? "bg-gradient-to-b from-slate-100/70 via-slate-50 to-slate-100/70 text-slate-900" : "bg-nural text-white"
             }`}>
             {/* Background Glows matching Banner/ThreeStep */}
             <div className={`absolute top-[10%] right-[-10%] w-[500px] h-[500px] blur-[150px] rounded-full pointer-events-none ${isLight ? "bg-violet-300/20" : "bg-violet-600/10"
