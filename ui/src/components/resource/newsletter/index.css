@@ -41,7 +41,7 @@
 }
 
 .newsletter-input {
-    @apply flex-1 rounded-xl py-4 px-5 transition-colors shadow-inner outline-none;
+    @apply flex-1 rounded-xl !py-1 px-5 transition-colors shadow-inner outline-none;
 }
 
 .newsletter-input.is-light {
