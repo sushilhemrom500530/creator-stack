@@ -29,8 +29,8 @@ export function DominateSection() {
                     {/* Card 1: AI Content Command */}
                     <div className={`dominate-card dominate-card-wide group ${themeClass}`}>
                         <div className="dominate-card-body">
-                            <div className="dominate-icon-wrapper group-hover:scale-110 bg-violet-600/10 border-violet-500/20">
-                                <div className="dominate-icon-glow opacity-0 group-hover:opacity-100 bg-violet-500/20" />
+                            <div className="dominate-icon-wrapper bg-violet-600/10 border-violet-500/20">
+                                <div className="dominate-icon-glow opacity-0" />
                                 <Sparkles className="text-violet-500 w-5 h-5 relative z-10" />
                             </div>
                             <h3 className={`dominate-card-title ${themeClass}`}>AI Content Command</h3>
@@ -52,8 +52,8 @@ export function DominateSection() {
 
                     {/* Card 2: Omni-Publish */}
                     <div className={`dominate-card dominate-card-single group ${themeClass}`}>
-                        <div className="dominate-icon-wrapper group-hover:scale-110 bg-[#14b8a6]/10 border-[#14b8a6]/20">
-                            <div className="dominate-icon-glow opacity-0 group-hover:opacity-100 bg-[#14b8a6]/20" />
+                        <div className="dominate-icon-wrapper bg-[#14b8a6]/10 border-[#14b8a6]/20">
+                            <div className="dominate-icon-glow opacity-0" />
                             <PlaySquare className="text-[#0d9488] w-5 h-5 relative z-10" />
                         </div>
                         <h3 className={`dominate-card-title mt-auto ${themeClass}`}>Omni-Publish</h3>
@@ -64,8 +64,8 @@ export function DominateSection() {
 
                     {/* Card 3: Deep Analytics */}
                     <div className={`dominate-card dominate-card-single group ${themeClass}`}>
-                        <div className="dominate-icon-wrapper group-hover:scale-110 bg-blue-500/10 border-blue-500/20">
-                            <div className="dominate-icon-glow opacity-0 group-hover:opacity-100 bg-blue-500/20" />
+                        <div className="dominate-icon-wrapper bg-blue-500/10 border-blue-500/20">
+                            <div className="dominate-icon-glow opacity-0" />
                             <Activity className="text-blue-500 w-5 h-5 relative z-10" />
                         </div>
                         <h3 className={`dominate-card-title mt-auto ${themeClass}`}>Deep Analytics</h3>
