@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useTheme } from "@/providers/mode-theme";
 
 export default function BlogFeatures() {
@@ -11,11 +12,13 @@ export default function BlogFeatures() {
         <div className="w-full">
             <div className={`blog-feature-card group ${themeClass}`}>
                 {/* Left: Image */}
-                <div className={`blog-feature-img-wrap ${themeClass}`}>
-                    <img
+                <div className={`blog-feature-img-wrap relative ${themeClass}`}>
+                    <Image
                         src="https://images.unsplash.com/photo-1696422329618-9c1626acc2b0?q=80&w=1200&auto=format&fit=crop"
                         alt="Neural Network"
-                        className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 delay-75"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 delay-75"
                     />
                     <div className={`blog-feature-overlay ${themeClass}`} />
                 </div>
@@ -41,8 +44,14 @@ export default function BlogFeatures() {
 
                     <div className="flex justify-between items-end mt-auto">
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-400 overflow-hidden shadow-inner">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop" alt="Dr. Helena Vance" className="w-full h-full object-cover" />
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-400 overflow-hidden shadow-inner relative">
+                                <Image
+                                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+                                    alt="Dr. Helena Vance"
+                                    fill
+                                    sizes="40px"
+                                    className="object-cover"
+                                />
                             </div>
                             <div className="flex flex-col">
                                 <span className={`blog-feature-author-name ${themeClass}`}>Dr. Helena Vance</span>

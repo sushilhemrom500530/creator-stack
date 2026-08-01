@@ -247,43 +247,43 @@
 }
 
 .blog-card-tag {
-    @apply text-[9px] font-bold tracking-[0.2em] uppercase mb-4;
+    @apply inline-flex items-center px-3 py-1 rounded-full border text-[9px] font-bold tracking-[0.2em] uppercase mb-4 transition-colors;
 }
 
 .blog-card-tag-violet.is-light {
-    @apply text-violet-600;
+    @apply bg-violet-50 text-violet-700 border-violet-200;
 }
 
 .blog-card-tag-violet.is-dark {
-    @apply text-violet-400;
+    @apply bg-violet-500/10 text-violet-400 border-violet-500/20;
 }
 
 .blog-card-tag-teal.is-light {
-    @apply text-teal-600;
+    @apply bg-teal-50 text-teal-700 border-teal-200;
 }
 
 .blog-card-tag-teal.is-dark {
-    @apply text-teal-400;
+    @apply bg-teal-500/10 text-teal-400 border-teal-500/20;
 }
 
 .blog-card-tag-indigo.is-light {
-    @apply text-indigo-600;
+    @apply bg-indigo-50 text-indigo-700 border-indigo-200;
 }
 
 .blog-card-tag-indigo.is-dark {
-    @apply text-indigo-400;
+    @apply bg-indigo-500/10 text-indigo-400 border-indigo-500/20;
 }
 
 .blog-card-tag-pink.is-light {
-    @apply text-pink-600;
+    @apply bg-pink-50 text-pink-700 border-pink-200;
 }
 
 .blog-card-tag-pink.is-dark {
-    @apply text-pink-400;
+    @apply bg-pink-500/10 text-pink-400 border-pink-500/20;
 }
 
 .blog-card-title {
-    @apply text-[17px] font-bold mb-4 leading-snug;
+    @apply text-[17px] font-bold mb-2 leading-snug;
 }
 
 .blog-card-title.is-light {
@@ -295,7 +295,7 @@
 }
 
 .blog-card-desc {
-    @apply text-[13px] leading-relaxed mb-8;
+    @apply text-[13px] leading-relaxed mb-4;
 }
 
 .blog-card-desc.is-light {
@@ -307,7 +307,7 @@
 }
 
 .blog-card-footer {
-    @apply mt-auto flex justify-between items-center border-t pt-4;
+    @apply mt-auto flex justify-between items-center border-t pt-3;
 }
 
 .blog-card-footer.is-light {
