@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTheme } from "@/providers/mode-theme";
 
 export default function BlogFeatures() {
@@ -12,16 +13,18 @@ export default function BlogFeatures() {
         <div className="w-full">
             <div className={`blog-feature-card group ${themeClass}`}>
                 {/* Left: Image */}
-                <div className={`blog-feature-img-wrap relative ${themeClass}`}>
-                    <Image
-                        src="https://images.unsplash.com/photo-1696422329618-9c1626acc2b0?q=80&w=1200&auto=format&fit=crop"
-                        alt="Neural Network"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 delay-75"
-                    />
-                    <div className={`blog-feature-overlay ${themeClass}`} />
-                </div>
+                <Link href="/blogs/view/featured" className="w-full md:w-1/2 block">
+                    <div className={`blog-feature-img-wrap relative w-full h-full min-h-[300px] ${themeClass}`}>
+                        <Image
+                            src="https://images.unsplash.com/photo-1696422329618-9c1626acc2b0?q=80&w=1200&auto=format&fit=crop"
+                            alt="Neural Network"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 delay-75"
+                        />
+                        <div className={`blog-feature-overlay ${themeClass}`} />
+                    </div>
+                </Link>
 
                 {/* Right: Content */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
@@ -34,9 +37,11 @@ export default function BlogFeatures() {
                         </span>
                     </div>
 
-                    <h2 className={`blog-feature-title ${themeClass}`}>
-                        The Autonomy Epoch: How AI is Redefining Brand Authority
-                    </h2>
+                    <Link href="/blogs/view/featured">
+                        <h2 className={`blog-feature-title hover:text-violet-500 transition-colors ${themeClass}`}>
+                            The Autonomy Epoch: How AI is Redefining Brand Authority
+                        </h2>
+                    </Link>
 
                     <p className={`blog-feature-desc ${themeClass}`}>
                         In an era of synthetic media, true authority is built through algorithmic precision and human nuance. We dive deep into the strategies used by top-tier firms to scale without losing their soul.
@@ -59,9 +64,9 @@ export default function BlogFeatures() {
                             </div>
                         </div>
 
-                        <button className={`blog-feature-btn ${themeClass}`}>
+                        <Link href="/blogs/view/featured" className={`blog-feature-btn ${themeClass}`}>
                             READ MORE
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

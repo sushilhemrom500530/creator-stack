@@ -1,10 +1,12 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useTheme } from '@/providers/mode-theme';
 
 export interface BlogCardProps {
+    id?: string;
     imageSrc: string;
     imageAlt: string;
     category: string;
@@ -16,6 +18,7 @@ export interface BlogCardProps {
 }
 
 export default function BlogCard({
+    id = "1",
     imageSrc,
     imageAlt,
     category,
@@ -33,24 +36,28 @@ export default function BlogCard({
 
     return (
         <div className={`blog-card group ${themeClass}`}>
-            <div className={`blog-card-img-wrap relative ${themeClass}`}>
-                <Image
-                    src={imageSrc}
-                    alt={imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className={`object-cover opacity-80 group-hover:scale-110 transition-transform duration-700 ${imageEffectClass}`}
-                />
-            </div>
+            <Link href={`/blogs/view/${id}`} className="block">
+                <div className={`blog-card-img-wrap relative ${themeClass}`}>
+                    <Image
+                        src={imageSrc}
+                        alt={imageAlt}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className={`object-cover opacity-80 group-hover:scale-110 transition-transform duration-700 ${imageEffectClass}`}
+                    />
+                </div>
+            </Link>
             <div className="p-6 lg:p-8 flex flex-col flex-1">
                 <div>
                     <span className={`blog-card-tag ${tagColorClass} ${themeClass}`}>
                         {category}
                     </span>
                 </div>
-                <h3 className={`blog-card-title ${themeClass}`}>
-                    {title}
-                </h3>
+                <Link href={`/blogs/view/${id}`} className="group/title">
+                    <h3 className={`blog-card-title group-hover/title:text-violet-500 transition-colors ${themeClass}`}>
+                        {title}
+                    </h3>
+                </Link>
                 <p className={`blog-card-desc ${themeClass}`}>
                     {description}
                 </p>
@@ -58,9 +65,9 @@ export default function BlogCard({
                     <span className={`blog-card-readtime ${themeClass}`}>
                         {readTime}
                     </span>
-                    <button className={`blog-card-action group/btn ${themeClass}`}>
+                    <Link href={`/blogs/view/${id}`} className={`blog-card-action group/btn ${themeClass}`}>
                         ARTICLE <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

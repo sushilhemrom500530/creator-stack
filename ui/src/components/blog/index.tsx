@@ -12,6 +12,7 @@ interface BlogPostItem extends BlogCardProps {
 
 const blogPosts: BlogPostItem[] = [
     {
+        id: "1",
         imageSrc: "https://images.unsplash.com/photo-1620825937374-87fc7d62828e?q=80&w=800&auto=format&fit=crop",
         imageAlt: "Abstract Glass",
         category: "ALGORITHMIC TRENDS",
@@ -22,6 +23,7 @@ const blogPosts: BlogPostItem[] = [
         filterCategory: "STRATEGY"
     },
     {
+        id: "2",
         imageSrc: "https://images.unsplash.com/photo-1682687982501-1e5898cb89c4?q=80&w=800&auto=format&fit=crop",
         imageAlt: "Nature Chip",
         category: "PRODUCT UPDATES",
@@ -32,6 +34,7 @@ const blogPosts: BlogPostItem[] = [
         filterCategory: "TECH STACK"
     },
     {
+        id: "3",
         imageSrc: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=800&auto=format&fit=crop",
         imageAlt: "Stairs",
         category: "ENTERPRISE SCALE",
@@ -43,6 +46,7 @@ const blogPosts: BlogPostItem[] = [
         filterCategory: "STRATEGY"
     },
     {
+        id: "4",
         imageSrc: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop",
         imageAlt: "AI Human Frame",
         category: "ETHICS & FUTURE",
