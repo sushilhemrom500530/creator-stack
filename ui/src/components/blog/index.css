@@ -1,0 +1,396 @@
+@reference "../../styles/style.globals.css";
+
+/* Main Page Container */
+.blog-page-container {
+    @apply relative min-h-screen pt-32 pb-24 px-6 md:px-12 lg:px-24 transition-colors duration-300 selection:bg-[#9747FF]/30 overflow-hidden;
+}
+
+.blog-page-container.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-white text-slate-900;
+}
+
+.blog-page-container.is-dark {
+    @apply bg-[#0a0614] text-white;
+}
+
+/* Ambient Background Glow */
+.blog-banner-glow {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[120px] pointer-events-none;
+}
+
+.blog-banner-glow.is-light {
+    @apply bg-purple-300/30;
+}
+
+.blog-banner-glow.is-dark {
+    @apply bg-purple-900/10;
+}
+
+/* Header Subtext & Title */
+.blog-header-tag {
+    @apply text-[10px] font-bold tracking-[0.2em] uppercase mb-4 block;
+}
+
+.blog-header-tag.is-light {
+    @apply text-teal-600;
+}
+
+.blog-header-tag.is-dark {
+    @apply text-teal-400;
+}
+
+.blog-header-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 tracking-tight;
+}
+
+.blog-header-title.is-light {
+    @apply text-slate-900;
+}
+
+.blog-header-title.is-dark {
+    @apply text-white;
+}
+
+.blog-header-desc {
+    @apply text-[14px] md:text-[15px] leading-relaxed max-w-[90%] mx-auto;
+}
+
+.blog-header-desc.is-light {
+    @apply text-slate-600;
+}
+
+.blog-header-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Featured Post Card */
+.blog-feature-card {
+    @apply w-full rounded-[2rem] border overflow-hidden flex flex-col md:flex-row shadow-2xl mb-24 transition-colors;
+}
+
+.blog-feature-card.is-light {
+    @apply bg-white border-slate-200/80 hover:border-slate-300 shadow-slate-200/60;
+}
+
+.blog-feature-card.is-dark {
+    @apply bg-[#15111F]/80 border-white/10 hover:border-white/20;
+}
+
+.blog-feature-img-wrap {
+    @apply w-full md:w-1/2 h-[300px] md:h-auto relative overflow-hidden;
+}
+
+.blog-feature-img-wrap.is-light {
+    @apply bg-slate-100;
+}
+
+.blog-feature-img-wrap.is-dark {
+    @apply bg-[#181622];
+}
+
+.blog-feature-overlay {
+    @apply absolute inset-0 bg-gradient-to-r from-transparent;
+}
+
+.blog-feature-overlay.is-light {
+    @apply to-white/90 md:to-white;
+}
+
+.blog-feature-overlay.is-dark {
+    @apply to-[#15111F]/90 md:to-[#15111F];
+}
+
+.blog-feature-badge {
+    @apply text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full border;
+}
+
+.blog-feature-badge.is-light {
+    @apply bg-teal-50 text-teal-700 border-teal-200;
+}
+
+.blog-feature-badge.is-dark {
+    @apply bg-teal-500/10 text-teal-400 border-teal-500/20;
+}
+
+.blog-feature-date {
+    @apply text-[12px] font-mono;
+}
+
+.blog-feature-date.is-light {
+    @apply text-slate-400;
+}
+
+.blog-feature-date.is-dark {
+    @apply text-gray-500;
+}
+
+.blog-feature-title {
+    @apply text-3xl lg:text-4xl font-bold mb-6 leading-tight;
+}
+
+.blog-feature-title.is-light {
+    @apply text-slate-900;
+}
+
+.blog-feature-title.is-dark {
+    @apply text-white;
+}
+
+.blog-feature-desc {
+    @apply text-[14px] leading-relaxed mb-10;
+}
+
+.blog-feature-desc.is-light {
+    @apply text-slate-600;
+}
+
+.blog-feature-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.blog-feature-author-name {
+    @apply text-[13px] font-bold;
+}
+
+.blog-feature-author-name.is-light {
+    @apply text-slate-900;
+}
+
+.blog-feature-author-name.is-dark {
+    @apply text-white;
+}
+
+.blog-feature-author-role {
+    @apply text-[11px] font-mono italic;
+}
+
+.blog-feature-author-role.is-light {
+    @apply text-slate-500;
+}
+
+.blog-feature-author-role.is-dark {
+    @apply text-gray-500;
+}
+
+.blog-feature-btn {
+    @apply text-[10px] font-bold tracking-widest uppercase transition-colors;
+}
+
+.blog-feature-btn.is-light {
+    @apply text-slate-500 hover:text-slate-900;
+}
+
+.blog-feature-btn.is-dark {
+    @apply text-[#a19bb0] hover:text-white;
+}
+
+/* Recent Insights Section */
+.blog-recent-heading {
+    @apply text-2xl font-bold;
+}
+
+.blog-recent-heading.is-light {
+    @apply text-slate-900;
+}
+
+.blog-recent-heading.is-dark {
+    @apply text-white;
+}
+
+.blog-filter-btn-active {
+    @apply text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-full transition-colors border;
+}
+
+.blog-filter-btn-active.is-light {
+    @apply bg-slate-900 text-white border-slate-900 hover:bg-slate-800;
+}
+
+.blog-filter-btn-active.is-dark {
+    @apply bg-white/10 hover:bg-white/20 text-white border-white/5;
+}
+
+.blog-filter-btn {
+    @apply text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-full transition-colors bg-transparent;
+}
+
+.blog-filter-btn.is-light {
+    @apply text-slate-500 hover:text-slate-900 hover:bg-slate-200/60;
+}
+
+.blog-filter-btn.is-dark {
+    @apply text-[#a19bb0] hover:text-white hover:bg-white/5;
+}
+
+/* Article Cards */
+.blog-card {
+    @apply col-span-1 rounded-3xl border flex flex-col overflow-hidden transition-colors shadow-xl;
+}
+
+.blog-card.is-light {
+    @apply bg-white border-slate-200/80 hover:border-violet-300 shadow-slate-200/50;
+}
+
+.blog-card.is-dark {
+    @apply bg-[#15111F]/80 border-white/10 hover:border-white/20;
+}
+
+.blog-card-img-wrap {
+    @apply w-full h-[200px] overflow-hidden;
+}
+
+.blog-card-img-wrap.is-light {
+    @apply bg-slate-100;
+}
+
+.blog-card-img-wrap.is-dark {
+    @apply bg-[#1a1825];
+}
+
+.blog-card-tag {
+    @apply text-[9px] font-bold tracking-[0.2em] uppercase mb-4;
+}
+
+.blog-card-tag-violet.is-light {
+    @apply text-violet-600;
+}
+
+.blog-card-tag-violet.is-dark {
+    @apply text-violet-400;
+}
+
+.blog-card-tag-teal.is-light {
+    @apply text-teal-600;
+}
+
+.blog-card-tag-teal.is-dark {
+    @apply text-teal-400;
+}
+
+.blog-card-tag-indigo.is-light {
+    @apply text-indigo-600;
+}
+
+.blog-card-tag-indigo.is-dark {
+    @apply text-indigo-400;
+}
+
+.blog-card-tag-pink.is-light {
+    @apply text-pink-600;
+}
+
+.blog-card-tag-pink.is-dark {
+    @apply text-pink-400;
+}
+
+.blog-card-title {
+    @apply text-[17px] font-bold mb-4 leading-snug;
+}
+
+.blog-card-title.is-light {
+    @apply text-slate-900;
+}
+
+.blog-card-title.is-dark {
+    @apply text-white;
+}
+
+.blog-card-desc {
+    @apply text-[13px] leading-relaxed mb-8;
+}
+
+.blog-card-desc.is-light {
+    @apply text-slate-600;
+}
+
+.blog-card-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.blog-card-footer {
+    @apply mt-auto flex justify-between items-center border-t pt-4;
+}
+
+.blog-card-footer.is-light {
+    @apply border-slate-100;
+}
+
+.blog-card-footer.is-dark {
+    @apply border-white/5;
+}
+
+.blog-card-readtime {
+    @apply text-[11px] font-mono;
+}
+
+.blog-card-readtime.is-light {
+    @apply text-slate-400;
+}
+
+.blog-card-readtime.is-dark {
+    @apply text-gray-500;
+}
+
+.blog-card-action {
+    @apply text-[10px] font-bold tracking-widest uppercase transition-colors flex items-center gap-1;
+}
+
+.blog-card-action.is-light {
+    @apply text-slate-600 hover:text-violet-700;
+}
+
+.blog-card-action.is-dark {
+    @apply text-[#a19bb0] hover:text-white;
+}
+
+/* Subscription Block */
+.blog-sub-block {
+    @apply col-span-1 lg:col-span-2 rounded-3xl border flex flex-col justify-center p-8 lg:p-12 xl:p-16 shadow-2xl relative overflow-hidden transition-all;
+}
+
+.blog-sub-block.is-light {
+    @apply bg-gradient-to-tr from-violet-600 via-purple-600 to-indigo-700 border-violet-400/30 text-white shadow-violet-500/20;
+}
+
+.blog-sub-block.is-dark {
+    @apply bg-gradient-to-tr from-[#161225] to-[#1e1531] border-violet-500/20 text-white;
+}
+
+.blog-sub-title {
+    @apply text-white text-2xl lg:text-3xl font-bold mb-4 relative z-10;
+}
+
+.blog-sub-desc {
+    @apply text-[13px] lg:text-[14px] leading-relaxed mb-8 max-w-md relative z-10;
+}
+
+.blog-sub-desc.is-light {
+    @apply text-violet-100/90;
+}
+
+.blog-sub-desc.is-dark {
+    @apply text-violet-200/70;
+}
+
+.blog-sub-input {
+    @apply flex-1 rounded-xl px-5 py-4 text-white text-[13px] transition-colors outline-none;
+}
+
+.blog-sub-input.is-light {
+    @apply bg-white/10 border border-white/20 placeholder:text-white/60 focus:border-white/80 focus:bg-white/20;
+}
+
+.blog-sub-input.is-dark {
+    @apply bg-black/40 border border-violet-500/20 placeholder:text-violet-200/30 focus:border-violet-500/60;
+}
+
+.blog-sub-btn {
+    @apply text-[11px] font-bold tracking-widest uppercase px-8 py-4 rounded-xl transition-all cursor-pointer;
+}
+
+.blog-sub-btn.is-light {
+    @apply bg-white hover:bg-violet-50 text-violet-900 shadow-xl;
+}
+
+.blog-sub-btn.is-dark {
+    @apply bg-violet-300 hover:bg-violet-200 text-violet-900 shadow-xl;
+}
