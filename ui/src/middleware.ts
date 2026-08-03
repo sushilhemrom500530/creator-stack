@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Demo user data role (default to "user")
-    const role = request.cookies.get("role")?.value || request.cookies.get("user_role")?.value || "admin";
+    const role = request.cookies.get("role")?.value || request.cookies.get("user_role")?.value || "user";
 
     // Handle /user path
     if (pathname === "/user" || pathname === "/user/") {

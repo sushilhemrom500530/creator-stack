@@ -83,7 +83,7 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
                 <div className={`flex flex-col h-full`}>
                     <div className="mb-0.5 border-b border-b-[#E5E7EB] ">
                         <Link href={user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard"} className="flex items-center gap-2 group">
-                            <Logo className="h-14 scale-150 w-52 mx-auto lg:w-full" />
+                            <Logo className="h-[62px] scale-150 w-52 mx-auto lg:w-full" />
                         </Link>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">
