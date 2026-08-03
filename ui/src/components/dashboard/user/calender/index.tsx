@@ -10,7 +10,8 @@ import {
     Sparkles,
     AlertCircle,
     FileEdit,
-    Clock
+    Clock,
+    Calendar as CalendarIcon
 } from "lucide-react";
 import { FaInstagram, FaFacebook, FaTwitter, FaCircle } from "react-icons/fa6";
 import { Dropdown } from "antd";
@@ -269,91 +270,98 @@ export default function UserCalender() {
     };
 
     return (
-        <div className="bg-white dark:bg-[#121316] p-6 rounded-3xl border border-slate-100 dark:border-zinc-800/80 font-primary min-h-[85vh] select-none flex flex-col justify-between">
-            {/* Filter controls row */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                <div className="flex flex-wrap items-center gap-3">
-                    {/* Ant Design Platform Dropdown */}
-                    <Dropdown menu={{ items: platformItems, onClick: handlePlatformClick }} trigger={["click"]}>
-                        <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
-                            <span className="text-slate-400 dark:text-zinc-550 font-normal">Platform:</span>
-                            <span>{platform}</span>
-                            <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
-                        </button>
-                    </Dropdown>
-
-                    {/* Ant Design Status Dropdown */}
-                    <Dropdown menu={{ items: statusItems, onClick: handleStatusClick }} trigger={["click"]}>
-                        <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
-                            <span className="text-slate-400 dark:text-zinc-550 font-normal">Status:</span>
-                            <span>{status}</span>
-                            <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
-                        </button>
-                    </Dropdown>
-
-                    {/* Ant Design Team Dropdown */}
-                    <Dropdown menu={{ items: teamItems, onClick: handleTeamClick }} trigger={["click"]}>
-                        <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
-                            <span className="text-slate-400 dark:text-zinc-550 font-normal">Team:</span>
-                            <span>{team}</span>
-                            <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
-                        </button>
-                    </Dropdown>
-                </div>
-
-                {/* Calendar Navigation header & toggle switch pills */}
-                <div className="flex items-center gap-4">
-                    {/* Month Nav Buttons */}
-                    <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#1A1D21]/80 border border-slate-100 dark:border-zinc-800/50 p-1.5 rounded-xl">
-                        <button
-                            onClick={handlePrevMonth}
-                            className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors"
-                        >
-                            <ChevronLeft size={16} />
-                        </button>
-                        <span className="text-xs font-bold text-slate-785 dark:text-zinc-200 px-1 font-mono min-w-[70px] text-center capitalize">
-                            {activeStartDate.toLocaleString("en-US", { month: "short", year: "numeric" })}
-                        </span>
-                        <button
-                            onClick={handleNextMonth}
-                            className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors"
-                        >
-                            <ChevronRight size={16} />
-                        </button>
-                    </div>
-
-                    {/* Switch Period button toggles right */}
-                    <div className="flex items-center bg-slate-50 dark:bg-[#1A1D21] p-1 rounded-xl border border-slate-100 dark:border-zinc-800/50 animate-fade-in">
-                        {(["month", "week", "list"] as const).map((mode) => (
-                            <button
-                                key={mode}
-                                onClick={() => setViewMode(mode)}
-                                className={`px-4 py-1.5 text-xs font-semibold rounded-lg capitalize transition-all duration-300 cursor-pointer ${viewMode === mode
-                                    ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
-                                    : "text-slate-450 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-                                    }`}
-                            >
-                                {mode}
+        <div className="space-y-6 p-6">
+            <div>
+                <h1 className="text-2xl font-bold text-slate-800 dark:text-zinc-100 flex items-center gap-2">
+                    <CalendarIcon className="w-7 h-7 text-primary" /> Content Calendar
+                </h1>
+                <p className="text-slate-500 dark:text-zinc-400 text-sm mt-1">Plan, track, and organize your scheduled posts across all platforms</p>
+            </div>
+            <div className="card dark:bg-[#121316] p-6 dark:border-zinc-800/80 font-primary min-h-[85vh] select-none flex flex-col justify-between">
+                {/* Filter controls row */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div className="flex flex-wrap items-center gap-3">
+                        {/* Ant Design Platform Dropdown */}
+                        <Dropdown menu={{ items: platformItems, onClick: handlePlatformClick }} trigger={["click"]}>
+                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                                <span className="text-slate-400 dark:text-zinc-550 font-normal">Platform:</span>
+                                <span>{platform}</span>
+                                <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
                             </button>
-                        ))}
+                        </Dropdown>
+
+                        {/* Ant Design Status Dropdown */}
+                        <Dropdown menu={{ items: statusItems, onClick: handleStatusClick }} trigger={["click"]}>
+                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                                <span className="text-slate-400 dark:text-zinc-550 font-normal">Status:</span>
+                                <span>{status}</span>
+                                <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
+                            </button>
+                        </Dropdown>
+
+                        {/* Ant Design Team Dropdown */}
+                        <Dropdown menu={{ items: teamItems, onClick: handleTeamClick }} trigger={["click"]}>
+                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                                <span className="text-slate-400 dark:text-zinc-550 font-normal">Team:</span>
+                                <span>{team}</span>
+                                <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
+                            </button>
+                        </Dropdown>
+                    </div>
+
+                    {/* Calendar Navigation header & toggle switch pills */}
+                    <div className="flex items-center gap-4">
+                        {/* Month Nav Buttons */}
+                        <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#1A1D21]/80 border border-slate-100 dark:border-zinc-800/50 p-1.5 rounded-xl">
+                            <button
+                                onClick={handlePrevMonth}
+                                className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
+                            >
+                                <ChevronLeft size={16} />
+                            </button>
+                            <span className="text-xs font-bold text-slate-785 dark:text-zinc-200 px-1 font-mono min-w-[70px] text-center capitalize">
+                                {activeStartDate.toLocaleString("en-US", { month: "short", year: "numeric" })}
+                            </span>
+                            <button
+                                onClick={handleNextMonth}
+                                className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
+                            >
+                                <ChevronRight size={16} />
+                            </button>
+                        </div>
+
+                        {/* Switch Period button toggles right */}
+                        <div className="flex items-center bg-slate-50 dark:bg-[#1A1D21] p-1 rounded-xl border border-slate-100 dark:border-zinc-800/50 animate-fade-in">
+                            {(["month", "week", "list"] as const).map((mode) => (
+                                <button
+                                    key={mode}
+                                    onClick={() => setViewMode(mode)}
+                                    className={`px-4 py-1.5 text-xs font-semibold rounded-lg capitalize transition-all duration-300 cursor-pointer ${viewMode === mode
+                                        ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
+                                        : "text-slate-450 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300"
+                                        }`}
+                                >
+                                    {mode}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Calendar Container */}
-            <div className="flex-1 custom-react-calendar-wrapper">
-                <Calendar
-                    activeStartDate={activeStartDate}
-                    showNavigation={false}
-                    calendarType="iso8601"
-                    locale="en-US"
-                    tileContent={tileContent}
-                />
-            </div>
+                {/* Calendar Container */}
+                <div className="flex-1 custom-react-calendar-wrapper">
+                    <Calendar
+                        activeStartDate={activeStartDate}
+                        showNavigation={false}
+                        calendarType="iso8601"
+                        locale="en-US"
+                        tileContent={tileContent}
+                    />
+                </div>
 
-            {/* Global style injector to style react-calendar cells same-to-same */}
-            <style dangerouslySetInnerHTML={{
-                __html: `
+                {/* Global style injector to style react-calendar cells same-to-same */}
+                <style dangerouslySetInnerHTML={{
+                    __html: `
                 .custom-react-calendar-wrapper .react-calendar {
                     background: transparent !important;
                     border: none !important;
@@ -424,6 +432,7 @@ export default function UserCalender() {
                     pointer-events: none !important;
                 }
             ` }} />
+            </div>
         </div>
     );
 }
