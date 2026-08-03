@@ -51,20 +51,20 @@ export default function NavItem({
                 {!submenu ? (
                     <Link
                         href={href || "#"}
-                        className={`flex items-center gap-3 w-full text-sm font-medium px-5 py-2 ${isParentActive ? activeClass : inactiveClass}`}
+                        className={`flex items-center gap-2 w-full text-sm font-medium px-5 py-2 ${isParentActive ? activeClass : inactiveClass}`}
                         onClick={() => setNavOpened(false)}
                     >
-                        {Icon && <Icon size={16} />}
+                        {Icon && <Icon size={14} />}
                         <span>{label}</span>
                     </Link>
                 ) : (
                     <div className={`flex items-center justify-between w-full px-5 py-2 cursor-pointer font-medium ${isParentActive ? activeClass : inactiveClass}`}>
-                        <div className="flex items-center gap-3 text-sm">
-                            {Icon && <Icon size={16} />}
+                        <div className="flex items-center gap-2 text-sm">
+                            {Icon && <Icon size={14} />}
                             <span>{label}</span>
                         </div>
                         <ChevronDown
-                            size={16}
+                            size={14}
                             className={`transition-transform duration-300 ${isSubmenuOpen ? "rotate-180" : ""
                                 }`}
                         />
@@ -89,11 +89,11 @@ export default function NavItem({
                                     key={index}
                                     href={item.href || "#"}
                                     onClick={() => setNavOpened(false)}
-                                    className={`flex items-center gap-3 px-5 py-2 rounded-s text-sm font-medium transition-colors ${isActive
+                                    className={`flex items-center gap-2 px-5 py-2 rounded-s text-sm font-medium transition-colors ${isActive
                                         ? activeClass : inactiveClass
                                         }`}
                                 >
-                                    {SubIcon && <SubIcon size={16} />}
+                                    {SubIcon && <SubIcon size={14} />}
                                     <span>{item.label}</span>
                                 </Link>
                             );

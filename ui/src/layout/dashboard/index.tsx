@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
     const [user, setUser] = useState({
         name: "Sushil Hemrom",
         email: "sushil@gmail.com",
-        role: "admin",
+        role: "user",
     });
 
     useEffect(() => {
@@ -34,6 +34,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
             }
 
             let displayName = role === "admin" ? "Apurbo Hemrom" : "Sushil Hemrom";
+
             let displayEmail = role === "admin" ? "apurbo@gmail.com" : "sushil@gmail.com";
 
             if (username) {

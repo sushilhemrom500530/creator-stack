@@ -1,36 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import NavItem from "../nav-menu";
-// import { useAuthService } from "@/src/hooks/auth";
-// import { useAuthStore } from "@/src/store/authStore";
-
-import logo from "@/assets/dashboard/logo.png";
 import logout from "@/assets/dashboard/logout.svg";
 import Link from "next/link";
-import { FaHandHoldingDollar } from "react-icons/fa6";
 import { adminMenuData, userMenuData } from "@/data";
 import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
-import { SiSpringCreators } from "react-icons/si";
-import { RiStackFill } from "react-icons/ri";
 import Logo from "@/components/reuseable/logo";
-import { LayoutDashboard, Settings, LogOut, ChevronUp } from "lucide-react";
+import { LayoutDashboard, Settings, ChevronUp } from "lucide-react";
 import Image from "next/image";
 
-export default function Sidebar({ navOpened, setNavOpened, user: propUser }: any) {
+export default function Sidebar({ navOpened, setNavOpened, user }: any) {
     const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
     // const { logoutUser } = useAuthService();
-    const pathname = usePathname();
-    // const { user } = useAuthStore();
-
-    const defaultUser = {
-        name: "Sushil Hemrom",
-        email: "sushil@gmail.com",
-        role: "user",
-    };
-    const user = propUser || defaultUser;
 
     const menuLinks = user?.role === "user"
         ? userMenuData?.linkData
@@ -98,9 +81,9 @@ export default function Sidebar({ navOpened, setNavOpened, user: propUser }: any
         `}
             >
                 <div className="flex flex-col h-full pt-28 lg:pt-0">
-                    <div className="hidden lg:block mb-6 border-b border-b-[#E5E7EB]">
+                    <div className="hidden lg:block mb-0.5 border-b border-b-[#E5E7EB]">
                         <Link href={user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard"} className="flex items-center gap-2 group">
-                            <Logo className="h-[74px]" />
+                            <Logo className="h-14 scale-150" />
 
                             {/* <div className="relative text-primary transition-transform group-hover:scale-105 flex items-center justify-center">
                                 <SiSpringCreators className="w-7 h-7" />
