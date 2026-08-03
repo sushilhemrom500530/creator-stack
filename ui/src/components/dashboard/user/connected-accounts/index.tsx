@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, Switch, Input, message, Popconfirm, Tooltip, Tag } from "antd";
+import { Modal, Switch, Input, App, Popconfirm, Tooltip, Tag } from "antd";
 import {
     Share2,
     CheckCircle2,
@@ -36,6 +36,7 @@ export interface SocialAccount {
 }
 
 export default function ConnectedAccountsComponent() {
+    const { message } = App.useApp();
     const [accounts, setAccounts] = useState<SocialAccount[]>([
         {
             id: "twitter",

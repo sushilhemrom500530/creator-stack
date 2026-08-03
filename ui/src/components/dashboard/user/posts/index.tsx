@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Table, Input, Select, Tag, Popconfirm, message, Tooltip, Modal } from "antd";
+import { Table, Input, Select, Tag, Popconfirm, App, Tooltip, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
     PenSquare,
@@ -20,12 +20,12 @@ import {
     Trash2,
     RotateCcw,
     Image as ImageIcon,
-    Sparkles
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
 import { MOCK_POSTS_DATA, PostItem } from "@/data/postsData";
 
 export default function UserPosts() {
+    const { message } = App.useApp();
     const router = useRouter();
     const [posts, setPosts] = useState<PostItem[]>(MOCK_POSTS_DATA);
     const [searchTerm, setSearchTerm] = useState("");
@@ -264,7 +264,7 @@ export default function UserPosts() {
     return (
         <div className="p-6 space-y-6 max-w-7xl mx-auto">
             {/* Header Section */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6 ">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                         <PenSquare className="w-7 h-7 text-primary" /> Posts Management
@@ -275,7 +275,7 @@ export default function UserPosts() {
                 </div>
                 <Link
                     href="/user/create-post"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition shadow-md w-fit"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl !bg-primary !text-white hover:!bg-primary/80 font-medium text-sm w-fit cursor-pointer"
                 >
                     <Plus className="w-4 h-4" /> Create New Post
                 </Link>
@@ -283,7 +283,7 @@ export default function UserPosts() {
 
             {/* Quick Metrics Summary */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div className="card p-5 flex items-center justify-between hover:-translate-y-1 [transition:0.3s]">
                     <div>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Posts</p>
                         <h3 className="text-2xl font-bold text-slate-800 mt-1">{posts.length}</h3>
@@ -293,7 +293,7 @@ export default function UserPosts() {
                     </div>
                 </div>
 
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div className="card p-5 flex items-center justify-between hover:-translate-y-1 [transition:0.3s]">
                     <div>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Published</p>
                         <h3 className="text-2xl font-bold text-emerald-600 mt-1">
@@ -305,7 +305,7 @@ export default function UserPosts() {
                     </div>
                 </div>
 
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div className="card p-5 flex items-center justify-between hover:-translate-y-1 [transition:0.3s]">
                     <div>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Scheduled</p>
                         <h3 className="text-2xl font-bold text-blue-600 mt-1">
@@ -317,7 +317,7 @@ export default function UserPosts() {
                     </div>
                 </div>
 
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div className="card p-5 flex items-center justify-between hover:-translate-y-1 [transition:0.3s]">
                     <div>
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Reach</p>
                         <h3 className="text-2xl font-bold text-amber-600 mt-1">26.4k</h3>
@@ -329,7 +329,7 @@ export default function UserPosts() {
             </div>
 
             {/* REFINED PROFESSIONAL FILTER SECTION */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+            <div className="card p-5 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
                     <div className="flex items-center gap-2">
                         <Filter className="w-4 h-4 text-primary" />
@@ -392,7 +392,7 @@ export default function UserPosts() {
             </div>
 
             {/* Ant Design Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden p-2">
+            <div className="card overflow-hidden">
                 <Table
                     columns={columns}
                     dataSource={filteredPosts}
