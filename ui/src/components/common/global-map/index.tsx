@@ -112,7 +112,7 @@ export default function WorldMapDashboard() {
     const activeDisplay = hoveredCountry || selectedCountry;
 
     return (
-        <div className="relative z-0 isolate w-full h-full bg-white text-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 font-sans flex flex-col justify-between select-none">
+        <div className="relative z-0 isolate w-full h-full card text-slate-800  overflow-hidden font-sans flex flex-col justify-between select-none">
             {/* Light Mode Header Control Toolbar */}
             <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 pb-3.5 gap-3 border-b border-slate-100 bg-slate-50/80">
                 <div className="flex items-center gap-3">

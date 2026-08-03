@@ -39,7 +39,7 @@ export default function MediaLibraryComponent() {
     return (
         <div className="p-6 space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6 ">
                 <div>
                     <span className="text-[11px] font-bold text-primary tracking-widest uppercase mb-1 block">
                         CENTRAL ASSETS
@@ -60,7 +60,7 @@ export default function MediaLibraryComponent() {
             {/* Resource Collections & Folder Cards Stats Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Brand Assets */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                <div className="card p-5 pace-y-3 cursor-pointer group hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-center justify-between">
                         <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:scale-105 transition">
                             <Folder className="w-5 h-5" />
@@ -76,7 +76,7 @@ export default function MediaLibraryComponent() {
                 </div>
 
                 {/* Q4 Campaigns */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                <div className="card p-5 pace-y-3 cursor-pointer group hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-center justify-between">
                         <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl group-hover:scale-105 transition">
                             <Megaphone className="w-5 h-5" />
@@ -92,7 +92,7 @@ export default function MediaLibraryComponent() {
                 </div>
 
                 {/* Video Content */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                <div className="card p-5 pace-y-3 cursor-pointer group hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-center justify-between">
                         <div className="p-3 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-105 transition">
                             <Video className="w-5 h-5" />
@@ -108,7 +108,7 @@ export default function MediaLibraryComponent() {
                 </div>
 
                 {/* Smart Collections */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3 cursor-pointer group">
+                <div className="card p-5 pace-y-3 cursor-pointer group hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-center justify-between">
                         <div className="p-3 bg-amber-50 text-amber-600 rounded-xl group-hover:scale-105 transition">
                             <Sparkles className="w-5 h-5" />
@@ -125,7 +125,7 @@ export default function MediaLibraryComponent() {
             </div>
 
             {/* Controls Bar */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 card p-4 ">
                 {/* Tabs */}
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
                     {[
@@ -163,7 +163,7 @@ export default function MediaLibraryComponent() {
             </div>
 
             {/* Storage Progress */}
-            <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between gap-4">
+            <div className="card p-5 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                     <div className="p-3 bg-slate-100 rounded-xl text-slate-700">
                         <HardDrive className="w-5 h-5" />
@@ -188,7 +188,7 @@ export default function MediaLibraryComponent() {
                     };
 
                     return (
-                        <div key={file.id} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition space-y-4 group">
+                        <div key={file.id} className="card p-5 space-y-4 group">
                             <div className="flex items-center justify-between">
                                 <div className={`p-3 rounded-xl ${file.color}`}>
                                     {getIcon()}

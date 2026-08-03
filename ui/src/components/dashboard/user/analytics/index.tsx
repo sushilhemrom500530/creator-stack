@@ -261,7 +261,7 @@ export default function AnalyticsComponent() {
     return (
         <div className="p-6 space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6 ">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                         <BarChart3 className="w-7 h-7 text-primary" /> Analytics Overview
@@ -290,7 +290,7 @@ export default function AnalyticsComponent() {
                 {stats.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                        <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-3">
+                        <div key={index} className="card p-6 space-y-3 hover:-translate-y-1 [transition:0.3s]">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm font-medium text-slate-500">{item.title}</span>
                                 <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
@@ -312,7 +312,7 @@ export default function AnalyticsComponent() {
             {/* Apex Charts Section: Left (Growth & Engagement) & Right (Audience Geo) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
                 {/* Growth & Engagement Chart */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between h-full space-y-4">
+                <div className="card p-6 flex flex-col justify-between h-full space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                             <h3 className="text-lg font-bold text-slate-800">
@@ -351,7 +351,7 @@ export default function AnalyticsComponent() {
             </div>
 
             {/* Refined Top Performing Content */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-5">
+            <div className="card p-6 space-y-5">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
                         <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
