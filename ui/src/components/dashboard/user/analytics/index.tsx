@@ -4,16 +4,12 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import {
     BarChart3,
-    TrendingUp,
     Users,
     Eye,
     MousePointer,
     Share2,
     ArrowUpRight,
     ArrowDownRight,
-    Calendar,
-    Globe,
-    ExternalLink,
     Sparkles
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
@@ -27,12 +23,60 @@ export default function AnalyticsComponent() {
     const [hoveredGeoId, setHoveredGeoId] = useState<string | null>(null);
 
     const geoRegions = [
-        { id: "us", country: "United States", flag: "🇺🇸", percentage: 42, reach: "53.9k", lat: 37.0902, lng: -95.7129 },
-        { id: "de", country: "Germany", flag: "🇩🇪", percentage: 18, reach: "23.1k", lat: 51.1657, lng: 10.4515 },
-        { id: "in", country: "India", flag: "🇮🇳", percentage: 16, reach: "20.5k", lat: 20.5937, lng: 78.9629 },
-        { id: "uk", country: "United Kingdom", flag: "🇬🇧", percentage: 12, reach: "15.4k", lat: 55.3781, lng: -3.4360 },
-        { id: "br", country: "Brazil", flag: "🇧🇷", percentage: 7, reach: "9.0k", lat: -14.2350, lng: -51.9253 },
-        { id: "au", country: "Australia", flag: "🇦🇺", percentage: 5, reach: "6.5k", lat: -25.2744, lng: 133.7751 }
+        {
+            id: "us",
+            country: "United States",
+            flag: "🇺🇸",
+            percentage: 42,
+            reach: "53.9k",
+            lat: 37.0902,
+            lng: -95.7129
+        },
+        {
+            id: "de",
+            country: "Germany",
+            flag: "🇩🇪",
+            percentage: 18,
+            reach: "23.1k",
+            lat: 51.1657,
+            lng: 10.4515
+        },
+        {
+            id: "in",
+            country: "India",
+            flag: "🇮🇳",
+            percentage: 16,
+            reach: "20.5k",
+            lat: 20.5937,
+            lng: 78.9629
+        },
+        {
+            id: "uk",
+            country: "United Kingdom",
+            flag: "🇬🇧",
+            percentage: 12,
+            reach: "15.4k",
+            lat: 55.3781,
+            lng: -3.4360
+        },
+        {
+            id: "br",
+            country: "Brazil",
+            flag: "🇧🇷",
+            percentage: 7,
+            reach: "9.0k",
+            lat: -14.2350,
+            lng: -51.9253
+        },
+        {
+            id: "au",
+            country: "Australia",
+            flag: "🇦🇺",
+            percentage: 5,
+            reach: "6.5k",
+            lat: -25.2744,
+            lng: 133.7751
+        }
     ];
 
     const getMapCoords = (lat: number, lng: number) => {
@@ -49,10 +93,34 @@ export default function AnalyticsComponent() {
     }, []);
 
     const stats = [
-        { title: "Total Impressions", value: "128,420", change: "+14.2%", isPositive: true, icon: Eye },
-        { title: "Active Audience", value: "24,890", change: "+8.7%", isPositive: true, icon: Users },
-        { title: "Link Clicks", value: "3,412", change: "+22.5%", isPositive: true, icon: MousePointer },
-        { title: "Engagement Rate", value: "4.8%", change: "-0.4%", isPositive: false, icon: Share2 },
+        {
+            title: "Total Impressions",
+            value: "128,420",
+            change: "+14.2%",
+            isPositive: true,
+            icon: Eye
+        },
+        {
+            title: "Active Audience",
+            value: "24,890",
+            change: "+8.7%",
+            isPositive: true,
+            icon: Users
+        },
+        {
+            title: "Link Clicks",
+            value: "3,412",
+            change: "+22.5%",
+            isPositive: true,
+            icon: MousePointer
+        },
+        {
+            title: "Engagement Rate",
+            value: "4.8%",
+            change: "-0.4%",
+            isPositive: false,
+            icon: Share2
+        },
     ];
 
     const topPosts = [
@@ -201,9 +269,19 @@ export default function AnalyticsComponent() {
                     <p className="text-slate-500 text-sm mt-1">Track key performance metrics and audience growth across channels</p>
                 </div>
                 <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl text-xs font-medium text-slate-600">
-                    <button className="px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 font-semibold cursor-pointer">Last 30 Days</button>
-                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">Last 7 Days</button>
-                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">This Year</button>
+                    <button
+                        className="px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 font-semibold cursor-pointer"
+                    >
+                        Last 30 Days
+                    </button>
+
+                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">
+                        Last 7 Days
+                    </button>
+
+                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">
+                        This Year
+                    </button>
                 </div>
             </div>
 
@@ -237,8 +315,12 @@ export default function AnalyticsComponent() {
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col justify-between h-full space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                            <h3 className="text-lg font-bold text-slate-800">Audience Growth & Engagement</h3>
-                            <p className="text-xs text-slate-500">Daily breakdown of impressions vs interactions</p>
+                            <h3 className="text-lg font-bold text-slate-800">
+                                Audience Growth & Engagement
+                            </h3>
+                            <p className="text-xs text-slate-500">
+                                Daily breakdown of impressions vs interactions
+                            </p>
                         </div>
                         <div className="flex items-center gap-4 text-xs font-medium">
                             <div className="flex items-center gap-1.5 text-slate-600">

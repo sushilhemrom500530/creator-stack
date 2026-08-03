@@ -45,10 +45,26 @@ export default function AiAssistantComponent() {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
 
     const templates = [
-        { label: "Viral Hook Line", icon: Lightbulb, query: "Give me 5 catchy viral hook lines for a post about web development tools." },
-        { label: "Hashtag Optimizer", icon: Hash, query: "Suggest 10 high-performing hashtags for a SaaS launch." },
-        { label: "Twitter Thread", icon: MessageSquare, query: "Draft a 4-tweet thread explaining how AI boosts creator productivity." },
-        { label: "Blog Outline", icon: FileText, query: "Create a structured blog post outline about digital creator monetization." },
+        {
+            label: "Viral Hook Line",
+            icon: Lightbulb,
+            query: "Give me 5 catchy viral hook lines for a post about web development tools."
+        },
+        {
+            label: "Hashtag Optimizer",
+            icon: Hash,
+            query: "Suggest 10 high-performing hashtags for a SaaS launch."
+        },
+        {
+            label: "Twitter Thread",
+            icon: MessageSquare,
+            query: "Draft a 4-tweet thread explaining how AI boosts creator productivity."
+        },
+        {
+            label: "Blog Outline",
+            icon: FileText,
+            query: "Create a structured blog post outline about digital creator monetization."
+        },
     ];
 
     const handleFileClick = () => {
