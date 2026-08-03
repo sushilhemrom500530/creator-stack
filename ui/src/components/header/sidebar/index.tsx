@@ -75,23 +75,15 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
             {/* Sidebar */}
             <div
                 className={`
-          fixed top-0 left-0 z-30 h-screen w-64 flex flex-col transition-transform duration-300 border-e border-e-[#E5E7EB] bg-white
-          ${navOpened ? "translate-x-0" : "-translate-x-full"}
+          fixed top-0 left-0 z-30 h-screen w-72 lg:w-60 flex flex-col transition-transform duration-300 border-e border-e-[#E5E7EB] bg-white
+          ${navOpened ? "translate-x-0" : "-translate-x-full "}
           lg:translate-x-0  
         `}
             >
-                <div className="flex flex-col h-full pt-28 lg:pt-0">
-                    <div className="hidden lg:block mb-0.5 border-b border-b-[#E5E7EB]">
+                <div className={`flex flex-col h-full`}>
+                    <div className="mb-0.5 border-b border-b-[#E5E7EB] ">
                         <Link href={user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard"} className="flex items-center gap-2 group">
-                            <Logo className="h-14 scale-150" />
-
-                            {/* <div className="relative text-primary transition-transform group-hover:scale-105 flex items-center justify-center">
-                                <SiSpringCreators className="w-7 h-7" />
-                            </div>
-                            <span className="text-xl font-bold font-serif tracking-tight text-[#1A1D1F]">
-                                C S
-                            </span>
-                            <RiStackFill className="w-7 h-7 text-orange-500" /> */}
+                            <Logo className="h-14 scale-150 w-52 mx-auto lg:w-full" />
                         </Link>
                     </div>
                     <div className="flex-1 overflow-y-auto custom-scrollbar">

@@ -11,19 +11,13 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
                 {/* left side  */}
                 <div className="flex items-center justify-between w-full">
                     <div
-                        onClick={() => setNavOpened(!navOpened)}
-                        className="md:hidden flex items-center justify-center cursor-pointer"
+                        onClick={() => setNavOpened((prev: boolean) => !prev)}
+                        className="lg:hidden flex items-center justify-center cursor-pointer"
                     >
                         <IoMdMenu className=" w-10 h-10 rounded-full bg-primary/10 text-primary [transition:0.3s] hover:bg-primary hover:text-white text-center p-2" />
                     </div>
-
                     <div />
-                    {/* <div className="hidden md:block text-black">
-            <h1 className="text-base md:text-xl lg:text-3xl font-semibold ">
-              Welcome,TP
-            </h1>
-            <p className="text-sm font-normal">Have a nice day</p>
-          </div> */}
+
                     <div className="flex items-center justify-center gap-x-5">
                         <div
                             onClick={() => setNavOpened(!navOpened)}
