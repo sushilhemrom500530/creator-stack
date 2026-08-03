@@ -161,13 +161,13 @@ export default function UserOverviewContent() {
             {/* Top row cards: Recent Content & Upcoming Schedule */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Content Card */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-3xl p-6 hover:shadow-xs transition-shadow flex flex-col justify-between">
+                <div className="lg:col-span-2 dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6 card flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight">
                                 Recent Content
                             </h2>
-                            <button className="text-sm font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                            <button className="text-sm font-semibold text-primary hover:text-primary/90 dark:hover:text-primary hover:underline transition-colors cursor-pointer">
                                 View All
                             </button>
                         </div>
@@ -214,7 +214,7 @@ export default function UserOverviewContent() {
                 </div>
 
                 {/* Upcoming Schedule Card */}
-                <div className="bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-3xl p-6 hover:shadow-xs transition-shadow">
+                <div className="card dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight">
                             Upcoming Schedule
@@ -283,7 +283,7 @@ export default function UserOverviewContent() {
             {/* Bottom row cards: Connected Accounts & Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Connected Accounts Card */}
-                <div className="bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-3xl p-6 hover:shadow-xs transition-shadow">
+                <div className="card dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight mb-6">
                         Connected Accounts
                     </h2>
@@ -313,11 +313,11 @@ export default function UserOverviewContent() {
                                     </div>
 
                                     {acct.status === "Active" ? (
-                                        <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-650 dark:hover:text-zinc-350 transition-colors">
+                                        <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-650 dark:hover:text-zinc-350 transition-colors cursor-pointer">
                                             <Settings size={16} />
                                         </button>
                                     ) : (
-                                        <button className="bg-red-500 hover:bg-red-650 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors">
+                                        <button className="bg-red-500 hover:bg-red-650 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors cursor-pointer">
                                             Fix
                                         </button>
                                     )}
@@ -328,7 +328,7 @@ export default function UserOverviewContent() {
                 </div>
 
                 {/* Recent Activity Timeline Card */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-3xl p-6 hover:shadow-xs transition-shadow">
+                <div className="lg:col-span-2 card dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight mb-6">
                         Recent Activity
                     </h2>
@@ -358,7 +358,7 @@ export default function UserOverviewContent() {
                                         </span>
                                     </div>
 
-                                    <button className="text-slate-400 dark:text-zinc-550 hover:text-slate-600 dark:hover:text-zinc-350 transition-colors ml-4 flex-shrink-0">
+                                    <button className="text-slate-400 dark:text-zinc-550 hover:text-slate-600 dark:hover:text-zinc-350 transition-colors ml-4 flex-shrink-0 cursor-pointer">
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>

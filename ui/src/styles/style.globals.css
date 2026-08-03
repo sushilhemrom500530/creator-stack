@@ -223,6 +223,10 @@ body {
     @apply bg-[#171520] border-white/5;
 }
 
+.card {
+    @apply bg-white border border-slate-100 rounded-2xl;
+}
+
 /* Shared Tagline Badge Component */
 .tagline-badge,
 .solutions-tagline-badge,

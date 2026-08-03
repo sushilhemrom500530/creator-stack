@@ -11,7 +11,6 @@ import {
     Sparkles,
     ArrowRight
 } from "lucide-react";
-import UserOverviewContent from "./content";
 
 interface StatItem {
     label: string;
@@ -109,7 +108,7 @@ export default function Overview() {
                     return (
                         <div
                             key={index}
-                            className="bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 p-5 rounded-2xl flex flex-col justify-between h-32 hover:translate-y-[-2px] hover:shadow-md transition-all duration-300 group"
+                            className="dark:bg-[#1A1D21]  dark:border-zinc-800/60 card p-5 flex flex-col justify-between h-32 hover:translate-y-[-2px] transition-all duration-300 group"
                         >
                             <div className="flex items-center justify-between w-full">
                                 <span className="text-slate-400 dark:text-zinc-500 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer">
@@ -143,7 +142,7 @@ export default function Overview() {
             {/* Performance + AI Insights Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Platform Performance Chart */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/65 rounded-3xl p-6 flex flex-col justify-between hover:shadow-sm transition-shadow">
+                <div className="lg:col-span-2 dark:bg-[#1A1D21] card p-6 flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight">
                             Platform Performance
@@ -220,7 +219,7 @@ export default function Overview() {
                 </div>
 
                 {/* AI Growth Engine Insights Panel */}
-                <div className="bg-white dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/65 rounded-3xl p-6 flex flex-col justify-between hover:shadow-sm transition-shadow">
+                <div className="dark:bg-[#1A1D21] dark:border-zinc-800/65 card p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center gap-2 mb-6">
                             <Sparkles className="w-5 h-5 text-purple-500" />
