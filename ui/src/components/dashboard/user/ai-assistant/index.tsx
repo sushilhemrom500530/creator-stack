@@ -146,7 +146,7 @@ export default function AiAssistantComponent() {
     const activePreview = selectedPreviewMessage || messages.filter(m => m.sender === "ai").slice(-1)[0];
 
     return (
-        <div className="p-6 max-w-7xl mx-auto space-y-6">
+        <div className="p-6 w-full space-y-6">
 
             {/* Hidden File Input Element */}
             <input
@@ -159,7 +159,7 @@ export default function AiAssistantComponent() {
 
             {/* 1. TOP HEADER SECTION (Shown initially, hides when chat starts) */}
             {messages.length === 0 && (
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                             <Bot className="w-7 h-7 text-primary" /> Creator AI Assistant
@@ -178,7 +178,7 @@ export default function AiAssistantComponent() {
                             <button
                                 key={idx}
                                 onClick={() => handleSendMessage(tmpl.query)}
-                                className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 hover:border-primary hover:shadow-md transition text-left space-y-2 group cursor-pointer"
+                                className="card p-4 [transition:0.3s] hover:-translate-y-1 text-left space-y-2 group cursor-pointer"
                             >
                                 <div className="p-2 bg-primary/10 rounded-xl text-primary w-fit group-hover:bg-primary group-hover:text-white transition">
                                     <Icon className="w-4 h-4" />
@@ -195,7 +195,7 @@ export default function AiAssistantComponent() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                 {/* Left Column: Light Theme Chat Stream (7 Cols) */}
-                <div className="lg:col-span-7 space-y-4 bg-white text-slate-800 p-6 rounded-3xl shadow-sm border border-slate-200/80 flex flex-col justify-between min-h-[480px]">
+                <div className="lg:col-span-7 space-y-4 card text-slate-800 p-6 flex flex-col justify-between min-h-[480px]">
 
                     {/* Header bar */}
                     <div className="flex items-center justify-between pb-3 border-b border-slate-100">
@@ -243,7 +243,7 @@ export default function AiAssistantComponent() {
                                 if (isUser) {
                                     return (
                                         <div key={msg.id} className="flex flex-col items-end gap-1">
-                                            <div className="max-w-md bg-slate-900 text-white p-4 rounded-2xl rounded-tr-xs text-xs sm:text-sm leading-relaxed shadow-sm space-y-2">
+                                            <div className="max-w-md bg-slate-900 text-white px-4 py-2 rounded-2xl rounded-tr-xs text-xs sm:text-sm leading-relaxed shadow-sm space-y-2">
                                                 {msg.attachmentName && (
                                                     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-cyan-300 font-mono">
                                                         <FileImage className="w-3.5 h-3.5" />
@@ -373,7 +373,7 @@ export default function AiAssistantComponent() {
 
                 {/* Right Column: Active Output Preview & Export Panel (5 Cols) */}
                 <div className="lg:col-span-5 space-y-4">
-                    <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/80 space-y-5">
+                    <div className="card p-6 space-y-5">
                         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="w-4 h-4 text-primary" />

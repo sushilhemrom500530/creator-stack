@@ -244,10 +244,45 @@ export default function ConnectedAccountsComponent() {
 
     const activeCount = accounts.filter((a) => a.connected).length;
 
+    const metricsData = [
+        {
+            title: "Connected Hubs",
+            value: (
+                <>
+                    {activeCount} <span className="text-sm font-normal text-slate-400">/ {accounts.length}</span>
+                </>
+            ),
+            valueColor: "text-slate-800",
+            icon: Share2,
+            iconBg: "bg-primary/10 text-primary",
+        },
+        {
+            title: "Sync Health",
+            value: "100%",
+            valueColor: "text-emerald-600",
+            icon: ShieldCheck,
+            iconBg: "bg-emerald-50 text-emerald-600",
+        },
+        {
+            title: "Total Audience",
+            value: "84.5K",
+            valueColor: "text-blue-600",
+            icon: Users,
+            iconBg: "bg-blue-50 text-blue-600",
+        },
+        {
+            title: "Auto Cross-Post",
+            value: "Active",
+            valueColor: "text-purple-600",
+            icon: Zap,
+            iconBg: "bg-purple-50 text-purple-600",
+        },
+    ];
+
     return (
         <div className="p-6 space-y-6 max-w-7xl mx-auto font-sans">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                         <Share2 className="w-7 h-7 text-primary" /> Connected Social Accounts
@@ -273,51 +308,31 @@ export default function ConnectedAccountsComponent() {
 
             {/* Quick Metrics Summary Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Connected Hubs</p>
-                        <h3 className="text-2xl font-bold text-slate-800 mt-1">
-                            {activeCount} <span className="text-sm font-normal text-slate-400">/ {accounts.length}</span>
-                        </h3>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
-                        <Share2 className="w-5 h-5" />
-                    </div>
-                </div>
-
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sync Health</p>
-                        <h3 className="text-2xl font-bold text-emerald-600 mt-1">100%</h3>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                        <ShieldCheck className="w-5 h-5" />
-                    </div>
-                </div>
-
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Audience</p>
-                        <h3 className="text-2xl font-bold text-blue-600 mt-1">84.5K</h3>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-                        <Users className="w-5 h-5" />
-                    </div>
-                </div>
-
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Auto Cross-Post</p>
-                        <h3 className="text-2xl font-bold text-purple-600 mt-1">Active</h3>
-                    </div>
-                    <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
-                        <Zap className="w-5 h-5" />
-                    </div>
-                </div>
+                {metricsData.map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                        <div
+                            key={index}
+                            className="card p-5 flex items-center justify-between hover:-translate-y-1 [transition:0.3s]"
+                        >
+                            <div>
+                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                    {item.title}
+                                </p>
+                                <h3 className={`text-2xl font-bold mt-1 ${item.valueColor}`}>
+                                    {item.value}
+                                </h3>
+                            </div>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold ${item.iconBg}`}>
+                                <Icon className="w-5 h-5" />
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Filter & Search Bar */}
-            <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="card p-4 flex flex-col md:flex-row items-center justify-between gap-4">
                 {/* Search */}
                 <div className="relative w-full md:w-80">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -360,7 +375,7 @@ export default function ConnectedAccountsComponent() {
                     return (
                         <div
                             key={acc.id}
-                            className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-5 flex flex-col justify-between hover:shadow-md transition"
+                            className="card p-6 space-y-5 flex flex-col justify-between"
                         >
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">

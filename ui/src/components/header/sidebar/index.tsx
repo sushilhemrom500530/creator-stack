@@ -110,7 +110,7 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
 
                     <div className="mt-auto border-t border-[#E5E7EB] shrink-0 bg-white">
                         <Dropdown menu={{ items: profileMenuItems }} trigger={['click']} placement="topLeft">
-                            <button className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
+                            <button className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors cursor-pointer">
                                 <div className="flex items-center gap-3 overflow-hidden">
                                     <div className="w-10 h-10 rounded-full bg-primary/10 flex flex-shrink-0 items-center justify-center text-primary font-bold text-lg">
                                         {user?.name?.charAt(0) || "U"}
