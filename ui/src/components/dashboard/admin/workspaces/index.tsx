@@ -17,7 +17,9 @@ import {
     Dropdown,
     Popconfirm,
     ConfigProvider,
+    Table,
 } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import {
     Rocket,
     Megaphone,
@@ -66,6 +68,7 @@ import {
     FaPinterest,
     FaDiscord,
 } from "react-icons/fa6";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 
 // Workspace Data Type Definition
 export interface WorkspaceType {
@@ -355,25 +358,25 @@ function WorkspacesContent() {
         switch (status) {
             case "ACTIVE":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold tracking-wider bg-emerald-500/15 text-emerald-500 border border-emerald-500/20 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full !text-[10px] font-extrabold tracking-wider bg-emerald-500/15 text-emerald-500 border border-emerald-500/20">
                         ACTIVE
                     </span>
                 );
             case "TRIALING":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold tracking-wider bg-purple-500/15 text-purple-400 border border-purple-500/20 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full !text-[10px] font-extrabold tracking-wider bg-purple-500/15 text-purple-400 border border-purple-500/20">
                         TRIALING
                     </span>
                 );
             case "PAST DUE":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold tracking-wider bg-amber-500/15 text-amber-500 border border-amber-500/20 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full !text-[10px] font-extrabold tracking-wider bg-amber-500/15 text-amber-500 border border-amber-500/20">
                         PAST DUE
                     </span>
                 );
             case "SUSPENDED":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold tracking-wider bg-rose-500/15 text-rose-500 border border-rose-500/20 shadow-sm">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full !text-[10px] font-extrabold tracking-wider bg-rose-500/15 text-rose-500 border border-rose-500/20">
                         SUSPENDED
                     </span>
                 );
@@ -404,10 +407,127 @@ function WorkspacesContent() {
         );
     };
 
+    // Ant Design Table Columns for Workspace Table View
+    const workspaceColumns: ColumnsType<WorkspaceType> = [
+        {
+            title: "Workspace",
+            dataIndex: "name",
+            key: "workspace",
+            render: (_, ws) => (
+                <div className="flex items-center gap-3">
+                    {renderWorkspaceIcon(ws.iconType, ws.iconBg, ws.iconColor)}
+                    <div>
+                        <div
+                            onClick={() => handleViewDetails(ws)}
+                            className="font-bold text-foreground hover:text-emerald-500 cursor-pointer transition-colors"
+                        >
+                            {ws.name}
+                        </div>
+                        <div className="text-xs text-muted-foreground">{ws.id}</div>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: (status) => renderStatusBadge(status),
+        },
+        {
+            title: "Owner",
+            dataIndex: "owner",
+            key: "owner",
+            render: (owner) => <span className="font-medium text-foreground">{owner}</span>,
+        },
+        {
+            title: "Members",
+            dataIndex: "membersCount",
+            key: "membersCount",
+            render: (count) => <span className="font-semibold">{count} active</span>,
+        },
+        {
+            title: "Connected Platforms",
+            key: "connectedPlatforms",
+            render: (_, ws) => (
+                <div className="flex items-center gap-1.5">
+                    {ws.connectedPlatforms.map((p) => {
+                        const PlatformIcon = p.icon;
+                        return (
+                            <Tooltip key={p.id} title={p.name}>
+                                <div className="w-6 h-6 rounded bg-muted/80 flex items-center justify-center">
+                                    <PlatformIcon className="w-3.5 h-3.5" style={{ color: p.color }} />
+                                </div>
+                            </Tooltip>
+                        );
+                    })}
+                </div>
+            ),
+        },
+        {
+            title: "Plan",
+            dataIndex: "plan",
+            key: "plan",
+            render: (plan) => (
+                <span className="font-bold text-xs uppercase text-emerald-500">
+                    {plan}
+                </span>
+            ),
+        },
+        {
+            title: "Actions",
+            key: "actions",
+            align: "right",
+            render: (_, ws) => (
+                <Button
+                    type="text"
+                    size="small"
+                    icon={<ChevronRight className="w-4 h-4 text-emerald-500" />}
+                    onClick={() => handleViewDetails(ws)}
+                    className="cursor-pointer"
+                >
+                    Details
+                </Button>
+            ),
+        },
+    ];
+
+    // Bottom Stat Summary Cards (JSON Data)
+    const bottomStatsData: StatItem[] = [
+        {
+            id: "total-workspaces",
+            title: "TOTAL WORKSPACES",
+            value: stats.totalWorkspaces,
+            icon: LayoutGrid,
+            color: "purple",
+        },
+        {
+            id: "total-members",
+            title: "TOTAL MEMBERS",
+            value: stats.totalMembers,
+            icon: Users,
+            color: "emerald",
+        },
+        {
+            id: "ai-utilization",
+            title: "AI UTILIZATION",
+            value: stats.aiUtilization,
+            icon: Sparkles,
+            color: "cyan",
+        },
+        {
+            id: "pending-issues",
+            title: "PENDING ISSUES",
+            value: stats.pendingIssues,
+            icon: AlertTriangle,
+            color: "amber",
+        },
+    ];
+
     return (
-        <div className="p-6 md:p-8 max-w-[1600px] mx-auto space-y-8 animate-in fade-in duration-300">
+        <div className="p-6 space-y-8 animate-in fade-in duration-300">
             {/* Top Header Section matching Demo Screenshot */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4 border-b border-gray-200 dark:border-zinc-800">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4">
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
                         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
@@ -423,7 +543,7 @@ function WorkspacesContent() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setIsAiModalOpen(true)}
-                        className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-xs font-bold tracking-wide transition-all shadow-sm cursor-pointer hover:scale-105 active:scale-95"
+                        className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-xs font-bold tracking-wide transition-all cursor-pointer"
                     >
                         <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
                         <Sparkles className="w-4 h-4 text-emerald-500 animate-pulse" />
@@ -441,366 +561,266 @@ function WorkspacesContent() {
                 </div>
             </div>
 
-            {/* Filter Toolbar & Search Bar */}
-            <div className="bg-card border border-gray-200 dark:border-zinc-800 p-4 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-3 w-full md:w-auto flex-1">
-                    {/* Search Input */}
-                    <div className="relative w-full md:w-72">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                            placeholder="Search workspace, owner..."
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                            className="pl-9 bg-background border-gray-200 dark:border-zinc-800 rounded-xl h-10 text-sm focus:border-emerald-500 focus:ring-emerald-500"
-                            allowClear
+            {/* Bottom Stat Summary Cards matching demo image */}
+            <StatsGrid
+                stats={bottomStatsData}
+                variant="compact"
+                gridColsClass="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-4"
+                className="[transition:0.3s] hover:-translate-y-1"
+            />
+
+            <div className="card space-y-4 py-6 px-4">
+                {/* Filter Toolbar & Search Bar */}
+                <div className="py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-3 w-full md:w-auto flex-1">
+                        {/* Search Input */}
+                        <div className="relative w-full md:w-72">
+                            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <Input
+                                placeholder="Search workspace, owner..."
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                className="pl-9 bg-background border-gray-200 dark:border-zinc-800 rounded-xl h-10 text-sm focus:border-emerald-500 focus:ring-emerald-500"
+                                allowClear
+                            />
+                        </div>
+
+                        {/* Status Filter */}
+                        <Select
+                            value={statusFilter}
+                            onChange={(val) => setStatusFilter(val)}
+                            className="w-36 h-10"
+                            options={[
+                                { label: "All Statuses", value: "ALL" },
+                                { label: "Active", value: "ACTIVE" },
+                                { label: "Trialing", value: "TRIALING" },
+                                { label: "Past Due", value: "PAST DUE" },
+                                { label: "Suspended", value: "SUSPENDED" },
+                            ]}
                         />
+
+                        {/* Plan Filter */}
+                        <Select
+                            value={planFilter}
+                            onChange={(val) => setPlanFilter(val)}
+                            className="w-40 h-10"
+                            options={[
+                                { label: "All Plans", value: "ALL" },
+                                { label: "Enterprise", value: "ENTERPRISE" },
+                                { label: "Professional", value: "Professional" },
+                                { label: "Standard", value: "Standard" },
+                                { label: "Starter", value: "Starter" },
+                            ]}
+                        />
+
+                        {(searchText || statusFilter !== "ALL" || planFilter !== "ALL") && (
+                            <Button
+                                type="text"
+                                icon={<RotateCcw className="w-3.5 h-3.5" />}
+                                onClick={handleResetFilters}
+                                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                            >
+                                Reset
+                            </Button>
+                        )}
                     </div>
 
-                    {/* Status Filter */}
-                    <Select
-                        value={statusFilter}
-                        onChange={(val) => setStatusFilter(val)}
-                        className="w-36 h-10"
-                        options={[
-                            { label: "All Statuses", value: "ALL" },
-                            { label: "Active", value: "ACTIVE" },
-                            { label: "Trialing", value: "TRIALING" },
-                            { label: "Past Due", value: "PAST DUE" },
-                            { label: "Suspended", value: "SUSPENDED" },
-                        ]}
-                    />
-
-                    {/* Plan Filter */}
-                    <Select
-                        value={planFilter}
-                        onChange={(val) => setPlanFilter(val)}
-                        className="w-40 h-10"
-                        options={[
-                            { label: "All Plans", value: "ALL" },
-                            { label: "Enterprise", value: "ENTERPRISE" },
-                            { label: "Professional", value: "Professional" },
-                            { label: "Standard", value: "Standard" },
-                            { label: "Starter", value: "Starter" },
-                        ]}
-                    />
-
-                    {(searchText || statusFilter !== "ALL" || planFilter !== "ALL") && (
-                        <Button
-                            type="text"
-                            icon={<RotateCcw className="w-3.5 h-3.5" />}
-                            onClick={handleResetFilters}
-                            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                    {/* View Switcher */}
+                    <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-gray-200 dark:border-zinc-800">
+                        <button
+                            onClick={() => setViewMode("grid")}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "grid"
+                                ? "bg-background text-foreground shadow-sm font-semibold"
+                                : "text-muted-foreground hover:text-foreground"
+                                }`}
                         >
-                            Reset
-                        </Button>
-                    )}
-                </div>
-
-                {/* View Switcher */}
-                <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-gray-200 dark:border-zinc-800">
-                    <button
-                        onClick={() => setViewMode("grid")}
-                        className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${viewMode === "grid"
-                            ? "bg-background text-foreground shadow-sm font-semibold"
-                            : "text-muted-foreground hover:text-foreground"
-                            }`}
-                    >
-                        <GridIcon className="w-4 h-4" />
-                        <span className="hidden sm:inline">Grid</span>
-                    </button>
-                    <button
-                        onClick={() => setViewMode("table")}
-                        className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${viewMode === "table"
-                            ? "bg-background text-foreground shadow-sm font-semibold"
-                            : "text-muted-foreground hover:text-foreground"
-                            }`}
-                    >
-                        <ListIcon className="w-4 h-4" />
-                        <span className="hidden sm:inline">Table</span>
-                    </button>
-                </div>
-            </div>
-
-            {/* Main Content Area */}
-            {viewMode === "grid" ? (
-                /* Workspaces Cards Grid matching demo screenshot */
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredWorkspaces.map((ws) => (
-                        <div
-                            key={ws.id}
-                            className="group relative bg-card border border-gray-200 dark:border-zinc-800 hover:border-emerald-500/50 rounded-3xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5 flex flex-col justify-between"
+                            <GridIcon className="w-4 h-4" />
+                            <span className="hidden sm:inline">Grid</span>
+                        </button>
+                        <button
+                            onClick={() => setViewMode("table")}
+                            className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "table"
+                                ? "bg-background text-foreground shadow-sm font-semibold"
+                                : "text-muted-foreground hover:text-foreground"
+                                }`}
                         >
-                            {/* Card Header: Icon, Title, Status Tag & Menu */}
-                            <div>
-                                <div className="flex items-start justify-between gap-4 mb-4">
-                                    <div className="flex items-center gap-3.5">
-                                        {renderWorkspaceIcon(ws.iconType, ws.iconBg, ws.iconColor)}
-                                        <div>
-                                            <h3
-                                                onClick={() => handleViewDetails(ws)}
-                                                className="text-lg font-bold text-foreground hover:text-emerald-500 transition-colors cursor-pointer leading-tight flex items-center gap-2"
-                                            >
-                                                {ws.name}
-                                            </h3>
-                                            <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1 font-medium">
-                                                <Users className="w-3 h-3 text-muted-foreground/70" />
-                                                <span>Owned by {ws.owner}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-2">
-                                        {renderStatusBadge(ws.status)}
-                                        <Dropdown
-                                            menu={{
-                                                items: [
-                                                    {
-                                                        key: "view",
-                                                        label: "View Details",
-                                                        icon: <ChevronRight className="w-4 h-4" />,
-                                                        onClick: () => handleViewDetails(ws),
-                                                    },
-                                                    {
-                                                        key: "edit",
-                                                        label: "Edit Settings",
-                                                        icon: <Edit3 className="w-4 h-4" />,
-                                                        onClick: () => handleOpenEdit(ws),
-                                                    },
-                                                    {
-                                                        type: "divider",
-                                                    },
-                                                    {
-                                                        key: "delete",
-                                                        label: "Delete Workspace",
-                                                        icon: <Trash2 className="w-4 h-4 text-rose-500" />,
-                                                        danger: true,
-                                                        onClick: () => handleDeleteWorkspace(ws.id, ws.name),
-                                                    },
-                                                ],
-                                            }}
-                                            trigger={["click"]}
-                                            placement="bottomRight"
-                                        >
-                                            <button className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
-                                                <MoreVertical className="w-4 h-4" />
-                                            </button>
-                                        </Dropdown>
-                                    </div>
-                                </div>
-
-                                {/* Divider */}
-                                <div className="h-[1px] w-full bg-gray-100 dark:bg-zinc-800 my-4" />
-
-                                {/* Card Details: Members, Connected Platforms, Plan */}
-                                <div className="space-y-3 text-sm font-medium">
-                                    {/* Members Row */}
-                                    <div className="flex items-center justify-between text-muted-foreground">
-                                        <span className="text-xs">Members</span>
-                                        <span className="text-foreground font-semibold text-xs">
-                                            {ws.membersCount} active
-                                        </span>
-                                    </div>
-
-                                    {/* Connected Platforms Row */}
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs text-muted-foreground">Connected Platforms</span>
-                                        <div className="flex items-center gap-2">
-                                            {ws.connectedPlatforms.map((p) => {
-                                                const PlatformIcon = p.icon;
-                                                return (
-                                                    <Tooltip key={p.id} title={p.name}>
-                                                        <div className="w-6 h-6 rounded-md bg-muted/80 flex items-center justify-center text-foreground hover:scale-110 transition-transform">
-                                                            <PlatformIcon className="w-3.5 h-3.5" style={{ color: p.color }} />
-                                                        </div>
-                                                    </Tooltip>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* Plan Row matching screenshot typography */}
-                                    <div className="flex items-center justify-between pt-1">
-                                        <span className="text-xs text-muted-foreground">Plan</span>
-                                        <span
-                                            className={`text-xs font-extrabold tracking-wide uppercase ${ws.plan === "ENTERPRISE"
-                                                ? "text-emerald-500"
-                                                : ws.plan.includes("SUSPENDED")
-                                                    ? "text-rose-500"
-                                                    : "text-muted-foreground"
-                                                }`}
-                                        >
-                                            {ws.plan}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Card Footer Quick Action */}
-                            <div className="mt-6 pt-3 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between">
-                                <span className="text-[11px] text-muted-foreground/70">
-                                    Active {ws.lastActive}
-                                </span>
-                                <button
-                                    onClick={() => handleViewDetails(ws)}
-                                    className="text-xs font-semibold text-emerald-500 hover:text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
-                                >
-                                    Open Suite
-                                    <ChevronRight className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-
-                    {/* "Create New Workspace" Dashed Card matching demo image directly */}
-                    <div
-                        onClick={() => setIsCreateModalOpen(true)}
-                        className="group relative border-2 border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500/60 rounded-3xl p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-card/40 hover:bg-card/90 transition-all duration-300 min-h-[260px] shadow-sm hover:shadow-xl"
-                    >
-                        <div className="w-16 h-16 rounded-full bg-zinc-800/90 border border-zinc-700/80 group-hover:bg-emerald-500 text-foreground group-hover:text-black flex items-center justify-center transition-all duration-300 shadow-lg group-hover:scale-110 mb-4">
-                            <Plus className="w-8 h-8 stroke-[2.5]" />
-                        </div>
-                        <h3 className="text-lg font-bold text-foreground group-hover:text-emerald-500 transition-colors">
-                            Create New Workspace
-                        </h3>
-                        <p className="text-xs text-muted-foreground mt-2 max-w-[220px] font-medium leading-relaxed">
-                            Scale your operations by adding a new environment for your team.
-                        </p>
+                            <ListIcon className="w-4 h-4" />
+                            <span className="hidden sm:inline">Table</span>
+                        </button>
                     </div>
                 </div>
-            ) : (
-                /* Table View for Workspace Power Users */
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-muted/50 border-b border-gray-200 dark:border-zinc-800 text-xs text-muted-foreground uppercase font-bold tracking-wider">
-                                <tr>
-                                    <th className="px-6 py-4">Workspace</th>
-                                    <th className="px-6 py-4">Status</th>
-                                    <th className="px-6 py-4">Owner</th>
-                                    <th className="px-6 py-4">Members</th>
-                                    <th className="px-6 py-4">Connected Platforms</th>
-                                    <th className="px-6 py-4">Plan</th>
-                                    <th className="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200 dark:divide-zinc-800">
-                                {filteredWorkspaces.map((ws) => (
-                                    <tr key={ws.id} className="hover:bg-muted/30 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                {renderWorkspaceIcon(ws.iconType, ws.iconBg, ws.iconColor)}
-                                                <div>
-                                                    <div
-                                                        onClick={() => handleViewDetails(ws)}
-                                                        className="font-bold text-foreground hover:text-emerald-500 cursor-pointer transition-colors"
-                                                    >
-                                                        {ws.name}
-                                                    </div>
-                                                    <div className="text-xs text-muted-foreground">{ws.id}</div>
-                                                </div>
+
+                {/* Main Content Area */}
+                {viewMode === "grid" ? (
+                    /* Workspaces Cards Grid matching demo screenshot */
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredWorkspaces.map((ws) => (
+                            <div
+                                key={ws.id}
+                                className="group relative border border-gray-200 dark:border-zinc-800 hover:border-emerald-500/50 rounded-3xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/5 flex flex-col justify-between"
+                            >
+                                {/* Card Header: Icon, Title, Status Tag & Menu */}
+                                <div>
+                                    <div className="flex items-start justify-between gap-4 mb-4">
+                                        <div className="flex items-center gap-3.5">
+                                            {renderWorkspaceIcon(ws.iconType, ws.iconBg, ws.iconColor)}
+                                            <div>
+                                                <h3
+                                                    onClick={() => handleViewDetails(ws)}
+                                                    className="text-lg font-bold text-foreground hover:text-emerald-500 transition-colors cursor-pointer leading-tight flex items-center gap-2"
+                                                >
+                                                    {ws.name}
+                                                </h3>
+                                                <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1 font-medium">
+                                                    <Users className="w-3 h-3 text-muted-foreground/70" />
+                                                    <span>Owned by {ws.owner}</span>
+                                                </p>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4">{renderStatusBadge(ws.status)}</td>
-                                        <td className="px-6 py-4 font-medium text-foreground">{ws.owner}</td>
-                                        <td className="px-6 py-4 font-semibold">{ws.membersCount} active</td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-1.5">
+                                        </div>
+
+                                        <div className="flex items-center gap-2">
+                                            {renderStatusBadge(ws.status)}
+                                            <Dropdown
+                                                menu={{
+                                                    items: [
+                                                        {
+                                                            key: "view",
+                                                            label: "View Details",
+                                                            icon: <ChevronRight className="w-4 h-4" />,
+                                                            onClick: () => handleViewDetails(ws),
+                                                        },
+                                                        {
+                                                            key: "edit",
+                                                            label: "Edit Settings",
+                                                            icon: <Edit3 className="w-4 h-4" />,
+                                                            onClick: () => handleOpenEdit(ws),
+                                                        },
+                                                        {
+                                                            type: "divider",
+                                                        },
+                                                        {
+                                                            key: "delete",
+                                                            label: "Delete Workspace",
+                                                            icon: <Trash2 className="w-4 h-4 text-rose-500" />,
+                                                            danger: true,
+                                                            onClick: () => handleDeleteWorkspace(ws.id, ws.name),
+                                                        },
+                                                    ],
+                                                }}
+                                                trigger={["click"]}
+                                                placement="bottomRight"
+                                            >
+                                                <button className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
+                                                    <MoreVertical className="w-4 h-4" />
+                                                </button>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+
+                                    {/* Divider */}
+                                    <div className="h-[1px] w-full bg-gray-100 dark:bg-zinc-800 my-4" />
+
+                                    {/* Card Details: Members, Connected Platforms, Plan */}
+                                    <div className="space-y-3 text-sm font-medium">
+                                        {/* Members Row */}
+                                        <div className="flex items-center justify-between text-muted-foreground">
+                                            <span className="text-xs">Members</span>
+                                            <span className="text-foreground font-semibold text-xs">
+                                                {ws.membersCount} active
+                                            </span>
+                                        </div>
+
+                                        {/* Connected Platforms Row */}
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs text-muted-foreground">Connected Platforms</span>
+                                            <div className="flex items-center gap-2">
                                                 {ws.connectedPlatforms.map((p) => {
                                                     const PlatformIcon = p.icon;
                                                     return (
-                                                        <div
-                                                            key={p.id}
-                                                            className="w-6 h-6 rounded bg-muted/80 flex items-center justify-center"
-                                                        >
-                                                            <PlatformIcon className="w-3.5 h-3.5" style={{ color: p.color }} />
-                                                        </div>
+                                                        <Tooltip key={p.id} title={p.name}>
+                                                            <div className="w-6 h-6 rounded-md bg-muted/80 flex items-center justify-center text-foreground hover:scale-110 transition-transform">
+                                                                <PlatformIcon className="w-3.5 h-3.5" style={{ color: p.color }} />
+                                                            </div>
+                                                        </Tooltip>
                                                     );
                                                 })}
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4 font-bold text-xs uppercase text-emerald-500">
-                                            {ws.plan}
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <Button
-                                                type="text"
-                                                size="small"
-                                                icon={<ChevronRight className="w-4 h-4 text-emerald-500" />}
-                                                onClick={() => handleViewDetails(ws)}
+                                        </div>
+
+                                        {/* Plan Row matching screenshot typography */}
+                                        <div className="flex items-center justify-between pt-1">
+                                            <span className="text-xs text-muted-foreground">Plan</span>
+                                            <span
+                                                className={`text-xs font-extrabold tracking-wide uppercase ${ws.plan === "ENTERPRISE"
+                                                    ? "text-emerald-500"
+                                                    : ws.plan.includes("SUSPENDED")
+                                                        ? "text-rose-500"
+                                                        : "text-muted-foreground"
+                                                    }`}
                                             >
-                                                Details
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
+                                                {ws.plan}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-            {/* Bottom Stat Summary Cards matching demo image */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pt-4">
-                {/* Stat 1: Total Workspaces */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:border-purple-500/40 transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-500 flex items-center justify-center shrink-0">
-                        <LayoutGrid className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            TOTAL WORKSPACES
-                        </p>
-                        <h4 className="text-2xl font-black text-foreground tracking-tight mt-0.5">
-                            {stats.totalWorkspaces}
-                        </h4>
-                    </div>
-                </div>
+                                {/* Card Footer Quick Action */}
+                                <div className="mt-6 pt-3 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between">
+                                    <span className="text-[11px] text-muted-foreground/70">
+                                        Active {ws.lastActive}
+                                    </span>
+                                    <button
+                                        onClick={() => handleViewDetails(ws)}
+                                        className="text-xs font-semibold text-emerald-500 hover:text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform cursor-pointer"
+                                    >
+                                        Open Suite
+                                        <ChevronRight className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
 
-                {/* Stat 2: Total Members */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:border-emerald-500/40 transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
-                        <Users className="w-6 h-6" />
+                        {/* "Create New Workspace" Dashed Card matching demo image directly */}
+                        <div
+                            onClick={() => setIsCreateModalOpen(true)}
+                            className="group relative border-2 border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500/60 rounded-3xl p-8 flex flex-col items-center justify-center text-center cursor-pointer bg-card/40 hover:bg-card/90 transition-all duration-300 min-h-[260px] shadow-sm hover:shadow-xl"
+                        >
+                            <div className="w-16 h-16 rounded-full bg-zinc-800/90 border border-zinc-700/80 group-hover:bg-emerald-500 text-foreground group-hover:text-black flex items-center justify-center transition-all duration-300 shadow-lg group-hover:scale-110 mb-4">
+                                <Plus className="w-8 h-8 stroke-[2.5]" />
+                            </div>
+                            <h3 className="text-lg font-bold text-foreground group-hover:text-emerald-500 transition-colors">
+                                Create New Workspace
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-2 max-w-[220px] font-medium leading-relaxed">
+                                Scale your operations by adding a new environment for your team.
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            TOTAL MEMBERS
-                        </p>
-                        <h4 className="text-2xl font-black text-foreground tracking-tight mt-0.5">
-                            {stats.totalMembers}
-                        </h4>
+                ) : (
+                    /* Table View for Workspace Power Users (Ant Design Table) */
+                    <div className="card overflow-hidden">
+                        <Table
+                            columns={workspaceColumns}
+                            dataSource={filteredWorkspaces}
+                            rowKey="id"
+                            pagination={{
+                                pageSize: 6,
+                                showSizeChanger: true,
+                                pageSizeOptions: ["5", "6", "10", "20"],
+                                showTotal: (total, range) => (
+                                    <span className="text-xs font-semibold text-muted-foreground">
+                                        Showing <span className="text-emerald-500 font-bold">{range[0]}-{range[1]}</span> of{" "}
+                                        <span className="text-foreground font-bold">{total}</span> workspaces
+                                    </span>
+                                ),
+                                className: "px-6 py-4 border-t border-gray-200 dark:border-zinc-800 flex items-center justify-between",
+                            }}
+                            className="custom-admin-table"
+                        />
                     </div>
-                </div>
-
-                {/* Stat 3: AI Utilization */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:border-cyan-500/40 transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-500 flex items-center justify-center shrink-0">
-                        <Sparkles className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            AI UTILIZATION
-                        </p>
-                        <h4 className="text-2xl font-black text-foreground tracking-tight mt-0.5">
-                            {stats.aiUtilization}
-                        </h4>
-                    </div>
-                </div>
-
-                {/* Stat 4: Pending Issues */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:border-amber-500/40 transition-all">
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
-                        <AlertTriangle className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            PENDING ISSUES
-                        </p>
-                        <h4 className="text-2xl font-black text-foreground tracking-tight mt-0.5">
-                            {stats.pendingIssues}
-                        </h4>
-                    </div>
-                </div>
+                )}
             </div>
+
 
             {/* Create Workspace Modal */}
             <Modal
