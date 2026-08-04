@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Drawer, Switch, Button, Tag, Badge, Slider } from "antd";
+import { Drawer, Switch, Button, Tag, Slider } from "antd";
 import {
     Activity,
     Cpu,
@@ -12,13 +12,8 @@ import {
     Settings2,
     Sliders,
     Power,
-    CheckCircle2,
-    XCircle,
-    AlertTriangle,
     SlidersHorizontal,
     Zap,
-    ShieldCheck,
-    Bot,
 } from "lucide-react";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -205,9 +200,9 @@ export default function AiManagement() {
     const activeCount = models.filter((m) => m.enabled).length;
 
     return (
-        <div className="min-h-screen font-sans p-6">
+        <div className="p-6">
             {/* --- Header --- */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4 border-b border-slate-200/60">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4">
                 <div>
                     <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">AI Management & Monitoring</h1>
                     <p className="text-slate-500 mt-1 text-sm font-medium">Real-time health telemetry and engine control</p>
@@ -215,7 +210,7 @@ export default function AiManagement() {
 
                 {/* Header Actions / Title Opponent */}
                 <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 px-3.5 py-2 rounded-full shadow-2xs">
+                    <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 px-3.5 py-2 rounded-full ">
                         <span className="relative flex h-2.5 w-2.5">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -230,7 +225,7 @@ export default function AiManagement() {
                         type="primary"
                         icon={<Settings2 className="w-4 h-4" />}
                         onClick={() => setIsDrawerOpen(true)}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-full h-9 px-5 flex items-center gap-1.5 shadow-sm border-none"
+                        className="bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-full h-9 px-5 flex items-center gap-1.5 border-none"
                     >
                         Manage AI
                     </Button>
@@ -240,7 +235,7 @@ export default function AiManagement() {
             {/* --- TOP ROW GRID: AI Health Hub & Rate Limit Gauges --- */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                 {/* 1. AI Health Hub (lg:col-span-2) */}
-                <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+                <div className="lg:col-span-2 card p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex justify-between items-center mb-6">
                             <div className="flex items-center gap-2 text-indigo-600">
@@ -258,7 +253,7 @@ export default function AiManagement() {
                             {(() => {
                                 const m = getModel("openai");
                                 return (
-                                    <div className={`p-4 rounded-2xl border transition ${m.enabled ? "bg-slate-50 border-slate-200 shadow-2xs" : "bg-slate-100/60 border-slate-200 opacity-60"
+                                    <div className={`p-4 rounded-2xl border hover:-translate-y-1 [transition:0.3s] ${m.enabled ? "bg-white border-slate-200" : "bg-slate-100/60 border-slate-200 opacity-60"
                                         }`}>
                                         <div className="flex justify-between items-start mb-2">
                                             <span className="text-sm font-extrabold text-slate-900">{m.name}</span>
@@ -295,7 +290,7 @@ export default function AiManagement() {
                             {(() => {
                                 const m = getModel("claude");
                                 return (
-                                    <div className={`p-4 rounded-2xl border transition ${m.enabled ? "bg-slate-50 border-slate-200 shadow-2xs" : "bg-slate-100/60 border-slate-200 opacity-60"
+                                    <div className={`p-4 rounded-2xl border hover:-translate-y-1 [transition:0.3s] ${m.enabled ? "bg-white border-slate-200" : "bg-slate-100/60 border-slate-200 opacity-60"
                                         }`}>
                                         <div className="flex justify-between items-start mb-2">
                                             <span className="text-sm font-extrabold text-slate-900">Claude 3.5</span>
@@ -332,7 +327,7 @@ export default function AiManagement() {
                             {(() => {
                                 const m = getModel("sd");
                                 return (
-                                    <div className={`p-4 rounded-2xl border transition relative overflow-hidden ${m.enabled ? "bg-slate-50 border-slate-200 shadow-2xs" : "bg-slate-100/60 border-slate-200 opacity-60"
+                                    <div className={`p-4 rounded-2xl border hover:-translate-y-1 [transition:0.3s] ${m.enabled ? "bg-white border-slate-200" : "bg-slate-100/60 border-slate-200 opacity-60"
                                         }`}>
                                         <div className="flex justify-between items-start mb-2 relative z-10">
                                             <span className="text-sm font-extrabold text-slate-900">Stable Diffusion</span>
@@ -368,7 +363,7 @@ export default function AiManagement() {
                     </div>
 
                     {/* Bar Chart */}
-                    <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4">
+                    <div className="bg-white rounded-2xl border border-slate-200 p-4">
                         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Daily Token Consumption</h3>
                         <div className="h-44 w-full">
                             <ReactApexChart options={tokenChartOptions} series={tokenSeries} type="bar" height="100%" width="100%" />
@@ -377,7 +372,7 @@ export default function AiManagement() {
                 </div>
 
                 {/* 2. Rate Limit Gauges (lg:col-span-1) */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between h-full">
+                <div className="card p-6 flex flex-col justify-between h-full">
                     <div>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2 text-emerald-600">
@@ -404,7 +399,7 @@ export default function AiManagement() {
                             return (
                                 <div
                                     key={m.id}
-                                    className={`flex items-center justify-between p-3 rounded-2xl border transition ${m.enabled ? "bg-slate-50 border-slate-200" : "bg-slate-100/70 border-slate-200 opacity-50"
+                                    className={`flex items-center justify-between p-3 rounded-2xl border transition ${m.enabled ? "bg-white border-slate-200" : "bg-slate-100/70 border-slate-200 opacity-50"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
@@ -447,7 +442,7 @@ export default function AiManagement() {
             {/* --- MIDDLE ROW GRID: Cost Matrix & AI Model Tuning --- */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* 3. Cost Matrix (lg:col-span-2) */}
-                <div className="lg:col-span-2 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col md:flex-row gap-8 justify-between h-full">
+                <div className="lg:col-span-2 card p-6 flex flex-col md:flex-row gap-8 justify-between h-full">
                     <div className="flex-1">
                         <h2 className="text-lg font-extrabold text-slate-900 mb-6">Cost Matrix</h2>
                         <div className="flex justify-between items-end mb-2">
@@ -459,19 +454,19 @@ export default function AiManagement() {
                         </div>
                     </div>
                     <div className="flex-1 grid grid-cols-2 gap-3">
-                        <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
+                        <div className="bg-white p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Image Gen</span>
                             <span className="text-xl font-extrabold text-emerald-600 mt-1">32%</span>
                         </div>
-                        <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
+                        <div className="bg-white p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Copywriting</span>
                             <span className="text-xl font-extrabold text-amber-500 mt-1">54%</span>
                         </div>
-                        <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
+                        <div className="bg-white p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Sentiment</span>
                             <span className="text-xl font-extrabold text-indigo-500 mt-1">14%</span>
                         </div>
-                        <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
+                        <div className="bg-white p-3 rounded-2xl border border-slate-200 text-center flex flex-col justify-center">
                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Moderation</span>
                             <span className="text-xl font-extrabold text-rose-500 mt-1">2%</span>
                         </div>
@@ -479,7 +474,7 @@ export default function AiManagement() {
                 </div>
 
                 {/* 4. AI Model Tuning (lg:col-span-1) */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col justify-between h-full">
+                <div className="card p-6 flex flex-col justify-between h-full">
                     <div>
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2 text-indigo-600">
@@ -496,7 +491,7 @@ export default function AiManagement() {
                     {/* Adjustments & Controls */}
                     <div className="space-y-4">
                         {/* Temperature Control */}
-                        <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+                        <div className="bg-white p-3.5 rounded-2xl border border-slate-200">
                             <div className="flex justify-between items-center mb-1">
                                 <span className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
                                     <Zap className="w-3.5 h-3.5 text-amber-500" /> Temperature (Creativity)
@@ -526,9 +521,9 @@ export default function AiManagement() {
             {/* --- BOTTOM ROW CARDS --- */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                 {/* Cost Opt */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 hover:shadow-md hover:border-indigo-200 transition-all cursor-pointer group">
+                <div className="card p-5 cursor-pointer hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-start gap-4">
-                        <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100">
                             <Sparkles className="w-5 h-5" />
                         </div>
                         <div>
@@ -540,23 +535,23 @@ export default function AiManagement() {
                 </div>
 
                 {/* Prompt Security */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 hover:shadow-md hover:border-emerald-200 transition-all cursor-pointer group">
+                <div className="card p-5 cursor-pointer hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-start gap-4">
-                        <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
                             <Shield className="w-5 h-5" />
                         </div>
                         <div>
                             <h3 className="text-sm font-extrabold text-slate-900 mb-1">Prompt Security</h3>
                             <p className="text-xs font-medium text-slate-500 leading-relaxed mb-3">0 PII leaks detected in the last 10,000 requests. Filter is active.</p>
-                            <span className="text-[11px] font-extrabold text-emerald-600 uppercase tracking-wider group-hover:text-emerald-700">View Report &rarr;</span>
+                            <span className="text-[11px] font-extrabold text-emerald-600 uppercase tracking-wider">View Report &rarr;</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Feature Velocity */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 hover:shadow-md hover:border-emerald-200 transition-all cursor-pointer group">
+                <div className="card p-5 cursor-pointer hover:-translate-y-1 [transition:0.3s]">
                     <div className="flex items-start gap-4">
-                        <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
                             <TrendingUp className="w-5 h-5" />
                         </div>
                         <div>
