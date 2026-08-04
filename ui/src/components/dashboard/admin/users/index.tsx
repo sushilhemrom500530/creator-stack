@@ -45,6 +45,7 @@ import {
     ChevronRight,
     UserPlus,
 } from "lucide-react";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 
 // User Data Type Definition
 export interface UserType {
@@ -536,463 +537,451 @@ function UsersContent() {
         },
     ];
 
+    // Top Summary KPI Cards (JSON Data)
+    const summaryStatsData: StatItem[] = [
+        {
+            id: "total-users",
+            title: "Total Users",
+            value: stats.total,
+            icon: UsersIcon,
+            color: "purple",
+            subtext: "+12% from last month",
+            subIcon: CheckCircle2,
+            subTextColorClass: "text-emerald-600",
+            valueColorClass: "text-slate-900",
+        },
+        {
+            id: "active-users",
+            title: "Active Users",
+            value: stats.active,
+            icon: UserCheck,
+            color: "emerald",
+            subtext: "Currently online/active",
+            subIcon: Clock,
+            subTextColorClass: "text-slate-400",
+            valueColorClass: "text-emerald-600",
+        },
+        {
+            id: "suspended-users",
+            title: "Suspended",
+            value: stats.suspended,
+            icon: UserX,
+            color: "rose",
+            subtext: "Requires review",
+            subIcon: ShieldAlert,
+            subTextColorClass: "text-rose-500",
+            valueColorClass: "text-rose-600",
+        },
+        {
+            id: "enterprise-pro",
+            title: "Enterprise Pro",
+            value: stats.enterprise,
+            icon: Sparkles,
+            color: "indigo",
+            subtext: "Premium Tier",
+            subIcon: Sparkles,
+            subTextColorClass: "text-indigo-600",
+            valueColorClass: "text-indigo-600",
+        },
+    ];
+
     return (
-        <div className="space-y-6 bg-slate-50/60 p-6 rounded-3xl min-h-screen">
-                {/* 1. Header Section */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
-                    <div>
-                        <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
-                                ADMIN CONTROL PANEL
-                            </span>
-                        </div>
-                        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Users Directory</h1>
-                        <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                            Manage team members, assign creator permissions, and oversee enterprise tier subscriptions.
-                        </p>
+        <div className="space-y-6 p-6 min-h-screen">
+            {/* 1. Header Section */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 card p-6">
+                <div>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
+                            ADMIN CONTROL PANEL
+                        </span>
                     </div>
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Users Directory</h1>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                        Manage team members, assign creator permissions, and oversee enterprise tier subscriptions.
+                    </p>
                 </div>
+            </div>
 
-                {/* 2. Top Summary KPI Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Users</p>
-                            <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.total}</h3>
-                            <span className="text-[11px] font-medium text-emerald-600 flex items-center gap-1 mt-1">
-                                <CheckCircle2 className="w-3 h-3" /> +12% from last month
-                            </span>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100">
-                            <UsersIcon className="w-6 h-6" />
-                        </div>
+            {/* 2. Top Summary KPI Cards */}
+            <StatsGrid
+                stats={summaryStatsData}
+                variant="summary"
+                gridColsClass="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+            />
+
+            {/* 3. Search & Filter Bar Section */}
+            <div className="p-5 card space-y-4">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    {/* Search Input */}
+                    <div className="relative flex-1 max-w-md">
+                        <Input
+                            placeholder="Search by name, email, or user ID..."
+                            prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                            allowClear
+                            className="h-11 rounded-xl bg-slate-50 border-slate-200 hover:border-purple-400 focus:border-purple-600 text-sm font-medium"
+                        />
                     </div>
 
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Users</p>
-                            <h3 className="text-2xl font-extrabold text-emerald-600 mt-1">{stats.active}</h3>
-                            <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1 mt-1">
-                                <Clock className="w-3 h-3" /> Currently online/active
-                            </span>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-                            <UserCheck className="w-6 h-6" />
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Suspended</p>
-                            <h3 className="text-2xl font-extrabold text-rose-600 mt-1">{stats.suspended}</h3>
-                            <span className="text-[11px] font-medium text-rose-500 flex items-center gap-1 mt-1">
-                                <ShieldAlert className="w-3 h-3" /> Requires review
-                            </span>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100">
-                            <UserX className="w-6 h-6" />
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Enterprise Pro</p>
-                            <h3 className="text-2xl font-extrabold text-indigo-600 mt-1">{stats.enterprise}</h3>
-                            <span className="text-[11px] font-medium text-indigo-600 flex items-center gap-1 mt-1">
-                                <Sparkles className="w-3 h-3" /> Premium Tier
-                            </span>
-                        </div>
-                        <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
-                            <Sparkles className="w-6 h-6" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* 3. Search & Filter Bar Section */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                        {/* Search Input */}
-                        <div className="relative flex-1 max-w-md">
-                            <Input
-                                placeholder="Search by name, email, or user ID..."
-                                prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
-                                allowClear
-                                className="h-11 rounded-xl bg-slate-50 border-slate-200 hover:border-purple-400 focus:border-purple-600 text-sm font-medium"
-                            />
-                        </div>
-
-                        {/* Filters Group */}
-                        <div className="flex flex-wrap items-center gap-3">
-                            {/* Role Filter */}
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-slate-500">Role:</span>
-                                <Select
-                                    value={selectedRole}
-                                    onChange={setSelectedRole}
-                                    className="w-36 h-10 rounded-xl"
-                                    options={[
-                                        { label: "All Roles", value: "ALL" },
-                                        { label: "Admin", value: "Admin" },
-                                        { label: "Creator", value: "Creator" },
-                                        { label: "Editor", value: "Editor" },
-                                        { label: "Viewer", value: "Viewer" },
-                                    ]}
-                                />
-                            </div>
-
-                            {/* Status Filter */}
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-slate-500">Status:</span>
-                                <Select
-                                    value={selectedStatus}
-                                    onChange={setSelectedStatus}
-                                    className="w-36 h-10 rounded-xl"
-                                    options={[
-                                        { label: "All Status", value: "ALL" },
-                                        { label: "Active", value: "Active" },
-                                        { label: "Suspended", value: "Suspended" },
-                                        { label: "Pending", value: "Pending" },
-                                    ]}
-                                />
-                            </div>
-
-                            {/* Subscription Filter */}
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-slate-500">Plan:</span>
-                                <Select
-                                    value={selectedSubscription}
-                                    onChange={setSelectedSubscription}
-                                    className="w-40 h-10 rounded-xl"
-                                    options={[
-                                        { label: "All Plans", value: "ALL" },
-                                        { label: "Enterprise Pro", value: "Enterprise Pro" },
-                                        { label: "Creator Plus", value: "Creator Plus" },
-                                        { label: "Starter Free", value: "Starter Free" },
-                                    ]}
-                                />
-                            </div>
-
-                            {/* Clear Filters Button */}
-                            {(searchText ||
-                                selectedRole !== "ALL" ||
-                                selectedStatus !== "ALL" ||
-                                selectedSubscription !== "ALL") && (
-                                    <Button
-                                        onClick={handleResetFilters}
-                                        icon={<RotateCcw className="w-3.5 h-3.5" />}
-                                        className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
-                                    >
-                                        Reset Filters
-                                    </Button>
-                                )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* 4. Ant Design Table with Pagination */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-                    <Table
-                        columns={columns}
-                        dataSource={filteredUsers}
-                        rowKey="id"
-                        pagination={{
-                            pageSize: 6,
-                            showSizeChanger: true,
-                            pageSizeOptions: ["5", "6", "10", "20"],
-                            showTotal: (total, range) => (
-                                <span className="text-xs font-semibold text-slate-500">
-                                    Showing <span className="text-purple-600 font-bold">{range[0]}-{range[1]}</span> of{" "}
-                                    <span className="text-slate-800 font-bold">{total}</span> users
-                                </span>
-                            ),
-                            className: "px-6 py-4 border-t border-slate-100 flex items-center justify-between",
-                        }}
-                        className="custom-admin-table"
-                    />
-                </div>
-
-                {/* 5. User Details Drawer */}
-                <Drawer
-                    title={
-                        <div className="flex items-center gap-3">
-                            <Avatar src={selectedUser?.avatar} size={40} className="bg-purple-600 text-white">
-                                {selectedUser?.name.charAt(0)}
-                            </Avatar>
-                            <div>
-                                <h3 className="text-base font-bold text-slate-900 leading-tight">{selectedUser?.name}</h3>
-                                <p className="text-xs font-mono text-slate-500">{selectedUser?.id}</p>
-                            </div>
-                        </div>
-                    }
-                    placement="right"
-                    onClose={() => setIsDetailDrawerOpen(false)}
-                    open={isDetailDrawerOpen}
-                    size="large"
-                >
-                    {selectedUser && (
-                        <div className="space-y-6 text-sm">
-                            {/* Status Card */}
-                            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                                <div>
-                                    <span className="text-xs font-semibold text-slate-400 uppercase">Account Status</span>
-                                    <div className="mt-1">
-                                        {selectedUser.status === "Active" && (
-                                            <Tag color="success" className="rounded-full px-3 font-semibold">Active</Tag>
-                                        )}
-                                        {selectedUser.status === "Suspended" && (
-                                            <Tag color="error" className="rounded-full px-3 font-semibold">Suspended</Tag>
-                                        )}
-                                        {selectedUser.status === "Pending" && (
-                                            <Tag color="warning" className="rounded-full px-3 font-semibold">Pending Verification</Tag>
-                                        )}
-                                    </div>
-                                </div>
-                                <Button
-                                    size="small"
-                                    onClick={() => handleToggleUserStatus(selectedUser.id)}
-                                    className={`font-semibold text-xs rounded-lg cursor-pointer ${selectedUser.status === "Suspended"
-                                        ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                                        : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100"
-                                        }`}
-                                >
-                                    {selectedUser.status === "Suspended" ? "Activate User" : "Suspend User"}
-                                </Button>
-                            </div>
-
-                            {/* User Overview Stats */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100">
-                                    <span className="text-xs font-medium text-purple-600">Connected Accounts</span>
-                                    <p className="text-xl font-bold text-slate-900 mt-1">{selectedUser.connectedAccountsCount || 0}</p>
-                                </div>
-                                <div className="p-3 bg-indigo-50/50 rounded-xl border border-indigo-100">
-                                    <span className="text-xs font-medium text-indigo-600">Total Published Posts</span>
-                                    <p className="text-xl font-bold text-slate-900 mt-1">{selectedUser.totalPosts || 0}</p>
-                                </div>
-                            </div>
-
-                            {/* Info Fields */}
-                            <div className="space-y-3 pt-2">
-                                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
-                                    Account Meta
-                                </h4>
-
-                                <div className="flex items-center justify-between py-1">
-                                    <span className="text-slate-500 font-medium">Email Address</span>
-                                    <span className="font-mono text-slate-800 font-semibold">{selectedUser.email}</span>
-                                </div>
-
-                                <div className="flex items-center justify-between py-1">
-                                    <span className="text-slate-500 font-medium">System Role</span>
-                                    <Tag className="font-bold text-xs uppercase">{selectedUser.role}</Tag>
-                                </div>
-
-                                <div className="flex items-center justify-between py-1">
-                                    <span className="text-slate-500 font-medium">Subscription Tier</span>
-                                    <span className="font-semibold text-purple-700">{selectedUser.subscription}</span>
-                                </div>
-
-                                <div className="flex items-center justify-between py-1">
-                                    <span className="text-slate-500 font-medium">Joined Date</span>
-                                    <span className="text-slate-700">{selectedUser.joinedDate}</span>
-                                </div>
-
-                                <div className="flex items-center justify-between py-1">
-                                    <span className="text-slate-500 font-medium">Last Active</span>
-                                    <span className="text-slate-700">{selectedUser.lastActive || "Recently"}</span>
-                                </div>
-                            </div>
-
-                            {/* Actions inside drawer */}
-                            <div className="pt-4 space-y-2 border-t border-slate-100">
-                                <Button
-                                    block
-                                    icon={<Edit3 className="w-4 h-4" />}
-                                    onClick={() => {
-                                        setIsDetailDrawerOpen(false);
-                                        handleOpenEdit(selectedUser);
-                                    }}
-                                    className="rounded-xl font-semibold cursor-pointer"
-                                >
-                                    Edit Profile Information
-                                </Button>
-                                <Button
-                                    block
-                                    icon={<RotateCcw className="w-4 h-4" />}
-                                    onClick={() => handleResetPassword(selectedUser.email)}
-                                    className="rounded-xl font-semibold cursor-pointer"
-                                >
-                                    Send Password Reset Email
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </Drawer>
-
-                {/* 6. Create User Modal */}
-                <Modal
-                    title={<span className="text-lg font-bold text-slate-900">Create New User</span>}
-                    open={isCreateModalOpen}
-                    onCancel={() => setIsCreateModalOpen(false)}
-                    footer={null}
-                    destroyOnHidden
-                >
-                    <Form
-                        form={form}
-                        layout="vertical"
-                        onFinish={handleCreateUserSubmit}
-                        initialValues={{ role: "Creator", subscription: "Creator Plus", status: "Active" }}
-                        className="mt-4 space-y-4"
-                    >
-                        <Form.Item
-                            name="name"
-                            label={<span className="font-semibold text-xs text-slate-700">Full Name</span>}
-                            rules={[{ required: true, message: "Please enter user full name" }]}
-                        >
-                            <Input placeholder="e.g. John Doe" className="rounded-xl h-10" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="email"
-                            label={<span className="font-semibold text-xs text-slate-700">Email Address</span>}
-                            rules={[
-                                { required: true, message: "Please enter email" },
-                                { type: "email", message: "Please enter a valid email" },
+                    {/* Filters Group */}
+                    <div className="flex flex-wrap items-center gap-3">
+                        {/* Role Filter */}
+                        <Select
+                            value={selectedRole}
+                            onChange={setSelectedRole}
+                            className="w-36 h-10 rounded-xl"
+                            options={[
+                                { label: "All Roles", value: "ALL" },
+                                { label: "Admin", value: "Admin" },
+                                { label: "Creator", value: "Creator" },
+                                { label: "Editor", value: "Editor" },
+                                { label: "Viewer", value: "Viewer" },
                             ]}
-                        >
-                            <Input placeholder="john@example.com" className="rounded-xl h-10" />
-                        </Form.Item>
+                        />
+                        <Select
+                            value={selectedStatus}
+                            onChange={setSelectedStatus}
+                            className="w-36 h-10 rounded-xl"
+                            options={[
+                                { label: "All Status", value: "ALL" },
+                                { label: "Active", value: "Active" },
+                                { label: "Suspended", value: "Suspended" },
+                                { label: "Pending", value: "Pending" },
+                            ]}
+                        />
 
+                        <Select
+                            value={selectedSubscription}
+                            onChange={setSelectedSubscription}
+                            className="w-40 h-10 rounded-xl"
+                            options={[
+                                { label: "All Plans", value: "ALL" },
+                                { label: "Enterprise Pro", value: "Enterprise Pro" },
+                                { label: "Creator Plus", value: "Creator Plus" },
+                                { label: "Starter Free", value: "Starter Free" },
+                            ]}
+                        />
+
+                        {/* Clear Filters Button */}
+                        {(searchText ||
+                            selectedRole !== "ALL" ||
+                            selectedStatus !== "ALL" ||
+                            selectedSubscription !== "ALL") && (
+                                <Button
+                                    onClick={handleResetFilters}
+                                    icon={<RotateCcw className="w-3.5 h-3.5" />}
+                                    className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
+                                >
+                                    Reset Filters
+                                </Button>
+                            )}
+                    </div>
+                </div>
+            </div>
+
+            {/* 4. Ant Design Table with Pagination */}
+            <div className="card overflow-hidden">
+                <Table
+                    columns={columns}
+                    dataSource={filteredUsers}
+                    rowKey="id"
+                    pagination={{
+                        pageSize: 6,
+                        showSizeChanger: true,
+                        pageSizeOptions: ["5", "6", "10", "20"],
+                        showTotal: (total, range) => (
+                            <span className="text-xs font-semibold text-slate-500">
+                                Showing <span className="text-purple-600 font-bold">{range[0]}-{range[1]}</span> of{" "}
+                                <span className="text-slate-800 font-bold">{total}</span> users
+                            </span>
+                        ),
+                        className: "px-6 py-4 border-t border-slate-100 flex items-center justify-between",
+                    }}
+                    className="custom-admin-table"
+                />
+            </div>
+
+            {/* 5. User Details Drawer */}
+            <Drawer
+                title={
+                    <div className="flex items-center gap-3">
+                        <Avatar src={selectedUser?.avatar} size={40} className="bg-purple-600 text-white">
+                            {selectedUser?.name.charAt(0)}
+                        </Avatar>
+                        <div>
+                            <h3 className="text-base font-bold text-slate-900 leading-tight">{selectedUser?.name}</h3>
+                            <p className="text-xs font-mono text-slate-500">{selectedUser?.id}</p>
+                        </div>
+                    </div>
+                }
+                placement="right"
+                onClose={() => setIsDetailDrawerOpen(false)}
+                open={isDetailDrawerOpen}
+                size="large"
+            >
+                {selectedUser && (
+                    <div className="space-y-6 text-sm">
+                        {/* Status Card */}
+                        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                            <div>
+                                <span className="text-xs font-semibold text-slate-400 uppercase">Account Status</span>
+                                <div className="mt-1">
+                                    {selectedUser.status === "Active" && (
+                                        <Tag color="success" className="rounded-full px-3 font-semibold">Active</Tag>
+                                    )}
+                                    {selectedUser.status === "Suspended" && (
+                                        <Tag color="error" className="rounded-full px-3 font-semibold">Suspended</Tag>
+                                    )}
+                                    {selectedUser.status === "Pending" && (
+                                        <Tag color="warning" className="rounded-full px-3 font-semibold">Pending Verification</Tag>
+                                    )}
+                                </div>
+                            </div>
+                            <Button
+                                size="small"
+                                onClick={() => handleToggleUserStatus(selectedUser.id)}
+                                className={`font-semibold text-xs rounded-lg cursor-pointer ${selectedUser.status === "Suspended"
+                                    ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                                    : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100"
+                                    }`}
+                            >
+                                {selectedUser.status === "Suspended" ? "Activate User" : "Suspend User"}
+                            </Button>
+                        </div>
+
+                        {/* User Overview Stats */}
                         <div className="grid grid-cols-2 gap-3">
-                            <Form.Item
-                                name="role"
-                                label={<span className="font-semibold text-xs text-slate-700">User Role</span>}
-                            >
-                                <Select
-                                    options={[
-                                        { label: "Admin", value: "Admin" },
-                                        { label: "Creator", value: "Creator" },
-                                        { label: "Editor", value: "Editor" },
-                                        { label: "Viewer", value: "Viewer" },
-                                    ]}
-                                    className="h-10"
-                                />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="subscription"
-                                label={<span className="font-semibold text-xs text-slate-700">Subscription Tier</span>}
-                            >
-                                <Select
-                                    options={[
-                                        { label: "Enterprise Pro", value: "Enterprise Pro" },
-                                        { label: "Creator Plus", value: "Creator Plus" },
-                                        { label: "Starter Free", value: "Starter Free" },
-                                    ]}
-                                    className="h-10"
-                                />
-                            </Form.Item>
+                            <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100">
+                                <span className="text-xs font-medium text-purple-600">Connected Accounts</span>
+                                <p className="text-xl font-bold text-slate-900 mt-1">{selectedUser.connectedAccountsCount || 0}</p>
+                            </div>
+                            <div className="p-3 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                <span className="text-xs font-medium text-indigo-600">Total Published Posts</span>
+                                <p className="text-xl font-bold text-slate-900 mt-1">{selectedUser.totalPosts || 0}</p>
+                            </div>
                         </div>
 
-                        <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                            <Button onClick={() => setIsCreateModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
-                                Cancel
+                        {/* Info Fields */}
+                        <div className="space-y-3 pt-2">
+                            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
+                                Account Meta
+                            </h4>
+
+                            <div className="flex items-center justify-between py-1">
+                                <span className="text-slate-500 font-medium">Email Address</span>
+                                <span className="font-mono text-slate-800 font-semibold">{selectedUser.email}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between py-1">
+                                <span className="text-slate-500 font-medium">System Role</span>
+                                <Tag className="font-bold text-xs uppercase">{selectedUser.role}</Tag>
+                            </div>
+
+                            <div className="flex items-center justify-between py-1">
+                                <span className="text-slate-500 font-medium">Subscription Tier</span>
+                                <span className="font-semibold text-purple-700">{selectedUser.subscription}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between py-1">
+                                <span className="text-slate-500 font-medium">Joined Date</span>
+                                <span className="text-slate-700">{selectedUser.joinedDate}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between py-1">
+                                <span className="text-slate-500 font-medium">Last Active</span>
+                                <span className="text-slate-700">{selectedUser.lastActive || "Recently"}</span>
+                            </div>
+                        </div>
+
+                        {/* Actions inside drawer */}
+                        <div className="pt-4 space-y-2 border-t border-slate-100">
+                            <Button
+                                block
+                                icon={<Edit3 className="w-4 h-4" />}
+                                onClick={() => {
+                                    setIsDetailDrawerOpen(false);
+                                    handleOpenEdit(selectedUser);
+                                }}
+                                className="rounded-xl font-semibold cursor-pointer"
+                            >
+                                Edit Profile Information
                             </Button>
-                            <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
-                                Create User
+                            <Button
+                                block
+                                icon={<RotateCcw className="w-4 h-4" />}
+                                onClick={() => handleResetPassword(selectedUser.email)}
+                                className="rounded-xl font-semibold cursor-pointer"
+                            >
+                                Send Password Reset Email
                             </Button>
                         </div>
-                    </Form>
-                </Modal>
+                    </div>
+                )}
+            </Drawer>
 
-                {/* 7. Edit User Modal */}
-                <Modal
-                    title={<span className="text-lg font-bold text-slate-900">Edit User Details</span>}
-                    open={isEditModalOpen}
-                    onCancel={() => setIsEditModalOpen(false)}
-                    footer={null}
-                    destroyOnHidden
+            {/* 6. Create User Modal */}
+            <Modal
+                title={<span className="text-lg font-bold text-slate-900">Create New User</span>}
+                open={isCreateModalOpen}
+                onCancel={() => setIsCreateModalOpen(false)}
+                footer={null}
+                destroyOnHidden
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleCreateUserSubmit}
+                    initialValues={{ role: "Creator", subscription: "Creator Plus", status: "Active" }}
+                    className="mt-4 space-y-4"
                 >
-                    <Form
-                        form={editForm}
-                        layout="vertical"
-                        onFinish={handleEditUserSubmit}
-                        className="mt-4 space-y-4"
+                    <Form.Item
+                        name="name"
+                        label={<span className="font-semibold text-xs text-slate-700">Full Name</span>}
+                        rules={[{ required: true, message: "Please enter user full name" }]}
                     >
+                        <Input placeholder="e.g. John Doe" className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="email"
+                        label={<span className="font-semibold text-xs text-slate-700">Email Address</span>}
+                        rules={[
+                            { required: true, message: "Please enter email" },
+                            { type: "email", message: "Please enter a valid email" },
+                        ]}
+                    >
+                        <Input placeholder="john@example.com" className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <div className="grid grid-cols-2 gap-3">
                         <Form.Item
-                            name="name"
-                            label={<span className="font-semibold text-xs text-slate-700">Full Name</span>}
-                            rules={[{ required: true, message: "Please enter name" }]}
-                        >
-                            <Input className="rounded-xl h-10" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="email"
-                            label={<span className="font-semibold text-xs text-slate-700">Email Address</span>}
-                            rules={[{ required: true, message: "Please enter email" }]}
-                        >
-                            <Input className="rounded-xl h-10" />
-                        </Form.Item>
-
-                        <div className="grid grid-cols-2 gap-3">
-                            <Form.Item
-                                name="role"
-                                label={<span className="font-semibold text-xs text-slate-700">User Role</span>}
-                            >
-                                <Select
-                                    options={[
-                                        { label: "Admin", value: "Admin" },
-                                        { label: "Creator", value: "Creator" },
-                                        { label: "Editor", value: "Editor" },
-                                        { label: "Viewer", value: "Viewer" },
-                                    ]}
-                                    className="h-10"
-                                />
-                            </Form.Item>
-
-                            <Form.Item
-                                name="subscription"
-                                label={<span className="font-semibold text-xs text-slate-700">Subscription Tier</span>}
-                            >
-                                <Select
-                                    options={[
-                                        { label: "Enterprise Pro", value: "Enterprise Pro" },
-                                        { label: "Creator Plus", value: "Creator Plus" },
-                                        { label: "Starter Free", value: "Starter Free" },
-                                    ]}
-                                    className="h-10"
-                                />
-                            </Form.Item>
-                        </div>
-
-                        <Form.Item
-                            name="status"
-                            label={<span className="font-semibold text-xs text-slate-700">Status</span>}
+                            name="role"
+                            label={<span className="font-semibold text-xs text-slate-700">User Role</span>}
                         >
                             <Select
                                 options={[
-                                    { label: "Active", value: "Active" },
-                                    { label: "Suspended", value: "Suspended" },
-                                    { label: "Pending", value: "Pending" },
+                                    { label: "Admin", value: "Admin" },
+                                    { label: "Creator", value: "Creator" },
+                                    { label: "Editor", value: "Editor" },
+                                    { label: "Viewer", value: "Viewer" },
                                 ]}
                                 className="h-10"
                             />
                         </Form.Item>
 
-                        <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                            <Button onClick={() => setIsEditModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
-                                Cancel
-                            </Button>
-                            <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
-                                Save Changes
-                            </Button>
-                        </div>
-                    </Form>
-                </Modal>
-            </div>
+                        <Form.Item
+                            name="subscription"
+                            label={<span className="font-semibold text-xs text-slate-700">Subscription Tier</span>}
+                        >
+                            <Select
+                                options={[
+                                    { label: "Enterprise Pro", value: "Enterprise Pro" },
+                                    { label: "Creator Plus", value: "Creator Plus" },
+                                    { label: "Starter Free", value: "Starter Free" },
+                                ]}
+                                className="h-10"
+                            />
+                        </Form.Item>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
+                        <Button onClick={() => setIsCreateModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                            Cancel
+                        </Button>
+                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                            Create User
+                        </Button>
+                    </div>
+                </Form>
+            </Modal>
+
+            {/* 7. Edit User Modal */}
+            <Modal
+                title={<span className="text-lg font-bold text-slate-900">Edit User Details</span>}
+                open={isEditModalOpen}
+                onCancel={() => setIsEditModalOpen(false)}
+                footer={null}
+                destroyOnHidden
+            >
+                <Form
+                    form={editForm}
+                    layout="vertical"
+                    onFinish={handleEditUserSubmit}
+                    className="mt-4 space-y-4"
+                >
+                    <Form.Item
+                        name="name"
+                        label={<span className="font-semibold text-xs text-slate-700">Full Name</span>}
+                        rules={[{ required: true, message: "Please enter name" }]}
+                    >
+                        <Input className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="email"
+                        label={<span className="font-semibold text-xs text-slate-700">Email Address</span>}
+                        rules={[{ required: true, message: "Please enter email" }]}
+                    >
+                        <Input className="rounded-xl h-10" />
+                    </Form.Item>
+
+                    <div className="grid grid-cols-2 gap-3">
+                        <Form.Item
+                            name="role"
+                            label={<span className="font-semibold text-xs text-slate-700">User Role</span>}
+                        >
+                            <Select
+                                options={[
+                                    { label: "Admin", value: "Admin" },
+                                    { label: "Creator", value: "Creator" },
+                                    { label: "Editor", value: "Editor" },
+                                    { label: "Viewer", value: "Viewer" },
+                                ]}
+                                className="h-10"
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="subscription"
+                            label={<span className="font-semibold text-xs text-slate-700">Subscription Tier</span>}
+                        >
+                            <Select
+                                options={[
+                                    { label: "Enterprise Pro", value: "Enterprise Pro" },
+                                    { label: "Creator Plus", value: "Creator Plus" },
+                                    { label: "Starter Free", value: "Starter Free" },
+                                ]}
+                                className="h-10"
+                            />
+                        </Form.Item>
+                    </div>
+
+                    <Form.Item
+                        name="status"
+                        label={<span className="font-semibold text-xs text-slate-700">Status</span>}
+                    >
+                        <Select
+                            options={[
+                                { label: "Active", value: "Active" },
+                                { label: "Suspended", value: "Suspended" },
+                                { label: "Pending", value: "Pending" },
+                            ]}
+                            className="h-10"
+                        />
+                    </Form.Item>
+
+                    <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
+                        <Button onClick={() => setIsEditModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                            Cancel
+                        </Button>
+                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                            Save Changes
+                        </Button>
+                    </div>
+                </Form>
+            </Modal>
+        </div>
     );
 }
 
