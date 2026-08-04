@@ -11,28 +11,15 @@ import {
     Tag,
     Select,
     ConfigProvider,
-    Tooltip,
     Form,
-    Badge,
 } from "antd";
 import {
-    Activity,
     Plus,
     RefreshCw,
     Sliders,
-    Search,
-    AlertTriangle,
-    CheckCircle2,
     XCircle,
     Key,
     Globe,
-    Zap,
-    ExternalLink,
-    Clock,
-    Shield,
-    Server,
-    Radio,
-    Sparkles,
 } from "lucide-react";
 import {
     FaFacebook,
@@ -200,8 +187,8 @@ function PlatformApexSparkline({
         status === "CRITICAL"
             ? "#F43F5E"
             : status === "WARNING"
-            ? "#F59E0B"
-            : "#10B981";
+                ? "#F59E0B"
+                : "#10B981";
 
     const options: ApexCharts.ApexOptions = {
         chart: {
@@ -307,15 +294,15 @@ function ConnectedPlatformsContent() {
                 prev.map((p) =>
                     p.id === id
                         ? {
-                              ...p,
-                              status: "HEALTHY",
-                              metricType: "Latency",
-                              metricValue: "115ms",
-                              endpoint: `${p.apiVersion} API Connected`,
-                              chartSeries: [90, 105, 110, 115, 108, 112, 115],
-                              chartUnit: "ms",
-                              rateLimitUsage: 28,
-                          }
+                            ...p,
+                            status: "HEALTHY",
+                            metricType: "Latency",
+                            metricValue: "115ms",
+                            endpoint: `${p.apiVersion} API Connected`,
+                            chartSeries: [90, 105, 110, 115, 108, 112, 115],
+                            chartUnit: "ms",
+                            rateLimitUsage: 28,
+                        }
                         : p
                 )
             );
@@ -331,15 +318,15 @@ function ConnectedPlatformsContent() {
                 prev.map((p) =>
                     p.id === id
                         ? {
-                              ...p,
-                              status: "HEALTHY",
-                              metricType: "Latency",
-                              metricValue: "160ms",
-                              endpoint: "Feed Stream Optimal",
-                              chartSeries: [220, 200, 180, 175, 168, 162, 160],
-                              chartUnit: "ms",
-                              rateLimitUsage: 40,
-                          }
+                            ...p,
+                            status: "HEALTHY",
+                            metricType: "Latency",
+                            metricValue: "160ms",
+                            endpoint: "Feed Stream Optimal",
+                            chartSeries: [220, 200, 180, 175, 168, 162, 160],
+                            chartUnit: "ms",
+                            rateLimitUsage: 40,
+                        }
                         : p
                 )
             );
@@ -408,12 +395,12 @@ function ConnectedPlatformsContent() {
     }, [platforms, filterStatus]);
 
     return (
-        <div className="space-y-8 bg-slate-50/60 p-6 sm:p-8 rounded-3xl min-h-screen">
+        <div className="space-y-8 p-6">
             {/* 1. Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 card p-6">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
-                        <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
+                        <span className="text-[11px] font-extrabold px-3 py-0.5 rounded-full bg-primary/10 text-primary tracking-wider uppercase border border-primary-light">
                             GATEWAY CONTROL
                         </span>
 
@@ -442,11 +429,10 @@ function ConnectedPlatformsContent() {
                             <button
                                 key={st}
                                 onClick={() => setFilterStatus(st)}
-                                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${
-                                    filterStatus === st
-                                        ? "bg-white text-purple-700 shadow-xs"
-                                        : "text-slate-600 hover:text-slate-900"
-                                }`}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${filterStatus === st
+                                    ? "bg-white text-primary shadow-xs"
+                                    : "text-slate-600 hover:text-slate-900"
+                                    }`}
                             >
                                 {st}
                             </button>
@@ -473,13 +459,12 @@ function ConnectedPlatformsContent() {
                     return (
                         <div
                             key={platform.id}
-                            className={`bg-white rounded-3xl p-6 border transition-all duration-300 shadow-xs hover:shadow-md flex flex-col justify-between space-y-5 relative overflow-hidden group ${
-                                isCritical
-                                    ? "border-rose-300 ring-1 ring-rose-200"
-                                    : isWarning
+                            className={`bg-white rounded-3xl p-6 border [transition:0.3s] flex flex-col justify-between space-y-5 relative overflow-hidden group ${isCritical
+                                ? "border-rose-300 ring-1 ring-rose-200"
+                                : isWarning
                                     ? "border-amber-300 ring-1 ring-amber-200"
                                     : "border-slate-200/80 hover:border-purple-200"
-                            }`}
+                                }`}
                         >
                             {/* Card Header: Identical Icon Container (w-12 h-12) & Status Dot */}
                             <div className="flex items-start justify-between">
@@ -489,20 +474,18 @@ function ConnectedPlatformsContent() {
 
                                 {/* Status Badge Top Right */}
                                 <div className="flex items-center gap-1.5">
-                                    <span className={`w-2 h-2 rounded-full ${
-                                        isCritical
-                                            ? "bg-rose-500 animate-ping"
-                                            : isWarning
+                                    <span className={`w-2 h-2 rounded-full ${isCritical
+                                        ? "bg-rose-500 animate-ping"
+                                        : isWarning
                                             ? "bg-amber-500"
                                             : "bg-emerald-500"
-                                    }`} />
-                                    <span className={`text-[11px] font-extrabold tracking-wider ${
-                                        isCritical
-                                            ? "text-rose-600"
-                                            : isWarning
+                                        }`} />
+                                    <span className={`text-[11px] font-extrabold tracking-wider ${isCritical
+                                        ? "text-rose-600"
+                                        : isWarning
                                             ? "text-amber-600"
                                             : "text-emerald-600"
-                                    }`}>
+                                        }`}>
                                         {platform.status}
                                     </span>
                                 </div>
@@ -513,9 +496,8 @@ function ConnectedPlatformsContent() {
                                 <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-purple-700 transition">
                                     {platform.name}
                                 </h3>
-                                <p className={`text-xs font-medium mt-0.5 truncate ${
-                                    isCritical ? "text-rose-600 font-semibold" : isWarning ? "text-amber-600 font-semibold" : "text-slate-400"
-                                }`}>
+                                <p className={`text-xs font-medium mt-0.5 truncate ${isCritical ? "text-rose-600 font-semibold" : isWarning ? "text-amber-600 font-semibold" : "text-slate-400"
+                                    }`}>
                                     {platform.endpoint}
                                 </p>
                             </div>
@@ -538,13 +520,12 @@ function ConnectedPlatformsContent() {
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-slate-400 font-medium">{platform.metricType}</span>
-                                    <span className={`font-extrabold font-mono ${
-                                        isCritical
-                                            ? "text-rose-600"
-                                            : isWarning
+                                    <span className={`font-extrabold font-mono ${isCritical
+                                        ? "text-rose-600"
+                                        : isWarning
                                             ? "text-amber-600"
                                             : "text-slate-800"
-                                    }`}>
+                                        }`}>
                                         {platform.metricValue}
                                     </span>
                                 </div>
