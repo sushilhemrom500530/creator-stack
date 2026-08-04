@@ -10,8 +10,8 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
     const { theme, toggleTheme } = useTheme();
     const isLight = theme === "light";
     return (
-        <div className="sticky inset-y-0 left-0 z-10 w-full border-b border-b-[#E5E7EB] bg-[#FFFFFF] [transition:0.5s]">
-            <header className="flex items-center justify-between px-4 py-3.5">
+        <div className="sticky inset-y-0 left-0 z-10 w-full border-b border-b-[#E5E7EB] h-[66px] bg-[#FFFFFF] [transition:0.5s]">
+            <header className="flex items-center justify-between px-4">
                 {/* left side  */}
                 <div className="flex items-center justify-between w-full">
                     <div
