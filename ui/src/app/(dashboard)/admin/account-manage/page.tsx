@@ -46,12 +46,72 @@ interface SocialStackHub {
 export default function AccountManagePage() {
     // 1. Social Stack Global Admin State
     const [socialHubs, setSocialHubs] = useState<SocialStackHub[]>([
-        { id: "1", name: "Twitter / X Network", handleCount: "18,420 Hubs", dailyVolume: "142.8K Posts", errorRate: "0.02%", status: "Healthy", icon: FaTwitter, color: "text-sky-500 bg-sky-50", enabled: true },
-        { id: "2", name: "LinkedIn Professional", handleCount: "12,190 Hubs", dailyVolume: "84.2K Posts", errorRate: "0.01%", status: "Healthy", icon: FaLinkedin, color: "text-blue-600 bg-blue-50", enabled: true },
-        { id: "3", name: "Instagram Graph API", handleCount: "14,850 Hubs", dailyVolume: "98.4K Media", errorRate: "1.45%", status: "Warning", icon: FaInstagram, color: "text-pink-600 bg-pink-50", enabled: true },
-        { id: "4", name: "YouTube Data API v3", handleCount: "4,210 Channels", dailyVolume: "12.1K Shorts", errorRate: "0.00%", status: "Healthy", icon: FaYoutube, color: "text-red-600 bg-red-50", enabled: true },
-        { id: "5", name: "Meta Facebook Pages", handleCount: "8,940 Pages", dailyVolume: "45.0K Posts", errorRate: "0.05%", status: "Healthy", icon: FaFacebook, color: "text-blue-500 bg-blue-50", enabled: true },
-        { id: "6", name: "TikTok Business Hub", handleCount: "6,120 Accounts", dailyVolume: "34.9K Videos", errorRate: "3.10%", status: "Maintenance", icon: FaTiktok, color: "text-slate-800 bg-slate-100", enabled: false },
+        {
+            id: "1",
+            name: "Twitter / X Network",
+            handleCount: "18,420 Hubs",
+            dailyVolume: "142.8K Posts",
+            errorRate: "0.02%",
+            status: "Healthy",
+            icon: FaTwitter,
+            color: "text-sky-500 bg-sky-50",
+            enabled: true
+        },
+        {
+            id: "2",
+            name: "LinkedIn Professional",
+            handleCount: "12,190 Hubs",
+            dailyVolume: "84.2K Posts",
+            errorRate: "0.01%",
+            status: "Healthy",
+            icon: FaLinkedin,
+            color: "text-blue-600 bg-blue-50",
+            enabled: true
+        },
+        {
+            id: "3",
+            name: "Instagram Graph API",
+            handleCount: "14,850 Hubs",
+            dailyVolume: "98.4K Media",
+            errorRate: "1.45%",
+            status: "Warning",
+            icon: FaInstagram,
+            color: "text-pink-600 bg-pink-50",
+            enabled: true
+        },
+        {
+            id: "4",
+            name: "YouTube Data API v3",
+            handleCount: "4,210 Channels",
+            dailyVolume: "12.1K Shorts",
+            errorRate: "0.00%",
+            status: "Healthy",
+            icon: FaYoutube,
+            color: "text-red-600 bg-red-50",
+            enabled: true
+        },
+        {
+            id: "5",
+            name: "Meta Facebook Pages",
+            handleCount: "8,940 Pages",
+            dailyVolume: "45.0K Posts",
+            errorRate: "0.05%",
+            status: "Healthy",
+            icon: FaFacebook,
+            color: "text-blue-500 bg-blue-50",
+            enabled: true
+        },
+        {
+            id: "6",
+            name: "TikTok Business Hub",
+            handleCount: "6,120 Accounts",
+            dailyVolume: "34.9K Videos",
+            errorRate: "3.10%",
+            status: "Maintenance",
+            icon: FaTiktok,
+            color: "text-slate-800 bg-slate-100",
+            enabled: false
+        },
     ]);
 
     const [hubFilter, setHubFilter] = useState<string>("all");
