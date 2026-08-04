@@ -22,6 +22,8 @@ import {
     Globe,
     Radio,
     LayoutGrid,
+    FileText,
+    AlertCircle,
     LucideIcon,
 } from "lucide-react";
 
@@ -47,6 +49,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
     Globe,
     Radio,
     LayoutGrid,
+    FileText,
+    AlertCircle,
 };
 
 export type StatColorVariant =

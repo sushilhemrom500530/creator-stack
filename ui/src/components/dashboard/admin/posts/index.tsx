@@ -11,15 +11,12 @@ import {
     Select,
     Avatar,
     Modal,
-    Popconfirm,
     Tooltip,
     ConfigProvider,
-    Badge,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
     Search,
-    Plus,
     Eye,
     Trash2,
     RotateCcw,
@@ -30,15 +27,10 @@ import {
     CheckCircle2,
     PenSquare,
     TrendingUp,
-    ThumbsUp,
-    MessageSquare,
-    Share2,
-    Filter,
     Users as UsersIcon,
-    Sparkles,
-    Check,
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 import { MOCK_POSTS_DATA, PostItem } from "@/data/postsData";
 
 // Enhanced Admin Post item with Creator info
@@ -53,10 +45,26 @@ export interface AdminPostItem extends PostItem {
 // Sample Creator details mapped to posts
 const MOCK_ADMIN_POSTS: AdminPostItem[] = MOCK_POSTS_DATA.map((post, idx) => {
     const authors = [
-        { name: "Elena Vance", email: "elena.v@socialflow.ai", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80" },
-        { name: "Marcus Chen", email: "marcus.c@techviral.io", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80" },
-        { name: "Sophia Rodriguez", email: "sophia@designstudio.com", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" },
-        { name: "Sushil Hemrom", email: "sushil@creatorstack.io", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80" },
+        {
+            name: "Elena Vance",
+            email: "elena.v@socialflow.ai",
+            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80"
+        },
+        {
+            name: "Marcus Chen",
+            email: "marcus.c@techviral.io",
+            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80"
+        },
+        {
+            name: "Sophia Rodriguez",
+            email: "sophia@designstudio.com",
+            avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80"
+        },
+        {
+            name: "Sushil Hemrom",
+            email: "sushil@creatorstack.io",
+            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80"
+        },
     ];
     return {
         ...post,
@@ -190,21 +198,21 @@ function AdminPostsContent() {
                             className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0"
                         />
                     ) : (
-                        <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold shrink-0 border border-purple-100">
+                        <div className="w-12 h-12 rounded-xl bg-purple-50 text-primary flex items-center justify-center font-bold shrink-0 border border-purple-100">
                             <FileText className="w-6 h-6" />
                         </div>
                     )}
                     <div className="flex flex-col min-w-0">
                         <span
                             onClick={() => router.push(`/admin/posts/view/${record.id}`)}
-                            className="font-bold text-slate-800 text-sm hover:text-purple-600 transition cursor-pointer truncate max-w-[230px]"
+                            className="font-bold text-slate-800 text-sm hover:text-primary transition cursor-pointer truncate max-w-[230px]"
                         >
                             {record.title || `Post #${record.id}`}
                         </span>
                         <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 max-w-[230px]">
                             {record.content}
                         </p>
-                        <span className="text-[10px] text-purple-600 font-mono mt-1 font-semibold">
+                        <span className="text-[10px] text-primary font-mono mt-1 font-semibold">
                             ID: {record.id}
                         </span>
                     </div>
@@ -217,7 +225,7 @@ function AdminPostsContent() {
             key: "author",
             render: (author) => (
                 <div className="flex items-center gap-2.5">
-                    <Avatar src={author.avatar} size={36} className="bg-purple-600 text-white font-bold shrink-0">
+                    <Avatar src={author.avatar} size={36} className="bg-primary text-white font-bold shrink-0">
                         {author.name.charAt(0)}
                     </Avatar>
                     <div className="flex flex-col min-w-0">
@@ -318,8 +326,8 @@ function AdminPostsContent() {
                             type="default"
                             size="small"
                             onClick={() => router.push(`/admin/posts/view/${record.id}`)}
-                            icon={<Eye className="w-3.5 h-3.5 text-purple-600" />}
-                            className="rounded-xl font-semibold border-slate-200 hover:border-purple-300 hover:text-purple-600 flex items-center justify-center cursor-pointer"
+                            icon={<Eye className="w-3.5 h-3.5 text-primary" />}
+                            className="rounded-xl font-semibold border-slate-200 hover:border-purple-300 hover:text-primary flex items-center justify-center cursor-pointer"
                         >
                         </Button>
                     </Tooltip>
@@ -355,13 +363,61 @@ function AdminPostsContent() {
         },
     ];
 
+    // KPI Summary Cards JSON Data
+    const summaryStatsData: StatItem[] = [
+        {
+            id: "total-posts",
+            title: "TOTAL POSTS",
+            value: stats.total,
+            icon: FileText,
+            color: "purple",
+            subtext: "Across all creators",
+            subIcon: CheckCircle2,
+            subTextColorClass: "text-emerald-600",
+            valueColorClass: "text-slate-900",
+        },
+        {
+            id: "published-posts",
+            title: "PUBLISHED",
+            value: stats.published,
+            icon: CheckCircle2,
+            color: "emerald",
+            subtext: "Live on channels",
+            subIcon: CheckCircle2,
+            subTextColorClass: "text-emerald-600",
+            valueColorClass: "text-emerald-600",
+        },
+        {
+            id: "scheduled-posts",
+            title: "SCHEDULED",
+            value: stats.scheduled,
+            icon: Clock,
+            color: "blue",
+            subtext: "Pending dispatch",
+            subIcon: Clock,
+            subTextColorClass: "text-slate-400",
+            valueColorClass: "text-blue-600",
+        },
+        {
+            id: "failed-posts",
+            title: "FAILED / FLAGGED",
+            value: stats.failed,
+            icon: AlertCircle,
+            color: "rose",
+            subtext: "Requires retry",
+            subIcon: AlertCircle,
+            subTextColorClass: "text-rose-500",
+            valueColorClass: "text-rose-600",
+        },
+    ];
+
     return (
-        <div className="space-y-6 bg-slate-50/60 p-6 rounded-3xl min-h-screen">
+        <div className="space-y-6 p-6">
             {/* 1. Header Section */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 card p-6">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 tracking-wider uppercase border border-purple-200">
+                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary tracking-wider uppercase border border-primary/20">
                             CONTENT MODERATION
                         </span>
                     </div>
@@ -373,79 +429,26 @@ function AdminPostsContent() {
             </div>
 
             {/* 2. KPI Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Posts</p>
-                        <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.total}</h3>
-                        <span className="text-[11px] font-medium text-emerald-600 flex items-center gap-1 mt-1">
-                            <CheckCircle2 className="w-3 h-3" /> Across all creators
-                        </span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100">
-                        <FileText className="w-6 h-6" />
-                    </div>
-                </div>
+            <StatsGrid stats={summaryStatsData} variant="summary" />
 
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Published</p>
-                        <h3 className="text-2xl font-extrabold text-emerald-600 mt-1">{stats.published}</h3>
-                        <span className="text-[11px] font-medium text-emerald-600 flex items-center gap-1 mt-1">
-                            <CheckCircle2 className="w-3 h-3" /> Live on channels
-                        </span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-                        <CheckCircle2 className="w-6 h-6" />
-                    </div>
-                </div>
+            <div className="card">
+                {/* 3. Search & Filter Bar */}
+                <div className="p-5 space-y-4">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        {/* Search Input */}
+                        <div className="relative flex-1 max-w-md">
+                            <Input
+                                placeholder="Search by title, content, author, or ID..."
+                                prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                allowClear
+                                className="h-11 rounded-xl bg-slate-50 border-slate-200 hover:border-purple-400 focus:border-primary text-sm font-medium"
+                            />
+                        </div>
 
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Scheduled</p>
-                        <h3 className="text-2xl font-extrabold text-blue-600 mt-1">{stats.scheduled}</h3>
-                        <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1 mt-1">
-                            <Clock className="w-3 h-3" /> Pending dispatch
-                        </span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                        <Clock className="w-6 h-6" />
-                    </div>
-                </div>
-
-                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
-                    <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Failed / Flagged</p>
-                        <h3 className="text-2xl font-extrabold text-rose-600 mt-1">{stats.failed}</h3>
-                        <span className="text-[11px] font-medium text-rose-500 flex items-center gap-1 mt-1">
-                            <AlertCircle className="w-3 h-3" /> Requires retry
-                        </span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100">
-                        <AlertCircle className="w-6 h-6" />
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. Search & Filter Bar */}
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    {/* Search Input */}
-                    <div className="relative flex-1 max-w-md">
-                        <Input
-                            placeholder="Search by title, content, author, or ID..."
-                            prefix={<Search className="w-4 h-4 text-slate-400 mr-1" />}
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                            allowClear
-                            className="h-11 rounded-xl bg-slate-50 border-slate-200 hover:border-purple-400 focus:border-purple-600 text-sm font-medium"
-                        />
-                    </div>
-
-                    {/* Filter Selects */}
-                    <div className="flex flex-wrap items-center gap-3">
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-500">Status:</span>
+                        {/* Filter Selects */}
+                        <div className="flex flex-wrap items-center gap-3">
                             <Select
                                 value={selectedStatus}
                                 onChange={setSelectedStatus}
@@ -458,10 +461,6 @@ function AdminPostsContent() {
                                     { label: "Failed", value: "failed" },
                                 ]}
                             />
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-500">Platform:</span>
                             <Select
                                 value={selectedPlatform}
                                 onChange={setSelectedPlatform}
@@ -474,47 +473,47 @@ function AdminPostsContent() {
                                     { label: "LinkedIn", value: "linkedin" },
                                 ]}
                             />
-                        </div>
 
-                        {(searchText || selectedStatus !== "ALL" || selectedPlatform !== "ALL") && (
-                            <Button
-                                onClick={() => {
-                                    setSearchText("");
-                                    setSelectedStatus("ALL");
-                                    setSelectedPlatform("ALL");
-                                    message.info("Filters reset");
-                                }}
-                                icon={<RotateCcw className="w-3.5 h-3.5" />}
-                                className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
-                            >
-                                Reset Filters
-                            </Button>
-                        )}
+                            {(searchText || selectedStatus !== "ALL" || selectedPlatform !== "ALL") && (
+                                <Button
+                                    onClick={() => {
+                                        setSearchText("");
+                                        setSelectedStatus("ALL");
+                                        setSelectedPlatform("ALL");
+                                        message.info("Filters reset");
+                                    }}
+                                    icon={<RotateCcw className="w-3.5 h-3.5" />}
+                                    className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
+                                >
+                                    Reset Filters
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* 4. Posts Data Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-                <Table
-                    columns={columns}
-                    dataSource={filteredPosts}
-                    rowKey="id"
-                    scroll={{ x: "max-content" }}
-                    pagination={{
-                        pageSize: 6,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["5", "6", "10", "20"],
-                        showTotal: (total, range) => (
-                            <span className="text-xs font-semibold text-slate-500">
-                                Showing <span className="text-purple-600 font-bold">{range[0]}-{range[1]}</span> of{" "}
-                                <span className="text-slate-800 font-bold">{total}</span> posts
-                            </span>
-                        ),
-                        className: "px-6 py-4 border-t border-slate-100 flex items-center justify-between",
-                    }}
-                    className="custom-admin-table"
-                />
+                {/* 4. Posts Data Table */}
+                <div className="overflow-hidden">
+                    <Table
+                        columns={columns}
+                        dataSource={filteredPosts}
+                        rowKey="id"
+                        scroll={{ x: "max-content" }}
+                        pagination={{
+                            pageSize: 6,
+                            showSizeChanger: true,
+                            pageSizeOptions: ["5", "6", "10", "20"],
+                            showTotal: (total, range) => (
+                                <span className="text-xs font-semibold text-slate-500">
+                                    Showing <span className="text-primary font-bold">{range[0]}-{range[1]}</span> of{" "}
+                                    <span className="text-slate-800 font-bold">{total}</span> posts
+                                </span>
+                            ),
+                            className: "px-6 py-4 border-t border-slate-100 flex items-center justify-between",
+                        }}
+                        className="custom-admin-table custom-scrollbar"
+                    />
+                </div>
             </div>
 
             {/* 5. Delete Confirmation Modal */}
@@ -565,7 +564,7 @@ function AdminPostsContent() {
                     </div>
                 )}
             </Modal>
-        </div>
+        </div >
     );
 }
 
