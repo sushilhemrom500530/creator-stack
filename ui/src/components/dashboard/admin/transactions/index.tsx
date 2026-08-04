@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import {
+    App,
     Table,
-    Tag,
     Button,
     Input,
     Progress,
-    Avatar,
     Modal,
-    message,
     Tooltip,
-    Badge,
+    ConfigProvider,
 } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import {
     Wallet,
     CheckCircle2,
@@ -26,13 +25,7 @@ import {
     ShieldCheck,
     ArrowUpRight,
     Eye,
-    DollarSign,
-    Building2,
-    Calendar,
-    Globe,
     AlertCircle,
-    ChevronLeft,
-    ChevronRight,
 } from "lucide-react";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -153,7 +146,8 @@ const INITIAL_TRANSACTIONS: TransactionItem[] = [
     },
 ];
 
-export default function Transactions() {
+function TransactionsContent() {
+    const { message } = App.useApp();
     const [transactions] = useState<TransactionItem[]>(INITIAL_TRANSACTIONS);
     const [activeCategory, setActiveCategory] = useState<string>("All");
     const [searchText, setSearchText] = useState<string>("");
@@ -208,10 +202,181 @@ export default function Transactions() {
         colors: ["#8B5CF6"],
     };
 
+    // Top Stat Cards Data
+    const topStatCardsData = [
+        {
+            id: "total-revenue",
+            title: "Total Revenue",
+            value: "$1,248,390.00",
+            icon: Wallet,
+            iconBg: "bg-indigo-50 border-indigo-100 text-indigo-600",
+            badge: "+12.5%",
+            badgeIcon: TrendingUp,
+            badgeClass: "text-emerald-700 bg-emerald-100 border-emerald-200",
+            footer: (
+                <div>
+                    <div className="flex justify-between text-xs font-semibold text-slate-500 mb-1.5">
+                        <span>75% of monthly target achieved</span>
+                    </div>
+                    <Progress percent={75} showInfo={false} strokeColor="#8B5CF6" railColor="#F1F5F9" size="small" />
+                </div>
+            ),
+        },
+        {
+            id: "success-rate",
+            title: "Success Rate",
+            value: "99.92%",
+            icon: CheckCircle2,
+            iconBg: "bg-emerald-50 border-emerald-100 text-emerald-600",
+            badge: "Last 30 Days",
+            badgeClass: "text-slate-500 bg-slate-100 border-slate-200",
+            footer: (
+                <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2 border-t border-slate-100">
+                    <div className="flex items-center gap-1.5">
+                        <div className="flex -space-x-1.5">
+                            <div className="w-4 h-4 rounded-full bg-emerald-500 border border-white"></div>
+                            <div className="w-4 h-4 rounded-full bg-indigo-500 border border-white"></div>
+                            <div className="w-4 h-4 rounded-full bg-teal-500 border border-white"></div>
+                        </div>
+                        <span className="text-slate-600 font-bold ml-1">Top tier gateway performance</span>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            id: "pending-payouts",
+            title: "Pending Payouts",
+            value: "$42,900.50",
+            icon: CreditCard,
+            iconBg: "bg-emerald-50 border-emerald-100 text-emerald-600",
+            badge: "4 Delayed !",
+            badgeIcon: AlertCircle,
+            badgeClass: "text-rose-700 bg-rose-100 border-rose-200",
+            footer: (
+                <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
+                    <span className="font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                        Next payout: 24h
+                    </span>
+                    <button
+                        onClick={() => message.info("Opening payout queue details...")}
+                        className="font-extrabold text-indigo-600 hover:text-indigo-700 transition cursor-pointer"
+                    >
+                        View details &rarr;
+                    </button>
+                </div>
+            ),
+        },
+    ];
+
+    // Ant Design Table Columns Configuration
+    const columns: ColumnsType<TransactionItem> = [
+        {
+            title: "INVOICE ID",
+            dataIndex: "invoiceId",
+            key: "invoiceId",
+            render: (text) => (
+                <span className="font-mono font-bold text-slate-900 text-xs hover:text-indigo-600 transition-colors">
+                    {text}
+                </span>
+            ),
+        },
+        {
+            title: "CLIENT",
+            dataIndex: "clientName",
+            key: "client",
+            render: (_, record) => (
+                <div className="flex items-center gap-3">
+                    <div
+                        className={`w-9 h-9 rounded-xl ${record.clientBg} text-white font-extrabold flex items-center justify-center text-xs shrink-0 shadow-2xs`}
+                    >
+                        {record.clientInitials}
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                        <span className="text-xs font-extrabold text-slate-900 truncate">{record.clientName}</span>
+                        <span className="text-[10px] text-slate-400 font-medium truncate">{record.clientEmail}</span>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "DATE",
+            dataIndex: "date",
+            key: "date",
+            render: (date) => (
+                <span className="text-slate-500 font-medium text-xs whitespace-nowrap">{date}</span>
+            ),
+        },
+        {
+            title: "AMOUNT",
+            dataIndex: "amount",
+            key: "amount",
+            render: (amount) => (
+                <span className="font-extrabold text-slate-900 text-sm">{amount}</span>
+            ),
+        },
+        {
+            title: "STATUS",
+            dataIndex: "status",
+            key: "status",
+            align: "center",
+            render: (status) => {
+                if (status === "Paid") {
+                    return (
+                        <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full">
+                            Paid
+                        </span>
+                    );
+                }
+                if (status === "Pending") {
+                    return (
+                        <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-teal-700 bg-teal-100 border border-teal-200 rounded-full">
+                            Pending
+                        </span>
+                    );
+                }
+                return (
+                    <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-rose-700 bg-rose-100 border border-rose-200 rounded-full">
+                        Failed
+                    </span>
+                );
+            },
+        },
+        {
+            title: "METHOD",
+            dataIndex: "method",
+            key: "method",
+            render: (method) => (
+                <div className="flex items-center gap-2 text-slate-600 font-medium text-xs">
+                    <CreditCard className="w-4 h-4 text-slate-400 shrink-0" />
+                    <span>{method}</span>
+                </div>
+            ),
+        },
+        {
+            title: "ACTION",
+            key: "action",
+            align: "right",
+            render: (_, record) => (
+                <Tooltip title="View Invoice">
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={<Eye className="w-4 h-4 text-slate-500" />}
+                        onClick={() => {
+                            setSelectedTx(record);
+                            setIsDetailModalOpen(true);
+                        }}
+                        className="hover:bg-slate-100 rounded-lg cursor-pointer"
+                    />
+                </Tooltip>
+            ),
+        },
+    ];
+
     return (
-        <div className="min-h-screen font-sans p-6">
+        <div className="p-6">
             {/* --- Header Section --- */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4 border-b border-slate-200/60">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4 ">
                 <div>
                     <div className="flex items-center gap-3">
                         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Transaction Ledger</h1>
@@ -245,118 +410,55 @@ export default function Transactions() {
 
             {/* --- Top Stat Cards Grid (3 Columns) --- */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {/* 1. Total Revenue */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-2.5">
-                                <div className="p-2.5 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600">
-                                    <Wallet className="w-5 h-5" />
+                {topStatCardsData.map((card) => {
+                    const CardIcon = card.icon;
+                    const BadgeIcon = card.badgeIcon;
+                    return (
+                        <div key={card.id} className="card p-6 flex flex-col justify-between hover:-translate-y-1 [transition:0.3s]">
+                            <div>
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={`p-2.5 rounded-2xl border ${card.iconBg}`}>
+                                            <CardIcon className="w-5 h-5" />
+                                        </div>
+                                        <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                                            {card.title}
+                                        </span>
+                                    </div>
+                                    <span className={`inline-flex items-center gap-1 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border ${card.badgeClass}`}>
+                                        {BadgeIcon && <BadgeIcon className="w-3.5 h-3.5" />}
+                                        {card.badge}
+                                    </span>
                                 </div>
-                                <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Total Revenue</span>
-                            </div>
-                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                                <TrendingUp className="w-3.5 h-3.5" /> +12.5%
-                            </span>
-                        </div>
 
-                        <div className="mb-4">
-                            <span className="text-3xl font-extrabold text-slate-900 tracking-tight">$1,248,390.00</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="flex justify-between text-xs font-semibold text-slate-500 mb-1.5">
-                            <span>75% of monthly target achieved</span>
-                        </div>
-                        <Progress percent={75} showInfo={false} strokeColor="#8B5CF6" railColor="#F1F5F9" size="small" />
-                    </div>
-                </div>
-
-                {/* 2. Success Rate */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-2.5">
-                                <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-600">
-                                    <CheckCircle2 className="w-5 h-5" />
+                                <div className="mb-4">
+                                    <span className="text-3xl font-extrabold text-slate-900 tracking-tight">{card.value}</span>
                                 </div>
-                                <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Success Rate</span>
                             </div>
-                            <span className="text-[11px] font-extrabold text-slate-500 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full">
-                                Last 30 Days
-                            </span>
-                        </div>
 
-                        <div className="mb-4">
-                            <span className="text-3xl font-extrabold text-slate-900 tracking-tight">99.92%</span>
+                            {card.footer}
                         </div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs font-semibold text-slate-500 pt-2 border-t border-slate-100">
-                        <div className="flex items-center gap-1.5">
-                            <div className="flex -space-x-1.5">
-                                <div className="w-4 h-4 rounded-full bg-emerald-500 border border-white"></div>
-                                <div className="w-4 h-4 rounded-full bg-indigo-500 border border-white"></div>
-                                <div className="w-4 h-4 rounded-full bg-teal-500 border border-white"></div>
-                            </div>
-                            <span className="text-slate-600 font-bold ml-1">Top tier gateway performance</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 3. Pending Payouts */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-2.5">
-                                <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-600">
-                                    <CreditCard className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Pending Payouts</span>
-                            </div>
-                            <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-rose-700 bg-rose-100 border border-rose-200 px-2.5 py-0.5 rounded-full">
-                                <AlertCircle className="w-3 h-3 text-rose-600" /> 4 Delayed !
-                            </span>
-                        </div>
-
-                        <div className="mb-4">
-                            <span className="text-3xl font-extrabold text-slate-900 tracking-tight">$42,900.50</span>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs pt-2 border-t border-slate-100">
-                        <span className="font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                            Next payout: 24h
-                        </span>
-                        <button
-                            onClick={() => message.info("Opening payout queue details...")}
-                            className="font-extrabold text-indigo-600 hover:text-indigo-700 transition"
-                        >
-                            View details &rarr;
-                        </button>
-                    </div>
-                </div>
+                    );
+                })}
             </div>
 
             {/* --- Main Section: Recent Transactions --- */}
-            <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs mb-8">
+            <div className="card p-6 mb-8">
                 {/* Header & Tabs */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
                     <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">Recent Transactions</h2>
 
                     <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                         {/* Tabs */}
-                        <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1">
+                        <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 shrink-0">
                             {["All", "Subscription", "Add-on"].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveCategory(tab)}
-                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-extrabold transition ${
-                                        activeCategory === tab
-                                            ? "bg-white text-indigo-600 shadow-2xs"
-                                            : "text-slate-500 hover:text-slate-800"
-                                    }`}
+                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-extrabold transition cursor-pointer whitespace-nowrap ${activeCategory === tab
+                                        ? "bg-white text-indigo-600 shadow-2xs"
+                                        : "text-slate-500 hover:text-slate-800"
+                                        }`}
                                 >
                                     {tab}
                                 </button>
@@ -375,119 +477,33 @@ export default function Transactions() {
                 </div>
 
                 {/* Table */}
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="border-b border-slate-100 text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">
-                                <th className="py-3.5 px-4">Invoice ID</th>
-                                <th className="py-3.5 px-4">Client</th>
-                                <th className="py-3.5 px-4">Date</th>
-                                <th className="py-3.5 px-4">Amount</th>
-                                <th className="py-3.5 px-4 text-center">Status</th>
-                                <th className="py-3.5 px-4">Method</th>
-                                <th className="py-3.5 px-4 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 text-xs font-semibold">
-                            {filteredTx.map((row) => (
-                                <tr key={row.id} className="hover:bg-slate-50/80 transition-colors group">
-                                    {/* Invoice ID */}
-                                    <td className="py-4 px-4 font-mono font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                                        {row.invoiceId}
-                                    </td>
-
-                                    {/* Client */}
-                                    <td className="py-4 px-4">
-                                        <div className="flex items-center gap-3">
-                                            <div
-                                                className={`w-9 h-9 rounded-xl ${row.clientBg} text-white font-extrabold flex items-center justify-center text-xs shrink-0 shadow-2xs`}
-                                            >
-                                                {row.clientInitials}
-                                            </div>
-                                            <div>
-                                                <h4 className="text-xs font-extrabold text-slate-900">{row.clientName}</h4>
-                                                <span className="text-[10px] text-slate-400 font-medium">{row.clientEmail}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    {/* Date */}
-                                    <td className="py-4 px-4 text-slate-500 font-medium whitespace-nowrap">
-                                        {row.date}
-                                    </td>
-
-                                    {/* Amount */}
-                                    <td className="py-4 px-4 font-extrabold text-slate-900 text-sm">
-                                        {row.amount}
-                                    </td>
-
-                                    {/* Status */}
-                                    <td className="py-4 px-4 text-center">
-                                        {row.status === "Paid" && (
-                                            <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full">
-                                                Paid
-                                            </span>
-                                        )}
-                                        {row.status === "Pending" && (
-                                            <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-teal-700 bg-teal-100 border border-teal-200 rounded-full">
-                                                Pending
-                                            </span>
-                                        )}
-                                        {row.status === "Failed" && (
-                                            <span className="inline-block px-3 py-1 text-[10px] font-extrabold text-rose-700 bg-rose-100 border border-rose-200 rounded-full">
-                                                Failed
-                                            </span>
-                                        )}
-                                    </td>
-
-                                    {/* Method */}
-                                    <td className="py-4 px-4 text-slate-600 font-medium">
-                                        <div className="flex items-center gap-2">
-                                            <CreditCard className="w-4 h-4 text-slate-400" />
-                                            <span>{row.method}</span>
-                                        </div>
-                                    </td>
-
-                                    {/* Action */}
-                                    <td className="py-4 px-4 text-right">
-                                        <Tooltip title="View Invoice">
-                                            <Button
-                                                type="text"
-                                                size="small"
-                                                icon={<Eye className="w-4 h-4 text-slate-500" />}
-                                                onClick={() => {
-                                                    setSelectedTx(row);
-                                                    setIsDetailModalOpen(true);
-                                                }}
-                                                className="hover:bg-slate-100 rounded-lg"
-                                            />
-                                        </Tooltip>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Pagination Footer */}
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-100 mt-6 text-xs text-slate-500 font-medium">
-                    <span>Showing {filteredTx.length} of 2,410 transactions</span>
-                    <div className="flex items-center gap-1.5">
-                        <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">&lt;</Button>
-                        <Button size="small" type="primary" className="rounded-lg text-xs font-bold bg-indigo-600">1</Button>
-                        <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">2</Button>
-                        <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">3</Button>
-                        <span className="text-slate-400 px-1">...</span>
-                        <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">48</Button>
-                        <Button size="small" className="rounded-lg text-xs font-bold border-slate-200">&gt;</Button>
-                    </div>
+                <div className="overflow-hidden">
+                    <Table
+                        columns={columns}
+                        dataSource={filteredTx}
+                        rowKey="id"
+                        scroll={{ x: "max-content" }}
+                        pagination={{
+                            pageSize: 6,
+                            showSizeChanger: true,
+                            pageSizeOptions: ["5", "6", "10", "20"],
+                            showTotal: (total, range) => (
+                                <span className="text-xs font-semibold text-slate-500">
+                                    Showing <span className="text-indigo-600 font-bold">{range[0]}-{range[1]}</span> of{" "}
+                                    <span className="text-slate-800 font-bold">{total}</span> transactions
+                                </span>
+                            ),
+                            className: "pt-4 border-t border-slate-100 flex items-center justify-between",
+                        }}
+                        className="custom-admin-table custom-scrollbar"
+                    />
                 </div>
             </div>
 
             {/* --- Bottom Row (2 Columns) --- */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* 1. Growth Forecast */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition flex items-center justify-between gap-6">
+                <div className="card p-6 flex items-center justify-between gap-6">
                     <div className="w-24 h-24 shrink-0 flex items-center justify-center">
                         <ReactApexChart options={gaugeChartOptions} series={[75]} type="radialBar" height="100%" width="100%" />
                     </div>
@@ -510,7 +526,7 @@ export default function Transactions() {
                 </div>
 
                 {/* 2. Fraud Protection Active */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                <div className="card p-6 flex items-start gap-4">
                     <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-600 shrink-0 mt-0.5">
                         <ShieldCheck className="w-6 h-6" />
                     </div>
@@ -569,19 +585,19 @@ export default function Transactions() {
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <div className="card p-3">
                                 <span className="text-slate-400 font-bold uppercase block text-[10px]">Client</span>
                                 <span className="font-extrabold text-slate-900 block text-xs">{selectedTx.clientName}</span>
                                 <span className="text-slate-400 text-[10px]">{selectedTx.clientEmail}</span>
                             </div>
-                            <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <div className="card p-3">
                                 <span className="text-slate-400 font-bold uppercase block text-[10px]">Payment Method</span>
                                 <span className="font-extrabold text-slate-900 block text-xs">{selectedTx.method}</span>
                                 <span className="text-slate-400 text-[10px]">{selectedTx.typeCategory}</span>
                             </div>
                         </div>
 
-                        <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                        <div className="card p-3">
                             <span className="text-slate-400 font-bold uppercase block text-[10px] mb-1">Transaction Timeline</span>
                             <div className="flex justify-between text-slate-700 font-medium">
                                 <span>Date Created:</span>
@@ -596,5 +612,23 @@ export default function Transactions() {
                 )}
             </Modal>
         </div>
+    );
+}
+
+export default function Transactions() {
+    return (
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: "#4F46E5",
+                    borderRadius: 12,
+                    fontFamily: "var(--font-geist-sans), 'DM Sans', sans-serif",
+                },
+            }}
+        >
+            <App>
+                <TransactionsContent />
+            </App>
+        </ConfigProvider>
     );
 }
