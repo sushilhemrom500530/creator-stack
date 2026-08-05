@@ -25,6 +25,7 @@ import {
     ChevronDown,
     ChevronUp,
 } from "lucide-react";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 
 // Plan Tier Data Structure
 export interface PlanTierType {
@@ -116,6 +117,18 @@ const INITIAL_PLANS: PlanTierType[] = [
     },
 ];
 
+export type BillingCycleOption = "monthly" | "annual";
+
+export interface BillingCycleTabItem {
+    id: BillingCycleOption;
+    label: string;
+}
+
+const BILLING_CYCLE_TABS: BillingCycleTabItem[] = [
+    { id: "monthly", label: "Monthly Billing" },
+    { id: "annual", label: "Annual (Save 20%)" },
+];
+
 function SubscriptionsContent() {
     const { message } = App.useApp();
 
@@ -158,6 +171,33 @@ function SubscriptionsContent() {
             avgMonthlyPrice: `$${avgMonthlyPrice}`,
         };
     }, [plans]);
+
+    const statsData: StatItem[] = useMemo(
+        () => [
+            {
+                id: "active-plans",
+                title: "ACTIVE PLAN TIERS",
+                value: `${stats.totalPlans} Tiers`,
+                icon: Layers,
+                iconBgClass: "bg-primary/10 border-primary/20 text-primary",
+            },
+            {
+                id: "featured-highlight",
+                title: "FEATURED HIGHLIGHT",
+                value: stats.popularPlan,
+                icon: <Star className="w-5 h-5 text-amber-500 fill-amber-500" />,
+                iconBgClass: "bg-amber-500/10 border-amber-500/20 text-amber-500",
+            },
+            {
+                id: "avg-tier-price",
+                title: "AVERAGE TIER PRICE",
+                value: `${stats.avgMonthlyPrice} /mo`,
+                icon: DollarSign,
+                iconBgClass: "bg-secondary/80 text-secondary-foreground border border-border",
+            },
+        ],
+        [stats]
+    );
 
     // Feature Handlers for Create Modal
     const handleAddCreateFeature = () => {
@@ -278,9 +318,9 @@ function SubscriptionsContent() {
     };
 
     return (
-        <div className="p-4 sm:p-6 md:p-8 max-w-[1600px] mx-auto space-y-8 animate-in fade-in duration-300">
+        <div className="p-6 space-y-8">
             {/* Header Section */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4 border-b border-gray-200 dark:border-zinc-800">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4 dark:border-zinc-800">
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
@@ -295,24 +335,21 @@ function SubscriptionsContent() {
                 <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                     {/* Billing Cycle Switcher Toggle */}
                     <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-xl border border-gray-200 dark:border-zinc-800 text-xs">
-                        <button
-                            onClick={() => setBillingCycle("monthly")}
-                            className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all ${billingCycle === "monthly"
-                                ? "bg-background text-foreground shadow-sm"
-                                : "text-muted-foreground hover:text-foreground"
-                                }`}
-                        >
-                            Monthly Billing
-                        </button>
-                        <button
-                            onClick={() => setBillingCycle("annual")}
-                            className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${billingCycle === "annual"
-                                ? "bg-primary text-primary-foreground shadow-sm"
-                                : "text-muted-foreground hover:text-foreground"
-                                }`}
-                        >
-                            <span>Annual (Save 20%)</span>
-                        </button>
+                        {BILLING_CYCLE_TABS.map((tab) => {
+                            const isActive = billingCycle === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setBillingCycle(tab.id)}
+                                    className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${isActive
+                                        ? "bg-primary text-white"
+                                        : "text-muted-foreground hover:text-foreground"
+                                        }`}
+                                >
+                                    <span>{tab.label}</span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     <Button
@@ -327,49 +364,10 @@ function SubscriptionsContent() {
             </div>
 
             {/* Top Stat Overview Bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-primary/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            ACTIVE PLAN TIERS
-                        </p>
-                        <h4 className="text-xl sm:text-2xl font-black text-foreground tracking-tight mt-1">
-                            {stats.totalPlans} Tiers
-                        </h4>
-                    </div>
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0">
-                        <Layers className="w-5 h-5" />
-                    </div>
-                </div>
-
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-amber-500/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            FEATURED HIGHLIGHT
-                        </p>
-                        <h4 className="text-xl sm:text-2xl font-black text-foreground tracking-tight mt-1">
-                            {stats.popularPlan}
-                        </h4>
-                    </div>
-                    <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
-                        <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
-                    </div>
-                </div>
-
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-secondary/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            AVERAGE TIER PRICE
-                        </p>
-                        <h4 className="text-xl sm:text-2xl font-black text-foreground tracking-tight mt-1">
-                            {stats.avgMonthlyPrice} /mo
-                        </h4>
-                    </div>
-                    <div className="w-11 h-11 rounded-xl bg-secondary/80 text-secondary-foreground border border-border flex items-center justify-center shrink-0">
-                        <DollarSign className="w-5 h-5" />
-                    </div>
-                </div>
-            </div>
+            <StatsGrid
+                stats={statsData}
+                gridColsClass="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5"
+            />
 
             {/* Subscription Plans Grid */}
             <div className="space-y-4">
@@ -390,13 +388,13 @@ function SubscriptionsContent() {
                         return (
                             <div
                                 key={plan.id}
-                                className={`relative bg-card border rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl ${plan.isPopular
+                                className={`relative card p-6 flex flex-col justify-between ${plan.isPopular
                                     ? "border-primary/60 shadow-lg shadow-primary/5 ring-1 ring-primary/30"
                                     : "border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700"
                                     }`}
                             >
                                 {plan.isPopular && (
-                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-primary-foreground font-extrabold text-[10px] tracking-wider uppercase shadow-md flex items-center gap-1">
+                                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-white font-extrabold text-[10px] tracking-wider uppercase shadow-md flex items-center text-center gap-1">
                                         <Star className="w-3 h-3 fill-primary-foreground text-primary-foreground" />
                                         <span>MOST POPULAR</span>
                                     </div>
