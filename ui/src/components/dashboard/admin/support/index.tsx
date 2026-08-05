@@ -163,8 +163,37 @@ const INITIAL_TICKETS: TicketItem[] = [
                 timestamp: "07:45 AM",
                 text: "Feature request: Can we get high contrast theme toggles for embedded iframe widgets?",
             },
+            {
+                id: "m2",
+                sender: "customer",
+                senderName: "Emily Watson",
+                senderAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+                timestamp: "07:45 AM",
+                text: "Feature request: Can we get high contrast theme toggles for embedded iframe widgets?",
+            },
+            {
+                id: "m3",
+                sender: "customer",
+                senderName: "Emily Watson",
+                senderAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+                timestamp: "07:45 AM",
+                text: "Feature request: Can we get high contrast theme toggles for embedded iframe widgets?",
+            },
         ],
     },
+];
+
+export type TicketStatus = "Open" | "Pending" | "Closed";
+
+export interface SupportTabItem {
+    id: TicketStatus;
+    label: string;
+}
+
+const SUPPORT_TABS: SupportTabItem[] = [
+    { id: "Open", label: "Open" },
+    { id: "Pending", label: "Pending" },
+    { id: "Closed", label: "Closed" },
 ];
 
 export default function Support() {
@@ -259,12 +288,12 @@ export default function Support() {
     };
 
     return (
-        <div className="font-sans p-6 flex flex-col">
+        <div className="p-6 flex flex-col">
             {/* Header Title */}
             <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-200/60 shrink-0">
                 <div>
-                    <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Customer Support Console</h1>
-                    <p className="text-slate-500 mt-0.5 text-xs font-medium">
+                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Customer Support Console</h1>
+                    <p className="text-slate-500 mt-0.5 text-sm font-medium">
                         Real-time ticket queue, AI diagnostics, and customer resolution hub.
                     </p>
                 </div>
@@ -278,41 +307,27 @@ export default function Support() {
 
             {/* Main Split Grid (Sidebar + Console) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
+
                 {/* --- LEFT SIDEBAR (Ticket List) - 5 Spans --- */}
-                <div className="lg:col-span-5 bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs flex flex-col h-[80vh] overflow-hidden">
+                <div className="lg:col-span-5 card p-5 flex flex-col h-[86vh] overflow-hidden">
                     {/* Tabs Bar matching image */}
                     <div className="bg-slate-100 p-1.5 rounded-2xl flex items-center justify-between mb-4 shrink-0">
-                        <button
-                            onClick={() => setActiveTab("Open")}
-                            className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all ${
-                                activeTab === "Open"
-                                    ? "bg-slate-900 text-white shadow-2xs"
-                                    : "text-slate-500 hover:text-slate-800"
-                            }`}
-                        >
-                            Open ({tickets.filter((t) => t.status === "Open").length})
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("Pending")}
-                            className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all ${
-                                activeTab === "Pending"
-                                    ? "bg-slate-900 text-white shadow-2xs"
-                                    : "text-slate-500 hover:text-slate-800"
-                            }`}
-                        >
-                            Pending ({tickets.filter((t) => t.status === "Pending").length})
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("Closed")}
-                            className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all ${
-                                activeTab === "Closed"
-                                    ? "bg-slate-900 text-white shadow-2xs"
-                                    : "text-slate-500 hover:text-slate-800"
-                            }`}
-                        >
-                            Closed ({tickets.filter((t) => t.status === "Closed").length})
-                        </button>
+                        {SUPPORT_TABS.map((tab) => {
+                            const count = tickets.filter((t) => t.status === tab.id).length;
+                            const isActive = activeTab === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${isActive
+                                        ? "bg-white text-slate-900"
+                                        : "text-slate-500 hover:text-slate-800"
+                                        }`}
+                                >
+                                    {tab.label} ({count})
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Search Bar */}
@@ -339,11 +354,10 @@ export default function Support() {
                                     <div
                                         key={ticket.id}
                                         onClick={() => setSelectedTicketId(ticket.id)}
-                                        className={`p-4 rounded-2xl border transition-all cursor-pointer relative overflow-hidden ${
-                                            isSelected
-                                                ? "bg-slate-50 border-indigo-300 shadow-md ring-1 ring-indigo-200"
-                                                : "bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-2xs"
-                                        }`}
+                                        className={`p-4 rounded-2xl border transition-all cursor-pointer relative overflow-hidden ${isSelected
+                                            ? "bg-slate-50 border-indigo-300 shadow-md ring-1 ring-indigo-200"
+                                            : "bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-2xs"
+                                            }`}
                                     >
                                         {/* Left Active Selection Bar */}
                                         {isSelected && (
@@ -382,8 +396,8 @@ export default function Support() {
                 </div>
 
                 {/* --- RIGHT CONSOLE (Active Ticket Chat & Reply) - 7 Spans --- */}
-                <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-3xl p-6 shadow-xs flex flex-col h-[80vh] overflow-hidden justify-between">
-                    
+                <div className="lg:col-span-7 card p-6 flex flex-col h-[86vh] overflow-hidden justify-between">
+
                     {/* 1. Header Bar of Active Ticket */}
                     <div className="shrink-0">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-100 gap-4">
@@ -409,7 +423,7 @@ export default function Support() {
                             <div className="flex items-center gap-2">
                                 <Button
                                     onClick={handleMarkResolved}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl h-9 px-4 text-xs border-none flex items-center gap-1.5 shadow-2xs"
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl h-9 px-4 text-xs border-none flex items-center gap-1.5 cursor-pointer"
                                 >
                                     <CheckCircle2 className="w-4 h-4" /> Resolve
                                 </Button>
@@ -473,13 +487,12 @@ export default function Support() {
                                             <span className="text-[10px] font-medium text-slate-400">{msg.timestamp}</span>
                                         </div>
                                         <div
-                                            className={`p-4 rounded-2xl text-xs font-medium leading-relaxed whitespace-pre-wrap ${
-                                                msg.isInternalNote
-                                                    ? "bg-amber-50 border border-amber-200 text-amber-950 font-mono"
-                                                    : isAdmin
+                                            className={`p-4 rounded-2xl text-xs font-medium leading-relaxed whitespace-pre-wrap ${msg.isInternalNote
+                                                ? "bg-amber-50 border border-amber-200 text-amber-950 font-mono"
+                                                : isAdmin
                                                     ? "bg-indigo-600 text-white shadow-xs rounded-tr-none"
                                                     : "bg-slate-100 border border-slate-200/80 text-slate-800 rounded-tl-none"
-                                            }`}
+                                                }`}
                                         >
                                             {msg.isInternalNote && (
                                                 <span className="text-[10px] font-extrabold uppercase text-amber-700 block mb-1">
@@ -501,21 +514,19 @@ export default function Support() {
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={() => setIsInternalNote(false)}
-                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition ${
-                                        !isInternalNote
-                                            ? "bg-indigo-600 text-white"
-                                            : "bg-slate-100 text-slate-500 hover:text-slate-800"
-                                    }`}
+                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer ${!isInternalNote
+                                        ? "bg-indigo-600 text-white"
+                                        : "bg-slate-100 text-slate-500 hover:text-slate-800"
+                                        }`}
                                 >
                                     Public Reply
                                 </button>
                                 <button
                                     onClick={() => setIsInternalNote(true)}
-                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition flex items-center gap-1 ${
-                                        isInternalNote
-                                            ? "bg-amber-500 text-white"
-                                            : "bg-slate-100 text-slate-500 hover:text-slate-800"
-                                    }`}
+                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition flex items-center gap-1 cursor-pointer ${isInternalNote
+                                        ? "bg-amber-500 text-white"
+                                        : "bg-slate-100 text-slate-500 hover:text-slate-800"
+                                        }`}
                                 >
                                     <Lock className="w-3 h-3" /> Internal Note
                                 </button>
@@ -525,13 +536,13 @@ export default function Support() {
                             <div className="hidden sm:flex items-center gap-1.5">
                                 <button
                                     onClick={() => setReplyText("Could you please provide the system console logs?")}
-                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition"
+                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
                                 >
                                     + Ask Logs
                                 </button>
                                 <button
                                     onClick={() => setReplyText("We have deployed a hotfix. Please refresh your browser.")}
-                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition"
+                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
                                 >
                                     + Confirm Fix
                                 </button>
@@ -549,17 +560,16 @@ export default function Support() {
                                 }
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
-                                className={`rounded-2xl text-xs font-medium p-3.5 ${
-                                    isInternalNote ? "bg-amber-50/50 border-amber-200 focus:bg-white" : "bg-slate-50 border-slate-200 focus:bg-white"
-                                }`}
+                                className={`rounded-2xl text-xs font-medium p-3.5 ${isInternalNote ? "bg-amber-50/50 border-amber-200 focus:bg-white" : "bg-slate-50 border-slate-200 focus:bg-white"
+                                    }`}
                             />
-                            
+
                             <div className="flex justify-between items-center mt-2.5">
                                 <div className="flex items-center gap-2 text-slate-400">
-                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500">
+                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
                                         <Paperclip className="w-4 h-4" />
                                     </button>
-                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500">
+                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
                                         <Smile className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -568,9 +578,8 @@ export default function Support() {
                                     type="primary"
                                     icon={<Send className="w-4 h-4" />}
                                     onClick={handleSendReply}
-                                    className={`font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-xs border-none ${
-                                        isInternalNote ? "bg-amber-600 hover:bg-amber-700" : "bg-indigo-600 hover:bg-indigo-700"
-                                    }`}
+                                    className={`font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-xs border-none ${isInternalNote ? "bg-amber-600 hover:bg-amber-700" : "bg-indigo-600 hover:bg-indigo-700"
+                                        }`}
                                 >
                                     {isInternalNote ? "Add Note" : "Send Reply"}
                                 </Button>
