@@ -9,7 +9,7 @@ import {
     Badge,
     Tooltip,
     Dropdown,
-    message,
+    App,
 } from "antd";
 import {
     Search,
@@ -168,6 +168,7 @@ const INITIAL_TICKETS: TicketItem[] = [
 ];
 
 export default function Support() {
+    const { message } = App.useApp();
     const [tickets, setTickets] = useState<TicketItem[]>(INITIAL_TICKETS);
     const [activeTab, setActiveTab] = useState<"Open" | "Pending" | "Closed">("Open");
     const [selectedTicketId, setSelectedTicketId] = useState<string>("1");

@@ -7,7 +7,7 @@ import {
     Progress,
     Avatar,
     Modal,
-    message,
+    App,
     Tooltip,
 } from "antd";
 import {
@@ -196,6 +196,7 @@ const STAT_CARDS_DATA: StatItem[] = [
 ];
 
 export default function Reports() {
+    const { message } = App.useApp();
     const [reports, setReports] = useState<ReportItem[]>(INITIAL_REPORTS);
     const [activeTab, setActiveTab] = useState<string>("all");
     const [searchText, setSearchText] = useState<string>("");

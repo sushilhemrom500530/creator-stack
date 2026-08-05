@@ -15,7 +15,7 @@ import {
     ConfigProvider,
     Form,
     Progress,
-    message,
+    App,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
@@ -276,6 +276,7 @@ const INITIAL_SUBSCRIBERS: SubscriberType[] = [
 
 
 export default function Subscribers() {
+    const { message } = App.useApp();
     // State Management
     const [subscribers, setSubscribers] = useState<SubscriberType[]>(INITIAL_SUBSCRIBERS);
     const [searchQuery, setSearchQuery] = useState("");

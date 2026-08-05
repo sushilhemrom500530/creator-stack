@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { message } from "antd";
+import { App } from "antd";
 import {
     TrendingUp,
     Users,
@@ -29,7 +29,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
 
 export default function AdminOverview() {
-    const [messageApi, contextHolder] = message.useMessage();
+    const { message: messageApi } = App.useApp();
 
     // Top 8 KPI Overview Stats (JSON Data)
     const statsData: StatItem[] = [
@@ -184,7 +184,6 @@ export default function AdminOverview() {
 
     return (
         <div className="space-y-6 font-sans">
-            {contextHolder}
 
             {/* 1. TOP EXPANDED METRICS OVERVIEW (8 KPI STAT CARDS GRID) */}
             <StatsGrid stats={statsData} />
