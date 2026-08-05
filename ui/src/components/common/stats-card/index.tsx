@@ -70,15 +70,17 @@ export interface StatItem {
     id?: string | number;
     title: string;
     value: string | number;
-    icon: LucideIcon | string;
+    icon: LucideIcon | string | React.ReactNode;
     color?: StatColorVariant;
     iconBgClass?: string;
-    subtext?: string;
-    subIcon?: LucideIcon | string;
+    subtext?: string | React.ReactNode;
+    subIcon?: LucideIcon | string | React.ReactNode;
     subTextColorClass?: string;
     valueColorClass?: string;
     isLive?: boolean;
     variant?: StatCardVariant;
+    relativeOverflow?: boolean;
+    footer?: React.ReactNode;
 }
 
 const COLOR_STYLES: Record<
@@ -142,10 +144,13 @@ const COLOR_STYLES: Record<
 };
 
 function renderIcon(
-    IconInput: LucideIcon | string | undefined,
+    IconInput: LucideIcon | string | React.ReactNode | undefined,
     defaultClass: string = "w-4 h-4"
 ) {
     if (!IconInput) return null;
+    if (React.isValidElement(IconInput)) {
+        return IconInput;
+    }
     if (typeof IconInput === "string") {
         const ResolvedIcon = ICON_MAP[IconInput];
         if (ResolvedIcon) {
@@ -153,7 +158,7 @@ function renderIcon(
         }
         return null;
     }
-    const IconComponent = IconInput;
+    const IconComponent = IconInput as LucideIcon;
     return <IconComponent className={defaultClass} />;
 }
 
@@ -226,32 +231,38 @@ export function StatsCard({ stat, className = "", variant = "vertical" }: StatsC
 
     return (
         <div
-            className={`card p-5 [transition:0.3s] hover:-translate-y-1 space-y-2 ${className}`}
+            className={`card p-5 [transition:0.3s] hover:-translate-y-1 ${stat.relativeOverflow ? "relative overflow-hidden" : ""
+                } ${className}`}
         >
-            <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <div className="flex justify-between items-start mb-3">
+                <span className="text-xs font-bold text-slate-400 uppercase">
                     {stat.title}
                 </span>
-                <div className={`p-2 rounded-xl ${iconBgStyle}`}>
+                <div className={`p-2 rounded-xl border ${iconBgStyle}`}>
                     {renderIcon(stat.icon, "w-4 h-4")}
                 </div>
             </div>
-            <div>
-                <h3 className="text-2xl font-black text-slate-800 flex items-center gap-2">
+            <div className="flex items-baseline gap-2 mb-2">
+                <span
+                    className={`text-3xl font-bold ${stat.valueColorClass || "text-slate-900"
+                        }`}
+                >
                     {stat.value}
                     {stat.isLive && (
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-ping" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-ping ml-2" />
                     )}
-                </h3>
-                {stat.subtext && (
-                    <p
-                        className={`text-xs font-semibold mt-0.5 flex items-center gap-1 ${subTextStyle}`}
-                    >
-                        {renderIcon(stat.subIcon, "w-3.5 h-3.5")}
-                        <span>{stat.subtext}</span>
-                    </p>
-                )}
+                </span>
             </div>
+            {stat.footer ? (
+                stat.footer
+            ) : stat.subtext ? (
+                <div
+                    className={`text-xs font-semibold flex items-center gap-1 ${subTextStyle}`}
+                >
+                    {renderIcon(stat.subIcon, "w-3.5 h-3.5")}
+                    <span>{stat.subtext}</span>
+                </div>
+            ) : null}
         </div>
     );
 }

@@ -537,7 +537,7 @@ function TransactionsContent() {
                         </p>
                         <button
                             onClick={() => message.info("Opening Fraud Safety Report...")}
-                            className="text-xs font-extrabold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition"
+                            className="text-xs font-extrabold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition cursor-pointer"
                         >
                             Review Safety Report <ArrowUpRight className="w-4 h-4" />
                         </button>

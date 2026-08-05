@@ -2,16 +2,10 @@
 
 import React, { useState } from "react";
 import {
-    Table,
-    Tag,
     Button,
     Input,
-    Select,
     Progress,
-    Tabs,
-    Badge,
     Avatar,
-    Dropdown,
     Modal,
     message,
     Tooltip,
@@ -29,16 +23,14 @@ import {
     Clock,
     Zap,
     Sparkles,
-    MoreVertical,
-    UserX,
     Eye,
     Check,
     ArrowUpRight,
     Bot,
     Activity,
     Shield,
-    RotateCcw,
 } from "lucide-react";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 
 export interface ReportItem {
     id: string;
@@ -149,6 +141,60 @@ const INITIAL_REPORTS: ReportItem[] = [
     },
 ];
 
+const STAT_CARDS_DATA: StatItem[] = [
+    {
+        id: "pending-reviews",
+        title: "Pending Reviews",
+        icon: <Clock className="w-4 h-4" />,
+        iconBgClass: "bg-rose-50 border-rose-100 text-rose-600",
+        value: "124",
+        footer: (
+            <div className="flex items-center gap-1.5 text-xs font-bold text-rose-600">
+                <Activity className="w-3.5 h-3.5" />
+                <span>+12% from yesterday</span>
+            </div>
+        ),
+    },
+    {
+        id: "resolved-today",
+        title: "Resolved Today",
+        icon: <CheckCircle2 className="w-4 h-4" />,
+        iconBgClass: "bg-emerald-50 border-emerald-100 text-emerald-600",
+        value: "842",
+        valueColorClass: "text-emerald-600",
+        footer: (
+            <div className="text-xs font-bold text-slate-500">
+                Efficiency: <span className="text-emerald-700 font-bold">94.2%</span>
+            </div>
+        ),
+    },
+    {
+        id: "spam-detected",
+        title: "Spam Detected (AI)",
+        icon: <Bot className="w-4 h-4" />,
+        iconBgClass: "bg-indigo-50 border-indigo-100 text-indigo-600",
+        value: "5.2k",
+        relativeOverflow: true,
+        footer: (
+            <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full uppercase">
+                <Sparkles className="w-3 h-3 text-indigo-500" /> AI Protected
+            </div>
+        ),
+    },
+    {
+        id: "avg-response-time",
+        title: "Avg. Response Time",
+        icon: <Zap className="w-4 h-4" />,
+        iconBgClass: "bg-amber-50 border-amber-100 text-amber-600",
+        value: "1.4h",
+        footer: (
+            <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full uppercase">
+                <Check className="w-3 h-3 text-emerald-600" /> Within SLA
+            </div>
+        ),
+    },
+];
+
 export default function Reports() {
     const [reports, setReports] = useState<ReportItem[]>(INITIAL_REPORTS);
     const [activeTab, setActiveTab] = useState<string>("all");
@@ -198,7 +244,7 @@ export default function Reports() {
     return (
         <div className="min-h-screen p-6">
             {/* --- Header Section --- */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4 border-b border-slate-200/60">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 pb-4">
                 <div>
                     <h1 className="text-3xl font-bold text-slate-900">Reports Management</h1>
                     <p className="text-slate-500 mt-1 text-sm font-medium">
@@ -209,7 +255,7 @@ export default function Reports() {
                 <div className="flex items-center gap-3">
                     <Button
                         icon={<Filter className="w-4 h-4 text-slate-600" />}
-                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 shadow-2xs flex items-center gap-2 cursor-pointer"
+                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 flex items-center gap-2 cursor-pointer"
                         onClick={() => message.info("Filter parameters applied")}
                     >
                         Filters
@@ -218,7 +264,7 @@ export default function Reports() {
                         type="primary"
                         icon={<Download className="w-4 h-4" />}
                         onClick={handleExportCSV}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-10 px-5 flex items-center gap-2 shadow-sm border-none cursor-pointer"
+                        className="bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-10 px-5 flex items-center gap-2 border-none cursor-pointer"
                     >
                         Export CSV
                     </Button>
@@ -226,72 +272,10 @@ export default function Reports() {
             </div>
 
             {/* --- Top Stat Cards Grid (4 Columns) --- */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                {/* Pending Reviews */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
-                    <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Pending Reviews</span>
-                        <div className="p-2 rounded-xl bg-rose-50 border border-rose-100 text-rose-600">
-                            <Clock className="w-4 h-4" />
-                        </div>
-                    </div>
-                    <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-bold text-slate-900">124</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-rose-600">
-                        <Activity className="w-3.5 h-3.5" />
-                        <span>+12% from yesterday</span>
-                    </div>
-                </div>
-
-                {/* Resolved Today */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
-                    <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Resolved Today</span>
-                        <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600">
-                            <CheckCircle2 className="w-4 h-4" />
-                        </div>
-                    </div>
-                    <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-bold text-emerald-600">842</span>
-                    </div>
-                    <div className="text-xs font-bold text-slate-500">
-                        Efficiency: <span className="text-emerald-700 font-bold">94.2%</span>
-                    </div>
-                </div>
-
-                {/* Spam Detected (AI) */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition relative overflow-hidden">
-                    <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Spam Detected (AI)</span>
-                        <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600">
-                            <Bot className="w-4 h-4" />
-                        </div>
-                    </div>
-                    <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-bold text-slate-900">5.2k</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full uppercase">
-                        <Sparkles className="w-3 h-3 text-indigo-500" /> AI Protected
-                    </div>
-                </div>
-
-                {/* Avg Response Time */}
-                <div className="bg-white border border-slate-200/80 rounded-3xl p-5 shadow-xs hover:shadow-md transition">
-                    <div className="flex justify-between items-start mb-3">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Avg. Response Time</span>
-                        <div className="p-2 rounded-xl bg-amber-50 border border-amber-100 text-amber-600">
-                            <Zap className="w-4 h-4" />
-                        </div>
-                    </div>
-                    <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-3xl font-bold text-slate-900">1.4h</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1 text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full uppercase">
-                        <Check className="w-3 h-3 text-emerald-600" /> Within SLA
-                    </div>
-                </div>
-            </div>
+            <StatsGrid
+                stats={STAT_CARDS_DATA}
+                gridColsClass="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8"
+            />
 
             {/* --- Main 2-Column Section --- */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
