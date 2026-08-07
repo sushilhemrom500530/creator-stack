@@ -30,6 +30,9 @@ export class User {
 
   @Prop({ type: Date, default: null })
   deletedAt?: Date | null;
+
+  @Prop({ default: false })
+  isDeleted?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

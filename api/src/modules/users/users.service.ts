@@ -10,7 +10,7 @@ import { HashUtil } from '../../common/utils/hash.util';
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const hashedPassword = await HashUtil.hash(createUserDto.password, 12);
@@ -23,12 +23,12 @@ export class UsersService {
 
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10, search } = paginationDto;
-    const baseFilter = { deletedAt: null };
+    const baseFilter = { isDeleted: false };
     const query = search
       ? {
-          ...baseFilter,
-          $or: [{ name: new RegExp(search, 'i') }, { email: new RegExp(search, 'i') }],
-        }
+        ...baseFilter,
+        $or: [{ name: new RegExp(search, 'i') }, { email: new RegExp(search, 'i') }],
+      }
       : baseFilter;
 
     const total = await this.userModel.countDocuments(query);
@@ -48,7 +48,7 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    const user = await this.userModel.findOne({ _id: id, deletedAt: null });
+    const user = await this.userModel.findOne({ _id: id, isDeleted: false });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -57,7 +57,7 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userModel.findOneAndUpdate(
-      { _id: id, deletedAt: null },
+      { _id: id, isDeleted: false },
       updateUserDto,
       { new: true },
     );
@@ -70,7 +70,7 @@ export class UsersService {
   // Soft Delete
   async remove(id: string) {
     const user = await this.userModel.findOneAndUpdate(
-      { _id: id, deletedAt: null },
+      { _id: id, isDeleted: false },
       { deletedAt: new Date() },
       { new: true },
     );
