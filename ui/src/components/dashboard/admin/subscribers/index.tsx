@@ -39,6 +39,7 @@ import {
     FileText,
     ArrowUpRight,
 } from "lucide-react";
+import { StatsGrid, StatItem } from "@/components/common/stats-card";
 
 // Subscriber Data Structure
 export interface InvoiceItem {
@@ -338,6 +339,58 @@ export default function Subscribers() {
         };
     }, [subscribers]);
 
+    // KPI Metrics summary stats array for StatsGrid
+    const kpiStatsData: StatItem[] = useMemo(
+        () => [
+            {
+                id: "mrr",
+                title: "MONTHLY RECURRING REVENUE (MRR)",
+                value: `$${metrics.totalMRR.toLocaleString()}`,
+                icon: DollarSign,
+                iconBgClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
+                subtext: `ARR: $${metrics.arr.toLocaleString()} / yr`,
+                subIcon: ArrowUpRight,
+                subTextColorClass: "text-emerald-600 dark:text-emerald-400",
+            },
+            {
+                id: "active-members",
+                title: "ACTIVE PAYING MEMBERS",
+                value: (
+                    <>
+                        {metrics.activeCount}{" "}
+                        <span className="text-sm font-semibold text-muted-foreground">
+                            / {metrics.total}
+                        </span>
+                    </>
+                ),
+                icon: Users,
+                iconBgClass: "bg-cyan-500/10 border-cyan-500/20 text-cyan-600 dark:text-cyan-400",
+                subtext: `${Math.round((metrics.activeCount / (metrics.total || 1)) * 100)}% active subscription rate`,
+                subTextColorClass: "text-muted-foreground",
+            },
+            {
+                id: "trialing-accounts",
+                title: "TRIALING ACCOUNTS",
+                value: `${metrics.trialingCount} Users`,
+                icon: Sparkles,
+                iconBgClass: "bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400",
+                subtext: "Onboarding & active evaluations",
+                subTextColorClass: "text-muted-foreground",
+            },
+            {
+                id: "past-due",
+                title: "PAST DUE / AT RISK MRR",
+                value: `$${metrics.atRiskMRR}`,
+                valueColorClass: "text-amber-600 dark:text-amber-400",
+                icon: AlertCircle,
+                iconBgClass: "bg-amber-500/10 border-amber-500/20 text-amber-500",
+                subtext: `${metrics.pastDueCount} accounts require payment retry`,
+                subTextColorClass: "text-muted-foreground",
+            },
+        ],
+        [metrics]
+    );
+
     // Handler to Reset Filters
     const handleResetFilters = () => {
         setSearchQuery("");
@@ -348,40 +401,36 @@ export default function Subscribers() {
 
     // Handler to toggle Pause / Resume
     const handleTogglePause = (subId: string) => {
+        const sub = subscribers.find((s) => s.id === subId);
+        if (!sub) return;
+
+        const newStatus = sub.status === "Paused" ? "Active" : "Paused";
         setSubscribers((prev) =>
-            prev.map((s) => {
-                if (s.id === subId) {
-                    const newStatus = s.status === "Paused" ? "Active" : "Paused";
-                    message.success(
-                        `Subscription for ${s.name} has been ${newStatus === "Active" ? "resumed" : "paused"}`
-                    );
-                    return { ...s, status: newStatus };
-                }
-                return s;
-            })
+            prev.map((s) => (s.id === subId ? { ...s, status: newStatus } : s))
         );
         if (selectedSubscriber?.id === subId) {
             setSelectedSubscriber((prev) =>
-                prev ? { ...prev, status: prev.status === "Paused" ? "Active" : "Paused" } : null
+                prev ? { ...prev, status: newStatus } : null
             );
         }
+        message.success(
+            `Subscription for ${sub.name} has been ${newStatus === "Active" ? "resumed" : "paused"}`
+        );
     };
 
     // Handler to toggle Auto-Renew
     const handleToggleAutoRenew = (subId: string) => {
+        const sub = subscribers.find((s) => s.id === subId);
+        if (!sub) return;
+
+        const nextVal = !sub.autoRenew;
         setSubscribers((prev) =>
-            prev.map((s) => {
-                if (s.id === subId) {
-                    const nextVal = !s.autoRenew;
-                    message.info(`Auto-renew ${nextVal ? "enabled" : "disabled"} for ${s.name}`);
-                    return { ...s, autoRenew: nextVal };
-                }
-                return s;
-            })
+            prev.map((s) => (s.id === subId ? { ...s, autoRenew: nextVal } : s))
         );
         if (selectedSubscriber?.id === subId) {
-            setSelectedSubscriber((prev) => (prev ? { ...prev, autoRenew: !prev.autoRenew } : null));
+            setSelectedSubscriber((prev) => (prev ? { ...prev, autoRenew: nextVal } : null));
         }
+        message.info(`Auto-renew ${nextVal ? "enabled" : "disabled"} for ${sub.name}`);
     };
 
     // Handler to Cancel Subscription
@@ -807,9 +856,9 @@ export default function Subscribers() {
     ];
 
     return (
-        <div className="p-4 sm:p-6 md:p-8 max-w-[1700px] mx-auto space-y-8 animate-in fade-in duration-300">
+        <div className="p-6 space-y-8">
             {/* Header Title Section */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4 border-b border-gray-200 dark:border-zinc-800">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 pb-4 dark:border-zinc-800">
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
@@ -838,7 +887,7 @@ export default function Subscribers() {
                         type="primary"
                         icon={<Plus className="w-4 h-4" />}
                         onClick={() => setIsAddModalOpen(true)}
-                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 text-xs sm:text-sm"
+                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 text-xs sm:text-sm"
                     >
                         Add New Subscriber
                     </Button>
@@ -846,181 +895,113 @@ export default function Subscribers() {
             </div>
 
             {/* KPI Metric Summary Overview */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                {/* Total MRR Card */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-primary/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            MONTHLY RECURRING REVENUE (MRR)
-                        </p>
-                        <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mt-1">
-                            ${metrics.totalMRR.toLocaleString()}
-                        </h3>
-                        <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                            <ArrowUpRight className="w-3.5 h-3.5" />
-                            <span>ARR: ${(metrics.arr).toLocaleString()} / yr</span>
+            <StatsGrid
+                stats={kpiStatsData}
+                gridColsClass="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"
+            />
+
+            <div className="card p-5">
+                {/* Filter and Search Controls */}
+                <div className="space-y-4">
+                    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                        {/* Search Input */}
+                        <div className="relative flex-1 max-w-md">
+                            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                            <Input
+                                placeholder="Search by subscriber name, email, company or ID..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="pl-10 h-10 rounded-xl border-gray-200 dark:border-zinc-800 bg-background text-xs sm:text-sm"
+                                allowClear
+                            />
+                        </div>
+
+                        {/* Filter Select Dropdowns */}
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            {/* Plan Tier Filter */}
+                            <Select
+                                value={selectedPlan}
+                                onChange={(val) => setSelectedPlan(val)}
+                                className="w-[140px] sm:w-[160px] h-10 custom-select"
+                                options={[
+                                    { label: "All Plans", value: "All" },
+                                    { label: "Enterprise Pro", value: "Enterprise Pro" },
+                                    { label: "Agency Custom", value: "Agency Custom" },
+                                    { label: "Creator Plus", value: "Creator Plus" },
+                                    { label: "Starter Free", value: "Starter Free" },
+                                ]}
+                            />
+
+                            {/* Status Filter */}
+                            <Select
+                                value={selectedStatus}
+                                onChange={(val) => setSelectedStatus(val)}
+                                className="w-[130px] sm:w-[150px] h-10 custom-select"
+                                options={[
+                                    { label: "All Statuses", value: "All" },
+                                    { label: "Active", value: "Active" },
+                                    { label: "Trialing", value: "Trialing" },
+                                    { label: "Past Due", value: "Past Due" },
+                                    { label: "Paused", value: "Paused" },
+                                    { label: "Cancelled", value: "Cancelled" },
+                                ]}
+                            />
+
+                            {/* Billing Cycle Filter */}
+                            <Select
+                                value={selectedCycle}
+                                onChange={(val) => setSelectedCycle(val)}
+                                className="w-[130px] sm:w-[140px] h-10 custom-select"
+                                options={[
+                                    { label: "All Cycles", value: "All" },
+                                    { label: "Monthly", value: "Monthly" },
+                                    { label: "Annual", value: "Annual" },
+                                ]}
+                            />
+
+                            {/* Reset Filters */}
+                            {(searchQuery || selectedPlan !== "All" || selectedStatus !== "All" || selectedCycle !== "All") && (
+                                <Button
+                                    onClick={handleResetFilters}
+                                    icon={<X className="w-3.5 h-3.5" />}
+                                    className="cursor-pointer border-gray-200 dark:border-zinc-800 rounded-xl text-xs font-semibold h-10 text-muted-foreground hover:text-foreground"
+                                >
+                                    Clear
+                                </Button>
+                            )}
                         </div>
                     </div>
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                        <DollarSign className="w-6 h-6" />
+
+                    {/* Filter summary status bar */}
+                    <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-gray-100 dark:border-zinc-800">
+                        <span>
+                            Showing <strong className="text-foreground">{filteredSubscribers.length}</strong> of{" "}
+                            <strong className="text-foreground">{subscribers.length}</strong> subscribers
+                        </span>
+
+                        <span className="hidden sm:inline-block font-medium">
+                            Click subscriber name or actions menu to manage billing & limits
+                        </span>
                     </div>
                 </div>
 
-                {/* Active Subscribers Card */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-cyan-500/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            ACTIVE PAYING MEMBERS
-                        </p>
-                        <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mt-1">
-                            {metrics.activeCount} <span className="text-sm font-semibold text-muted-foreground">/ {metrics.total}</span>
-                        </h3>
-                        <p className="text-xs font-medium text-muted-foreground mt-2">
-                            {Math.round((metrics.activeCount / (metrics.total || 1)) * 100)}% active subscription rate
-                        </p>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
-                        <Users className="w-6 h-6" />
-                    </div>
+                {/* Main Subscribers Ant Design Table */}
+                <div className="overflow-hidden">
+                    <Table
+                        columns={columns}
+                        dataSource={filteredSubscribers}
+                        rowKey="id"
+                        pagination={{
+                            pageSize: 8,
+                            showSizeChanger: true,
+                            pageSizeOptions: ["8", "15", "30", "50"],
+                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} subscribers`,
+                            className: "px-4 pt-4 text-xs font-medium",
+                        }}
+                        scroll={{ x: 1200 }}
+                        className="custom-table"
+                    />
                 </div>
-
-                {/* Trialing Subscribers Card */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-blue-500/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            TRIALING ACCOUNTS
-                        </p>
-                        <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mt-1">
-                            {metrics.trialingCount} Users
-                        </h3>
-                        <p className="text-xs font-medium text-muted-foreground mt-2">
-                            Onboarding & active evaluations
-                        </p>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                        <Sparkles className="w-6 h-6" />
-                    </div>
-                </div>
-
-                {/* Past Due / At Risk Card */}
-                <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:border-amber-500/40 transition-all flex items-center justify-between">
-                    <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-                            PAST DUE / AT RISK MRR
-                        </p>
-                        <h3 className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 tracking-tight mt-1">
-                            ${metrics.atRiskMRR}
-                        </h3>
-                        <p className="text-xs font-medium text-muted-foreground mt-2">
-                            {metrics.pastDueCount} accounts require payment retry
-                        </p>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
-                        <AlertCircle className="w-6 h-6" />
-                    </div>
-                </div>
-            </div>
-
-            {/* Filter and Search Controls */}
-            <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
-                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-                    {/* Search Input */}
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                            placeholder="Search by subscriber name, email, company or ID..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-10 h-10 rounded-xl border-gray-200 dark:border-zinc-800 bg-background text-xs sm:text-sm"
-                            allowClear
-                        />
-                    </div>
-
-                    {/* Filter Select Dropdowns */}
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        {/* Plan Tier Filter */}
-                        <Select
-                            value={selectedPlan}
-                            onChange={(val) => setSelectedPlan(val)}
-                            className="w-[140px] sm:w-[160px] h-10 custom-select"
-                            options={[
-                                { label: "All Plans", value: "All" },
-                                { label: "Enterprise Pro", value: "Enterprise Pro" },
-                                { label: "Agency Custom", value: "Agency Custom" },
-                                { label: "Creator Plus", value: "Creator Plus" },
-                                { label: "Starter Free", value: "Starter Free" },
-                            ]}
-                        />
-
-                        {/* Status Filter */}
-                        <Select
-                            value={selectedStatus}
-                            onChange={(val) => setSelectedStatus(val)}
-                            className="w-[130px] sm:w-[150px] h-10 custom-select"
-                            options={[
-                                { label: "All Statuses", value: "All" },
-                                { label: "Active", value: "Active" },
-                                { label: "Trialing", value: "Trialing" },
-                                { label: "Past Due", value: "Past Due" },
-                                { label: "Paused", value: "Paused" },
-                                { label: "Cancelled", value: "Cancelled" },
-                            ]}
-                        />
-
-                        {/* Billing Cycle Filter */}
-                        <Select
-                            value={selectedCycle}
-                            onChange={(val) => setSelectedCycle(val)}
-                            className="w-[130px] sm:w-[140px] h-10 custom-select"
-                            options={[
-                                { label: "All Cycles", value: "All" },
-                                { label: "Monthly", value: "Monthly" },
-                                { label: "Annual", value: "Annual" },
-                            ]}
-                        />
-
-                        {/* Reset Filters */}
-                        {(searchQuery || selectedPlan !== "All" || selectedStatus !== "All" || selectedCycle !== "All") && (
-                            <Button
-                                onClick={handleResetFilters}
-                                icon={<X className="w-3.5 h-3.5" />}
-                                className="cursor-pointer border-gray-200 dark:border-zinc-800 rounded-xl text-xs font-semibold h-10 text-muted-foreground hover:text-foreground"
-                            >
-                                Clear
-                            </Button>
-                        )}
-                    </div>
-                </div>
-
-                {/* Filter summary status bar */}
-                <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-gray-100 dark:border-zinc-800">
-                    <span>
-                        Showing <strong className="text-foreground">{filteredSubscribers.length}</strong> of{" "}
-                        <strong className="text-foreground">{subscribers.length}</strong> subscribers
-                    </span>
-
-                    <span className="hidden sm:inline-block font-medium">
-                        Click subscriber name or actions menu to manage billing & limits
-                    </span>
-                </div>
-            </div>
-
-            {/* Main Subscribers Ant Design Table */}
-            <div className="bg-card border border-gray-200 dark:border-zinc-800 rounded-3xl p-2 sm:p-4 shadow-sm overflow-hidden">
-                <Table
-                    columns={columns}
-                    dataSource={filteredSubscribers}
-                    rowKey="id"
-                    pagination={{
-                        pageSize: 8,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["8", "15", "30", "50"],
-                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} subscribers`,
-                        className: "px-4 pt-4 text-xs font-medium",
-                    }}
-                    scroll={{ x: 1200 }}
-                    className="custom-table"
-                />
             </div>
 
             {/* Subscriber Detail Drawer */}
@@ -1043,8 +1024,7 @@ export default function Subscribers() {
                 placement="right"
                 onClose={() => setIsDrawerOpen(false)}
                 open={isDrawerOpen}
-                size="large"
-                style={{ width: "100%", maxWidth: "540px" }}
+                size={540}
                 className="custom-drawer"
             >
                 {selectedSubscriber && (

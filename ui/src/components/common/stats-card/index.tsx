@@ -69,7 +69,7 @@ export type StatCardVariant = "vertical" | "horizontal" | "summary" | "compact" 
 export interface StatItem {
     id?: string | number;
     title: string;
-    value: string | number;
+    value: string | number | React.ReactNode;
     icon: LucideIcon | string | React.ReactNode;
     color?: StatColorVariant;
     iconBgClass?: string;
