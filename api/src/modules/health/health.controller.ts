@@ -13,7 +13,7 @@ export class HealthController {
     private health: HealthCheckService,
     private mongoose: MongooseHealthIndicator,
     private memory: MemoryHealthIndicator,
-  ) {}
+  ) { }
 
   @Public()
   @Get()

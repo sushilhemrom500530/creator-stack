@@ -25,12 +25,20 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const exceptionResponse =
       exception instanceof HttpException ? exception.getResponse() : null;
 
-    const message =
+    let message =
       typeof exceptionResponse === 'object' && exceptionResponse !== null
         ? (exceptionResponse as any).message || (exceptionResponse as any).error || 'Internal server error'
         : exception instanceof Error
           ? exception.message
           : 'Internal server error';
+
+    // Format 404 Not Found error messages professionally
+    if (
+      status === HttpStatus.NOT_FOUND ||
+      (typeof message === 'string' && message.startsWith('Cannot '))
+    ) {
+      message = `Route Not Found for ${request.method} ${request.url}`;
+    }
 
     this.logger.error(
       `HTTP Status: ${status} Error Message: ${JSON.stringify(message)} - Path: ${request.url}`,
