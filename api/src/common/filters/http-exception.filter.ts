@@ -25,12 +25,26 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const exceptionResponse =
       exception instanceof HttpException ? exception.getResponse() : null;
 
-    let message =
-      typeof exceptionResponse === 'object' && exceptionResponse !== null
-        ? (exceptionResponse as any).message || (exceptionResponse as any).error || 'Internal server error'
-        : exception instanceof Error
-          ? exception.message
-          : 'Internal server error';
+    let message: any = 'Internal server error';
+    let errors: any = undefined;
+
+    if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
+      const resObj = exceptionResponse as any;
+      if (resObj.errors && Array.isArray(resObj.errors)) {
+        message = resObj.message || 'Validation failed.';
+        errors = resObj.errors;
+      } else if (Array.isArray(resObj.message)) {
+        message = 'Validation failed.';
+        errors = resObj.message.map((msg: string) => ({
+          field: msg.split(' ')[0] || 'field',
+          message: msg,
+        }));
+      } else {
+        message = resObj.message || resObj.error || 'Internal server error';
+      }
+    } else if (exception instanceof Error) {
+      message = exception.message;
+    }
 
     // Format 404 Not Found error messages professionally
     if (
@@ -44,12 +58,19 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       `HTTP Status: ${status} Error Message: ${JSON.stringify(message)} - Path: ${request.url}`,
     );
 
-    response.status(status).json({
+    const responseBody: any = {
       success: false,
       statusCode: status,
       message,
-      path: request.url,
-      timestamp: new Date().toISOString(),
-    });
+    };
+
+    if (errors) {
+      responseBody.errors = errors;
+    }
+
+    responseBody.path = request.url;
+    responseBody.timestamp = new Date().toISOString();
+
+    response.status(status).json(responseBody);
   }
 }

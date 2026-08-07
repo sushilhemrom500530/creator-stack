@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger, VersioningType, RequestMethod } from '@nestjs/common';
+import { ValidationPipe, Logger, VersioningType, RequestMethod, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -16,8 +16,8 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const nodeEnv = configService.get<string>('app.nodeEnv') || 'development';
-  const port = configService.get<number>('app.port') || 3000;
-  const apiPrefix = configService.get<string>('app.apiPrefix') || 'api/v1';
+  const port = configService.get<number>('app.port') || 8080;
+  const apiPrefix = (configService.get<string>('app.apiPrefix') || 'api').split('/')[0];
   const corsOrigins = configService.get<string[]>('cors.origin');
   const cookieSecret = configService.get<string>('COOKIE_SECRET');
 
@@ -38,6 +38,19 @@ async function bootstrap() {
       transform: true,
       transformOptions: {
         enableImplicitConversion: true,
+      },
+      exceptionFactory: (errors) => {
+        const formattedErrors = errors.map((err) => {
+          const constraints = err.constraints ? Object.values(err.constraints) : [];
+          return {
+            field: err.property,
+            message: constraints[0] || `${err.property} is invalid`,
+          };
+        });
+        return new BadRequestException({
+          message: 'Validation failed.',
+          errors: formattedErrors,
+        });
       },
     }),
   );
@@ -81,16 +94,7 @@ async function bootstrap() {
   });
 
   // Global Prefix
-  app.setGlobalPrefix(apiPrefix, {
-    exclude: [
-      { path: '/', method: RequestMethod.GET },
-      { path: '', method: RequestMethod.GET },
-      { path: '/docs', method: RequestMethod.GET },
-      { path: 'docs', method: RequestMethod.GET },
-      { path: '/health', method: RequestMethod.GET },
-      { path: 'health', method: RequestMethod.GET },
-    ],
-  });
+  app.setGlobalPrefix(apiPrefix, { exclude: ['/', 'docs', 'health'] });
 
   // 13. Global Exception Filter (Sanitized, no Mongo errors or stack traces exposed)
   app.useGlobalFilters(new GlobalExceptionFilter());

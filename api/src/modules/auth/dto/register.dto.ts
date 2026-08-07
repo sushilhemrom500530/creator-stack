@@ -11,10 +11,13 @@ export class RegisterDto {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(12, { message: 'Password must be at least 12 characters long' })
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/, {
-    message:
-      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
-  })
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
+
+
+  @IsString()
+  @MinLength(2, { message: 'Country code must be at least 2 characters long' })
+  country: string;
+
+
 }
