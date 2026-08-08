@@ -17,4 +17,4 @@ import { DatabaseService } from './database.service';
   providers: [DatabaseService],
   exports: [DatabaseService, MongooseModule],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

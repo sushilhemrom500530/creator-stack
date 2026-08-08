@@ -29,14 +29,14 @@ import { DocsModule } from './modules/docs/docs.module';
 
 @Module({
   imports: [
-    // 14. Environment Validation using Joi
+    //  Environment Validation using Joi
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, databaseConfig, jwtConfig, corsConfig],
       validationSchema: envValidationSchema,
     }),
 
-    // 2. Rate Limiting (100 requests / 60 seconds)
+    // Rate Limiting (100 requests / 60 seconds)
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -65,7 +65,7 @@ import { DocsModule } from './modules/docs/docs.module';
   controllers: [AppController],
   providers: [
     AppService,
-    // 13. Global Exception Filter
+    // Global Exception Filter
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
@@ -78,7 +78,7 @@ import { DocsModule } from './modules/docs/docs.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // 5. Mongo Injection Protection & 23. Request Logger
+    //  Mongo Injection Protection & Request Logger
     consumer.apply(LoggerMiddleware, MongoSanitizeMiddleware).forRoutes('*');
   }
 }

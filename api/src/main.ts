@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger, VersioningType, RequestMethod, BadRequestException } from '@nestjs/common';
+import { ValidationPipe, Logger, VersioningType, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -21,16 +21,16 @@ async function bootstrap() {
   const corsOrigins = configService.get<string[]>('cors.origin');
   const cookieSecret = configService.get<string>('COOKIE_SECRET');
 
-  // 29. Graceful Shutdown
+  // Graceful Shutdown
   app.enableShutdownHooks();
 
-  // 21. API Versioning
+  // API Versioning
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
 
-  // 3. Validation Pipe (whitelist: true, forbidNonWhitelisted: true, transform: true)
+  // Validation Pipe (whitelist: true, forbidNonWhitelisted: true, transform: true)
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -55,7 +55,7 @@ async function bootstrap() {
     }),
   );
 
-  // 1 & 17. Helmet (HSTS, CSP, Frame Guard, MIME Sniffing, XSS Headers)
+  //  Helmet (HSTS, CSP, Frame Guard, MIME Sniffing, XSS Headers)
   app.use(
     helmet({
       contentSecurityPolicy: {
@@ -80,13 +80,13 @@ async function bootstrap() {
     }),
   );
 
-  // 9. Cookie Parser (Signed & HttpOnly)
+  // Cookie Parser (Signed & HttpOnly)
   app.use(cookieParser(cookieSecret));
 
-  // 15. Compression
+  // Compression
   app.use(compression());
 
-  // 7. CORS (Frontend Only - No origin: '*')
+  // CORS (Frontend Only - No origin: '*')
   app.enableCors({
     origin: corsOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
@@ -96,10 +96,10 @@ async function bootstrap() {
   // Global Prefix
   app.setGlobalPrefix(apiPrefix, { exclude: ['/', 'docs', 'health'] });
 
-  // 13. Global Exception Filter (Sanitized, no Mongo errors or stack traces exposed)
+  // Global Exception Filter (Sanitized, no Mongo errors or stack traces exposed)
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  // 23 & 12. Logger
+  // Logger
   logger.log(`Initializing application in [${nodeEnv}] mode on port ${port}...`);
 
   // Start Server
