@@ -10,25 +10,47 @@ import { map } from 'rxjs/operators';
 export interface Response<T> {
   success: boolean;
   message: string;
+  meta?: any;
   data: T;
-  timestamp: string;
 }
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, any> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) => {
-        if (data && (data.status === 'online' || typeof data === 'string')) {
-          return data;
+      map((res) => {
+        // Return raw response for status endpoints or raw string returns
+        if (res && (res.status === 'online' || typeof res === 'string')) {
+          return res;
         }
-        return {
+
+        const message = res?.message || 'Operation successful';
+        const meta = res?.meta;
+
+        let data = res;
+
+        if (res && typeof res === 'object' && !Array.isArray(res)) {
+          if (res.data !== undefined) {
+            data = res.data;
+          } else {
+            // Exclude 'message' and 'meta' from being duplicated inside data payload
+            const { message: _msg, meta: _meta, ...cleanData } = res;
+            data = cleanData;
+          }
+        }
+
+        const responseObj: any = {
           success: true,
-          message: data?.message || 'Operation successful',
-          data: data?.data !== undefined ? data.data : data,
-          meta: data?.meta,
-          timestamp: new Date().toISOString(),
+          message,
         };
+
+        if (meta !== undefined) {
+          responseObj.meta = meta;
+        }
+
+        responseObj.data = data;
+
+        return responseObj;
       }),
     );
   }

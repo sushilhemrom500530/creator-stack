@@ -73,7 +73,6 @@ export class AuthService {
     });
 
     return {
-      success: true,
       message: '6-digit OTP verification code sent to your email. Please verify within 3 minutes.',
       verificationToken,
       expiresInSeconds: 180,
@@ -149,7 +148,6 @@ export class AuthService {
     const tokens = this.generateTokens(savedUser._id.toString(), savedUser.email, savedUser.roles);
 
     return {
-      success: true,
       message: 'Email verified successfully and account created!',
       user: {
         id: savedUser._id,
@@ -201,7 +199,6 @@ export class AuthService {
     });
 
     return {
-      success: true,
       message: 'A new 6-digit OTP code has been sent to your email.',
       verificationToken: newVerificationToken,
       expiresInSeconds: 180,
@@ -252,7 +249,7 @@ export class AuthService {
     const tokens = this.generateTokens(user._id.toString(), user.email, user.roles);
 
     return {
-      success: true,
+      message: 'Login successful',
       user: {
         id: user._id,
         name: user.name,
@@ -273,7 +270,6 @@ export class AuthService {
     }
 
     return {
-      success: true,
       lastLoginAt: user.lastLoginAt,
       activeBrowsersCount: user.sessions?.length || 0,
       sessions: user.sessions || [],
@@ -290,7 +286,6 @@ export class AuthService {
     await user.save();
 
     return {
-      success: true,
       message: 'Session revoked successfully.',
     };
   }
