@@ -5,7 +5,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { appConfig, databaseConfig, jwtConfig, corsConfig, envValidationSchema } from './config';
+import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, envValidationSchema } from './config';
+import { MailModule } from './modules/mail/mail.module';
 import { DatabaseModule } from './database/database.module';
 import { SharedModule } from './shared/shared.module';
 import { CommonModule } from './common/common.module';
@@ -32,7 +33,7 @@ import { DocsModule } from './modules/docs/docs.module';
     //  Environment Validation using Joi
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig, corsConfig],
+      load: [appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig],
       validationSchema: envValidationSchema,
     }),
 
@@ -49,6 +50,7 @@ import { DocsModule } from './modules/docs/docs.module';
     CommonModule,
 
     // Domain & Security Modules
+    MailModule,
     AuthModule,
     UsersModule,
     RolesModule,

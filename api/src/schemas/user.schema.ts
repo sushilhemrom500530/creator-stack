@@ -33,6 +33,35 @@ export class User {
 
   @Prop({ default: false })
   isDeleted?: boolean;
+
+  @Prop({ type: Date, default: null })
+  lastLoginAt?: Date;
+
+  @Prop({
+    type: [
+      {
+        sessionId: { type: String, required: true },
+        ip: { type: String },
+        userAgent: { type: String },
+        browser: { type: String },
+        os: { type: String },
+        device: { type: String },
+        createdAt: { type: Date, default: Date.now },
+        lastActiveAt: { type: Date, default: Date.now },
+      },
+    ],
+    default: [],
+  })
+  sessions?: Array<{
+    sessionId: string;
+    ip?: string;
+    userAgent?: string;
+    browser?: string;
+    os?: string;
+    device?: string;
+    createdAt?: Date;
+    lastActiveAt?: Date;
+  }>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
