@@ -1,24 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/enums/role.enum';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
+import { RedisCacheInterceptor } from '../../common/interceptors/redis-cache.interceptor';
+import { RedisService } from '../../shared/redis/redis.service';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly redisService: RedisService,
+  ) {}
 
   @Post()
   @Roles(Role.ADMIN)
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const result = await this.usersService.create(createUserDto);
+    await this.redisService.delByPattern('*users*');
+    return result;
   }
 
   @Get('/get-all')
   @Roles(Role.ADMIN)
+  @UseInterceptors(RedisCacheInterceptor)
   findAll(@Query() query: Record<string, unknown>) {
     return this.usersService.findAll(query);
   }
@@ -29,13 +37,17 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const result = await this.usersService.update(id, updateUserDto);
+    await this.redisService.delByPattern('*users*');
+    return result;
   }
 
   @Delete(':id')
   @Roles(Role.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  async remove(@Param('id') id: string) {
+    const result = await this.usersService.remove(id);
+    await this.redisService.delByPattern('*users*');
+    return result;
   }
 }
