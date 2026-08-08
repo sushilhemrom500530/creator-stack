@@ -3,8 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, envValidationSchema } from './config';
 import { MailModule } from './modules/mail/mail.module';
 import { DatabaseModule } from './database/database.module';
@@ -70,9 +68,8 @@ import { DocsModule } from './modules/docs/docs.module';
     HealthModule,
     DocsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     // Global Exception Filter
     {
       provide: APP_FILTER,

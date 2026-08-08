@@ -8,8 +8,6 @@ export * from './guards';
 export * from './interceptors';
 export * from './middleware';
 export * from './pipes';
-export * from './services';
-export * from './types';
 export * from './utils';
 export * from './validators';
 export * from './common.module';

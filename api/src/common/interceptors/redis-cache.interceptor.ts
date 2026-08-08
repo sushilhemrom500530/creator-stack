@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { RedisService } from 'src/redis';
+import { CacheService } from '../../cache/cache.service';
 
 @Injectable()
 export class RedisCacheInterceptor implements NestInterceptor {
   private readonly logger = new Logger(RedisCacheInterceptor.name);
 
-  constructor(private readonly redisService: RedisService) { }
+  constructor(private readonly cacheService: CacheService) {}
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
@@ -25,19 +25,19 @@ export class RedisCacheInterceptor implements NestInterceptor {
 
     const cacheKey = `cache:${request.method}:${request.originalUrl || request.url}`;
 
-    // Step 2: User -> NestJS -> Redis -> Data -> User (Cache Hit)
-    const cachedData = await this.redisService.get(cacheKey);
+    // Cache Hit via CacheService abstraction
+    const cachedData = await this.cacheService.get(cacheKey);
     if (cachedData) {
-      this.logger.log(`⚡ [UPSTASH REDIS CACHE HIT] Key: [${cacheKey}]`);
+      this.logger.log(`⚡ [CACHE HIT] Key: [${cacheKey}]`);
       return of(cachedData);
     }
 
-    // Step 1: User -> NestJS -> Redis Check -> Cache Miss -> MongoDB -> Save to Redis (60s TTL) -> User
-    this.logger.log(`🐢 [UPSTASH REDIS CACHE MISS] Fetching from MongoDB for Key: [${cacheKey}]`);
+    // Cache Miss via CacheService abstraction
+    this.logger.log(`🐢 [CACHE MISS] Fetching from MongoDB for Key: [${cacheKey}]`);
     return next.handle().pipe(
       tap((responseData) => {
         if (responseData) {
-          this.redisService.set(cacheKey, responseData, 60); // 60s TTL
+          this.cacheService.set(cacheKey, responseData, 60); // 60s TTL
         }
       }),
     );

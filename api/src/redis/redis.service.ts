@@ -45,10 +45,14 @@ export class RedisService implements OnModuleInit {
     }
   }
 
-  async set(key: string, value: any, ttlSeconds: number = 60): Promise<void> {
+  async set(key: string, value: any, ttlSeconds?: number): Promise<void> {
     if (!this.client) return;
     try {
-      await this.client.set(key, value, { ex: ttlSeconds });
+      if (ttlSeconds && ttlSeconds > 0) {
+        await this.client.set(key, value, { ex: ttlSeconds });
+      } else {
+        await this.client.set(key, value);
+      }
     } catch (err) {
       this.logger.error(`Redis set error for [${key}]: ${err.message}`);
     }
@@ -69,10 +73,31 @@ export class RedisService implements OnModuleInit {
       const keys = await this.client.keys(pattern);
       if (keys && keys.length > 0) {
         await this.client.del(...keys);
-        this.logger.log(`Cleared ${keys.length} Redis cache keys matching pattern [${pattern}]`);
+        this.logger.log(`Cleared ${keys.length} Redis keys matching [${pattern}]`);
       }
     } catch (err) {
       this.logger.error(`Redis delByPattern error for [${pattern}]: ${err.message}`);
+    }
+  }
+
+  async exists(key: string): Promise<boolean> {
+    if (!this.client) return false;
+    try {
+      const result = await this.client.exists(key);
+      return result === 1;
+    } catch (err) {
+      this.logger.error(`Redis exists error for [${key}]: ${err.message}`);
+      return false;
+    }
+  }
+
+  async ttl(key: string): Promise<number> {
+    if (!this.client) return -1;
+    try {
+      return await this.client.ttl(key);
+    } catch (err) {
+      this.logger.error(`Redis ttl error for [${key}]: ${err.message}`);
+      return -1;
     }
   }
 }

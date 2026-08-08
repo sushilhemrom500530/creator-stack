@@ -6,21 +6,21 @@ import { Role } from '../../common/enums/role.enum';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { RedisCacheInterceptor } from '../../common/interceptors/redis-cache.interceptor';
-import { RedisService } from '../../redis/redis.service';
+import { CacheService } from '../../cache/cache.service';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly redisService: RedisService,
+    private readonly cacheService: CacheService,
   ) {}
 
   @Post()
   @Roles(Role.ADMIN)
   async create(@Body() createUserDto: CreateUserDto) {
     const result = await this.usersService.create(createUserDto);
-    await this.redisService.delByPattern('*users*');
+    await this.cacheService.invalidatePattern('*users*');
     return result;
   }
 
@@ -39,7 +39,7 @@ export class UsersController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const result = await this.usersService.update(id, updateUserDto);
-    await this.redisService.delByPattern('*users*');
+    await this.cacheService.invalidatePattern('*users*');
     return result;
   }
 
@@ -47,7 +47,7 @@ export class UsersController {
   @Roles(Role.ADMIN)
   async remove(@Param('id') id: string) {
     const result = await this.usersService.remove(id);
-    await this.redisService.delByPattern('*users*');
+    await this.cacheService.invalidatePattern('*users*');
     return result;
   }
 }
