@@ -32,6 +32,12 @@ export class TransformInterceptor<T> implements NestInterceptor<T, any> {
         if (res && typeof res === 'object' && !Array.isArray(res)) {
           if (res.data !== undefined) {
             data = res.data;
+          } else if (res.results !== undefined) {
+            data = res.results;
+          } else if (res.result !== undefined) {
+            data = res.result;
+          } else if (res.items !== undefined) {
+            data = res.items;
           } else {
             // Exclude 'message' and 'meta' from being duplicated inside data payload
             const { message: _msg, meta: _meta, ...cleanData } = res;

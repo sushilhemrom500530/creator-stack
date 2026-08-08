@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../../schemas/user.schema';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { PaginationDto } from '../../common/dto/pagination.dto';
 import { HashUtil } from '../../common/utils/hash.util';
+import QueryBuilder from '../../common/utils/query-builder.util';
 
 @Injectable()
 export class UsersService {
@@ -21,29 +21,23 @@ export class UsersService {
     return user.save();
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10, search } = paginationDto;
-    const baseFilter = { isDeleted: false };
-    const query = search
-      ? {
-        ...baseFilter,
-        $or: [{ name: new RegExp(search, 'i') }, { email: new RegExp(search, 'i') }],
-      }
-      : baseFilter;
+  async findAll(query: Record<string, unknown>) {
+    const filter = { ...query, isDeleted: false };
 
-    const total = await this.userModel.countDocuments(query);
-    const items = await this.userModel
-      .find(query)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
+    const userQuery = new QueryBuilder<User>(this.userModel.find(), filter)
+      .search(['name', 'email', 'roles', 'status'])
+      .filter()
+      .sort()
+      .paginate()
+      .fields();
+
+    const data = await userQuery.modelQuery.select('-sessions').exec();
+    const meta = await userQuery.countTotal();
 
     return {
-      items,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
+      message: 'Users retrieved successfully.',
+      meta,
+      data,
     };
   }
 
