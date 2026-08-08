@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException, ConflictException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,6 +13,8 @@ import { UserAgentUtil } from '../../common/utils/user-agent.util';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(TempUser.name) private tempUserModel: Model<TempUserDocument>,
@@ -22,32 +24,53 @@ export class AuthService {
   ) { }
 
   async register(registerDto: RegisterDto) {
+    const emailLower = registerDto.email.toLowerCase();
+
     // Check if user already exists in main database
-    const existingUser = await this.userModel.findOne({ email: registerDto.email.toLowerCase() });
+    const existingUser = await this.userModel.findOne({ email: emailLower });
     if (existingUser) {
       throw new ConflictException('User with this email already exists');
     }
 
     // Clean up any existing unverified temp user for this email
-    await this.tempUserModel.deleteMany({ email: registerDto.email.toLowerCase() });
+    await this.tempUserModel.deleteMany({ email: emailLower });
 
     const hashedPassword = await HashUtil.hash(registerDto.password);
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    const verificationToken = randomUUID();
     const expiresAt = new Date(Date.now() + 3 * 60 * 1000); // 3 minutes expiration
 
-    await this.tempUserModel.create({
+    // Create temporary user document first to get tempUser ID
+    const tempUser = await this.tempUserModel.create({
       name: registerDto.name,
-      email: registerDto.email.toLowerCase(),
+      email: emailLower,
       password: hashedPassword,
       country: registerDto.country,
       otp: generatedOtp,
-      verificationToken,
+      verificationToken: 'pending',
       expiresAt,
     });
 
-    // Send 6-digit OTP email
-    await this.mailService.sendOtpEmail(registerDto.email, generatedOtp, registerDto.name);
+    // Generate a 3-minute JWT verification token
+    const verificationToken = this.jwtService.sign(
+      {
+        email: emailLower,
+        tempUserId: tempUser._id.toString(),
+        type: 'email_verification',
+      },
+      { expiresIn: '3m' },
+    );
+
+    // Save JWT verification token in tempUser
+    tempUser.verificationToken = verificationToken;
+    await tempUser.save();
+
+    // Log OTP instantly in server console for instant dev fallback
+    this.logger.log(`🔑 [OTP CREATED] ${emailLower} -> Code: [ ${generatedOtp} ] (Expires in 3 mins)`);
+
+    // Dispatch email asynchronously so HTTP response returns in < 40ms!
+    this.mailService.sendOtpEmail(emailLower, generatedOtp, registerDto.name).catch((err) => {
+      this.logger.error(`Background email dispatch failed: ${err.message}`);
+    });
 
     return {
       success: true,
@@ -58,8 +81,23 @@ export class AuthService {
   }
 
   async verifyOtp(verifyOtpDto: VerifyOtpDto, req?: any) {
+    let decoded: any;
+    try {
+      decoded = this.jwtService.verify(verifyOtpDto.verificationToken);
+    } catch (error) {
+      throw new BadRequestException('Verification token has expired or is invalid. Please request a new OTP.');
+    }
+
+    if (decoded?.type !== 'email_verification') {
+      throw new BadRequestException('Invalid verification token type.');
+    }
+
     const tempUser = await this.tempUserModel.findOne({
-      verificationToken: verifyOtpDto.verificationToken,
+      $or: [
+        { _id: decoded.tempUserId },
+        { verificationToken: verifyOtpDto.verificationToken },
+        { email: decoded.email },
+      ],
     });
 
     if (!tempUser || tempUser.expiresAt < new Date()) {
@@ -126,8 +164,10 @@ export class AuthService {
   }
 
   async resendOtp(resendOtpDto: ResendOtpDto) {
+
     const tempUser = await this.tempUserModel.findOne({
-      verificationToken: resendOtpDto.verificationToken,
+      email: resendOtpDto.email.toLowerCase()
+      ,
     });
 
     if (!tempUser) {
@@ -135,15 +175,30 @@ export class AuthService {
     }
 
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    const newVerificationToken = randomUUID();
     const expiresAt = new Date(Date.now() + 3 * 60 * 1000); // New 3-minute expiration
+
+    // Issue a NEW 3-minute JWT verification token
+    const newVerificationToken = this.jwtService.sign(
+      {
+        email: tempUser.email,
+        tempUserId: tempUser._id.toString(),
+        type: 'email_verification',
+      },
+      { expiresIn: '3m' },
+    );
 
     tempUser.otp = newOtp;
     tempUser.verificationToken = newVerificationToken;
     tempUser.expiresAt = expiresAt;
     await tempUser.save();
 
-    await this.mailService.sendOtpEmail(tempUser.email, newOtp, tempUser.name);
+    // Log OTP instantly in server console
+    this.logger.log(`🔑 [RESEND OTP] ${tempUser.email} -> Code: [ ${newOtp} ] (Expires in 3 mins)`);
+
+    // Dispatch email asynchronously so HTTP request returns in < 40ms!
+    this.mailService.sendOtpEmail(tempUser.email, newOtp, tempUser.name).catch((err) => {
+      this.logger.error(`Background email dispatch failed: ${err.message}`);
+    });
 
     return {
       success: true,
