@@ -8,7 +8,10 @@ import { AppService } from './app.service';
 import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, envValidationSchema } from './config';
 import { MailModule } from './modules/mail/mail.module';
 import { DatabaseModule } from './database/database.module';
-import { SharedModule } from './shared/shared.module';
+import { RedisModule } from './redis/redis.module';
+import { CacheModule } from './cache/cache.module';
+import { LoggerModule } from './logger/logger.module';
+import { QueueModule } from './queue/queue.module';
 import { CommonModule } from './common/common.module';
 import { GlobalExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -46,7 +49,10 @@ import { DocsModule } from './modules/docs/docs.module';
     ]),
 
     DatabaseModule,
-    SharedModule,
+    RedisModule,
+    CacheModule,
+    LoggerModule,
+    QueueModule,
     CommonModule,
 
     // Domain & Security Modules

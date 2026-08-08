@@ -5,8 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { User, UserSchema } from '../../schemas/user.schema';
-import { TempUser, TempUserSchema } from '../../schemas/temp-user.schema';
+import { User, UserSchema } from '../users/schemas/user.schema';
+import { TempUser, TempUserSchema } from './schemas/temp-user.schema';
 import { MailModule } from '../mail/mail.module';
 
 @Module({

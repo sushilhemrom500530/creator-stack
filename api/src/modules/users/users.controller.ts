@@ -6,7 +6,7 @@ import { Role } from '../../common/enums/role.enum';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { RedisCacheInterceptor } from '../../common/interceptors/redis-cache.interceptor';
-import { RedisService } from '../../shared/redis/redis.service';
+import { RedisService } from '../../redis/redis.service';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard)

@@ -7,13 +7,13 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { RedisService } from '../../shared/redis/redis.service';
+import { RedisService } from 'src/redis';
 
 @Injectable()
 export class RedisCacheInterceptor implements NestInterceptor {
   private readonly logger = new Logger(RedisCacheInterceptor.name);
 
-  constructor(private readonly redisService: RedisService) {}
+  constructor(private readonly redisService: RedisService) { }
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
