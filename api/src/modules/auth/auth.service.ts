@@ -171,7 +171,7 @@ export class AuthService {
     });
 
     if (!tempUser) {
-      throw new BadRequestException('Registration session expired. Please register again.');
+      throw new BadRequestException('User Not Found.');
     }
 
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
