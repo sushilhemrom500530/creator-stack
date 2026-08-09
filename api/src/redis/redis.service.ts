@@ -16,7 +16,13 @@ export class RedisService implements OnModuleInit {
     const token = (this.configService.get<string>('REDIS_REST_TOKEN') || process.env.REDIS_REST_TOKEN || '').trim();
 
     if (url && token) {
-      this.client = new Redis({ url, token });
+      this.client = new Redis({
+        url,
+        token,
+        retry: {
+          retries: 0,
+        },
+      });
       this.logger.log(`Upstash Redis client initialized for [${url}]`);
     } else {
       this.logger.warn('REDIS_REST_URL and REDIS_REST_TOKEN are not configured.');
@@ -26,8 +32,8 @@ export class RedisService implements OnModuleInit {
   async onModuleInit() {
     if (this.client) {
       try {
-        await this.client.ping();
-        this.logger.log('🚀 Upstash Redis connected & verified successfully!');
+        const pingResponse = await this.client.ping();
+        this.logger.log(`🚀 Upstash Redis connected & verified successfully! Ping response: [${pingResponse}]`);
       } catch (err) {
         this.logger.error(`❌ Upstash Redis connection failed: ${err.message}`);
       }
@@ -37,7 +43,7 @@ export class RedisService implements OnModuleInit {
   async get<T = any>(key: string): Promise<T | null> {
     if (!this.client) return null;
     try {
-      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 80));
+      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 200));
       const data = await Promise.race([this.client.get<T>(key), timeoutPromise]);
       return data;
     } catch (err) {

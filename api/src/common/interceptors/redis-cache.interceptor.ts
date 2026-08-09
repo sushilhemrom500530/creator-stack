@@ -25,11 +25,14 @@ export class RedisCacheInterceptor implements NestInterceptor {
 
     const cacheKey = `cache:${request.method}:${request.originalUrl || request.url}`;
 
-    // Cache Hit via CacheService abstraction
-    const cachedData = await this.cacheService.get(cacheKey);
-    if (cachedData) {
-      this.logger.log(`⚡ [CACHE HIT] Key: [${cacheKey}]`);
-      return of(cachedData);
+    try {
+      const cachedData = await this.cacheService.get(cacheKey);
+      if (cachedData) {
+        this.logger.log(`⚡ [CACHE HIT] Key: [${cacheKey}]`);
+        return of(cachedData);
+      }
+    } catch {
+      // Proceed directly to DB handler if cache fails
     }
 
     // Cache Miss via CacheService abstraction

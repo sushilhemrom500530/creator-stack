@@ -14,10 +14,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass(),
     ]);
-    if (isPublic) {
-      return true;
-    }
-    return super.canActivate(context);
+    return isPublic ? true : super.canActivate(context);
   }
 
   handleRequest(err: any, user: any, info: any) {
@@ -32,14 +29,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         if (info.message === 'No auth token') {
           throw new UnauthorizedException('Authentication token is missing. Please provide a Bearer token in the Authorization header.');
         }
-        if (info.message) {
-          throw new UnauthorizedException(`Authentication failed: ${info.message}`);
-        }
       }
-      if (err) {
-        throw err instanceof UnauthorizedException ? err : new UnauthorizedException(err.message || 'Unauthorized access');
-      }
-      throw new UnauthorizedException('Authentication token is missing or invalid.');
+      throw err instanceof UnauthorizedException
+        ? err
+        : new UnauthorizedException(err?.message || 'Authentication token is missing or invalid.');
     }
     return user;
   }

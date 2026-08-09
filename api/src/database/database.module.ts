@@ -10,6 +10,10 @@ import { DatabaseService } from './database.service';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('database.uri'),
+        autoIndex: process.env.NODE_ENV !== 'production',
+        maxPoolSize: 50,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 10000,
       }),
       inject: [ConfigService],
     }),
