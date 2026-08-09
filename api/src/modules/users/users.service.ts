@@ -31,8 +31,10 @@ export class UsersService {
       .paginate()
       .fields();
 
-    const data = await userQuery.modelQuery.select('-sessions').exec();
-    const meta = await userQuery.countTotal();
+    const [data, meta] = await Promise.all([
+      userQuery.modelQuery.select('-sessions').lean().exec(),
+      userQuery.countTotal(),
+    ]);
 
     return {
       message: 'Users retrieved successfully.',
@@ -42,7 +44,7 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    const user = await this.userModel.findOne({ _id: id, isDeleted: false });
+    const user = await this.userModel.findOne({ _id: id, isDeleted: false }).lean().exec();
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -54,7 +56,7 @@ export class UsersService {
       { _id: id, isDeleted: false },
       updateUserDto,
       { new: true },
-    );
+    ).lean().exec();
     if (!updatedUser) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -65,9 +67,9 @@ export class UsersService {
   async remove(id: string) {
     const user = await this.userModel.findOneAndUpdate(
       { _id: id, isDeleted: false },
-      { deletedAt: new Date() },
+      { deletedAt: new Date(), isDeleted: true },
       { new: true },
-    );
+    ).lean().exec();
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }

@@ -64,3 +64,7 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// Database indexes for production performance
+UserSchema.index({ isDeleted: 1, createdAt: -1 });
+UserSchema.index({ isDeleted: 1, status: 1 });

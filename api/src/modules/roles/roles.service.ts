@@ -8,7 +8,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 export class RolesService {
   constructor(
     @InjectModel(RoleSchemaClass.name) private roleModel: Model<RoleDocument>,
-  ) {}
+  ) { }
 
   async create(createRoleDto: CreateRoleDto) {
     const role = new this.roleModel(createRoleDto);
@@ -16,11 +16,11 @@ export class RolesService {
   }
 
   async findAll() {
-    return this.roleModel.find().exec();
+    return this.roleModel.find().lean().exec();
   }
 
   async findOne(id: string) {
-    const role = await this.roleModel.findById(id);
+    const role = await this.roleModel.findById(id).lean().exec();
     if (!role) {
       throw new NotFoundException(`Role with ID ${id} not found`);
     }

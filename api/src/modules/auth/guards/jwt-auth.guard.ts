@@ -1,4 +1,4 @@
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from '../../../common/decorators/public.decorator';
@@ -18,5 +18,29 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
     return super.canActivate(context);
+  }
+
+  handleRequest(err: any, user: any, info: any) {
+    if (err || !user) {
+      if (info instanceof Error) {
+        if (info.name === 'TokenExpiredError') {
+          throw new UnauthorizedException('Authentication token has expired. Please log in again.');
+        }
+        if (info.name === 'JsonWebTokenError') {
+          throw new UnauthorizedException('Invalid authentication token provided.');
+        }
+        if (info.message === 'No auth token') {
+          throw new UnauthorizedException('Authentication token is missing. Please provide a Bearer token in the Authorization header.');
+        }
+        if (info.message) {
+          throw new UnauthorizedException(`Authentication failed: ${info.message}`);
+        }
+      }
+      if (err) {
+        throw err instanceof UnauthorizedException ? err : new UnauthorizedException(err.message || 'Unauthorized access');
+      }
+      throw new UnauthorizedException('Authentication token is missing or invalid.');
+    }
+    return user;
   }
 }

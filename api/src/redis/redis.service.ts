@@ -37,7 +37,8 @@ export class RedisService implements OnModuleInit {
   async get<T = any>(key: string): Promise<T | null> {
     if (!this.client) return null;
     try {
-      const data = await this.client.get<T>(key);
+      const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 80));
+      const data = await Promise.race([this.client.get<T>(key), timeoutPromise]);
       return data;
     } catch (err) {
       this.logger.error(`Redis get error for [${key}]: ${err.message}`);
