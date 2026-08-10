@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { randomUUID } from 'crypto';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { TempUser, TempUserDocument } from './schemas/temp-user.schema';
-import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto } from './dto';
+import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto, ChangePasswordDto } from './dto';
 import { HashUtil } from '../../common/utils/hash.util';
 import { MailService } from '../mail/mail.service';
 import { UserAgentUtil } from '../../common/utils/user-agent.util';
@@ -385,6 +385,37 @@ export class AuthService {
       message: 'Password reset successfully. You can now log in with your new password.',
     };
   }
+
+  async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
+    if (!userId) {
+      throw new UnauthorizedException('User identity could not be verified.');
+    }
+
+    const user = await this.userModel.findById(userId).select('+password');
+    if (!user) {
+      throw new UnauthorizedException('User not found.');
+    }
+
+    const isPasswordValid = await HashUtil.compare(changePasswordDto.oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new BadRequestException('Current password is incorrect.');
+    }
+
+    if (changePasswordDto.oldPassword === changePasswordDto.newPassword) {
+      throw new BadRequestException('New password cannot be the same as your current password.');
+    }
+
+    const hashedPassword = await HashUtil.hash(changePasswordDto.newPassword);
+    user.password = hashedPassword;
+    await user.save();
+
+    this.logger.log(`🔒 [PASSWORD CHANGE SUCCESS] Password updated for user ID: ${userId}`);
+
+    return {
+      message: 'Password changed successfully.',
+    };
+  }
+
 
 
   private generateTokens(userId: string, email: string, roles: string[]) {

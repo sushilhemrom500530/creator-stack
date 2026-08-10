@@ -1,10 +1,12 @@
-import { Controller, Post, Get, Delete, Body, HttpCode, HttpStatus, Req, Param } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Body, HttpCode, HttpStatus, Req, Param, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto } from './dto';
+import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto, ChangePasswordDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
+@UseGuards(JwtAuthGuard)
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
@@ -56,6 +58,15 @@ export class AuthController {
     return this.authService.resetPassword(resetPasswordDto);
   }
 
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  async changePassword(
+    @CurrentUser('sub') userId: string,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    return this.authService.changePassword(userId, changePasswordDto);
+  }
+
   @Get('sessions')
   async getSessions(@CurrentUser('sub') userId: string) {
     return this.authService.getSessions(userId);
@@ -66,4 +77,5 @@ export class AuthController {
     return this.authService.revokeSession(userId, sessionId);
   }
 }
+
 
