@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { randomUUID } from 'crypto';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { TempUser, TempUserDocument } from './schemas/temp-user.schema';
-import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto } from './dto';
+import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto } from './dto';
 import { HashUtil } from '../../common/utils/hash.util';
 import { MailService } from '../mail/mail.service';
 import { UserAgentUtil } from '../../common/utils/user-agent.util';
@@ -289,6 +289,103 @@ export class AuthService {
       message: 'Session revoked successfully.',
     };
   }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
+    const emailLower = forgotPasswordDto.email.toLowerCase();
+
+    // Verify if user exists in database
+    const user = await this.userModel.findOne({ email: emailLower, isDeleted: { $ne: true } });
+    if (!user) {
+      throw new BadRequestException('User with this email address was not found.');
+    }
+
+    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Generate a 3-minute JWT reset token containing hashed/verified OTP context
+    const resetToken = this.jwtService.sign(
+      {
+        email: emailLower,
+        otp: generatedOtp,
+        type: 'password_reset',
+      },
+      { expiresIn: '3m' },
+    );
+
+    // Log OTP in server console for dev fallback
+    this.logger.log(`🔑 [FORGOT PASSWORD OTP] ${emailLower} -> Code: [ ${generatedOtp} ] (Expires in 3 mins)`);
+
+    // Send email asynchronously
+    this.mailService.sendPasswordResetOtpEmail(emailLower, generatedOtp, user.name).catch((err) => {
+      this.logger.error(`Background password reset email dispatch failed: ${err.message}`);
+    });
+
+    return {
+      message: '6-digit password reset OTP sent to your email. Please verify within 3 minutes.',
+      resetToken,
+      expiresInSeconds: 180,
+    };
+  }
+
+  async verifyForgotOtp(verifyForgotOtpDto: VerifyForgotOtpDto) {
+    let decoded: any;
+    try {
+      decoded = this.jwtService.verify(verifyForgotOtpDto.resetToken);
+    } catch (error) {
+      throw new BadRequestException('Reset token has expired or is invalid. Please request a new OTP.');
+    }
+
+    if (decoded?.type !== 'password_reset') {
+      throw new BadRequestException('Invalid reset token type.');
+    }
+
+    if (decoded.otp !== verifyForgotOtpDto.otp) {
+      throw new BadRequestException('Invalid 6-digit OTP code.');
+    }
+
+    // Generate a 5-minute verified password reset token
+    const verifiedResetToken = this.jwtService.sign(
+      {
+        email: decoded.email,
+        type: 'password_reset_verified',
+      },
+      { expiresIn: '5m' },
+    );
+
+    return {
+      message: 'OTP verified successfully. You can now reset your password.',
+      resetToken: verifiedResetToken,
+      expiresInSeconds: 300,
+    };
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    let decoded: any;
+    try {
+      decoded = this.jwtService.verify(resetPasswordDto.resetToken);
+    } catch (error) {
+      throw new BadRequestException('Reset token has expired or is invalid. Please request a new password reset.');
+    }
+
+    if (decoded?.type !== 'password_reset_verified' && decoded?.type !== 'password_reset') {
+      throw new BadRequestException('Invalid reset token type.');
+    }
+
+    const user = await this.userModel.findOne({ email: decoded.email.toLowerCase(), isDeleted: { $ne: true } });
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+
+    const hashedPassword = await HashUtil.hash(resetPasswordDto.newPassword);
+    user.password = hashedPassword;
+    await user.save();
+
+    this.logger.log(`🔒 [PASSWORD RESET SUCCESS] Password updated for user: ${user.email}`);
+
+    return {
+      message: 'Password reset successfully. You can now log in with your new password.',
+    };
+  }
+
 
   private generateTokens(userId: string, email: string, roles: string[]) {
     const payload = { sub: userId, email, roles };

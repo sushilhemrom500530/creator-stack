@@ -79,4 +79,43 @@ export class MailService implements OnModuleInit {
     this.logger.log(`[DEV OTP LOG] Verification Code for ${toEmail}: [ ${otp} ] (Expires in 3 mins)`);
     return false;
   }
+
+  async sendPasswordResetOtpEmail(toEmail: string, otp: string, userName?: string): Promise<boolean> {
+    const user = (this.configService.get<string>('mail.email') || process.env.NODE_MAILER_EMAIL || '').trim();
+    const greeting = userName ? `Hello ${userName}` : 'Hello';
+
+    const htmlContent = `
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff;">
+        <h2 style="color: #4f46e5; text-align: center; margin-bottom: 24px;">Creator Stack API</h2>
+        <p style="font-size: 16px; color: #374151;">${greeting},</p>
+        <p style="font-size: 15px; color: #4b5563; line-height: 1.5;">We received a request to reset your password. Please use the 6-digit verification code below to proceed with resetting your password:</p>
+        <div style="text-align: center; margin: 32px 0;">
+          <span style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #1f2937; background-color: #f3f4f6; padding: 16px 32px; border-radius: 8px; display: inline-block;">${otp}</span>
+        </div>
+        <p style="color: #dc2626; font-weight: 600; font-size: 14px; text-align: center;">⏳ Note: This OTP code will expire in 3 minutes.</p>
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+        <p style="color: #9ca3af; font-size: 12px; text-align: center;">If you did not request a password reset, please ignore this email.</p>
+      </div>
+    `;
+
+    if (this.transporter) {
+      try {
+        const info = await this.transporter.sendMail({
+          from: `"Creator Stack Security" <${user}>`,
+          to: toEmail,
+          subject: '🔑 Password Reset Verification Code',
+          html: htmlContent,
+        });
+        this.logger.log(`✅ Password Reset OTP Email successfully sent to [${toEmail}] (MessageId: ${info.messageId})`);
+        return true;
+      } catch (error) {
+        this.logger.error(`❌ Failed to send Password Reset OTP email to [${toEmail}]: ${error.message}`);
+      }
+    }
+
+    // Always log OTP to console as instant fallback
+    this.logger.log(`[DEV FORGOT PASSWORD OTP LOG] Reset Code for ${toEmail}: [ ${otp} ] (Expires in 3 mins)`);
+    return false;
+  }
 }
+

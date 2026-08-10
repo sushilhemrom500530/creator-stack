@@ -1,12 +1,12 @@
 import { Controller, Post, Get, Delete, Body, HttpCode, HttpStatus, Req, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto } from './dto';
+import { LoginDto, RegisterDto, VerifyOtpDto, ResendOtpDto, ForgotPasswordDto, VerifyForgotOtpDto, ResetPasswordDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Public()
   @Post('register')
@@ -35,6 +35,27 @@ export class AuthController {
     return this.authService.login(loginDto, req);
   }
 
+  @Public()
+  @Post(['forgot-password', 'forget-password'])
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Public()
+  @Post(['verify-forgot-otp', 'forget-otp-verify', 'verify-reset-otp'])
+  @HttpCode(HttpStatus.OK)
+  async verifyForgotOtp(@Body() verifyForgotOtpDto: VerifyForgotOtpDto) {
+    return this.authService.verifyForgotOtp(verifyForgotOtpDto);
+  }
+
+  @Public()
+  @Post('reset-password')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordDto);
+  }
+
   @Get('sessions')
   async getSessions(@CurrentUser('sub') userId: string) {
     return this.authService.getSessions(userId);
@@ -45,3 +66,4 @@ export class AuthController {
     return this.authService.revokeSession(userId, sessionId);
   }
 }
+
