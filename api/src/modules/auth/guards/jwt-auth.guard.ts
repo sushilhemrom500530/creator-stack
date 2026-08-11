@@ -27,7 +27,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
           throw new UnauthorizedException('Invalid authentication token provided.');
         }
         if (info.message === 'No auth token') {
-          throw new UnauthorizedException('Authentication token is missing. Please provide a Bearer token in the Authorization header.');
+          throw new UnauthorizedException('Authentication token is missing.');
         }
       }
       throw err instanceof UnauthorizedException
