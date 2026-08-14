@@ -1,0 +1,5 @@
+export * from './workspaces.module';
+export * from './workspaces.service';
+export * from './workspaces.controller';
+export * from './schemas/workspace.schema';
+export * from './dto';

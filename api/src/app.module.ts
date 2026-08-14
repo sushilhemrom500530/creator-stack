@@ -18,10 +18,10 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { WorkspacesModule } from './modules/workspaces/workspaces.module';
+import { SocialAccountsModule } from './modules/social-accounts/social-accounts.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
-import { ProductsModule } from './modules/products/products.module';
-import { CategoriesModule } from './modules/categories/categories.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { SettingsModule } from './modules/settings/settings.module';
@@ -31,7 +31,7 @@ import { DocsModule } from './modules/docs/docs.module';
 
 @Module({
   imports: [
-    //  Environment Validation using Joi
+    // Environment Validation using Joi
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig],
@@ -57,10 +57,10 @@ import { DocsModule } from './modules/docs/docs.module';
     MailModule,
     AuthModule,
     UsersModule,
+    WorkspacesModule,
+    SocialAccountsModule,
     RolesModule,
     PermissionsModule,
-    ProductsModule,
-    CategoriesModule,
     UploadsModule,
     NotificationsModule,
     SettingsModule,
@@ -83,7 +83,7 @@ import { DocsModule } from './modules/docs/docs.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    //  Mongo Injection Protection & Request Logger
+    // Mongo Injection Protection & Request Logger
     consumer.apply(LoggerMiddleware, MongoSanitizeMiddleware).forRoutes('*');
   }
 }
