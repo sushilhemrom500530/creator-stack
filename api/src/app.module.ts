@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, envValidationSchema } from './config';
+import { AppController } from './app.controller';
 import { MailModule } from './modules/mail/mail.module';
 import { DatabaseModule } from './database/database.module';
 import { RedisModule } from './redis/redis.module';
@@ -68,7 +69,7 @@ import { DocsModule } from './modules/docs/docs.module';
     HealthModule,
     DocsModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
     // Global Exception Filter
     {
