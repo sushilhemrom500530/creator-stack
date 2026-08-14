@@ -105,6 +105,7 @@ Represents each individual page or profile accessible via a `SocialConnection`.
     media: string[],      // S3 / Cloudinary URLs
     hashtags: string[],
     mentions: string[]
+    
   },
   status: 'DRAFT' | 'SCHEDULED' | 'PUBLISHING' | 'PUBLISHED' | 'PARTIALLY_PUBLISHED' | 'FAILED',
   scheduledAt: Date,
