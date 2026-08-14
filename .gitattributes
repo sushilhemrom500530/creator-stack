@@ -1,0 +1,7 @@
+# GitHub Linguist Overrides - Force 100% TypeScript classification
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
+*.json linguist-detectable=false
+*.md linguist-detectable=false
+*.mjs linguist-detectable=false
+*.js linguist-detectable=false
