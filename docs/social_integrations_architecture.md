@@ -1,201 +1,215 @@
-# Social Media Integrations & Publishing Architecture (CreatorStack)
+# SocialFlow AI (CreatorStack) — Master Production Architecture & UX Blueprint
 
-This document is the **Single Source of Truth** for connecting third-party platforms (Facebook, Instagram, Threads, LinkedIn, WhatsApp) and implementing multi-platform cross-posting in CreatorStack.
-
----
-
-## 1. Core Architectural Principles
-
-1. **Decouple Social Login from Social Connection**:
-   - **Social Login**: "How does a user log into CreatorStack?" (Auth module).
-   - **Social Connection**: "Where does CreatorStack publish the user's posts?" (`SocialAccounts` module).
-2. **Strategy & Adapter Pattern for Publishers**:
-   - NestJS core service does not know platform-specific Graph API details.
-   - It delegates through a common `SocialPublisher` interface.
-3. **Asynchronous & Queued Processing (BullMQ / Redis)**:
-   - Publishing is never synchronous with HTTP requests.
-   - Handles rate-limits, retries, multi-container processing, and post scheduling.
-4. **WhatsApp is a Messaging System, Not a Feed**:
-   - Facebook, Instagram, Threads, LinkedIn $\rightarrow$ Social Feed Publishing.
-   - WhatsApp Business $\rightarrow$ 1-on-1 / Broadcast Customer Messaging.
+This document is the **Single Source of Truth** for the backend architecture, provider isolation, database schemas, queue processing, and frontend dashboard UX for SocialFlow AI.
 
 ---
 
-## 2. Directory Structure Blueprint
+## 1. Dual-Engine Architecture Overview
 
 ```
-api/src/modules/
-├── social/
-│   ├── social.module.ts
-│   ├── connections/
-│   │   ├── connection.controller.ts
-│   │   ├── connection.service.ts
-│   │   ├── dto/
-│   │   │   ├── connect-account.dto.ts
-│   │   │   └── select-page.dto.ts
-│   │   └── schemas/
-│   │       └── social-account.schema.ts
-│   ├── providers/
-│   │   ├── facebook/
-│   │   │   ├── facebook.oauth.ts
-│   │   │   ├── facebook.api.ts
-│   │   │   └── facebook.service.ts
-│   │   ├── instagram/
-│   │   │   ├── instagram.oauth.ts
-│   │   │   ├── instagram.api.ts
-│   │   │   └── instagram.service.ts
-│   │   ├── threads/
-│   │   │   ├── threads.oauth.ts
-│   │   │   ├── threads.api.ts
-│   │   │   └── threads.service.ts
-│   │   └── linkedin/
-│   │       ├── linkedin.oauth.ts
-│   │       ├── linkedin.api.ts
-│   │       └── linkedin.service.ts
-│   └── publishers/
-│       ├── social-publisher.interface.ts
-│       ├── facebook.publisher.ts
-│       ├── instagram.publisher.ts
-│       ├── threads.publisher.ts
-│       └── linkedin.publisher.ts
-│
-├── social-posts/
-│   ├── social-posts.module.ts
-│   ├── social-posts.controller.ts
-│   ├── social-posts.service.ts
-│   ├── dto/
-│   │   ├── create-social-post.dto.ts
-│   │   └── update-social-post.dto.ts
-│   └── schemas/
-│       └── social-post.schema.ts
-│
-└── queue/
-    ├── social-post.queue.ts
-    └── social-post.worker.ts
+                    SocialFlow AI (CreatorStack)
+                                │
+                          NestJS Backend
+                                │
+              ┌─────────────────┴─────────────────┐
+              │                                   │
+         Social Engine                     Messaging Engine
+              │                                   │
+      ┌───────┼────────┐                      WhatsApp
+      │       │        │
+   Facebook Instagram Threads
+      │       │        │
+   LinkedIn   X      TikTok
+      │       │        │
+   Pinterest YouTube  etc.
 ```
 
 ---
 
-## 3. Database Schemas (MongoDB / Mongoose)
+## 2. Core Architectural Separation: `modules/` vs `providers/`
 
-### `social_accounts` Collection
+The most critical architectural principle: **Never mix internal domain models with external API communication.**
+
+- **`modules/`**: Owns application logic, MongoDB schemas, authorization, validation, queues, and user state.
+- **`providers/`**: Owns external API clients, OAuth handshakes, payload mappers, and third-party rate-limit handling.
+
+```
+api/src/
+├── common/                     # Cross-cutting utilities, encryption, guards, interceptors
+│   ├── utils/
+│   │   └── token-encryption.util.ts   # AES-256-GCM token encryption
+│   ├── guards/                 # JWT, Workspace, Roles, Permissions
+│   └── interceptors/
+│
+├── config/                     # Environment configuration & validation
+│
+├── database/                   # Mongoose / MongoDB connection & lifecycle
+│
+├── redis/                      # Redis connection (Caching)
+│
+├── queue/                      # BullMQ Queues & Workers
+│   ├── queues/                 # publishing.queue, analytics.queue, ai.queue, cleanup.queue
+│   └── workers/                # publishing.worker, analytics.worker, ai.worker
+│
+├── providers/                  # External Third-Party API Adapters
+│   ├── social/
+│   │   ├── social-provider.interface.ts   # Unified contract
+│   │   ├── social-provider.factory.ts     # Provider resolver
+│   │   ├── facebook/           # OAuth, Client, Provider, Mapper, Types
+│   │   ├── instagram/          # OAuth, Container Client, Provider, Mapper
+│   │   ├── threads/            # OAuth, Client, Provider, Mapper
+│   │   ├── linkedin/           # OAuth, Client, Provider, Mapper
+│   │   ├── twitter/            # OAuth, Client, Provider, Mapper
+│   │   └── tiktok/             # OAuth, Client, Provider, Mapper
+│   │
+│   ├── storage/                # Cloudinary / AWS S3 / Cloudflare R2
+│   ├── payment/                # Stripe
+│   ├── ai/                     # OpenAI / Anthropic / Gemini
+│   └── messaging/              # WhatsApp Business Cloud API
+│
+└── modules/                    # Internal SaaS Domain Modules
+    ├── auth/                   # User login, registration, OTP, JWT
+    ├── users/                  # User management & profile
+    ├── workspaces/             # Multi-tenancy, agency teams, member roles
+    ├── roles/                  # RBAC
+    ├── permissions/            # Fine-grained permissions
+    ├── social-accounts/        # Connected social accounts, credentials, status
+    ├── posts/                  # Post drafts, CRUD, content validation
+    ├── publishing/             # Post dispatching, attempts, retry logic
+    ├── schedules/              # Post calendar scheduler & timing
+    ├── media/                  # Image/video uploads, optimization, public URLs
+    ├── analytics/              # Multi-channel stats, engagement metrics
+    ├── ai/                     # AI caption, hashtag, thread generator
+    ├── notifications/          # In-app alerts, email alerts
+    ├── subscriptions/          # Tier limits (posts/mo, accounts limit)
+    ├── billing/                # Invoices, transactions, checkout sessions
+    ├── audit-logs/             # Security & action audit tracking
+    ├── webhooks/               # Meta de-auth, data deletion, Stripe events
+    └── health/                 # Health checks
+```
+
+> **Note on Cleanup**: Legacy e-commerce modules (`products/`, `categories/`) will be phased out in favor of the core SocialFlow AI domains.
+
+---
+
+## 3. Provider Architecture Contract
+
+Every social network implements the generic `SocialProvider` interface:
+
 ```typescript
-@Schema({ timestamps: true })
-export class SocialAccount {
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true, index: true })
-  userId: Types.ObjectId;
-
-  @Prop({ required: true, enum: ['facebook', 'instagram', 'threads', 'linkedin'] })
-  platform: string;
-
-  @Prop({ required: true })
-  platformAccountId: string; // Facebook Page ID, IG User ID, Threads User ID
-
-  @Prop({ required: true })
-  accountName: string;
-
-  @Prop()
-  username?: string;
-
-  @Prop()
-  profilePictureUrl?: string;
-
-  @Prop({ required: true })
-  accessTokenEncrypted: string; // AES-256 encrypted
-
-  @Prop()
-  tokenExpiresAt?: Date;
-
-  @Prop()
-  refreshTokenEncrypted?: string;
-
-  @Prop({ type: Object, default: {} })
-  metadata: Record<string, any>;
-
-  @Prop({ default: 'active', enum: ['active', 'expired', 'revoked'] })
-  status: string;
+export interface SocialProvider {
+  getAuthorizationUrl(state: string): string;
+  exchangeCode(code: string): Promise<TokenResult>;
+  getAccount(accessToken: string): Promise<SocialProfile>;
+  publishPost(account: SocialAccountContext, post: PublishPostInput): Promise<PublishResult>;
+  deletePost(account: SocialAccountContext, externalPostId: string): Promise<void>;
+  getAnalytics(account: SocialAccountContext, params: AnalyticsParams): Promise<AnalyticsResult>;
 }
 ```
 
-### `social_posts` Collection
-```typescript
-@Schema({ timestamps: true })
-export class SocialPost {
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true, index: true })
-  userId: Types.ObjectId;
+### Provider Internal Structure (Example: Facebook)
+- `facebook.oauth.ts`: Generates OAuth dialog URL, exchanges short-lived for long-lived tokens.
+- `facebook.client.ts`: Raw HTTP requests to `graph.facebook.com`.
+- `facebook.provider.ts`: Implements `SocialProvider` interface methods.
+- `facebook.mapper.ts`: Maps Meta API responses to standardized CreatorStack DTOs.
+- `facebook.types.ts`: Meta Graph API request/response typings.
 
-  @Prop({ required: true })
-  content: string;
+---
 
-  @Prop({ type: [String], default: [] })
-  mediaUrls: string[];
+## 4. Frontend Dashboard Qualification & UX Enhancement Map
 
-  @Prop()
-  scheduledAt?: Date;
+Based on `ui/src/app/(dashboard)/user/`, here is the qualification of current sections and the **high-value sections to add** for an exceptional SaaS experience:
 
-  @Prop({ 
-    default: 'draft', 
-    enum: ['draft', 'queued', 'publishing', 'published', 'partial_failure', 'failed'] 
-  })
-  status: string;
+### Current Dashboard Pages (Qualified)
+| Current UI Route | Module Mapping | UX Purpose |
+| :--- | :--- | :--- |
+| `/dashboard` | `analytics`, `posts` | High-level metrics, upcoming scheduled posts, quick actions. |
+| `/connected-accounts` | `social-accounts` | Grid of platforms (FB, IG, Threads, LinkedIn, etc.) with Connect / Reconnect / Disconnect cards. |
+| `/create-post` | `posts`, `ai`, `media` | Multi-channel composer with live preview tabs (FB preview, IG preview, Threads preview), AI caption button, media uploader. |
+| `/posts` | `posts`, `publishing` | Tabbed view (`All`, `Drafts`, `Scheduled`, `Published`, `Failed`) with retry action. |
+| `/calendar` | `schedules` | Month/Week/Day interactive calendar with drag-and-drop rescheduling. |
+| `/media-library` | `media` | Grid of images/videos, tags, storage quota indicator, direct "Attach to Post". |
+| `/ai-assistant` | `ai` | Viral hook generator, hashtag suggestions, content repurposing assistant. |
+| `/analytics` | `analytics` | Engagement graphs, top-performing posts, follower growth per platform. |
+| `/notifications` | `notifications` | Live feed of publishing successes, failed attempts, and token expiration alerts. |
 
-  @Prop({
-    type: [{
-      socialAccountId: { type: Types.ObjectId, ref: 'SocialAccount' },
-      platform: String,
-      status: { type: String, enum: ['pending', 'published', 'failed'], default: 'pending' },
-      platformPostId: String,
-      platformPostUrl: String,
-      errorMessage: String,
-      publishedAt: Date,
-    }],
-    default: []
-  })
-  targets: Array<{
-    socialAccountId: Types.ObjectId;
-    platform: string;
-    status: string;
-    platformPostId?: string;
-    platformPostUrl?: string;
-    errorMessage?: string;
-    publishedAt?: Date;
-  }>;
-}
+---
+
+### Recommended New Dashboard Sections for Superior UX
+
+To make SocialFlow AI feel like a top-tier SaaS (competitor to Buffer/Later/Hootsuite), these sections should be integrated:
+
+```
+Dashboard Sidebar Navigation
+├── 📊 Overview (/dashboard)
+├── 🏢 Workspace Switcher (Header Dropdown)  <-- [NEW: Multi-brand / Agency support]
+│
+├── ✍️ Create & Publish
+│   ├── 📝 Compose Post (/create-post)
+│   ├── 📅 Content Calendar (/calendar)
+│   ├── 📋 Post History & Queue (/posts)
+│   ├── ⏳ Approval Queue (/approvals)      <-- [NEW: Team/Client review workflow]
+│   └── 🎨 Media Library (/media-library)
+│
+├── 🤖 AI Growth Studio
+│   ├── ✨ AI Caption & Hook Studio (/ai-studio)
+│   └── 🔗 Smart Bio / Link-in-Bio (/link-in-bio) <-- [NEW: Creator landing page]
+│
+├── 💬 Unified Inbox (/inbox)               <-- [NEW: Comments & WhatsApp/IG DMs]
+│
+├── 📈 Insights & Reports
+│   ├── 📊 Analytics (/analytics)
+│   └── 📑 Export PDF Reports (/reports)    <-- [NEW: Automated agency reports]
+│
+└── ⚙️ Management
+    ├── 🔌 Connected Accounts (/connected-accounts)
+    ├── 👥 Team & Workspaces (/workspaces)   <-- [NEW: Invite team members / clients]
+    ├── 💳 Plan & Billing (/billing)        <-- [NEW: Stripe subscription / post limits]
+    └── ⚙️ Account Settings (/settings)
 ```
 
----
+#### Detailed Breakdown of New UX Enhancements:
 
-## 4. Platform Specifications & Flow Rules
-
-| Platform | OAuth Flow & Account Type | Post Mechanism | Key Gotcha |
-| :--- | :--- | :--- | :--- |
-| **Facebook** | User OAuth $\rightarrow$ Fetch Admin Pages $\rightarrow$ User selects Page $\rightarrow$ Store Page Token | Graph API: `POST /{page-id}/feed` or `/{page-id}/photos` | Post to Page, never personal profile. Page tokens derived from long-lived user tokens do not expire. |
-| **Instagram** | Meta OAuth $\rightarrow$ Fetch connected IG Business/Creator account from Page | 2-step Container: `POST /{ig-user-id}/media` $\rightarrow$ `POST /{ig-user-id}/media_publish` | Requires at least 1 image or video (no text-only posts). Image URLs must be public HTTPS. |
-| **Threads** | Threads OAuth $\rightarrow$ Store user token | 2-step Container: `POST /{threads-user-id}/threads` $\rightarrow$ `POST /{threads-user-id}/threads_publish` | Token expires every 60 days (requires refresh job). Up to 500 characters. |
-| **LinkedIn** | LinkedIn OAuth 2.0 (OpenID + Community Management API) | `POST /v2/ugcPosts` or `/rest/posts` | Access token 60 days, refresh token 365 days. |
-| **WhatsApp** | WhatsApp Cloud API (WABA) | `POST /{phone-number-id}/messages` | Use for transactional/marketing messaging via templates; NOT a social feed post. |
-
----
-
-## 5. Security & Queue Requirements
-
-1. **Security**:
-   - `AES-256-GCM` encryption for all stored access and refresh tokens.
-   - `state` parameter validation on OAuth redirects to prevent CSRF.
-2. **Queuing (BullMQ / Redis)**:
-   - Non-blocking publishing jobs.
-   - Automatic retry strategy with exponential backoff on transient Meta API rate-limits.
-   - Delayed jobs for scheduled post publishing.
-3. **Media Hosting**:
-   - All uploaded media must be hosted on public HTTPS URLs (e.g. S3 / R2 / Cloudinary / public upload endpoint) so Meta servers can fetch them.
+1. **Workspace / Brand Switcher (Top Navigation)**:
+   - Allows users managing multiple brands or client accounts to switch workspaces in 1 click without logging out.
+2. **Approval Workflow (`/approvals`)**:
+   - For social media managers and agency clients. Junior creator submits post $\rightarrow$ Client approves $\rightarrow$ Auto-scheduled.
+3. **Smart Link-in-Bio (`/link-in-bio`)**:
+   - Gives creators a customized micro-landing page for their Instagram/TikTok bio with clickable links to their products/posts.
+4. **Unified Social & Messaging Inbox (`/inbox`)**:
+   - Read and respond to Facebook/Instagram comments and WhatsApp customer queries from one single screen.
+5. **Team & Permissions (`/workspaces/team`)**:
+   - Invite copywriters, designers, and managers with custom roles (`Admin`, `Editor`, `Approver`, `Viewer`).
+6. **Billing & Usage Bar (`/billing`)**:
+   - Visual progress bars showing: *Posts this month (e.g. 84/100)*, *Connected Accounts (4/5)*, *AI Tokens remaining*.
 
 ---
 
-## 6. Phased Implementation Roadmap
+## 5. Master Development Phase Order
 
-- **Phase 1**: Security foundation (Token Encryption) & SocialAccount schema.
-- **Phase 2**: Facebook OAuth + Page Selection + Feed Posting.
-- **Phase 3**: Instagram Professional Account Linking + Container Publishing.
-- **Phase 4**: Threads OAuth + Publishing.
-- **Phase 5**: BullMQ Job Worker + Post Scheduling + Token Refresh Cron.
-- **Phase 6**: WhatsApp Business Messaging Module (Decoupled).
+1. **Phase 1: Foundation & Security**
+   - Clean up legacy modules.
+   - Setup AES-256 token encryption util & `workspaces` module.
+   - Implement `SocialAccount` schema & generic `SocialProvider` interface.
+2. **Phase 2: Facebook Page Engine**
+   - Facebook OAuth 2.0 $\rightarrow$ Page fetching $\rightarrow$ Token persistence.
+   - `FacebookProvider` for publishing text, single image, and link posts.
+3. **Phase 3: Instagram Professional Engine**
+   - Fetch linked IG Business Account from Facebook Page.
+   - `InstagramProvider` with 2-step media container async flow.
+4. **Phase 4: Threads Engine**
+   - Threads OAuth $\rightarrow$ `ThreadsProvider` for text, image, and link posting.
+5. **Phase 5: Queue & Scheduling Engine**
+   - BullMQ publishing worker + retry logic + exponential backoff.
+   - Delayed jobs for scheduled calendar posts.
+   - Automatic 30-day token refresh cron.
+6. **Phase 6: AI Content Studio**
+   - OpenAI / Gemini integration for captions, hashtags, and multi-platform text repurposing.
+7. **Phase 7: Analytics & Reports**
+   - Periodic metric sync worker (impressions, likes, shares, clicks).
+8. **Phase 8: Workspace Collaboration & Billing**
+   - Team invitations, approval workflows, Stripe subscriptions.
+9. **Phase 9: Additional Social Channels**
+   - LinkedIn, X (Twitter), TikTok, Pinterest, YouTube.
+10. **Phase 10: Messaging Engine (WhatsApp Business)**
+    - Cloud API for template messages and 1-on-1 customer interaction.
