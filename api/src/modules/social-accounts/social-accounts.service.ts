@@ -97,13 +97,20 @@ export class SocialAccountsService {
     const tokenResult = await provider.exchangeCode(code);
     const profile = await provider.getAccount(tokenResult.accessToken);
 
+    const platformAccountId = profile.platformAccountId || tokenResult.metadata?.instagramUserId || tokenResult.metadata?.pageId || 'unknown';
+    const accountName = profile.accountName && profile.accountName !== 'Instagram Business'
+      ? profile.accountName
+      : tokenResult.metadata?.instagramName || tokenResult.metadata?.instagramUsername || tokenResult.metadata?.pageName || 'Connected Account';
+    const username = profile.username || tokenResult.metadata?.instagramUsername;
+    const profilePictureUrl = profile.profilePictureUrl || tokenResult.metadata?.profilePicture;
+
     return this.connect(userId, {
       workspaceId,
       platform,
-      platformAccountId: profile.platformAccountId,
-      accountName: profile.accountName,
-      username: profile.username,
-      profilePictureUrl: profile.profilePictureUrl,
+      platformAccountId,
+      accountName,
+      username,
+      profilePictureUrl,
       accessToken: tokenResult.accessToken,
       refreshToken: tokenResult.refreshToken,
       tokenExpiresAt: tokenResult.tokenExpiresAt ? tokenResult.tokenExpiresAt.toISOString() : undefined,

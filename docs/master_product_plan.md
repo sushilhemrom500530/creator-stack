@@ -53,8 +53,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Member Invitations & RBAC | 🟢 Complete | ⚪ UI Pending | Next Sprint |
 | **Social OAuth** | Social Provider Factory & Types | 🟢 Complete | 🟢 UI Cards Built | Ready for OAuth testing |
 | | OAuth 2.0 CSRF State Security | 🟢 Complete | 🟢 Ready | Active |
-| | Meta OAuth (FB Page & IG Business) | 🟡 In Progress | 🟡 Connect Flow Wire | Active Sprint |
-| | Threads, LinkedIn, X Adapters | ⚪ Pending | 🟢 UI Cards Built | Planned |
+| | Facebook Page Engine (Graph API v21) | 🟢 Complete | 🟢 Connect & Post Ready | Active |
+| | Instagram Professional Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
+| | Threads API Publishing Engine | 🟡 In Progress | 🟡 Connect Flow Wire | Active Sprint |
 | **Post Engine** | Omnichannel Post Composer | 🟡 Schema Ready | 🟢 Full UI & Preview Tabs | Active Sprint |
 | | Media Library (S3 / Cloudinary) | 🟢 Uploads Module | 🟢 Gallery UI Built | Integrating Uploads |
 | | Distributed Publishing (BullMQ) | 🟢 Queue Foundation | ⚪ Connect to Composer | Active Sprint |
