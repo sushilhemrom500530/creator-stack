@@ -21,6 +21,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 import { SocialAccountsModule } from './modules/social-accounts/social-accounts.module';
+import { SocialProvidersModule } from './providers/social';
 import { RolesModule } from './modules/roles/roles.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
@@ -53,6 +54,7 @@ import { DocsModule } from './modules/docs/docs.module';
     LoggerModule,
     QueueModule,
     CommonModule,
+    SocialProvidersModule,
 
     // Domain & Security Modules
     MailModule,

@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { SocialAccountStatus } from '../schemas/social-account.schema';
 
 export class UpdateAccountDto {
@@ -12,6 +12,21 @@ export class UpdateAccountDto {
   @IsEnum(SocialAccountStatus)
   @IsOptional()
   status?: SocialAccountStatus;
+
+  @ApiPropertyOptional({ example: true })
+  @IsBoolean()
+  @IsOptional()
+  autoPublish?: boolean;
+
+  @ApiPropertyOptional({ example: true })
+  @IsBoolean()
+  @IsOptional()
+  autoSyncAnalytics?: boolean;
+
+  @ApiPropertyOptional({ example: true })
+  @IsBoolean()
+  @IsOptional()
+  notifyErrors?: boolean;
 
   @ApiPropertyOptional()
   @IsOptional()

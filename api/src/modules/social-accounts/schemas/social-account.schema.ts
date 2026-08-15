@@ -18,6 +18,8 @@ export enum SocialAccountStatus {
   ACTIVE = 'active',
   EXPIRED = 'expired',
   REVOKED = 'revoked',
+  ERROR = 'error',
+  NEEDS_REAUTH = 'needs_reauth',
 }
 
 @Schema({ timestamps: true })
@@ -28,11 +30,11 @@ export class SocialAccount {
   @Prop({ type: Types.ObjectId, ref: 'Workspace', required: true, index: true })
   workspaceId: Types.ObjectId;
 
-  @Prop({ type: String, enum: SocialPlatform, required: true })
+  @Prop({ type: String, enum: SocialPlatform, required: true, index: true })
   platform: SocialPlatform;
 
-  @Prop({ required: true })
-  platformAccountId: string; // Page ID, IG User ID, Threads User ID, LinkedIn URN
+  @Prop({ required: true, index: true })
+  platformAccountId: string; // Page ID, IG User ID, Threads User ID, LinkedIn URN, X User ID
 
   @Prop({ required: true, trim: true })
   accountName: string;
@@ -55,6 +57,27 @@ export class SocialAccount {
   @Prop({ type: [String], default: [] })
   scopes: string[];
 
+  @Prop({ default: 0 })
+  followersCount?: number;
+
+  @Prop({ default: 0 })
+  postsCount?: number;
+
+  @Prop({ default: true })
+  autoPublish: boolean;
+
+  @Prop({ default: true })
+  autoSyncAnalytics: boolean;
+
+  @Prop({ default: true })
+  notifyErrors: boolean;
+
+  @Prop({ type: Date, default: null })
+  lastSyncedAt?: Date | null;
+
+  @Prop({ type: String, default: null })
+  lastError?: string | null;
+
   @Prop({ type: Object, default: {} })
   metadata: Record<string, any>;
 
@@ -72,4 +95,7 @@ export const SocialAccountSchema = SchemaFactory.createForClass(SocialAccount);
 
 SocialAccountSchema.index({ workspaceId: 1, platform: 1, isDeleted: 1 });
 SocialAccountSchema.index({ userId: 1, platform: 1, isDeleted: 1 });
-SocialAccountSchema.index({ platformAccountId: 1, workspaceId: 1 }, { unique: true, partialFilterExpression: { isDeleted: false } });
+SocialAccountSchema.index(
+  { platformAccountId: 1, workspaceId: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false } },
+);

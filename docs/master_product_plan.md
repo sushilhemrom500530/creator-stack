@@ -51,8 +51,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Token Encryption (AES-256-GCM) | 🟢 Complete | 🟢 Client Decoupled | Active |
 | **Workspaces** | Multi-tenant Workspace CRUD | 🟢 Complete | 🟡 Switcher in Progress | In Progress |
 | | Member Invitations & RBAC | 🟢 Complete | ⚪ UI Pending | Next Sprint |
-| **Social OAuth** | Social Provider Factory & Types | 🟢 Complete | 🟢 UI Cards Built | In Progress |
-| | Meta OAuth (FB Page & IG Business) | 🟡 Adapter in dev | 🟡 Connect Flow Wire | Active Sprint |
+| **Social OAuth** | Social Provider Factory & Types | 🟢 Complete | 🟢 UI Cards Built | Ready for OAuth testing |
+| | OAuth 2.0 CSRF State Security | 🟢 Complete | 🟢 Ready | Active |
+| | Meta OAuth (FB Page & IG Business) | 🟡 In Progress | 🟡 Connect Flow Wire | Active Sprint |
 | | Threads, LinkedIn, X Adapters | ⚪ Pending | 🟢 UI Cards Built | Planned |
 | **Post Engine** | Omnichannel Post Composer | 🟡 Schema Ready | 🟢 Full UI & Preview Tabs | Active Sprint |
 | | Media Library (S3 / Cloudinary) | 🟢 Uploads Module | 🟢 Gallery UI Built | Integrating Uploads |
