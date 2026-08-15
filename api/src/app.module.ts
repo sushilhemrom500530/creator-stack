@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 
-import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, envValidationSchema } from './config';
+import { appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, socialConfig, envValidationSchema } from './config';
 import { AppController } from './app.controller';
 import { MailModule } from './modules/mail/mail.module';
 import { DatabaseModule } from './database/database.module';
@@ -35,7 +35,7 @@ import { DocsModule } from './modules/docs/docs.module';
     // Environment Validation using Joi
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig],
+      load: [appConfig, databaseConfig, jwtConfig, corsConfig, mailConfig, socialConfig],
       validationSchema: envValidationSchema,
     }),
 
