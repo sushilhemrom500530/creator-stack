@@ -56,9 +56,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Facebook Page Engine (Graph API v21) | 🟢 Complete | 🟢 Connect & Post Ready | Active |
 | | Instagram Professional Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
 | | Threads API Publishing Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
-| | WhatsApp Business Cloud Messaging | 🟢 Complete | 🟡 Connect Flow Wire | Active Sprint |
-| | Connected Accounts Hub (UI + API) | 🟡 In Progress | 🟡 Wire Real API State | Active Sprint |
-| **Post Engine** | Omnichannel Post Composer | 🟡 Schema Ready | 🟢 Full UI & Preview Tabs | Active Sprint |
+| | WhatsApp Business Cloud Messaging | 🟢 Complete | 🟢 Connect Flow Wire | Active |
+| | Connected Accounts Hub (UI + API) | 🟢 Complete | 🟢 Live API Synced | Active |
+| **Post Engine** | Omnichannel Post Composer | 🟡 In Progress | 🟢 Full UI & Preview Tabs | Active Sprint |
 | | Media Library (S3 / Cloudinary) | 🟢 Uploads Module | 🟢 Gallery UI Built | Integrating Uploads |
 | | Distributed Publishing (BullMQ) | 🟢 Queue Foundation | ⚪ Connect to Composer | Active Sprint |
 | | Post Retries & Isolated Failures | 🟡 Architecture Ready | ⚪ Retry Action Buttons | Next Sprint |
