@@ -55,7 +55,8 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | OAuth 2.0 CSRF State Security | 🟢 Complete | 🟢 Ready | Active |
 | | Facebook Page Engine (Graph API v21) | 🟢 Complete | 🟢 Connect & Post Ready | Active |
 | | Instagram Professional Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
-| | Threads API Publishing Engine | 🟡 In Progress | 🟡 Connect Flow Wire | Active Sprint |
+| | Threads API Publishing Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
+| | WhatsApp Business Cloud Messaging | 🟡 In Progress | ⚪ Messaging UI Next | Active Sprint |
 | **Post Engine** | Omnichannel Post Composer | 🟡 Schema Ready | 🟢 Full UI & Preview Tabs | Active Sprint |
 | | Media Library (S3 / Cloudinary) | 🟢 Uploads Module | 🟢 Gallery UI Built | Integrating Uploads |
 | | Distributed Publishing (BullMQ) | 🟢 Queue Foundation | ⚪ Connect to Composer | Active Sprint |

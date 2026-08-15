@@ -62,8 +62,8 @@ PHASE 22: Final Production Audit
 | **Phase 04** | **OAuth 2.0 Foundation & CSRF State Security** | 🟢 **COMPLETED** | August 15, 2026 |
 | **Phase 05** | **Facebook Page Integration (Meta Graph API)** | 🟢 **COMPLETED** | August 15, 2026 |
 | **Phase 06** | **Instagram Professional / Creator Integration** | 🟢 **COMPLETED** | August 15, 2026 |
-| **Phase 07** | **Threads API Integration** | 🟡 **IN-PROGRESS (Next)** | Active Sprint |
-| **Phase 08** | **WhatsApp Business Cloud API Messaging** | ⚪ Pending | Planned |
+| **Phase 07** | **Threads API Integration** | 🟢 **COMPLETED** | August 15, 2026 |
+| **Phase 08** | **WhatsApp Business Cloud API Messaging** | 🟡 **IN-PROGRESS (Next)** | Active Sprint |
 | **Phase 09** | **Connected Accounts Hub (UI + API Wireup)** | ⚪ Pending | Planned |
 | **Phase 10** | **Unified Post Architecture & Overrides** | ⚪ Pending | Planned |
 | **Phase 11** | **Multi-Platform Publishing Engine (BullMQ)** | ⚪ Pending | Planned |
