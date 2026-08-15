@@ -30,6 +30,7 @@ import { SettingsModule } from './modules/settings/settings.module';
 import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { HealthModule } from './modules/health/health.module';
 import { DocsModule } from './modules/docs/docs.module';
+import { WhatsAppModule } from './modules';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { DocsModule } from './modules/docs/docs.module';
     UsersModule,
     WorkspacesModule,
     SocialAccountsModule,
+    WhatsAppModule,
     RolesModule,
     PermissionsModule,
     UploadsModule,
