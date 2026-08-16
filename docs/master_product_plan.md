@@ -69,8 +69,10 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | **Analytics** | Cross-Platform Aggregated Charts | 🟢 Complete | 🟢 ApexCharts & Geo Live | Active |
 | | Sentiment & Moderation Engine | 🟢 Complete | 🟢 Sentiment & Timing Live | Active |
 | **Notifications**| In-App & Email Alert Engine | 🟢 Complete | 🟢 Alert Bell & UI Live | Active |
-| **Workspaces** | Multi-tenant Workspace CRUD | 🟢 Complete | 🟢 Switcher & RBAC Ready | Active Sprint |
-| | Member Invitations & Roles | 🟡 In Progress | ⚪ Invite Flow Wire | Active Sprint |
+| **Workspaces** | Multi-tenant Workspace CRUD | 🟢 Complete | 🟢 Switcher & RBAC Ready | Active |
+| | Member Invitations & Roles | 🟢 Complete | 🟢 Email Invites & Role Control | Active |
+| **Security** | AES-256-GCM Token Auditing | 🟢 Complete | 🟢 Response Token Scrubber & Guard | Active |
+| **QA & Testing** | End-to-End Test Suite | 🟡 In Progress | 🟢 Build & Flow Verification | Active Sprint |
 
 ---
 

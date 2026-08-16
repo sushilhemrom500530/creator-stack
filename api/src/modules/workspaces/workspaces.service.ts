@@ -1,9 +1,16 @@
-import { Injectable, NotFoundException, ConflictException, ForbiddenException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  ForbiddenException,
+  Logger,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Workspace, WorkspaceDocument, WorkspaceRole } from './schemas/workspace.schema';
 import { CreateWorkspaceDto, UpdateWorkspaceDto, InviteMemberDto } from './dto';
 import { User, UserDocument } from '../users/schemas/user.schema';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class WorkspacesService {
@@ -12,6 +19,7 @@ export class WorkspacesService {
   constructor(
     @InjectModel(Workspace.name) private readonly workspaceModel: Model<WorkspaceDocument>,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly mailService: MailService,
   ) {}
 
   private generateSlug(name: string): string {
@@ -60,6 +68,7 @@ export class WorkspacesService {
         isDeleted: false,
       })
       .sort({ createdAt: -1 })
+      .populate('members.userId', 'name email avatar')
       .exec();
   }
 
@@ -86,7 +95,7 @@ export class WorkspacesService {
 
     const isOwnerOrAdmin =
       workspace.ownerId.toString() === userId ||
-      workspace.members.some((m) => m.userId.toString() === userId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
+      workspace.members.some((m) => m.userId?.toString() === userId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
 
     if (!isOwnerOrAdmin) {
       throw new ForbiddenException('Only workspace owners or admins can update workspace settings');
@@ -101,7 +110,7 @@ export class WorkspacesService {
 
     const isOwnerOrAdmin =
       workspace.ownerId.toString() === userId ||
-      workspace.members.some((m) => m.userId.toString() === userId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
+      workspace.members.some((m) => m.userId?.toString() === userId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
 
     if (!isOwnerOrAdmin) {
       throw new ForbiddenException('Only workspace owners or admins can invite members');
@@ -109,10 +118,10 @@ export class WorkspacesService {
 
     const invitedUser = await this.userModel.findOne({ email: inviteDto.email.toLowerCase().trim(), isDeleted: false });
     if (!invitedUser) {
-      throw new NotFoundException(`No user found with email '${inviteDto.email}'`);
+      throw new NotFoundException(`No registered user found with email '${inviteDto.email}'. The user must register first.`);
     }
 
-    const isAlreadyMember = workspace.members.some((m) => m.userId.toString() === (invitedUser._id as any).toString());
+    const isAlreadyMember = workspace.members.some((m) => m.userId?.toString() === (invitedUser._id as any).toString());
     if (isAlreadyMember) {
       throw new ConflictException('User is already a member of this workspace');
     }
@@ -123,6 +132,47 @@ export class WorkspacesService {
       joinedAt: new Date(),
     });
 
+    const updated = await workspace.save();
+
+    // Send invitation email notification
+    this.mailService.sendEmail({
+      to: invitedUser.email,
+      subject: `🎉 You've been invited to join "${workspace.name}" on CreatorStack`,
+      text: `You have been added to the workspace "${workspace.name}" as an ${inviteDto.role.toUpperCase()}.\n\nLog in to access: https://creatorstack.app`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 24px; color: #1e293b; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px;">
+          <h2 style="color: #7c3aed; margin-top: 0;">Workspace Invitation</h2>
+          <p>Hello <strong>${invitedUser.name || invitedUser.email}</strong>,</p>
+          <p>You have been invited to collaborate in <strong>${workspace.name}</strong> as an <strong>${inviteDto.role.toUpperCase()}</strong>.</p>
+          <div style="margin: 24px 0;">
+            <a href="https://creatorstack.app/user/dashboard" style="background-color: #7c3aed; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Open Workspace</a>
+          </div>
+        </div>
+      `,
+    }).catch((err) => {
+      this.logger.warn(`Failed to dispatch workspace invitation email to ${invitedUser.email}: ${err.message}`);
+    });
+
+    return updated;
+  }
+
+  async updateMemberRole(workspaceId: string, currentUserId: string, memberUserId: string, newRole: WorkspaceRole): Promise<WorkspaceDocument> {
+    const workspace = await this.findOne(workspaceId, currentUserId);
+
+    if (workspace.ownerId.toString() !== currentUserId) {
+      throw new ForbiddenException('Only the workspace owner can change member roles');
+    }
+
+    if (workspace.ownerId.toString() === memberUserId) {
+      throw new ForbiddenException('Cannot modify the workspace owner role');
+    }
+
+    const member = workspace.members.find((m) => m.userId?.toString() === memberUserId);
+    if (!member) {
+      throw new NotFoundException('Member not found in this workspace');
+    }
+
+    member.role = newRole;
     return workspace.save();
   }
 
@@ -135,13 +185,13 @@ export class WorkspacesService {
 
     const isOwnerOrAdmin =
       workspace.ownerId.toString() === currentUserId ||
-      workspace.members.some((m) => m.userId.toString() === currentUserId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
+      workspace.members.some((m) => m.userId?.toString() === currentUserId && [WorkspaceRole.OWNER, WorkspaceRole.ADMIN].includes(m.role));
 
     if (!isOwnerOrAdmin && currentUserId !== memberUserId) {
       throw new ForbiddenException('Access denied');
     }
 
-    workspace.members = workspace.members.filter((m) => m.userId.toString() !== memberUserId);
+    workspace.members = workspace.members.filter((m) => m.userId?.toString() !== memberUserId);
     return workspace.save();
   }
 

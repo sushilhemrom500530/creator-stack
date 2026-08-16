@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { WorkspacesService } from './workspaces.service';
-import { CreateWorkspaceDto, UpdateWorkspaceDto, InviteMemberDto } from './dto';
+import { CreateWorkspaceDto, UpdateWorkspaceDto, InviteMemberDto, UpdateMemberRoleDto } from './dto';
 import { CurrentUser } from 'src/common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 
@@ -53,6 +64,19 @@ export class WorkspacesController {
     @Body() inviteMemberDto: InviteMemberDto,
   ) {
     return this.workspacesService.inviteMember(id, userId, inviteMemberDto);
+  }
+
+  @Patch(':id/members/:memberUserId/role')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update a member role (Owner only)' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Member role updated successfully' })
+  updateMemberRole(
+    @Param('id') id: string,
+    @CurrentUser('userId') currentUserId: string,
+    @Param('memberUserId') memberUserId: string,
+    @Body() dto: UpdateMemberRoleDto,
+  ) {
+    return this.workspacesService.updateMemberRole(id, currentUserId, memberUserId, dto.role);
   }
 
   @Delete(':id/members/:memberUserId')

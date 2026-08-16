@@ -14,6 +14,45 @@ export interface Response<T> {
   data: T;
 }
 
+const SENSITIVE_KEYS = new Set([
+  'accessTokenEncrypted',
+  'refreshTokenEncrypted',
+  'password',
+  'passwordHash',
+  'otp',
+  'otpExpiresAt',
+  'jwtSecret',
+  'cookieSecret',
+  'encryptionKey',
+  'appSecret',
+]);
+
+function scrubSensitiveFields(obj: any): any {
+  if (obj === null || obj === undefined) return obj;
+
+  // If it's a Mongoose document or has toObject / toJSON
+  if (typeof obj.toObject === 'function') {
+    obj = obj.toObject();
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => scrubSensitiveFields(item));
+  }
+
+  if (typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof RegExp)) {
+    const cleaned: Record<string, any> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (SENSITIVE_KEYS.has(key)) {
+        continue; // Strip sensitive key from response payload
+      }
+      cleaned[key] = scrubSensitiveFields(value);
+    }
+    return cleaned;
+  }
+
+  return obj;
+}
+
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, any> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -45,6 +84,9 @@ export class TransformInterceptor<T> implements NestInterceptor<T, any> {
           }
         }
 
+        // Apply recursive token scrubber to protect all sensitive keys
+        const sanitizedData = scrubSensitiveFields(data);
+
         const responseObj: any = {
           success: true,
           message,
@@ -54,7 +96,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, any> {
           responseObj.meta = meta;
         }
 
-        responseObj.data = data;
+        responseObj.data = sanitizedData;
 
         return responseObj;
       }),

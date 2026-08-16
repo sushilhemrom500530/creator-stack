@@ -290,6 +290,43 @@ export const notificationsApi = {
 
 // Workspaces API Endpoints
 export const workspacesApi = {
-  getWorkspaces: () => api.get<any[]>('/workspaces'),
-  getWorkspace: (id: string) => api.get<any>(`/workspaces/${id}`),
+  getWorkspaces: () =>
+    api.get<Array<{
+      _id: string;
+      name: string;
+      slug: string;
+      ownerId: string;
+      members: Array<{ userId: { _id: string; name: string; email: string; avatar?: string } | string; role: 'owner' | 'admin' | 'editor' | 'viewer'; joinedAt: string }>;
+      logo?: string;
+      description?: string;
+      settings?: Record<string, any>;
+      createdAt: string;
+    }>>('/workspaces'),
+
+  getWorkspace: (id: string) =>
+    api.get<any>(`/workspaces/${id}`),
+
+  createWorkspace: (dto: { name: string; slug?: string; description?: string; logo?: string }) =>
+    api.post<any>('/workspaces', dto),
+
+  updateWorkspace: (id: string, dto: { name?: string; description?: string; logo?: string; settings?: Record<string, any> }) =>
+    api.patch<any>(`/workspaces/${id}`, dto),
+
+  inviteMember: (id: string, dto: { email: string; role: 'owner' | 'admin' | 'editor' | 'viewer' }) =>
+    api.post<any>(`/workspaces/${id}/members`, dto),
+
+  updateMemberRole: (id: string, memberUserId: string, role: 'owner' | 'admin' | 'editor' | 'viewer') =>
+    api.patch<any>(`/workspaces/${id}/members/${memberUserId}/role`, { role }),
+
+  removeMember: (id: string, memberUserId: string) =>
+    api.delete<any>(`/workspaces/${id}/members/${memberUserId}`),
+
+  deleteWorkspace: (id: string) =>
+    api.delete<{ message: string }>(`/workspaces/${id}`),
+
+  setActiveWorkspace: (id: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('active_workspace_id', id);
+    }
+  },
 };
