@@ -60,8 +60,8 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Connected Accounts Hub (UI + API) | 🟢 Complete | 🟢 Live API Synced | Active |
 | **Post Engine** | Omnichannel Post Composer & Model | 🟢 Complete | 🟢 Full UI & Model Ready | Active |
 | | Multi-Platform Publishing Engine (BullMQ) | 🟢 Complete | 🟢 Hooked to API | Active |
-| | Media Library (S3 / Cloudinary) | 🟡 In Progress | 🟢 Gallery UI Built | Active Sprint |
-| | Distributed Publishing (BullMQ) | 🟢 Queue Foundation | ⚪ Connect to Composer | Active Sprint |
+| | Media Library (S3 / Cloudinary) | 🟢 Complete | 🟢 Gallery & Upload Ready | Active |
+| | Distributed Scheduling & Queue Workers | 🟡 In Progress | ⚪ Hook into Scheduler | Active Sprint |
 | | Post Retries & Isolated Failures | 🟡 Architecture Ready | ⚪ Retry Action Buttons | Next Sprint |
 | **Calendar** | Visual Content Calendar Matrix | ⚪ Post Fetching | 🟢 Full Grid & Month UI | Integrating API |
 | **AI Studio** | OpenAI / Gemini Integration | ⚪ AI Module Hook | 🟢 AI Assistant UI Built | Next Sprint |

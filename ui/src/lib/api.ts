@@ -140,6 +140,67 @@ export const publishingApi = {
     api.post<any>(`/publishing/posts/${postId}/retry-target/${accountId}`),
 };
 
+// Uploads & Media Library API Endpoints
+export const uploadsApi = {
+  uploadCloudinary: async (file: File, workspaceId: string, folder = 'creator-stack') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('workspaceId', workspaceId);
+    formData.append('folder', folder);
+
+    const token = getAuthToken();
+    const res = await fetch(`${API_BASE_URL}/uploads/cloudinary`, {
+      method: 'POST',
+      headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.message || 'Upload failed');
+    return data?.data || data;
+  },
+
+  uploadS3: async (file: File, workspaceId: string, folder = 'creator-stack') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('workspaceId', workspaceId);
+    formData.append('folder', folder);
+
+    const token = getAuthToken();
+    const res = await fetch(`${API_BASE_URL}/uploads/s3`, {
+      method: 'POST',
+      headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.message || 'Upload failed');
+    return data?.data || data;
+  },
+
+  uploadMultiple: async (files: File[], workspaceId: string, provider: 'cloudinary' | 's3' = 'cloudinary', folder = 'creator-stack') => {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('files', file));
+    formData.append('workspaceId', workspaceId);
+    formData.append('provider', provider);
+    formData.append('folder', folder);
+
+    const token = getAuthToken();
+    const res = await fetch(`${API_BASE_URL}/uploads/multiple`, {
+      method: 'POST',
+      headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.message || 'Batch upload failed');
+    return data?.data || data;
+  },
+
+  getGallery: (params: { workspaceId: string; resourceType?: string; search?: string; page?: number; limit?: number }) =>
+    api.get<{ data: any[]; meta: { total: number; page: number; limit: number; totalPages: number } }>('/uploads/gallery', params),
+
+  deleteMedia: (id: string) =>
+    api.delete<any>(`/uploads/${id}`),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),
