@@ -62,9 +62,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Multi-Platform Publishing Engine (BullMQ) | 🟢 Complete | 🟢 Hooked to API | Active |
 | | Media Library (S3 / Cloudinary) | 🟢 Complete | 🟢 Gallery & Upload Ready | Active |
 | | Distributed Scheduling & Queue Workers | 🟢 Complete | 🟢 30s Cron & Worker Live | Active |
-| | Post Retries & Isolated Failures | 🟡 In Progress | ⚪ Retry Action Buttons | Active Sprint |
+| | Post Retries & Isolated Failures | 🟢 Complete | 🟢 Live Status & Retry UI | Active |
 | **Calendar** | Visual Content Calendar Matrix | ⚪ Post Fetching | 🟢 Full Grid & Month UI | Integrating API |
-| **AI Studio** | OpenAI / Gemini Integration | ⚪ AI Module Hook | 🟢 AI Assistant UI Built | Next Sprint |
+| **AI Studio** | OpenAI / Gemini Integration | 🟡 In Progress | 🟢 AI Assistant UI Built | Active Sprint |
 | | AI Token Tracking & Quotas | ⚪ In Schema | 🟢 Admin AI UI Built | Planned |
 | **Analytics** | Cross-Platform Aggregated Charts | ⚪ Provider Sync | 🟢 ApexCharts / D3 Geo UI | Pending Provider Data |
 | | Sentiment & Moderation Queue | ⚪ Webhook Listeners | 🟢 Reference Layout Ready | Future Phase |
