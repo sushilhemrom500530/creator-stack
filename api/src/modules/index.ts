@@ -7,6 +7,7 @@ export * from './posts/posts.module';
 export * from './publishing/publishing.module';
 export * from './scheduler/scheduler.module';
 export * from './ai/ai.module';
+export * from './analytics/analytics.module';
 export * from './roles';
 export * from './permissions';
 export * from './uploads';

@@ -234,6 +234,30 @@ export const aiApi = {
     api.get<any[]>('/ai/usage/history', { workspaceId, limit }),
 };
 
+// Analytics API Endpoints
+export const analyticsApi = {
+  getOverview: (workspaceId: string, timeframe = '30d') =>
+    api.get<{
+      timeframe: string;
+      stats: Array<{ title: string; value: string; raw: number; change: string; isPositive: boolean }>;
+      platformDistribution: Array<{ platform: string; label: string; percentage: number; impressions: number; color: string }>;
+      connectedAccountsCount: number;
+      publishedPostsCount: number;
+    }>('/analytics/overview', { workspaceId, timeframe }),
+
+  getTrends: (workspaceId: string, days = 7) =>
+    api.get<{ categories: string[]; series: Array<{ name: string; data: number[] }> }>('/analytics/trends', { workspaceId, days }),
+
+  getGeography: (workspaceId: string) =>
+    api.get<{ regions: Array<{ id: string; country: string; flag: string; percentage: number; reach: string; lat: number; lng: number }> }>('/analytics/geography', { workspaceId }),
+
+  getSentiment: (workspaceId: string) =>
+    api.get<{ overallScore: number; positive: number; neutral: number; negative: number; totalAnalyzed: number; trend: string; topThemes: Array<{ theme: string; sentiment: string }> }>('/analytics/sentiment', { workspaceId }),
+
+  getBestTimeToPost: (workspaceId: string) =>
+    api.get<{ recommendations: Array<{ platform: string; dayOfWeek: string; bestTime: string; expectedBoost: string }> }>('/analytics/best-time-to-post', { workspaceId }),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),

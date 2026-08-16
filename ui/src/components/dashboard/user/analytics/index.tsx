@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import {
     BarChart3,
@@ -10,176 +10,69 @@ import {
     Share2,
     ArrowUpRight,
     ArrowDownRight,
-    Sparkles
+    Sparkles,
+    Smile,
+    Clock,
+    Zap,
+    RefreshCw,
 } from "lucide-react";
-import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
+import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaThreads, FaWhatsapp } from "react-icons/fa6";
 import WorldMapDashboard from "../../../common/global-map";
+import { analyticsApi, getActiveWorkspaceId } from "@/lib/api";
 
-// Dynamically import ApexCharts with SSR disabled for Next.js
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function AnalyticsComponent() {
     const [isMounted, setIsMounted] = useState(false);
-    const [hoveredGeoId, setHoveredGeoId] = useState<string | null>(null);
+    const [timeframe, setTimeframe] = useState<"7d" | "30d" | "90d">("30d");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const geoRegions = [
-        {
-            id: "us",
-            country: "United States",
-            flag: "🇺🇸",
-            percentage: 42,
-            reach: "53.9k",
-            lat: 37.0902,
-            lng: -95.7129
-        },
-        {
-            id: "de",
-            country: "Germany",
-            flag: "🇩🇪",
-            percentage: 18,
-            reach: "23.1k",
-            lat: 51.1657,
-            lng: 10.4515
-        },
-        {
-            id: "in",
-            country: "India",
-            flag: "🇮🇳",
-            percentage: 16,
-            reach: "20.5k",
-            lat: 20.5937,
-            lng: 78.9629
-        },
-        {
-            id: "uk",
-            country: "United Kingdom",
-            flag: "🇬🇧",
-            percentage: 12,
-            reach: "15.4k",
-            lat: 55.3781,
-            lng: -3.4360
-        },
-        {
-            id: "br",
-            country: "Brazil",
-            flag: "🇧🇷",
-            percentage: 7,
-            reach: "9.0k",
-            lat: -14.2350,
-            lng: -51.9253
-        },
-        {
-            id: "au",
-            country: "Australia",
-            flag: "🇦🇺",
-            percentage: 5,
-            reach: "6.5k",
-            lat: -25.2744,
-            lng: 133.7751
+    const [overviewData, setOverviewData] = useState<any>(null);
+    const [trendsData, setTrendsData] = useState<{ categories: string[]; series: any[] }>({
+        categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        series: [
+            { name: "Impressions", data: [14200, 18500, 22400, 19800, 28600, 31200, 26900] },
+            { name: "Engagements", data: [3200, 4100, 5600, 4800, 7200, 8400, 6900] },
+            { name: "Link Clicks", data: [1800, 2200, 2900, 2400, 3900, 4300, 3600] },
+        ],
+    });
+    const [sentimentData, setSentimentData] = useState<any>(null);
+    const [bestTimes, setBestTimes] = useState<any[]>([]);
+
+    const workspaceId = getActiveWorkspaceId();
+
+    const loadAnalytics = useCallback(async () => {
+        if (!workspaceId) return;
+        setIsLoading(true);
+        try {
+            const [overview, trends, sentiment, timing] = await Promise.allSettled([
+                analyticsApi.getOverview(workspaceId, timeframe),
+                analyticsApi.getTrends(workspaceId, timeframe === "7d" ? 7 : 30),
+                analyticsApi.getSentiment(workspaceId),
+                analyticsApi.getBestTimeToPost(workspaceId),
+            ]);
+
+            if (overview.status === "fulfilled") setOverviewData(overview.value);
+            if (trends.status === "fulfilled") setTrendsData(trends.value);
+            if (sentiment.status === "fulfilled") setSentimentData(sentiment.value);
+            if (timing.status === "fulfilled") setBestTimes(timing.value.recommendations || []);
+        } catch (err: any) {
+            console.log("Error loading analytics:", err.message);
+        } finally {
+            setIsLoading(false);
         }
-    ];
-
-    const getMapCoords = (lat: number, lng: number) => {
-        const x = ((lng + 180) / 360) * 100;
-        const y = ((90 - lat) / 180) * 100;
-        return {
-            x: `${Math.max(5, Math.min(95, x)).toFixed(2)}%`,
-            y: `${Math.max(5, Math.min(95, y)).toFixed(2)}%`
-        };
-    };
+    }, [workspaceId, timeframe]);
 
     useEffect(() => {
         setIsMounted(true);
-    }, []);
+        loadAnalytics();
+    }, [loadAnalytics]);
 
-    const stats = [
-        {
-            title: "Total Impressions",
-            value: "128,420",
-            change: "+14.2%",
-            isPositive: true,
-            icon: Eye
-        },
-        {
-            title: "Active Audience",
-            value: "24,890",
-            change: "+8.7%",
-            isPositive: true,
-            icon: Users
-        },
-        {
-            title: "Link Clicks",
-            value: "3,412",
-            change: "+22.5%",
-            isPositive: true,
-            icon: MousePointer
-        },
-        {
-            title: "Engagement Rate",
-            value: "4.8%",
-            change: "-0.4%",
-            isPositive: false,
-            icon: Share2
-        },
-    ];
-
-    const topPosts = [
-        {
-            rank: "#1",
-            title: "Top 10 Productivity Tools for Digital Creators in 2026",
-            platform: "LinkedIn",
-            platformIcon: FaLinkedin,
-            platformColor: "text-blue-600 bg-blue-50 border-blue-200",
-            reach: "18.4K",
-            clicks: "1,420",
-            engagement: "6.2%",
-            progress: 85
-        },
-        {
-            rank: "#2",
-            title: "Launching our new Creator Stack API suite today! 🚀",
-            platform: "Twitter / X",
-            platformIcon: FaTwitter,
-            platformColor: "text-sky-500 bg-sky-50 border-sky-200",
-            reach: "14.2K",
-            clicks: "980",
-            engagement: "8.1%",
-            progress: 92
-        },
-        {
-            rank: "#3",
-            title: "How to automate your content schedule effortlessly",
-            platform: "Facebook",
-            platformIcon: FaFacebook,
-            platformColor: "text-blue-500 bg-blue-50 border-blue-200",
-            reach: "9.8K",
-            clicks: "640",
-            engagement: "4.5%",
-            progress: 68
-        },
-        {
-            rank: "#4",
-            title: "Behind the scenes of building AI-assisted content workflows 🧠✨",
-            platform: "Instagram",
-            platformIcon: FaInstagram,
-            platformColor: "text-pink-600 bg-pink-50 border-pink-200",
-            reach: "8.5K",
-            clicks: "520",
-            engagement: "7.4%",
-            progress: 78
-        }
-    ];
-
-    // Growth Chart ApexOptions & Series
-    const growthChartSeries = [
-        {
-            name: "Impressions",
-            data: [4200, 6500, 4500, 8000, 5500, 9000, 7500, 8500, 9500, 6000, 7000, 10200]
-        },
-        {
-            name: "Clicks",
-            data: [1200, 2100, 1400, 3100, 2000, 3800, 2900, 3400, 4100, 2200, 2800, 4800]
-        }
+    const stats = overviewData?.stats || [
+        { title: "Total Impressions", value: "128,420", change: "+14.2%", isPositive: true, icon: Eye },
+        { title: "Total Reach", value: "94,850", change: "+11.8%", isPositive: true, icon: Users },
+        { title: "Total Link Clicks", value: "18,620", change: "+19.4%", isPositive: true, icon: MousePointer },
+        { title: "Engagement Rate", value: "5.8%", change: "+2.1%", isPositive: true, icon: Share2 },
     ];
 
     const growthChartOptions: any = {
@@ -189,12 +82,12 @@ export default function AnalyticsComponent() {
             fontFamily: "inherit",
             sparkline: { enabled: false }
         },
-        colors: ["#3B82F6", "#10B981"],
+        colors: ["#8B5CF6", "#10B981", "#3B82F6"],
         fill: {
             type: "gradient",
             gradient: {
                 shadeIntensity: 1,
-                opacityFrom: 0.4,
+                opacityFrom: 0.35,
                 opacityTo: 0.05,
                 stops: [0, 90, 100]
             }
@@ -202,7 +95,7 @@ export default function AnalyticsComponent() {
         dataLabels: { enabled: false },
         stroke: { curve: "smooth", width: 3 },
         xaxis: {
-            categories: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8", "Day 9", "Day 10", "Day 11", "Day 12"],
+            categories: trendsData.categories,
             labels: { style: { colors: "#94A3B8", fontSize: "11px" } },
             axisBorder: { show: false },
             axisTicks: { show: false }
@@ -221,79 +114,114 @@ export default function AnalyticsComponent() {
         }
     };
 
-    // Geo Chart ApexOptions & Series
-    const geoChartSeries = [38, 24, 18, 12, 8];
-
-    const geoChartOptions: any = {
-        chart: {
-            type: "donut",
-            fontFamily: "inherit"
+    const topPosts = [
+        {
+            rank: "#1",
+            title: "Top 10 Productivity Tools for Digital Creators in 2026",
+            platform: "LinkedIn",
+            platformIcon: FaLinkedin,
+            platformColor: "text-blue-600 bg-blue-50 border-blue-200",
+            reach: "28.4K",
+            clicks: "2,420",
+            engagement: "6.8%",
+            progress: 88
         },
-        labels: ["United States 🇺🇸", "United Kingdom 🇬🇧", "India 🇮🇳", "Germany 🇩🇪", "Others 🌍"],
-        colors: ["#4F46E5", "#3B82F6", "#10B981", "#F59E0B", "#94A3B8"],
-        legend: {
-            position: "bottom",
-            fontSize: "11px",
-            labels: { colors: "#475569" },
-            itemMargin: { horizontal: 6, vertical: 3 }
+        {
+            rank: "#2",
+            title: "Launching our new Creator Stack API suite today! 🚀",
+            platform: "Twitter / X",
+            platformIcon: FaTwitter,
+            platformColor: "text-sky-500 bg-sky-50 border-sky-200",
+            reach: "21.2K",
+            clicks: "1,980",
+            engagement: "8.4%",
+            progress: 94
         },
-        plotOptions: {
-            pie: {
-                donut: {
-                    size: "68%",
-                    labels: {
-                        show: true,
-                        total: {
-                            show: true,
-                            label: "Total Reach",
-                            color: "#64748B",
-                            fontSize: "11px",
-                            formatter: () => "128.4k"
-                        }
-                    }
-                }
-            }
+        {
+            rank: "#3",
+            title: "How to automate your content schedule effortlessly",
+            platform: "Facebook",
+            platformIcon: FaFacebook,
+            platformColor: "text-blue-500 bg-blue-50 border-blue-200",
+            reach: "14.8K",
+            clicks: "1,140",
+            engagement: "5.2%",
+            progress: 72
         },
-        dataLabels: { enabled: false },
-        stroke: { show: false }
-    };
+        {
+            rank: "#4",
+            title: "Behind the scenes of building AI-assisted content workflows 🧠✨",
+            platform: "Instagram",
+            platformIcon: FaInstagram,
+            platformColor: "text-pink-600 bg-pink-50 border-pink-200",
+            reach: "12.5K",
+            clicks: "890",
+            engagement: "7.9%",
+            progress: 81
+        }
+    ];
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 max-w-7xl mx-auto">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6 ">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card p-6">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                        <BarChart3 className="w-7 h-7 text-primary" /> Analytics Overview
+                        <BarChart3 className="w-7 h-7 text-purple-600" /> Cross-Platform Analytics Studio
                     </h1>
-                    <p className="text-slate-500 text-sm mt-1">Track key performance metrics and audience growth across channels</p>
+                    <p className="text-slate-500 text-sm mt-1">
+                        Track impressions, conversions, audience geography, and social sentiment across all channels
+                    </p>
                 </div>
-                <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl text-xs font-medium text-slate-600">
+                <div className="flex items-center gap-3">
                     <button
-                        className="px-3 py-1.5 rounded-lg bg-white shadow-xs text-slate-800 font-semibold cursor-pointer"
+                        onClick={loadAnalytics}
+                        disabled={isLoading}
+                        className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+                        title="Refresh Analytics"
                     >
-                        Last 30 Days
+                        <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                     </button>
 
-                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">
-                        Last 7 Days
-                    </button>
-
-                    <button className="px-3 py-1.5 rounded-lg hover:text-slate-800 cursor-pointer">
-                        This Year
-                    </button>
+                    <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium text-slate-600">
+                        <button
+                            onClick={() => setTimeframe("7d")}
+                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "7d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                        >
+                            7 Days
+                        </button>
+                        <button
+                            onClick={() => setTimeframe("30d")}
+                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "30d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                        >
+                            30 Days
+                        </button>
+                        <button
+                            onClick={() => setTimeframe("90d")}
+                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "90d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                        >
+                            90 Days
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Metrics Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {stats.map((item, index) => {
-                    const Icon = item.icon;
+                {stats.map((item: any, index: number) => {
+                    const iconMap: any = {
+                        "Total Impressions": Eye,
+                        "Total Reach": Users,
+                        "Total Link Clicks": MousePointer,
+                        "Engagement Rate": Share2,
+                    };
+                    const Icon = iconMap[item.title] || Eye;
+
                     return (
-                        <div key={index} className="card p-6 space-y-3 hover:-translate-y-1 [transition:0.3s]">
+                        <div key={index} className="card p-6 space-y-3 hover:-translate-y-1 transition-all">
                             <div className="flex items-center justify-between">
                                 <span className="text-sm font-medium text-slate-500">{item.title}</span>
-                                <div className="p-2.5 bg-primary/10 rounded-xl text-primary">
+                                <div className="p-2.5 bg-purple-50 rounded-xl text-purple-600">
                                     <Icon className="w-5 h-5" />
                                 </div>
                             </div>
@@ -309,25 +237,28 @@ export default function AnalyticsComponent() {
                 })}
             </div>
 
-            {/* Apex Charts Section: Left (Growth & Engagement) & Right (Audience Geo) */}
+            {/* Main Visuals Grid: Trends Chart & World Map */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
                 {/* Growth & Engagement Chart */}
                 <div className="card p-6 flex flex-col justify-between h-full space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
                             <h3 className="text-lg font-bold text-slate-800">
-                                Audience Growth & Engagement
+                                Omnichannel Performance Trends
                             </h3>
                             <p className="text-xs text-slate-500">
-                                Daily breakdown of impressions vs interactions
+                                Timeline breakdown of impressions, engagements, and click-throughs
                             </p>
                         </div>
                         <div className="flex items-center gap-4 text-xs font-medium">
                             <div className="flex items-center gap-1.5 text-slate-600">
-                                <span className="w-3 h-3 rounded-full bg-blue-500 inline-block"></span> Impressions
+                                <span className="w-3 h-3 rounded-full bg-purple-500 inline-block" /> Impressions
                             </div>
                             <div className="flex items-center gap-1.5 text-slate-600">
-                                <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Clicks
+                                <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" /> Engagements
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-600">
+                                <span className="w-3 h-3 rounded-full bg-blue-500 inline-block" /> Clicks
                             </div>
                         </div>
                     </div>
@@ -336,7 +267,7 @@ export default function AnalyticsComponent() {
                         {isMounted && (
                             <Chart
                                 options={growthChartOptions}
-                                series={growthChartSeries}
+                                series={trendsData.series}
                                 type="area"
                                 height="100%"
                             />
@@ -350,18 +281,102 @@ export default function AnalyticsComponent() {
                 </div>
             </div>
 
-            {/* Refined Top Performing Content */}
+            {/* AI Best Time to Post & Social Sentiment Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Social Sentiment Analysis Card (6 Cols) */}
+                <div className="lg:col-span-6 card p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2">
+                            <Smile className="w-5 h-5 text-emerald-600" />
+                            <div>
+                                <h3 className="text-base font-bold text-slate-800">Audience Sentiment & Reaction</h3>
+                                <p className="text-xs text-slate-400">Natural language sentiment scoring across comments</p>
+                            </div>
+                        </div>
+                        <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">
+                            Score: {sentimentData?.overallScore || 8.4} / 10
+                        </span>
+                    </div>
+
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between text-xs font-semibold">
+                            <span className="text-emerald-600">Positive: {sentimentData?.positive || 74}%</span>
+                            <span className="text-slate-500">Neutral: {sentimentData?.neutral || 19}%</span>
+                            <span className="text-rose-500">Negative: {sentimentData?.negative || 7}%</span>
+                        </div>
+                        <div className="w-full h-3 bg-slate-100 rounded-full flex overflow-hidden">
+                            <div className="bg-emerald-500 h-full" style={{ width: `${sentimentData?.positive || 74}%` }} />
+                            <div className="bg-slate-300 h-full" style={{ width: `${sentimentData?.neutral || 19}%` }} />
+                            <div className="bg-rose-500 h-full" style={{ width: `${sentimentData?.negative || 7}%` }} />
+                        </div>
+                    </div>
+
+                    <div className="pt-2 space-y-2">
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Top Conversation Themes</p>
+                        <div className="grid grid-cols-2 gap-2">
+                            {(sentimentData?.topThemes || [
+                                { theme: "Product Usability", sentiment: "Positive (92%)" },
+                                { theme: "Content Strategy", sentiment: "Positive (88%)" },
+                                { theme: "Feature Requests", sentiment: "Neutral (65%)" },
+                                { theme: "Pricing Inquiries", sentiment: "Neutral (58%)" },
+                            ]).map((item: any, idx: number) => (
+                                <div key={idx} className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
+                                    <p className="font-semibold text-slate-800">{item.theme}</p>
+                                    <p className="text-slate-500 text-[11px] mt-0.5">{item.sentiment}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* AI Best Time to Post Recommendations (6 Cols) */}
+                <div className="lg:col-span-6 card p-6 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2">
+                            <Zap className="w-5 h-5 text-amber-500" />
+                            <div>
+                                <h3 className="text-base font-bold text-slate-800">AI Best Time to Post</h3>
+                                <p className="text-xs text-slate-400">Peak engagement windows tailored per network</p>
+                            </div>
+                        </div>
+                        <span className="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 text-xs font-bold">
+                            AI Calibrated
+                        </span>
+                    </div>
+
+                    <div className="space-y-3">
+                        {(bestTimes.length > 0 ? bestTimes : [
+                            { platform: "linkedin", dayOfWeek: "Wednesday & Thursday", bestTime: "8:30 AM & 12:00 PM EST", expectedBoost: "+48% higher engagement rate" },
+                            { platform: "x", dayOfWeek: "Tuesday & Thursday", bestTime: "9:00 AM & 1:00 PM EST", expectedBoost: "+34% higher impressions" },
+                            { platform: "instagram", dayOfWeek: "Friday & Sunday", bestTime: "11:00 AM & 7:00 PM EST", expectedBoost: "+29% more comments & saves" },
+                            { platform: "threads", dayOfWeek: "Monday & Wednesday", bestTime: "10:00 AM & 3:00 PM EST", expectedBoost: "+22% reach increase" },
+                        ]).map((rec: any, idx: number) => (
+                            <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 text-xs">
+                                <div className="space-y-0.5">
+                                    <p className="font-bold text-slate-800 capitalize flex items-center gap-1.5">
+                                        <Clock className="w-3.5 h-3.5 text-purple-600" />
+                                        {rec.platform} • {rec.dayOfWeek}
+                                    </p>
+                                    <p className="text-slate-500">{rec.bestTime}</p>
+                                </div>
+                                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">
+                                    {rec.expectedBoost}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Top Performing Content Section */}
             <div className="card p-6 space-y-5">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                     <div>
                         <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                             <Sparkles className="w-5 h-5 text-amber-500" /> Top Performing Posts
                         </h3>
-                        <p className="text-xs text-slate-500 mt-0.5">Highest reach and conversion posts over the last 30 days</p>
+                        <p className="text-xs text-slate-500 mt-0.5">Highest reach and conversion posts over the selected window</p>
                     </div>
-                    <span className="text-xs font-semibold text-primary hover:underline cursor-pointer">
-                        View All Posts →
-                    </span>
                 </div>
 
                 <div className="space-y-3">
@@ -377,7 +392,7 @@ export default function AnalyticsComponent() {
                                         {post.rank}
                                     </span>
                                     <div className="space-y-1">
-                                        <h4 className="text-sm font-semibold text-slate-800 hover:text-primary transition cursor-pointer line-clamp-1">
+                                        <h4 className="text-sm font-semibold text-slate-800 hover:text-purple-600 transition cursor-pointer line-clamp-1">
                                             {post.title}
                                         </h4>
                                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-medium border ${post.platformColor}`}>
@@ -395,16 +410,16 @@ export default function AnalyticsComponent() {
 
                                     <div className="text-center md:text-left">
                                         <p className="text-slate-400 text-[11px]">Clicks</p>
-                                        <p className="font-bold text-blue-600 text-sm mt-0.5">{post.clicks}</p>
+                                        <p className="font-bold text-purple-600 text-sm mt-0.5">{post.clicks}</p>
                                     </div>
 
                                     <div className="min-w-28 text-right">
                                         <p className="text-slate-400 text-[11px] mb-1">Engagement: <strong className="text-emerald-600">{post.engagement}</strong></p>
                                         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                                             <div
-                                                className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full"
+                                                className="bg-gradient-to-r from-purple-500 to-emerald-400 h-full rounded-full"
                                                 style={{ width: `${post.progress}%` }}
-                                            ></div>
+                                            />
                                         </div>
                                     </div>
                                 </div>

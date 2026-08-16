@@ -30,7 +30,7 @@ import { SettingsModule } from './modules/settings/settings.module';
 import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { HealthModule } from './modules/health/health.module';
 import { DocsModule } from './modules/docs/docs.module';
-import { PostsModule, WhatsAppModule, PublishingModule, SchedulerModule, AiModule } from './modules';
+import { PostsModule, WhatsAppModule, PublishingModule, SchedulerModule, AiModule, AnalyticsModule } from './modules';
 
 @Module({
   imports: [
@@ -68,6 +68,7 @@ import { PostsModule, WhatsAppModule, PublishingModule, SchedulerModule, AiModul
     PublishingModule,
     SchedulerModule,
     AiModule,
+    AnalyticsModule,
     RolesModule,
     PermissionsModule,
     UploadsModule,
