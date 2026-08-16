@@ -4,6 +4,8 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -11,6 +13,7 @@ import { Post, PostDocument, PostStatus, PostTargetStatus } from './schemas/post
 import { CreatePostDto, UpdatePostDto, PostFilterDto } from './dto';
 import { Workspace, WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { SocialAccount, SocialAccountDocument, SocialPlatform } from '../social-accounts/schemas/social-account.schema';
+import { PublishingService } from '../publishing/publishing.service';
 
 @Injectable()
 export class PostsService {
@@ -20,6 +23,8 @@ export class PostsService {
     @InjectModel(Post.name) private readonly postModel: Model<PostDocument>,
     @InjectModel(Workspace.name) private readonly workspaceModel: Model<WorkspaceDocument>,
     @InjectModel(SocialAccount.name) private readonly socialAccountModel: Model<SocialAccountDocument>,
+    @Inject(forwardRef(() => PublishingService))
+    private readonly publishingService: PublishingService,
   ) {}
 
   private async verifyWorkspaceAccess(workspaceId: string, userId: string): Promise<WorkspaceDocument> {
@@ -118,6 +123,14 @@ export class PostsService {
 
     const saved = await post.save();
     this.logger.log(`Created post [${saved._id}] with status [${status}] in workspace ${dto.workspaceId}`);
+
+    if (dto.publishNow) {
+      // Dispatches asynchronous multi-platform publishing
+      this.publishingService.publishPost(saved._id).catch((err) => {
+        this.logger.error(`Error during direct publishing for post [${saved._id}]: ${err.message}`);
+      });
+    }
+
     return saved;
   }
 

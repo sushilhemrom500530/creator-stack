@@ -30,7 +30,7 @@ import { SettingsModule } from './modules/settings/settings.module';
 import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { HealthModule } from './modules/health/health.module';
 import { DocsModule } from './modules/docs/docs.module';
-import { PostsModule, WhatsAppModule } from './modules';
+import { PostsModule, WhatsAppModule, PublishingModule } from './modules';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { PostsModule, WhatsAppModule } from './modules';
       validationSchema: envValidationSchema,
     }),
 
-    // Rate Limiting (100 requests / 60 seconds)
+    // Rate Limiting (1000 requests / 60 seconds)
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -65,6 +65,7 @@ import { PostsModule, WhatsAppModule } from './modules';
     SocialAccountsModule,
     WhatsAppModule,
     PostsModule,
+    PublishingModule,
     RolesModule,
     PermissionsModule,
     UploadsModule,

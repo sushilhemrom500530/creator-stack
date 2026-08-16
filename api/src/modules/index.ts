@@ -4,6 +4,7 @@ export * from './workspaces';
 export * from './social-accounts';
 export * from './whatsapp/whatsapp.module';
 export * from './posts/posts.module';
+export * from './publishing/publishing.module';
 export * from './roles';
 export * from './permissions';
 export * from './uploads';

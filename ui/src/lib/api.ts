@@ -131,6 +131,15 @@ export const whatsappApi = {
   getPhoneNumbers: (workspaceId: string) => api.get<any[]>('/whatsapp/phone-numbers', { workspaceId }),
 };
 
+// Publishing Engine API Endpoints
+export const publishingApi = {
+  publishNow: (postId: string) =>
+    api.post<any>(`/publishing/posts/${postId}/publish-now`),
+
+  retryTarget: (postId: string, accountId: string) =>
+    api.post<any>(`/publishing/posts/${postId}/retry-target/${accountId}`),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),
