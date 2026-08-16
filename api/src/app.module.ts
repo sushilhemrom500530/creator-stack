@@ -30,7 +30,7 @@ import { SettingsModule } from './modules/settings/settings.module';
 import { AuditLogModule } from './modules/audit-log/audit-log.module';
 import { HealthModule } from './modules/health/health.module';
 import { DocsModule } from './modules/docs/docs.module';
-import { WhatsAppModule } from './modules';
+import { PostsModule, WhatsAppModule } from './modules';
 
 @Module({
   imports: [
@@ -45,7 +45,7 @@ import { WhatsAppModule } from './modules';
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
-        limit: 100,
+        limit: 1000,
       },
     ]),
 
@@ -64,6 +64,7 @@ import { WhatsAppModule } from './modules';
     WorkspacesModule,
     SocialAccountsModule,
     WhatsAppModule,
+    PostsModule,
     RolesModule,
     PermissionsModule,
     UploadsModule,

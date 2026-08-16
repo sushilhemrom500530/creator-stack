@@ -101,6 +101,36 @@ export const socialAccountsApi = {
     api.delete<any>(`/social-accounts/${accountId}`),
 };
 
+// Posts API Endpoints
+export const postsApi = {
+  createPost: (createDto: any) =>
+    api.post<any>('/posts', createDto),
+
+  getPosts: (params: { workspaceId: string; status?: string; platform?: string; search?: string; page?: number; limit?: number }) =>
+    api.get<{ data: any[]; meta: { total: number; page: number; limit: number; totalPages: number } }>('/posts', params),
+
+  getPost: (id: string) =>
+    api.get<any>(`/posts/${id}`),
+
+  getSummary: (workspaceId: string) =>
+    api.get<{ total: number; drafts: number; scheduled: number; publishing: number; published: number; failed: number }>('/posts/summary', { workspaceId }),
+
+  updatePost: (id: string, updateDto: any) =>
+    api.patch<any>(`/posts/${id}`, updateDto),
+
+  deletePost: (id: string) =>
+    api.delete<any>(`/posts/${id}`),
+};
+
+// WhatsApp Messaging API Endpoints
+export const whatsappApi = {
+  sendText: (dto: any) => api.post<any>('/whatsapp/send-text', dto),
+  sendMedia: (dto: any) => api.post<any>('/whatsapp/send-media', dto),
+  sendTemplate: (dto: any) => api.post<any>('/whatsapp/send-template', dto),
+  getTemplates: (workspaceId: string) => api.get<any[]>('/whatsapp/templates', { workspaceId }),
+  getPhoneNumbers: (workspaceId: string) => api.get<any[]>('/whatsapp/phone-numbers', { workspaceId }),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),

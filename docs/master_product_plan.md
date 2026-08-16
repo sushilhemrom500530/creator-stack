@@ -58,7 +58,8 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Threads API Publishing Engine | 🟢 Complete | 🟢 Connect & Post Ready | Active |
 | | WhatsApp Business Cloud Messaging | 🟢 Complete | 🟢 Connect Flow Wire | Active |
 | | Connected Accounts Hub (UI + API) | 🟢 Complete | 🟢 Live API Synced | Active |
-| **Post Engine** | Omnichannel Post Composer | 🟡 In Progress | 🟢 Full UI & Preview Tabs | Active Sprint |
+| **Post Engine** | Omnichannel Post Composer & Model | 🟢 Complete | 🟢 Full UI & Model Ready | Active |
+| | Multi-Platform Publishing Engine (BullMQ) | 🟡 In Progress | ⚪ Hook into Workers | Active Sprint |
 | | Media Library (S3 / Cloudinary) | 🟢 Uploads Module | 🟢 Gallery UI Built | Integrating Uploads |
 | | Distributed Publishing (BullMQ) | 🟢 Queue Foundation | ⚪ Connect to Composer | Active Sprint |
 | | Post Retries & Isolated Failures | 🟡 Architecture Ready | ⚪ Retry Action Buttons | Next Sprint |
