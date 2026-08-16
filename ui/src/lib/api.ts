@@ -210,6 +210,30 @@ export const schedulerApi = {
     api.get<{ status: string; interval: string; tokenCheckInterval: string; timestamp: string }>('/scheduler/status'),
 };
 
+// AI Content Studio API Endpoints
+export const aiApi = {
+  generateCaption: (dto: { workspaceId: string; topic: string; platform?: string; tone?: string; includeHashtags?: boolean; includeEmojis?: boolean }) =>
+    api.post<{ caption: string; platform: string; tone: string; tokensUsed: number; model: string }>('/ai/generate-caption', dto),
+
+  generateHashtags: (dto: { workspaceId: string; keyword: string; count?: number }) =>
+    api.post<{ raw: string; hashtags: string[]; count: number; tokensUsed: number }>('/ai/generate-hashtags', dto),
+
+  generateHooks: (dto: { workspaceId: string; topic: string; targetAudience?: string }) =>
+    api.post<{ raw: string; hooks: string[]; tokensUsed: number }>('/ai/generate-hooks', dto),
+
+  generateThread: (dto: { workspaceId: string; topic: string; tweetsCount?: number }) =>
+    api.post<{ thread: string; tweetsCount: number; tokensUsed: number }>('/ai/generate-thread', dto),
+
+  chat: (dto: { workspaceId: string; message: string; history?: any[] }) =>
+    api.post<{ message: string; tokensUsed: number; model: string }>('/ai/chat', dto),
+
+  getUsageStats: (workspaceId: string) =>
+    api.get<{ usedTokens: number; monthlyLimit: number; remainingTokens: number; percentUsed: number; totalGenerations: number; tier: string }>('/ai/usage/stats', { workspaceId }),
+
+  getUsageHistory: (workspaceId: string, limit?: number) =>
+    api.get<any[]>('/ai/usage/history', { workspaceId, limit }),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),

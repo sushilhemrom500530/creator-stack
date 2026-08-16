@@ -64,9 +64,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | Distributed Scheduling & Queue Workers | 🟢 Complete | 🟢 30s Cron & Worker Live | Active |
 | | Post Retries & Isolated Failures | 🟢 Complete | 🟢 Live Status & Retry UI | Active |
 | **Calendar** | Visual Content Calendar Matrix | ⚪ Post Fetching | 🟢 Full Grid & Month UI | Integrating API |
-| **AI Studio** | OpenAI / Gemini Integration | 🟡 In Progress | 🟢 AI Assistant UI Built | Active Sprint |
-| | AI Token Tracking & Quotas | ⚪ In Schema | 🟢 Admin AI UI Built | Planned |
-| **Analytics** | Cross-Platform Aggregated Charts | ⚪ Provider Sync | 🟢 ApexCharts / D3 Geo UI | Pending Provider Data |
+| **AI Studio** | OpenAI / Gemini Integration | 🟢 Complete | 🟢 AI Assistant Studio Live | Active |
+| | AI Token Tracking & Quotas | 🟢 Complete | 🟢 Quota & Governance Live | Active |
+| **Analytics** | Cross-Platform Aggregated Charts | 🟡 In Progress | 🟢 ApexCharts / D3 Geo UI | Active Sprint |
 | | Sentiment & Moderation Queue | ⚪ Webhook Listeners | 🟢 Reference Layout Ready | Future Phase |
 | **Admin Suite** | Users & Workspace Management | 🟢 Complete | 🟢 UI Data Tables Built | Connecting Endpoints |
 | | Financials, Plans & Subscriptions | ⚪ Stripe Webhook | 🟢 Pricing & Admin UI | Future Phase |
