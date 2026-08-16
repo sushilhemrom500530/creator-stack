@@ -201,6 +201,15 @@ export const uploadsApi = {
     api.delete<any>(`/uploads/${id}`),
 };
 
+// Scheduler & Worker API Endpoints
+export const schedulerApi = {
+  triggerDuePosts: () =>
+    api.post<{ message: string; processedCount: number; timestamp: string }>('/scheduler/trigger-due-posts'),
+
+  getStatus: () =>
+    api.get<{ status: string; interval: string; tokenCheckInterval: string; timestamp: string }>('/scheduler/status'),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),
