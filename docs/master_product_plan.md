@@ -68,9 +68,9 @@ To build the world's most intuitive, high-performance **AI-powered Social Media 
 | | AI Token Tracking & Quotas | 🟢 Complete | 🟢 Quota & Governance Live | Active |
 | **Analytics** | Cross-Platform Aggregated Charts | 🟢 Complete | 🟢 ApexCharts & Geo Live | Active |
 | | Sentiment & Moderation Engine | 🟢 Complete | 🟢 Sentiment & Timing Live | Active |
-| **Notifications**| In-App & Email Alert Engine | 🟡 In Progress | 🟢 Alert Bell & UI Live | Active Sprint |
-| **Admin Suite** | Users & Workspace Management | 🟢 Complete | 🟢 UI Data Tables Built | Connecting Endpoints |
-| | Financials, Plans & Subscriptions | ⚪ Stripe Webhook | 🟢 Pricing & Admin UI | Future Phase |
+| **Notifications**| In-App & Email Alert Engine | 🟢 Complete | 🟢 Alert Bell & UI Live | Active |
+| **Workspaces** | Multi-tenant Workspace CRUD | 🟢 Complete | 🟢 Switcher & RBAC Ready | Active Sprint |
+| | Member Invitations & Roles | 🟡 In Progress | ⚪ Invite Flow Wire | Active Sprint |
 
 ---
 

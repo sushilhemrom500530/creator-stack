@@ -258,6 +258,36 @@ export const analyticsApi = {
     api.get<{ recommendations: Array<{ platform: string; dayOfWeek: string; bestTime: string; expectedBoost: string }> }>('/analytics/best-time-to-post', { workspaceId }),
 };
 
+// Notifications & Alerts API Endpoints
+export const notificationsApi = {
+  getNotifications: (params?: { page?: number; limit?: number; unreadOnly?: boolean }) =>
+    api.get<{
+      data: Array<{
+        _id: string;
+        title: string;
+        message: string;
+        type: 'success' | 'error' | 'warning' | 'info';
+        category: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system';
+        link?: string;
+        read: boolean;
+        createdAt: string;
+      }>;
+      meta: { total: number; page: number; limit: number; totalPages: number; unreadCount: number };
+    }>('/notifications', params),
+
+  getUnreadCount: () =>
+    api.get<{ unreadCount: number }>('/notifications/unread-count'),
+
+  markAsRead: (id: string) =>
+    api.patch<{ _id: string; read: boolean }>(`/notifications/${id}/read`),
+
+  markAllAsRead: () =>
+    api.patch<{ updatedCount: number }>('/notifications/mark-all-read'),
+
+  deleteNotification: (id: string) =>
+    api.delete<{ success: boolean }>(`/notifications/${id}`),
+};
+
 // Workspaces API Endpoints
 export const workspacesApi = {
   getWorkspaces: () => api.get<any[]>('/workspaces'),

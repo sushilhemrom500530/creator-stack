@@ -117,5 +117,32 @@ export class MailService implements OnModuleInit {
     this.logger.log(`[DEV FORGOT PASSWORD OTP LOG] Reset Code for ${toEmail}: [ ${otp} ] (Expires in 3 mins)`);
     return false;
   }
+
+  /**
+   * Generic HTML email dispatcher for notifications and alerts.
+   */
+  async sendEmail(options: { to: string; subject: string; text?: string; html: string }): Promise<boolean> {
+    const user = (this.configService.get<string>('mail.email') || process.env.NODE_MAILER_EMAIL || '').trim();
+
+    if (this.transporter) {
+      try {
+        const info = await this.transporter.sendMail({
+          from: `"Creator Stack Notifications" <${user || 'notifications@creatorstack.app'}>`,
+          to: options.to,
+          subject: options.subject,
+          text: options.text,
+          html: options.html,
+        });
+        this.logger.log(`✅ Alert Email successfully sent to [${options.to}] (MessageId: ${info.messageId})`);
+        return true;
+      } catch (error: any) {
+        this.logger.error(`❌ Failed to send alert email to [${options.to}]: ${error.message}`);
+        return false;
+      }
+    }
+
+    this.logger.log(`[DEV EMAIL ALERT LOG] To: ${options.to} | Subject: ${options.subject}`);
+    return false;
+  }
 }
 
