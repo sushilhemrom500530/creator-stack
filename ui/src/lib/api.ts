@@ -330,3 +330,45 @@ export const workspacesApi = {
     }
   },
 };
+
+// Auth API Endpoints
+export const authApi = {
+  login: (dto: { email: string; password: string }) =>
+    api.post<{
+      user: { id: string; name: string; email: string; roles: string[]; lastLoginAt?: string };
+      accessToken: string;
+      refreshToken?: string;
+    }>('/auth/login', dto),
+
+  register: (dto: { name: string; email: string; password: string; country?: string }) =>
+    api.post<{
+      message: string;
+      verificationToken: string;
+      expiresAt: string;
+      email: string;
+    }>('/auth/register', dto),
+
+  verifyOtp: (dto: { verificationToken: string; otp: string }) =>
+    api.post<{
+      message: string;
+      user: { id: string; name: string; email: string; roles: string[] };
+      accessToken: string;
+      refreshToken?: string;
+    }>('/auth/verify-otp', dto),
+
+  resendOtp: (dto: { email: string }) =>
+    api.post<{ message: string; verificationToken: string }>('/auth/resend-otp', dto),
+
+  forgotPassword: (dto: { email: string }) =>
+    api.post<{ message: string; resetToken: string }>('/auth/forgot-password', dto),
+
+  verifyForgotOtp: (dto: { resetToken: string; otp: string }) =>
+    api.post<{ message: string; verifiedToken: string }>('/auth/verify-forgot-otp', dto),
+
+  resetPassword: (dto: { verifiedToken: string; newPassword: string }) =>
+    api.post<{ message: string }>('/auth/reset-password', dto),
+
+  logout: () =>
+    api.post<{ message: string }>('/auth/logout'),
+};
+
