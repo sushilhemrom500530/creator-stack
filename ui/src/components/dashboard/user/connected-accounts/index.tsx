@@ -19,7 +19,7 @@ import {
     AlertCircle,
 } from "lucide-react";
 import { FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaTiktok, FaPinterest, FaThreads, FaWhatsapp } from "react-icons/fa6";
-import { socialAccountsApi, getActiveWorkspaceId } from "@/lib/api";
+import { socialAccountsApi, workspacesApi, getActiveWorkspaceId } from "@/lib/api";
 
 export interface SocialAccountCard {
     id: string; // Database ID or platform key
@@ -205,13 +205,32 @@ function ConnectedAccountsInner() {
     const [manageModalAccount, setManageModalAccount] = useState<SocialAccountCard | null>(null);
     const [isRefreshingToken, setIsRefreshingToken] = useState(false);
 
-    const workspaceId = getActiveWorkspaceId();
+    const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>(getActiveWorkspaceId());
+
+    const getOrFetchWorkspaceId = useCallback(async () => {
+        let wsId = currentWorkspaceId || getActiveWorkspaceId();
+        if (!wsId || wsId === "default-workspace") {
+            try {
+                const workspaces = await workspacesApi.getWorkspaces();
+                if (workspaces && workspaces.length > 0) {
+                    wsId = workspaces[0]._id;
+                    setCurrentWorkspaceId(wsId);
+                    localStorage.setItem("active_workspace_id", wsId);
+                    localStorage.setItem("activeWorkspaceId", wsId);
+                }
+            } catch (err) {
+                console.log("Could not auto-fetch workspaces:", err);
+            }
+        }
+        return wsId;
+    }, [currentWorkspaceId]);
 
     // Fetch accounts from Backend API
     const loadAccounts = useCallback(async () => {
         setIsLoading(true);
         try {
-            const liveAccounts = await socialAccountsApi.getAccounts(workspaceId);
+            const wsId = await getOrFetchWorkspaceId();
+            const liveAccounts = await socialAccountsApi.getAccounts(wsId);
 
             setAccounts((prev) => {
                 return prev.map((template) => {
@@ -247,7 +266,7 @@ function ConnectedAccountsInner() {
         } finally {
             setIsLoading(false);
         }
-    }, [workspaceId]);
+    }, [getOrFetchWorkspaceId]);
 
     // Handle OAuth status redirect parameters
     useEffect(() => {
@@ -278,7 +297,8 @@ function ConnectedAccountsInner() {
         setIsConnecting(true);
 
         try {
-            const data = await socialAccountsApi.getOAuthUrl(connectModalAccount.platform, workspaceId);
+            const wsId = await getOrFetchWorkspaceId();
+            const data = await socialAccountsApi.getOAuthUrl(connectModalAccount.platform, wsId);
             if (data?.authUrl) {
                 message.loading(`Redirecting to ${connectModalAccount.name} OAuth...`, 1.5);
                 window.location.href = data.authUrl;
@@ -474,11 +494,10 @@ function ConnectedAccountsInner() {
                         <button
                             key={tab}
                             onClick={() => setFilterTab(tab)}
-                            className={`flex-1 sm:flex-none px-4 py-1.5 text-xs font-medium rounded-lg transition-all capitalize ${
-                                filterTab === tab
-                                    ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm font-semibold"
-                                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                            }`}
+                            className={`flex-1 sm:flex-none px-4 py-1.5 text-xs font-medium rounded-lg transition-all capitalize ${filterTab === tab
+                                ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm font-semibold"
+                                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                                }`}
                         >
                             {tab}
                         </button>
@@ -493,11 +512,10 @@ function ConnectedAccountsInner() {
                     return (
                         <div
                             key={account.id}
-                            className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg ${
-                                account.connected
-                                    ? "border-zinc-200/80 dark:border-zinc-800"
-                                    : "border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/40"
-                            }`}
+                            className={`relative bg-white dark:bg-zinc-900 border rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg ${account.connected
+                                ? "border-zinc-200/80 dark:border-zinc-800"
+                                : "border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-900/40"
+                                }`}
                         >
                             {/* Card Header */}
                             <div>
@@ -506,11 +524,10 @@ function ConnectedAccountsInner() {
                                         <Icon className="w-6 h-6" />
                                     </div>
                                     <Tag
-                                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium border ${
-                                            account.connected
-                                                ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800"
-                                                : "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700"
-                                        }`}
+                                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium border ${account.connected
+                                            ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800"
+                                            : "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700"
+                                            }`}
                                     >
                                         {account.connected ? "Active" : "Not Linked"}
                                     </Tag>

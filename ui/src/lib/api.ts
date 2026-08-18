@@ -6,8 +6,8 @@ export function getAuthToken(): string | null {
 }
 
 export function getActiveWorkspaceId(): string {
-  if (typeof window === 'undefined') return 'default-workspace';
-  return localStorage.getItem('activeWorkspaceId') || 'default-workspace';
+  if (typeof window === 'undefined') return '';
+  return localStorage.getItem('active_workspace_id') || localStorage.getItem('activeWorkspaceId') || '';
 }
 
 interface RequestOptions extends RequestInit {

@@ -26,22 +26,50 @@ export class SocialAccountsService {
     @InjectModel(SocialAccount.name) private readonly socialAccountModel: Model<SocialAccountDocument>,
     @InjectModel(Workspace.name) private readonly workspaceModel: Model<WorkspaceDocument>,
     private readonly socialProviderFactory: SocialProviderFactory,
-  ) {}
+  ) { }
 
   /**
    * Verifies that the user has permission to manage accounts in this workspace.
+   * Gracefully resolves or auto-creates user default workspace if workspaceId is 'default-workspace' or invalid.
    */
   async verifyWorkspaceAccess(workspaceId: string, userId: string): Promise<WorkspaceDocument> {
     const userObjectId = new Types.ObjectId(userId);
-    const workspace = await this.workspaceModel.findOne({
-      _id: new Types.ObjectId(workspaceId),
-      $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
-      isDeleted: false,
-    });
+    let workspace: WorkspaceDocument | null = null;
+
+    if (workspaceId && Types.ObjectId.isValid(workspaceId) && workspaceId !== 'default-workspace') {
+      workspace = await this.workspaceModel.findOne({
+        _id: new Types.ObjectId(workspaceId),
+        $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
+        isDeleted: false,
+      });
+    }
 
     if (!workspace) {
-      throw new ForbiddenException('Workspace access denied or workspace does not exist.');
+      // Find any active workspace for this user
+      workspace = await this.workspaceModel.findOne({
+        $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
+        isDeleted: false,
+      });
+
+      // If user still has no workspace, auto-create one
+      if (!workspace) {
+        const slug = `workspace-${userId.substring(0, 6)}-${Date.now()}`;
+        workspace = new this.workspaceModel({
+          name: 'My Workspace',
+          slug,
+          ownerId: userObjectId,
+          members: [
+            {
+              userId: userObjectId,
+              role: 'owner',
+              joinedAt: new Date(),
+            },
+          ],
+        });
+        await workspace.save();
+      }
     }
+
     return workspace;
   }
 
@@ -54,7 +82,7 @@ export class SocialAccountsService {
     userId: string,
     redirectUri?: string,
   ): Promise<{ authUrl: string; state: string; platform: SocialPlatform }> {
-    await this.verifyWorkspaceAccess(workspaceId, userId);
+    const workspace = await this.verifyWorkspaceAccess(workspaceId, userId);
 
     if (!this.socialProviderFactory.hasProvider(platform)) {
       throw new BadRequestException(`Platform '${platform}' provider is not yet implemented or configured.`);
@@ -62,14 +90,14 @@ export class SocialAccountsService {
 
     const state = generateOAuthState({
       userId,
-      workspaceId,
+      workspaceId: workspace._id.toString(),
       platform,
     });
 
     const provider = this.socialProviderFactory.getProvider(platform);
     const authUrl = provider.getAuthorizationUrl(state, redirectUri);
 
-    this.logger.log(`Generated OAuth authorization URL for [${platform}] in workspace ${workspaceId}`);
+    this.logger.log(`Generated OAuth authorization URL for [${platform}] in workspace ${workspace._id}`);
     return { authUrl, state, platform };
   }
 
@@ -226,11 +254,11 @@ export class SocialAccountsService {
    * Returns all connected accounts for a workspace (excluding encrypted secrets).
    */
   async findAllByWorkspace(workspaceId: string, userId: string): Promise<SocialAccountDocument[]> {
-    await this.verifyWorkspaceAccess(workspaceId, userId);
+    const workspace = await this.verifyWorkspaceAccess(workspaceId, userId);
 
     return this.socialAccountModel
       .find({
-        workspaceId: new Types.ObjectId(workspaceId),
+        workspaceId: workspace._id,
         isDeleted: false,
       })
       .select('-accessTokenEncrypted -refreshTokenEncrypted')
