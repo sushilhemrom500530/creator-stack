@@ -20,7 +20,7 @@ export class WorkspacesService {
     @InjectModel(Workspace.name) private readonly workspaceModel: Model<WorkspaceDocument>,
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   private generateSlug(name: string): string {
     const baseSlug = name
@@ -62,7 +62,7 @@ export class WorkspacesService {
 
   async findAllForUser(userId: string): Promise<WorkspaceDocument[]> {
     const userObjectId = new Types.ObjectId(userId);
-    return this.workspaceModel
+    let workspaces = await this.workspaceModel
       .find({
         $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
         isDeleted: false,
@@ -70,6 +70,23 @@ export class WorkspacesService {
       .sort({ createdAt: -1 })
       .populate('members.userId', 'name email avatar')
       .exec();
+
+    // Auto-create default workspace if user doesn't have one yet
+    if (!workspaces || workspaces.length === 0) {
+      const user = await this.userModel.findById(userId);
+      const defaultName = user?.name ? `${user.name}'s Workspace` : 'My Brand Workspace';
+      await this.create(userId, { name: defaultName });
+      workspaces = await this.workspaceModel
+        .find({
+          $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
+          isDeleted: false,
+        })
+        .sort({ createdAt: -1 })
+        .populate('members.userId', 'name email avatar')
+        .exec();
+    }
+
+    return workspaces;
   }
 
   async findOne(workspaceId: string, userId: string): Promise<WorkspaceDocument> {
