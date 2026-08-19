@@ -4,21 +4,24 @@ export const socialConfig = registerAs('social', () => ({
   encryptionKey: process.env.ENCRYPTION_KEY || process.env.TOKEN_ENCRYPTION_KEY || process.env.JWT_SECRET,
 
   meta: {
-    appId: process.env.META_APP_ID,
-    appSecret: process.env.META_APP_SECRET,
-    callbackUrl: process.env.META_CALLBACK_URL || 'http://localhost:5000/api/v1/social-accounts/oauth/facebook/callback',
+    appId: process.env.META_APP_ID || process.env.FACEBOOK_CLIENT_ID,
+    appSecret: process.env.META_APP_SECRET || process.env.FACEBOOK_CLIENT_SECRET,
+    callbackUrl: process.env.FACEBOOK_REDIRECT_URI || process.env.META_CALLBACK_URL || 'http://localhost:8080/api/v1/social-accounts/oauth/facebook/callback',
+    instagramCallbackUrl: process.env.INSTAGRAM_REDIRECT_URI || 'http://localhost:8080/api/v1/social-accounts/oauth/instagram/callback',
+    threadsAppId: process.env.THREADS_CLIENT_ID || process.env.THREAD_APP_ID || process.env.META_APP_ID,
+    threadsAppSecret: process.env.THREADS_CLIENT_SECRET || process.env.THREAD_APP_SECRET || process.env.META_APP_SECRET,
+    threadsCallbackUrl: process.env.THREADS_REDIRECT_URI || 'http://localhost:8080/api/v1/social-accounts/oauth/threads/callback',
     graphVersion: process.env.META_GRAPH_VERSION || 'v21.0',
     graphApiUrl: `https://graph.facebook.com/${process.env.META_GRAPH_VERSION || 'v21.0'}`,
     scopes: {
-      facebook: [
-        'public_profile',
-        'email',
-        'pages_show_list',
-        'pages_read_engagement',
-        'pages_manage_posts',
-        'pages_read_user_content',
-        'read_insights',
-      ],
+      facebook: process.env.META_FACEBOOK_SCOPES
+        ? process.env.META_FACEBOOK_SCOPES.split(',').map((s) => s.trim())
+        : [
+          'public_profile',
+          'pages_show_list',
+          'pages_read_engagement',
+          'pages_manage_posts',
+        ],
       instagram: [
         'instagram_basic',
         'instagram_content_publish',

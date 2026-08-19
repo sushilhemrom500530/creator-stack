@@ -9,10 +9,13 @@ import {
 export class ThreadsOAuth {
   private readonly logger = new Logger(ThreadsOAuth.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   private getAppId(): string {
     return (
+      this.configService.get<string>('social.meta.threadsAppId') ||
+      this.configService.get<string>('THREADS_CLIENT_ID') ||
+      this.configService.get<string>('THREAD_APP_ID') ||
       this.configService.get<string>('social.meta.appId') ||
       this.configService.get<string>('META_APP_ID') ||
       ''
@@ -21,6 +24,9 @@ export class ThreadsOAuth {
 
   private getAppSecret(): string {
     return (
+      this.configService.get<string>('social.meta.threadsAppSecret') ||
+      this.configService.get<string>('THREADS_CLIENT_SECRET') ||
+      this.configService.get<string>('THREAD_APP_SECRET') ||
       this.configService.get<string>('social.meta.appSecret') ||
       this.configService.get<string>('META_APP_SECRET') ||
       ''
@@ -29,9 +35,10 @@ export class ThreadsOAuth {
 
   private getDefaultCallbackUrl(): string {
     return (
+      this.configService.get<string>('social.meta.threadsCallbackUrl') ||
+      this.configService.get<string>('THREADS_REDIRECT_URI') ||
       this.configService.get<string>('social.meta.callbackUrl') ||
-      this.configService.get<string>('META_CALLBACK_URL') ||
-      'http://localhost:5000/api/v1/social-accounts/oauth/threads/callback'
+      'http://localhost:8080/api/v1/social-accounts/oauth/threads/callback'
     );
   }
 

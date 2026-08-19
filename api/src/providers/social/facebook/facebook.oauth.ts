@@ -11,12 +11,13 @@ import {
 export class FacebookOAuth {
   private readonly logger = new Logger(FacebookOAuth.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   private getAppId(): string {
     return (
       this.configService.get<string>('social.meta.appId') ||
       this.configService.get<string>('META_APP_ID') ||
+      this.configService.get<string>('FACEBOOK_CLIENT_ID') ||
       ''
     );
   }
@@ -25,6 +26,7 @@ export class FacebookOAuth {
     return (
       this.configService.get<string>('social.meta.appSecret') ||
       this.configService.get<string>('META_APP_SECRET') ||
+      this.configService.get<string>('FACEBOOK_CLIENT_SECRET') ||
       ''
     );
   }
@@ -32,8 +34,9 @@ export class FacebookOAuth {
   private getDefaultCallbackUrl(): string {
     return (
       this.configService.get<string>('social.meta.callbackUrl') ||
+      this.configService.get<string>('FACEBOOK_REDIRECT_URI') ||
       this.configService.get<string>('META_CALLBACK_URL') ||
-      'http://localhost:5000/api/v1/social-accounts/oauth/facebook/callback'
+      'http://localhost:8080/api/v1/social-accounts/oauth/facebook/callback'
     );
   }
 
@@ -46,12 +49,9 @@ export class FacebookOAuth {
     return (
       this.configService.get<string[]>('social.meta.scopes.facebook') || [
         'public_profile',
-        'email',
         'pages_show_list',
         'pages_read_engagement',
         'pages_manage_posts',
-        'pages_read_user_content',
-        'read_insights',
       ]
     );
   }

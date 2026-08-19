@@ -46,10 +46,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message = exception.message;
     }
 
-    // Format 404 Not Found error messages professionally
+    // Format unhandled NestJS 404 router messages cleanly
     if (
-      status === HttpStatus.NOT_FOUND ||
-      (typeof message === 'string' && message.startsWith('Cannot '))
+      status === HttpStatus.NOT_FOUND &&
+      typeof message === 'string' &&
+      message.startsWith('Cannot ')
     ) {
       message = `Route Not Found for ${request.method} ${request.url}`;
     }

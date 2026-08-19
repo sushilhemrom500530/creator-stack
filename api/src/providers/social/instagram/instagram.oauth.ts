@@ -20,6 +20,7 @@ export class InstagramOAuth {
     return (
       this.configService.get<string>('social.meta.appId') ||
       this.configService.get<string>('META_APP_ID') ||
+      this.configService.get<string>('FACEBOOK_CLIENT_ID') ||
       ''
     );
   }
@@ -28,15 +29,18 @@ export class InstagramOAuth {
     return (
       this.configService.get<string>('social.meta.appSecret') ||
       this.configService.get<string>('META_APP_SECRET') ||
+      this.configService.get<string>('FACEBOOK_CLIENT_SECRET') ||
       ''
     );
   }
 
   private getDefaultCallbackUrl(): string {
     return (
+      this.configService.get<string>('social.meta.instagramCallbackUrl') ||
+      this.configService.get<string>('INSTAGRAM_REDIRECT_URI') ||
       this.configService.get<string>('social.meta.callbackUrl') ||
       this.configService.get<string>('META_CALLBACK_URL') ||
-      'http://localhost:5000/api/v1/social-accounts/oauth/instagram/callback'
+      'http://localhost:8080/api/v1/social-accounts/oauth/instagram/callback'
     );
   }
 
