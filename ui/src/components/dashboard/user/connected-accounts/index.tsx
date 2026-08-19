@@ -208,22 +208,26 @@ function ConnectedAccountsInner() {
     const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>(getActiveWorkspaceId());
 
     const getOrFetchWorkspaceId = useCallback(async () => {
-        let wsId = currentWorkspaceId || getActiveWorkspaceId();
-        if (!wsId || wsId === "default-workspace") {
+        let wsId = getActiveWorkspaceId();
+        if (!wsId || wsId === "default-workspace" || wsId === "[object Object]") {
             try {
                 const workspaces = await workspacesApi.getWorkspaces();
                 if (workspaces && workspaces.length > 0) {
-                    wsId = workspaces[0]._id;
-                    setCurrentWorkspaceId(wsId);
-                    localStorage.setItem("active_workspace_id", wsId);
-                    localStorage.setItem("activeWorkspaceId", wsId);
+                    const first = workspaces[0];
+                    const id = typeof first === "object" ? first._id : first;
+                    if (typeof id === "string" && id.length === 24) {
+                        wsId = id;
+                        setCurrentWorkspaceId(wsId);
+                        localStorage.setItem("active_workspace_id", wsId);
+                        localStorage.setItem("activeWorkspaceId", wsId);
+                    }
                 }
             } catch (err) {
                 console.log("Could not auto-fetch workspaces:", err);
             }
         }
-        return wsId;
-    }, [currentWorkspaceId]);
+        return typeof wsId === "string" && wsId !== "[object Object]" ? wsId : "";
+    }, []);
 
     // Fetch accounts from Backend API
     const loadAccounts = useCallback(async () => {

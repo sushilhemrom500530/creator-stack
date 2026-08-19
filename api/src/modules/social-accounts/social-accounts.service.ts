@@ -36,7 +36,14 @@ export class SocialAccountsService {
     const userObjectId = new Types.ObjectId(userId);
     let workspace: WorkspaceDocument | null = null;
 
-    if (workspaceId && Types.ObjectId.isValid(workspaceId) && workspaceId !== 'default-workspace') {
+    if (
+      workspaceId &&
+      typeof workspaceId === 'string' &&
+      workspaceId.length === 24 &&
+      Types.ObjectId.isValid(workspaceId) &&
+      workspaceId !== 'default-workspace' &&
+      workspaceId !== '[object Object]'
+    ) {
       workspace = await this.workspaceModel.findOne({
         _id: new Types.ObjectId(workspaceId),
         $or: [{ ownerId: userObjectId }, { 'members.userId': userObjectId }],
