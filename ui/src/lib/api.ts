@@ -7,7 +7,11 @@ export function getAuthToken(): string | null {
 
 export function getActiveWorkspaceId(): string {
   if (typeof window === 'undefined') return '';
-  return localStorage.getItem('active_workspace_id') || localStorage.getItem('activeWorkspaceId') || '';
+  const val = localStorage.getItem('active_workspace_id') || localStorage.getItem('activeWorkspaceId') || '';
+  if (val === '[object Object]' || val === 'default-workspace' || val === 'undefined' || val === 'null') {
+    return '';
+  }
+  return val;
 }
 
 interface RequestOptions extends RequestInit {
@@ -22,7 +26,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   if (params) {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
+      if (value !== undefined && value !== null && value !== '' && value !== '[object Object]') {
         searchParams.append(key, String(value));
       }
     });
@@ -48,6 +52,16 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+    if (response.status === 401) {
+      if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('jwt');
+        document.cookie = 'auth_token=; path=/; max-age=0';
+        document.cookie = 'access_token=; path=/; max-age=0';
+        window.location.href = `/auth/login?expired=true&redirect=${encodeURIComponent(window.location.pathname)}`;
+      }
+    }
     const errorMsg = data?.message || data?.error || `Request failed with status ${response.status}`;
     throw new Error(Array.isArray(errorMsg) ? errorMsg.join(', ') : errorMsg);
   }
@@ -79,17 +93,26 @@ export const api = {
 
 // Social Accounts API Endpoints
 export const socialAccountsApi = {
-  getAccounts: (workspaceId: string) =>
-    api.get<any[]>('/social-accounts', { workspaceId }),
+  getAccounts: (workspaceId?: string) => {
+    const params: Record<string, any> = {};
+    if (workspaceId && workspaceId !== '[object Object]') params.workspaceId = workspaceId;
+    return api.get<any[]>('/social-accounts', params);
+  },
 
-  getHealth: (workspaceId: string) =>
-    api.get<any>('/social-accounts/health', { workspaceId }),
+  getHealth: (workspaceId?: string) => {
+    const params: Record<string, any> = {};
+    if (workspaceId && workspaceId !== '[object Object]') params.workspaceId = workspaceId;
+    return api.get<any>('/social-accounts/health', params);
+  },
 
-  getOAuthUrl: (platform: string, workspaceId: string) =>
-    api.get<{ authUrl: string; state: string; platform: string }>(
+  getOAuthUrl: (platform: string, workspaceId?: string) => {
+    const params: Record<string, any> = {};
+    if (workspaceId && workspaceId !== '[object Object]') params.workspaceId = workspaceId;
+    return api.get<{ authUrl: string; state: string; platform: string }>(
       `/social-accounts/oauth/${platform}/authorize`,
-      { workspaceId }
-    ),
+      params
+    );
+  },
 
   refreshToken: (accountId: string) =>
     api.post<any>(`/social-accounts/${accountId}/refresh`),
