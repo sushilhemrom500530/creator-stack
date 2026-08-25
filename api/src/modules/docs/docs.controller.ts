@@ -1,5 +1,4 @@
-import { Controller, Get, Res, VERSION_NEUTRAL } from '@nestjs/common';
-import type { Response } from 'express';
+import { Controller, Get, Header, VERSION_NEUTRAL } from '@nestjs/common';
 import { DocsService } from './docs.service';
 import { Public } from '../../common/decorators/public.decorator';
 
@@ -9,9 +8,8 @@ export class DocsController {
 
   @Public()
   @Get()
-  getDocs(@Res() res: Response) {
-    const html = this.docsService.getDocsHtml();
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(html);
+  @Header('Content-Type', 'text/html')
+  getDocs(): string {
+    return this.docsService.getDocsHtml();
   }
 }

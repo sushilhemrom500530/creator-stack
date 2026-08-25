@@ -72,6 +72,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     responseBody.path = request.url;
     responseBody.timestamp = new Date().toISOString();
 
+    if (response.headersSent) {
+      return;
+    }
+
     response.status(status).json(responseBody);
   }
 }
