@@ -28,11 +28,7 @@ out/
 **/*.7z
 
 # Environment variables & secrets
-.env
-.env.*
 !.env.example
-**/.env
-**/.env.*
 !**/.env.example
 
 # Logs & debugging
@@ -50,3 +46,4 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+config.bat

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import NavItem from "../nav-menu";
-import logout from "@/assets/dashboard/logout.svg";
+import logoutIcon from "@/assets/dashboard/logout.svg";
 import Link from "next/link";
 import { adminMenuData, userMenuData } from "@/data";
 import type { MenuProps } from 'antd';
@@ -10,10 +10,11 @@ import { Dropdown } from 'antd';
 import Logo from "@/components/reuseable/logo";
 import { LayoutDashboard, Settings, ChevronUp } from "lucide-react";
 import Image from "next/image";
+import { useAuth } from "@/hooks";
 
 export default function Sidebar({ navOpened, setNavOpened, user }: any) {
     const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-    // const { logoutUser } = useAuthService();
+    const { logout } = useAuth();
 
     const menuLinks = user?.role === "user"
         ? userMenuData?.linkData
@@ -53,10 +54,10 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
             key: '3',
             label: (
                 <div
-                    // onClick={logoutUser}
-                    className="flex items-center gap-3 px-1 py-1 text-sm font-medium text-red-600 transition-colors w-full text-left cursor-pointer"
+                    onClick={() => logout()}
+                    className="flex items-center gap-3 px-1 py-1 text-sm font-medium text-red-600 hover:text-red-700 transition-colors w-full text-left cursor-pointer"
                 >
-                    <Image src={logout} alt="logout" width={16} height={16} />
+                    <Image src={logoutIcon} alt="logout" width={16} height={16} />
                     Log Out
                 </div>
             ),
