@@ -8,10 +8,7 @@ import {
     FileText,
     Mail,
     Lock,
-    Trash2,
-    CheckCircle,
-    ArrowUpRight,
-    ExternalLink
+    Trash2
 } from "lucide-react";
 
 export default function PrivacyPolicy() {
@@ -55,46 +52,40 @@ export default function PrivacyPolicy() {
 
     return (
         <main
-            className={`min-h-screen pt-24 pb-20 transition-colors duration-200 ${
-                isLight ? "bg-[#fbfbfd] text-slate-800" : "bg-[#0b0a10] text-slate-300"
-            }`}
+            className={`min-h-screen pt-24 pb-20 transition-colors duration-200 ${isLight ? "bg-[#fbfbfd] text-slate-800" : "bg-[#0b0a10] text-slate-300"
+                }`}
         >
             {/* Header / Title Area */}
             <div
-                className={`border-b ${
-                    isLight
+                className={`border-b ${isLight
                         ? "border-slate-200/80 bg-white"
                         : "border-white/10 bg-[#100e17]"
-                }`}
+                    }`}
             >
                 <div className="max-w-5xl mx-auto px-6 py-12 md:py-16">
                     <div className="flex items-center gap-2 mb-3">
                         <ShieldCheck
-                            className={`w-5 h-5 ${
-                                isLight ? "text-violet-600" : "text-violet-400"
-                            }`}
+                            className={`w-5 h-5 ${isLight ? "text-violet-600" : "text-violet-400"
+                                }`}
                         />
                         <span
-                            className={`text-xs font-semibold uppercase tracking-wider ${
-                                isLight ? "text-violet-600" : "text-violet-400"
-                            }`}
+                            className={`text-xs font-semibold uppercase tracking-wider ${isLight ? "text-violet-600" : "text-violet-400"
+                                }`}
                         >
                             Legal & Compliance
                         </span>
                     </div>
 
                     <h1
-                        className={`text-3xl md:text-5xl font-bold tracking-tight mb-4 ${
-                            isLight ? "text-slate-900" : "text-white"
-                        }`}
+                        className={`text-3xl md:text-5xl font-bold tracking-tight mb-4 ${isLight ? "text-slate-900" : "text-white"
+                            }`}
                     >
                         Privacy Policy
                     </h1>
 
                     <p
-                        className={`text-base md:text-lg leading-relaxed max-w-3xl mb-6 ${
-                            isLight ? "text-slate-600" : "text-slate-400"
-                        }`}
+                        className={`text-base md:text-lg leading-relaxed max-w-3xl mb-6 ${isLight ? "text-slate-600" : "text-slate-400"
+                            }`}
                     >
                         This Privacy Policy describes how CreatorStack collects, uses, protects,
                         and manages your personal data and social platform tokens when you use our
@@ -121,11 +112,10 @@ export default function PrivacyPolicy() {
                     {/* Left Sticky Sidebar / Table of Contents */}
                     <aside className="hidden lg:block lg:col-span-4">
                         <div
-                            className={`sticky top-28 p-5 rounded-xl border text-sm ${
-                                isLight
+                            className={`sticky top-28 p-5 rounded-xl border text-sm ${isLight
                                     ? "bg-white border-slate-200 shadow-sm"
                                     : "bg-[#12101b] border-white/10"
-                            }`}
+                                }`}
                         >
                             <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-200 dark:border-white/10 font-semibold text-xs tracking-wider uppercase">
                                 <FileText className="w-4 h-4 text-violet-500" />
@@ -141,15 +131,14 @@ export default function PrivacyPolicy() {
                                         <a
                                             key={item.id}
                                             href={`#${item.id}`}
-                                            className={`block px-3 py-1.5 rounded-md text-xs transition-colors ${
-                                                isActive
+                                            className={`block px-3 py-1.5 rounded-md text-xs transition-colors ${isActive
                                                     ? isLight
                                                         ? "bg-violet-50 text-violet-700 font-semibold"
                                                         : "bg-violet-950/40 text-violet-300 font-semibold"
                                                     : isLight
-                                                    ? "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                                                    : "text-slate-400 hover:text-white hover:bg-white/5"
-                                            }`}
+                                                        ? "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                                                        : "text-slate-400 hover:text-white hover:bg-white/5"
+                                                }`}
                                         >
                                             {item.label}
                                         </a>
@@ -177,11 +166,10 @@ export default function PrivacyPolicy() {
                         {/* 1. Overview */}
                         <section id="overview" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 1. Overview & Scope
                             </h2>
@@ -202,11 +190,10 @@ export default function PrivacyPolicy() {
                         {/* 2. Information We Collect */}
                         <section id="information-collected" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 2. Information We Collect
                             </h2>
@@ -219,9 +206,8 @@ export default function PrivacyPolicy() {
                             <div className="space-y-4 pt-2">
                                 <div>
                                     <h3
-                                        className={`font-semibold text-base mb-1 ${
-                                            isLight ? "text-slate-900" : "text-white"
-                                        }`}
+                                        className={`font-semibold text-base mb-1 ${isLight ? "text-slate-900" : "text-white"
+                                            }`}
                                     >
                                         2.1 Account & Registration Information
                                     </h3>
@@ -234,9 +220,8 @@ export default function PrivacyPolicy() {
 
                                 <div>
                                     <h3
-                                        className={`font-semibold text-base mb-1 ${
-                                            isLight ? "text-slate-900" : "text-white"
-                                        }`}
+                                        className={`font-semibold text-base mb-1 ${isLight ? "text-slate-900" : "text-white"
+                                            }`}
                                     >
                                         2.2 Social Network Account Data (OAuth)
                                     </h3>
@@ -250,9 +235,8 @@ export default function PrivacyPolicy() {
 
                                 <div>
                                     <h3
-                                        className={`font-semibold text-base mb-1 ${
-                                            isLight ? "text-slate-900" : "text-white"
-                                        }`}
+                                        className={`font-semibold text-base mb-1 ${isLight ? "text-slate-900" : "text-white"
+                                            }`}
                                     >
                                         2.3 Content, Media & Scheduling Data
                                     </h3>
@@ -265,9 +249,8 @@ export default function PrivacyPolicy() {
 
                                 <div>
                                     <h3
-                                        className={`font-semibold text-base mb-1 ${
-                                            isLight ? "text-slate-900" : "text-white"
-                                        }`}
+                                        className={`font-semibold text-base mb-1 ${isLight ? "text-slate-900" : "text-white"
+                                            }`}
                                     >
                                         2.4 Performance & Engagement Metrics
                                     </h3>
@@ -280,9 +263,8 @@ export default function PrivacyPolicy() {
 
                                 <div>
                                     <h3
-                                        className={`font-semibold text-base mb-1 ${
-                                            isLight ? "text-slate-900" : "text-white"
-                                        }`}
+                                        className={`font-semibold text-base mb-1 ${isLight ? "text-slate-900" : "text-white"
+                                            }`}
                                     >
                                         2.5 Technical & Log Data
                                     </h3>
@@ -298,11 +280,10 @@ export default function PrivacyPolicy() {
                         {/* 3. How We Use Data */}
                         <section id="how-we-use-data" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 3. How We Use Your Information
                             </h2>
@@ -340,11 +321,10 @@ export default function PrivacyPolicy() {
                         {/* 4. Social Platforms & Meta API */}
                         <section id="meta-social-data" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 4. Social Platforms & Meta API Compliance
                             </h2>
@@ -354,11 +334,10 @@ export default function PrivacyPolicy() {
                             </p>
 
                             <div
-                                className={`p-4 rounded-lg border text-sm space-y-3 ${
-                                    isLight
+                                className={`p-4 rounded-lg border text-sm space-y-3 ${isLight
                                         ? "bg-slate-50 border-slate-200 text-slate-700"
                                         : "bg-[#14121f] border-white/10 text-slate-300"
-                                }`}
+                                    }`}
                             >
                                 <div className="font-semibold text-base flex items-center gap-2">
                                     <Lock className="w-4 h-4 text-violet-500" />
@@ -381,11 +360,10 @@ export default function PrivacyPolicy() {
                         {/* 5. Data Security & Storage */}
                         <section id="security-encryption" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 5. Data Security & Cryptographic Storage
                             </h2>
@@ -420,11 +398,10 @@ export default function PrivacyPolicy() {
                         {/* 6. Retention & Data Deletion */}
                         <section id="data-retention-deletion" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 6. Data Retention & User Data Deletion Instructions
                             </h2>
@@ -434,11 +411,10 @@ export default function PrivacyPolicy() {
                             </p>
 
                             <div
-                                className={`p-5 rounded-lg border space-y-4 ${
-                                    isLight
+                                className={`p-5 rounded-lg border space-y-4 ${isLight
                                         ? "bg-slate-50 border-slate-200 text-slate-700"
                                         : "bg-[#14121f] border-white/10 text-slate-300"
-                                }`}
+                                    }`}
                             >
                                 <div className="flex items-center gap-2 font-semibold text-base text-red-500 dark:text-red-400">
                                     <Trash2 className="w-4 h-4" />
@@ -452,11 +428,10 @@ export default function PrivacyPolicy() {
 
                                 <div className="space-y-3 text-xs md:text-sm">
                                     <div
-                                        className={`p-3 rounded-md border ${
-                                            isLight
+                                        className={`p-3 rounded-md border ${isLight
                                                 ? "bg-white border-slate-200"
                                                 : "bg-[#0f0d18] border-white/10"
-                                        }`}
+                                            }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
                                             Method 1: Disconnect via CreatorStack Dashboard
@@ -470,11 +445,10 @@ export default function PrivacyPolicy() {
                                     </div>
 
                                     <div
-                                        className={`p-3 rounded-md border ${
-                                            isLight
+                                        className={`p-3 rounded-md border ${isLight
                                                 ? "bg-white border-slate-200"
                                                 : "bg-[#0f0d18] border-white/10"
-                                        }`}
+                                            }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
                                             Method 2: Revoke Access from Platform Settings
@@ -486,11 +460,10 @@ export default function PrivacyPolicy() {
                                     </div>
 
                                     <div
-                                        className={`p-3 rounded-md border ${
-                                            isLight
+                                        className={`p-3 rounded-md border ${isLight
                                                 ? "bg-white border-slate-200"
                                                 : "bg-[#0f0d18] border-white/10"
-                                        }`}
+                                            }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
                                             Method 3: Submit a Formal Account & Data Deletion Request
@@ -514,11 +487,10 @@ export default function PrivacyPolicy() {
                         {/* 7. Your Privacy Rights */}
                         <section id="user-rights" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 7. Your Privacy Rights (GDPR & CCPA/CPRA)
                             </h2>
@@ -554,11 +526,10 @@ export default function PrivacyPolicy() {
                         {/* 8. Cookies & Tracking */}
                         <section id="cookies-tracking" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 8. Cookies & Tracking Technologies
                             </h2>
@@ -575,11 +546,10 @@ export default function PrivacyPolicy() {
                         {/* 9. Third-Party Services */}
                         <section id="third-parties" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 9. Third-Party Service Providers
                             </h2>
@@ -610,11 +580,10 @@ export default function PrivacyPolicy() {
                         {/* 10. Policy Changes */}
                         <section id="policy-changes" className="scroll-mt-28 space-y-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 10. Changes to This Privacy Policy
                             </h2>
@@ -629,11 +598,10 @@ export default function PrivacyPolicy() {
                         {/* 11. Contact Information */}
                         <section id="contact-us" className="scroll-mt-28 space-y-4 pt-4">
                             <h2
-                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${
-                                    isLight
+                                className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
                                         ? "text-slate-900 border-slate-200"
                                         : "text-white border-white/10"
-                                }`}
+                                    }`}
                             >
                                 11. Contact Information
                             </h2>
@@ -643,11 +611,10 @@ export default function PrivacyPolicy() {
                             </p>
 
                             <div
-                                className={`p-5 rounded-lg border space-y-2 text-sm ${
-                                    isLight
+                                className={`p-5 rounded-lg border space-y-2 text-sm ${isLight
                                         ? "bg-white border-slate-200"
                                         : "bg-[#12101b] border-white/10"
-                                }`}
+                                    }`}
                             >
                                 <p className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>
                                     CreatorStack Privacy & Security Office

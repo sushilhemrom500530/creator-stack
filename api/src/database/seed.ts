@@ -41,7 +41,7 @@ async function seed() {
     },
     {
       name: 'Alex Johnson',
-      email: 'alex@creatorstack.io',
+      email: 'user@gmail.com',
       rawPassword: commonPassword,
       roles: [Role.CREATOR, Role.USER],
       status: Status.ACTIVE,
@@ -189,13 +189,54 @@ async function seed() {
       console.log(`✨ Created User: ${userData.name} (${userData.email}) [${userData.type}]`);
     }
 
-    // Ensure Workspace exists for this user
+    // Ensure Workspace exists for this user (lookup by owner, member, or slug)
     let workspace = await WorkspaceModel.findOne({
-      $or: [{ ownerId: user._id }, { 'members.userId': user._id }],
-      isDeleted: false,
+      $or: [
+        { ownerId: user._id },
+        { 'members.userId': user._id },
+        { slug: userData.workspaceSlug },
+      ],
     });
 
-    if (!workspace) {
+    if (workspace) {
+      let workspaceUpdated = false;
+
+      // Restore if soft-deleted
+      if (workspace.isDeleted) {
+        workspace.isDeleted = false;
+        workspace.deletedAt = null;
+        workspaceUpdated = true;
+      }
+
+      // Ensure ownership
+      if (!workspace.ownerId || workspace.ownerId.toString() !== user._id.toString()) {
+        workspace.ownerId = user._id;
+        workspaceUpdated = true;
+      }
+
+      // Ensure user is in members list with OWNER role
+      const memberIndex = workspace.members.findIndex(
+        (m: any) => m.userId && m.userId.toString() === user._id.toString()
+      );
+      if (memberIndex === -1) {
+        workspace.members.push({
+          userId: user._id,
+          role: WorkspaceRole.OWNER,
+          joinedAt: new Date(),
+        });
+        workspaceUpdated = true;
+      } else if (workspace.members[memberIndex].role !== WorkspaceRole.OWNER) {
+        workspace.members[memberIndex].role = WorkspaceRole.OWNER;
+        workspaceUpdated = true;
+      }
+
+      if (workspaceUpdated) {
+        await workspace.save();
+        console.log(`   └─ Updated & linked Workspace: "${workspace.name}" (slug: ${workspace.slug})`);
+      } else {
+        console.log(`   └─ Workspace linked: "${workspace.name}" (ID: ${workspace._id})`);
+      }
+    } else {
       workspace = new WorkspaceModel({
         name: userData.workspaceName,
         slug: userData.workspaceSlug,
@@ -216,8 +257,6 @@ async function seed() {
       });
       await workspace.save();
       console.log(`   └─ Created Primary Workspace: "${userData.workspaceName}" (slug: ${userData.workspaceSlug})`);
-    } else {
-      console.log(`   └─ Workspace linked: "${workspace.name}" (ID: ${workspace._id})`);
     }
   }
 
@@ -230,14 +269,11 @@ async function seed() {
   console.log(`     Password: ${adminPassword}`);
   console.log(`     Roles:    [super_admin, admin, user]\n`);
   console.log('  🎨 Demo Creators & Users (Common Password: ' + commonPassword + '):');
-  console.log('     1. Alex Johnson:      alex@creatorstack.io');
-  console.log('     2. Sarah Miller:      sarah@creatorstack.io');
-  console.log('     3. David Chen:        david@creatorstack.io');
-  console.log('     4. Emma Watson:       emma.watson@creatorstack.io');
-  console.log('     5. Marcus Vance:      marcus.vance@creatorstack.io');
-  console.log('     6. Priya Patel:       priya.patel@creatorstack.io');
-  console.log('     7. Lucas Silva:       lucas.silva@creatorstack.io (Agency Admin)');
-  console.log('     8. Liam Cooper:       suspended.demo@creatorstack.io (Blocked User)');
+  seedUsers
+    .filter((u) => u.email !== adminEmail)
+    .forEach((u, idx) => {
+      console.log(`     ${idx + 1}. ${u.name.padEnd(20)}: ${u.email} (${u.type})`);
+    });
   console.log('─────────────────────────────────────────────────────────────────────────────\n');
 
   await mongoose.disconnect();
