@@ -30,6 +30,14 @@ out/
 # Environment variables & secrets
 !.env.example
 !**/.env.example
+.env
+.env.*
+.env.production
+.env.production.*
+.env.local
+.env.local.*
+.env.dev
+.env.dev.*
 
 # Logs & debugging
 *.log

@@ -156,7 +156,7 @@ export default function Overview() {
                                     onClick={() => setSelectedTab(tab)}
                                     className={`px-3 py-1 text-xs font-semibold rounded-lg capitalize transition-all duration-300 ${selectedTab === tab
                                         ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
-                                        : "text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-350"
+                                        : "text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300"
                                         }`}
                                 >
                                     {tab}
@@ -219,7 +219,7 @@ export default function Overview() {
                 </div>
 
                 {/* AI Growth Engine Insights Panel */}
-                <div className="dark:bg-[#1A1D21] dark:border-zinc-800/65 card p-6 flex flex-col justify-between">
+                <div className="card p-6 flex flex-col justify-between dark:bg-[#1A1D21] dark:border-zinc-800/60">
                     <div>
                         <div className="flex items-center gap-2 mb-6">
                             <Sparkles className="w-5 h-5 text-purple-500" />
@@ -238,13 +238,13 @@ export default function Overview() {
                                         <span className={`text-xs font-mono font-bold tracking-tight ${item.tagColor}`}>
                                             {item.category}
                                         </span>
-                                        <p className="text-xs mt-1.5 text-slate-650 dark:text-zinc-350 leading-relaxed font-medium">
+                                        <p className="text-xs mt-1.5 text-slate-600 dark:text-zinc-300 leading-relaxed font-medium">
                                             {item.tip}
                                         </p>
                                     </div>
 
                                     <div className="flex justify-end mt-2">
-                                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-650 group-hover:translate-x-1.5 transition-all duration-300" />
+                                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 group-hover:translate-x-1.5 transition-all duration-300" />
                                     </div>
                                 </div>
                             ))}

@@ -20,12 +20,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setMounted(true);
         const storedTheme = localStorage.getItem("home-theme") as Theme | null;
 
+        let initialTheme: Theme = "dark";
         if (storedTheme === "light" || storedTheme === "dark") {
-            setThemeState(storedTheme);
+            initialTheme = storedTheme;
         } else {
             // Default system-wise preference
             const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            setThemeState(systemPrefersDark ? "dark" : "light");
+            initialTheme = systemPrefersDark ? "dark" : "light";
+        }
+
+        setThemeState(initialTheme);
+        if (initialTheme === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
         }
 
         // Listen for system theme changes if user hasn't manually selected a preference
@@ -33,7 +41,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const handleSystemThemeChange = (e: MediaQueryListEvent) => {
             const hasUserPreference = localStorage.getItem("home-theme");
             if (!hasUserPreference) {
-                setThemeState(e.matches ? "dark" : "light");
+                const nextTheme = e.matches ? "dark" : "light";
+                setThemeState(nextTheme);
+                if (nextTheme === "dark") {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
             }
         };
 
@@ -41,9 +55,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         return () => mediaQuery.removeEventListener("change", handleSystemThemeChange);
     }, []);
 
+    useEffect(() => {
+        if (!mounted) return;
+        const root = document.documentElement;
+        if (theme === "dark") {
+            root.classList.add("dark");
+        } else {
+            root.classList.remove("dark");
+        }
+    }, [theme, mounted]);
+
     const setTheme = (newTheme: Theme) => {
         setThemeState(newTheme);
         localStorage.setItem("home-theme", newTheme);
+        if (newTheme === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
     };
 
     const toggleTheme = () => {

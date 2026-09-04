@@ -21,7 +21,7 @@ export default function NavItem({
     const pathname = usePathname();
 
     const activeClass = "border-e-[1.5px] border-e-primary !bg-primary/10 !text-primary";
-    const inactiveClass = "!text-[#43464A] hover:!text-primary hover:!bg-primary/10";
+    const inactiveClass = "!text-[#43464A] dark:!text-zinc-300 hover:!text-primary hover:!bg-primary/10";
 
     const isSubmenuOpen = openSubmenu === label;
 

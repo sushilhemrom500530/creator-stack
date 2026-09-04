@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-primary: #7C3AED;
     --color-secondary: #14B8A6;
@@ -19,13 +21,6 @@
 .dark {
     --background: #09090b;
     --foreground: #ededed;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #09090b;
-        --foreground: #ededed;
-    }
 }
 
 /* Prevent the off-canvas mobile sidebar (translated off-screen right)
@@ -272,7 +267,13 @@ body {
 }
 
 .card {
-    @apply bg-white border border-slate-100 rounded-2xl;
+    @apply bg-white border border-slate-100 rounded-2xl transition-colors duration-300;
+}
+
+.dark .card,
+.card.is-dark {
+    background-color: #1A1D21 !important;
+    border-color: rgba(39, 39, 42, 0.6) !important;
 }
 
 /* Shared Tagline Badge Component */

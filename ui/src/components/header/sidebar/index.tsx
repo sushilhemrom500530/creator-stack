@@ -76,13 +76,13 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
             {/* Sidebar */}
             <div
                 className={`
-          fixed top-0 left-0 z-30 h-screen w-72 lg:w-60 flex flex-col transition-transform duration-300 border-e border-e-[#E5E7EB] bg-white
+          fixed top-0 left-0 z-30 h-screen w-72 lg:w-60 flex flex-col transition-transform duration-300 border-e border-e-[#E5E7EB] dark:border-e-zinc-800/80 bg-white dark:bg-[#121316]
           ${navOpened ? "translate-x-0" : "-translate-x-full "}
           lg:translate-x-0  
         `}
             >
                 <div className={`flex flex-col h-full`}>
-                    <div className="h-[66px] flex items-center justify-center border-b border-b-[#E5E7EB]">
+                    <div className="h-[66px] flex items-center justify-center border-b border-b-[#E5E7EB] dark:border-b-zinc-800/80">
                         <Link href={user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard"} className="flex items-center justify-center gap-2 group w-full h-full">
                             <Logo className="h-[66px] scale-150 w-52 mx-auto lg:w-full" />
                         </Link>
@@ -109,19 +109,19 @@ export default function Sidebar({ navOpened, setNavOpened, user }: any) {
                         </nav>
                     </div>
 
-                    <div className="mt-auto border-t border-[#E5E7EB] shrink-0 bg-white">
+                    <div className="mt-auto border-t border-[#E5E7EB] dark:border-t-zinc-800/80 shrink-0 bg-white dark:bg-[#121316]">
                         <Dropdown menu={{ items: profileMenuItems }} trigger={['click']} placement="topLeft">
-                            <button className="w-full flex items-center justify-between p-4 hover:bg-slate-50 transition-colors cursor-pointer">
+                            <button className="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
                                 <div className="flex items-center gap-3 overflow-hidden">
                                     <div className="w-10 h-10 rounded-full bg-primary/10 flex flex-shrink-0 items-center justify-center text-primary font-bold text-lg">
                                         {user?.name?.charAt(0) || "U"}
                                     </div>
                                     <div className="flex flex-col items-start truncate overflow-hidden">
-                                        <span className="text-sm font-semibold text-[#1A1D1F] truncate text-left block w-full">{user?.name}</span>
-                                        <span className="text-xs text-[#6F767E] truncate text-left block w-full">{user?.email}</span>
+                                        <span className="text-sm font-semibold text-[#1A1D1F] dark:text-zinc-100 truncate text-left block w-full">{user?.name}</span>
+                                        <span className="text-xs text-[#6F767E] dark:text-zinc-400 truncate text-left block w-full">{user?.email}</span>
                                     </div>
                                 </div>
-                                <ChevronUp className="w-4 h-4 flex-shrink-0 text-[#6F767E]" />
+                                <ChevronUp className="w-4 h-4 flex-shrink-0 text-[#6F767E] dark:text-zinc-400" />
                             </button>
                         </Dropdown>
                     </div>

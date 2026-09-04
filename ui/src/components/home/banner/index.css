@@ -14,7 +14,8 @@
     @apply bg-violet-400/20;
 }
 
-.banner-glow-left.is-dark {
+.banner-glow-left.is-dark,
+.dark .banner-glow-left {
     @apply bg-violet-600/30;
 }
 
@@ -26,7 +27,8 @@
     @apply bg-violet-400/20;
 }
 
-.banner-glow-right.is-dark {
+.banner-glow-right.is-dark,
+.dark .banner-glow-right {
     @apply bg-violet-400/10;
 }
 
@@ -39,7 +41,8 @@
     @apply bg-teal-50 border-teal-200;
 }
 
-.banner-badge.is-dark {
+.banner-badge.is-dark,
+.dark .banner-badge {
     @apply bg-white/5 border-white/10;
 }
 
@@ -60,7 +63,8 @@
     @apply text-slate-900;
 }
 
-.banner-headline.is-dark {
+.banner-headline.is-dark,
+.dark .banner-headline {
     @apply text-white;
 }
 
@@ -72,7 +76,8 @@
     @apply bg-gradient-to-r from-violet-700 to-indigo-600;
 }
 
-.banner-headline-gradient.is-dark {
+.banner-headline-gradient.is-dark,
+.dark .banner-headline-gradient {
     @apply bg-gradient-to-r from-violet-300 to-violet-100;
 }
 
@@ -80,7 +85,8 @@
     @apply text-violet-800;
 }
 
-.banner-headline-sub.is-dark {
+.banner-headline-sub.is-dark,
+.dark .banner-headline-sub {
     @apply text-[#e2d4f9];
 }
 
@@ -92,7 +98,8 @@
     @apply text-slate-600;
 }
 
-.banner-subtitle.is-dark {
+.banner-subtitle.is-dark,
+.dark .banner-subtitle {
     @apply text-gray-400;
 }
 
@@ -109,7 +116,8 @@
     @apply border-slate-300 text-slate-800 bg-white/80 hover:bg-slate-100 shadow-sm;
 }
 
-.banner-btn-demo.is-dark {
+.banner-btn-demo.is-dark,
+.dark .banner-btn-demo {
     @apply border-white/10 text-white hover:bg-white/5;
 }
 
@@ -126,7 +134,8 @@
     @apply bg-white/80 border-slate-200/90 shadow-[0_20px_50px_rgba(124,58,237,0.12)];
 }
 
-.banner-glass-panel.is-dark {
+.banner-glass-panel.is-dark,
+.dark .banner-glass-panel {
     @apply bg-[#23212d]/40 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)];
 }
 
@@ -138,7 +147,8 @@
     @apply bg-white border-slate-200;
 }
 
-.banner-floating-icon.is-dark {
+.banner-floating-icon.is-dark,
+.dark .banner-floating-icon {
     @apply bg-[#14121c] border-white/5;
 }
 
@@ -150,7 +160,8 @@
     @apply bg-white border-slate-200 shadow-sm;
 }
 
-.banner-stat-box.is-dark {
+.banner-stat-box.is-dark,
+.dark .banner-stat-box {
     @apply bg-[#2a2835]/50 border-white/5;
 }
 
@@ -162,7 +173,8 @@
     @apply text-slate-900;
 }
 
-.banner-stat-title.is-dark {
+.banner-stat-title.is-dark,
+.dark .banner-stat-title {
     @apply text-white;
 }
 
@@ -174,6 +186,7 @@
     @apply text-slate-500;
 }
 
-.banner-stat-sub.is-dark {
+.banner-stat-sub.is-dark,
+.dark .banner-stat-sub {
     @apply text-gray-400;
 }

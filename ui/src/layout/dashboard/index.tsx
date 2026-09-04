@@ -52,7 +52,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
     }, [pathname]);
 
     return (
-        <div className="flex min-h-screen h-full">
+        <div className="flex min-h-screen h-full bg-[#F4F5F8] dark:bg-[#09090B] transition-colors duration-300">
             {/* side bar  */}
             <Sidebar navOpened={navOpened} setNavOpened={setNavOpened} user={user} />
 
@@ -62,7 +62,7 @@ export default function DashboardLayout({ children }: IDashboardLayoutProps) {
             >
                 <Header navOpened={navOpened} setNavOpened={setNavOpened} user={user} />
                 {/* min-h-[calc(100vh-48px)]  */}
-                <main className="overflow-y-auto overflow-x-hidden w-full min-h-[calc(100vh-178px)] h-full bg-[#F4F5F8] font-primary p-4 lg:p-6">
+                <main className="overflow-y-auto overflow-x-hidden w-full min-h-[calc(100vh-178px)] h-full bg-[#F4F5F8] dark:bg-[#09090B] font-primary p-4 lg:p-6 transition-colors duration-300">
                     {children}
                 </main>
             </div>

@@ -152,7 +152,7 @@ export default function UserOverviewContent() {
             action: 'automatically published',
             target: '"Weekend Vibes" to Instagram',
             time: "2 hours ago",
-            dotColor: "bg-slate-400 dark:bg-zinc-650",
+            dotColor: "bg-slate-400 dark:bg-zinc-600",
         },
     ];
 
@@ -161,7 +161,7 @@ export default function UserOverviewContent() {
             {/* Top row cards: Recent Content & Upcoming Schedule */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Content Card */}
-                <div className="lg:col-span-2 dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6 card flex flex-col justify-between">
+                <div className="lg:col-span-2 card p-6 flex flex-col justify-between dark:bg-[#1A1D21] dark:border-zinc-800/60">
                     <div>
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight">
@@ -181,7 +181,7 @@ export default function UserOverviewContent() {
                                             <div className="absolute inset-0 bg-black/10"></div>
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-1e0 truncate max-w-[200px] md:max-w-xs">
+                                            <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-100 truncate max-w-[200px] md:max-w-xs">
                                                 {item.title}
                                             </h3>
                                             <p className="text-xs text-slate-400 dark:text-zinc-500 mt-0.5">
@@ -194,7 +194,7 @@ export default function UserOverviewContent() {
                                             <span className="text-sm font-bold text-slate-800 dark:text-zinc-100 block">
                                                 {item.likes}
                                             </span>
-                                            <span className="text-[10px] text-slate-450 dark:text-zinc-500 font-medium tracking-wide uppercase">
+                                            <span className="text-[10px] text-slate-500 dark:text-zinc-400 font-medium tracking-wide uppercase">
                                                 Likes
                                             </span>
                                         </div>
@@ -239,7 +239,7 @@ export default function UserOverviewContent() {
                                 <div
                                     className={`w-8 h-8 rounded-full flex flex-col items-center justify-center text-xs font-bold transition-all relative ${item.active
                                         ? "bg-[#7C3AED] text-white shadow-md shadow-purple-500/20"
-                                        : "text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-805"
+                                        : "text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
                                         }`}
                                 >
                                     {item.dayNum}
@@ -267,7 +267,7 @@ export default function UserOverviewContent() {
                                     </span>
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="text-xs font-bold text-slate-800 dark:text-zinc-150 truncate">
+                                    <h4 className="text-xs font-bold text-slate-800 dark:text-zinc-100 truncate">
                                         {evt.title}
                                     </h4>
                                     <p className="text-[10px] text-slate-400 dark:text-zinc-500 mt-0.5 font-medium">
@@ -301,9 +301,9 @@ export default function UserOverviewContent() {
                                             <h4 className="text-xs font-bold text-slate-800 dark:text-zinc-100">
                                                 {acct.name}
                                             </h4>
-                                            <span
+                                             <span
                                                 className={`text-[10px] font-bold mt-0.5 block ${acct.status === "Active"
-                                                    ? "text-emerald-550 dark:text-emerald-400 opacity-90"
+                                                    ? "text-emerald-500 dark:text-emerald-400 opacity-90"
                                                     : "text-red-500 dark:text-red-400"
                                                     }`}
                                             >
@@ -313,11 +313,11 @@ export default function UserOverviewContent() {
                                     </div>
 
                                     {acct.status === "Active" ? (
-                                        <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-650 dark:hover:text-zinc-350 transition-colors cursor-pointer">
+                                        <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors cursor-pointer">
                                             <Settings size={16} />
                                         </button>
                                     ) : (
-                                        <button className="bg-red-500 hover:bg-red-650 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors cursor-pointer">
+                                        <button className="bg-red-500 hover:bg-red-600 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors cursor-pointer">
                                             Fix
                                         </button>
                                     )}
@@ -328,7 +328,7 @@ export default function UserOverviewContent() {
                 </div>
 
                 {/* Recent Activity Timeline Card */}
-                <div className="lg:col-span-2 card dark:bg-[#1A1D21] dark:border-zinc-800/60 p-6">
+                <div className="lg:col-span-2 card p-6 dark:bg-[#1A1D21] dark:border-zinc-800/60">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight mb-6">
                         Recent Activity
                     </h2>
@@ -349,16 +349,16 @@ export default function UserOverviewContent() {
                                                 {act.user}
                                             </span>
                                             {act.action}
-                                            <span className="font-bold text-slate-850 dark:text-zinc-100 ml-1">
+                                            <span className="font-bold text-slate-800 dark:text-zinc-100 ml-1">
                                                 {act.target}
                                             </span>
                                         </p>
-                                        <span className="text-[10px] text-slate-400 dark:text-zinc-550 mt-1 block">
+                                        <span className="text-[10px] text-slate-400 dark:text-zinc-500 mt-1 block">
                                             {act.time}
                                         </span>
                                     </div>
 
-                                    <button className="text-slate-400 dark:text-zinc-550 hover:text-slate-600 dark:hover:text-zinc-350 transition-colors ml-4 flex-shrink-0 cursor-pointer">
+                                    <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors ml-4 flex-shrink-0 cursor-pointer">
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>

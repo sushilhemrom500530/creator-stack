@@ -10,7 +10,7 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
     const { theme, toggleTheme } = useTheme();
     const isLight = theme === "light";
     return (
-        <div className="sticky inset-y-0 left-0 z-10 w-full border-b border-b-[#E5E7EB] h-[66px] bg-[#FFFFFF] [transition:0.5s]">
+        <div className="sticky inset-y-0 left-0 z-10 w-full border-b border-b-[#E5E7EB] dark:border-b-zinc-800/80 h-[66px] bg-[#FFFFFF] dark:bg-[#121316] transition-colors duration-300">
             <header className="flex items-center justify-between px-4 h-[66px]">
                 {/* left side  */}
                 <div className="flex items-center justify-between w-full">
@@ -29,7 +29,7 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
                             className={`cursor-pointer flex items-center justify-center`}
                         >
                             {isLight ? (
-                                <Moon size={22} className="text-slate-800 transition-transform duration-300 hover:rotate-12 " />
+                                <Moon size={22} className="text-slate-800 dark:text-zinc-200 transition-transform duration-300 hover:rotate-12 " />
                             ) : (
                                 <Sun size={22} className="text-amber-300 transition-transform duration-300 hover:rotate-45" />
                             )}
@@ -44,7 +44,7 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
                             <h3 className="absolute -top-4 -right-3 bg-[#10B981] rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
                                 2
                             </h3>
-                            <FiShoppingCart size={22} color="#000" />
+                            <FiShoppingCart size={22} className="text-slate-800 dark:text-zinc-200" />
                         </div>
                         <div className="flex w-10 md:w-14 xl:w-auto flex-1 items-center gap-2 cursor-pointer">
                             <Image
@@ -54,7 +54,7 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
                                 height={36}
                                 className="w-9 h-9 rounded-full "
                             />
-                            <h1 className="text-lg text-black font-medium hidden xl:block">
+                            <h1 className="text-lg text-slate-800 dark:text-zinc-100 font-medium hidden xl:block">
                                 {user?.name || "Tamal"}
                             </h1>
                         </div>
