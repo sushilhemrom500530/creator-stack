@@ -54,22 +54,31 @@ export class SocialAccountsController {
   @Get('oauth/:platform/callback')
   @ApiOperation({ summary: 'OAuth callback receiver from third-party social networks' })
   @ApiParam({ name: 'platform', enum: SocialPlatform })
-  @ApiQuery({ name: 'code', required: true })
-  @ApiQuery({ name: 'state', required: true })
+  @ApiQuery({ name: 'code', required: false })
+  @ApiQuery({ name: 'state', required: false })
+  @ApiQuery({ name: 'error', required: false })
+  @ApiQuery({ name: 'error_description', required: false })
   async handleOAuthCallback(
     @Param('platform') platform: SocialPlatform,
     @Query('code') code: string,
     @Query('state') state: string,
+    @Query('error') error: string,
+    @Query('error_description') errorDescription: string,
     @Res() res: Response,
   ) {
+    const frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
+
+    if (error || !code) {
+      const errorMsg = errorDescription || error || 'Authorization was denied or cancelled.';
+      return res.redirect(`${frontendUrl}/user/connected-accounts?status=error&message=${encodeURIComponent(errorMsg)}`);
+    }
+
     try {
       const account = await this.socialAccountsService.handleOAuthCallback(platform, code, state);
       
       // Redirect to frontend connected accounts page with success indicator
-      const frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
       return res.redirect(`${frontendUrl}/user/connected-accounts?status=success&platform=${platform}&accountId=${account._id}`);
     } catch (error: any) {
-      const frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
       return res.redirect(`${frontendUrl}/user/connected-accounts?status=error&message=${encodeURIComponent(error.message)}`);
     }
   }
