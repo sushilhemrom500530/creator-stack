@@ -15,9 +15,6 @@ import {
     Cpu,
     CheckCircle2,
     Award,
-    Linkedin,
-    Twitter,
-    Github,
     ExternalLink,
     Code2,
     BrainCircuit,
@@ -26,6 +23,7 @@ import {
     Activity,
     Lock
 } from "lucide-react";
+import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import "./index.css";
 
 const STATS = [
@@ -472,13 +470,13 @@ export default function AboutUs() {
                             </p>
                             <div className={`about-team-socials ${themeClass}`}>
                                 <a href={member.social.twitter} aria-label="Twitter" className={`about-team-social-link ${themeClass}`}>
-                                    <Twitter className="w-4 h-4" />
+                                    <FaXTwitter className="w-3.5 h-3.5" />
                                 </a>
                                 <a href={member.social.linkedin} aria-label="LinkedIn" className={`about-team-social-link ${themeClass}`}>
-                                    <Linkedin className="w-4 h-4" />
+                                    <FaLinkedin className="w-3.5 h-3.5" />
                                 </a>
                                 <a href={member.social.github} aria-label="GitHub" className={`about-team-social-link ${themeClass}`}>
-                                    <Github className="w-4 h-4" />
+                                    <FaGithub className="w-3.5 h-3.5" />
                                 </a>
                             </div>
                         </div>
