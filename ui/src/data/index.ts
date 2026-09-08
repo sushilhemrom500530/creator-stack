@@ -227,9 +227,9 @@ export const navItems: IMenuItem[] = [
         href: "/blogs",
         icon: Bell,
     },
-    // {
-    //     label: "About Us",
-    //     href: "/about-us",
-    //     icon: User,
-    // },
+    {
+        label: "About Us",
+        href: "/about-us",
+        icon: User,
+    },
 ];

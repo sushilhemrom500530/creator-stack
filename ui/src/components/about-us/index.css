@@ -1,0 +1,514 @@
+@reference "../../styles/style.globals.css";
+
+/* Main Page Container */
+.about-page-main {
+    @apply min-h-screen transition-colors duration-300 selection:bg-[#9747FF]/30;
+}
+
+.about-page-main.is-light {
+    @apply bg-gradient-to-b from-slate-100/70 via-slate-50 to-white text-slate-900;
+}
+
+.about-page-main.is-dark {
+    @apply bg-[#0a0614] text-white;
+}
+
+/* Hero Section */
+.about-hero-section {
+    @apply relative w-full min-h-[75vh] flex flex-col items-center justify-center pt-36 pb-20 px-4 overflow-hidden text-center;
+}
+
+.about-hero-glow {
+    @apply absolute inset-0 flex items-center justify-center pointer-events-none;
+}
+
+.about-hero-glow-blob {
+    @apply w-[700px] h-[700px] rounded-full blur-[140px];
+}
+
+.about-hero-glow-blob.is-light {
+    @apply bg-purple-300/35;
+}
+
+.about-hero-glow-blob.is-dark {
+    @apply bg-purple-900/25;
+}
+
+.about-hero-glow-secondary {
+    @apply absolute top-10 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none;
+}
+
+.about-hero-glow-secondary.is-light {
+    @apply bg-cyan-200/40;
+}
+
+.about-hero-glow-secondary.is-dark {
+    @apply bg-cyan-900/15;
+}
+
+/* Tagline Badge */
+.about-tagline-badge {
+    @apply inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border backdrop-blur-md mb-8 transition-all;
+}
+
+.about-tagline-dot {
+    @apply w-2 h-2 rounded-full bg-violet-500 animate-pulse;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.8);
+}
+
+.about-tagline-badge.is-light {
+    @apply bg-slate-200/70 border-slate-300/70;
+}
+
+.about-tagline-badge.is-dark {
+    @apply bg-white/5 border-white/10;
+}
+
+.about-tagline-text {
+    @apply text-xs font-bold tracking-widest uppercase;
+}
+
+.about-tagline-text.is-light {
+    @apply text-violet-700;
+}
+
+.about-tagline-text.is-dark {
+    @apply text-[#B3A1C9];
+}
+
+/* Headings */
+.about-heading {
+    @apply text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-8 font-serif leading-[1.15];
+}
+
+.about-heading.is-light {
+    @apply text-slate-900;
+}
+
+.about-heading.is-dark {
+    @apply text-white;
+}
+
+.about-gradient-text {
+    @apply text-transparent bg-clip-text font-serif;
+}
+
+.about-gradient-text.is-light {
+    @apply bg-gradient-to-r from-violet-700 via-purple-600 to-indigo-600;
+}
+
+.about-gradient-text.is-dark {
+    @apply bg-gradient-to-r from-[#DDB9FF] via-[#B983FF] to-[#9747FF];
+}
+
+/* Descriptions */
+.about-desc {
+    @apply text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-normal;
+}
+
+.about-desc.is-light {
+    @apply text-slate-600;
+}
+
+.about-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Action Buttons */
+.about-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98];
+}
+
+.about-btn-primary.is-light {
+    @apply bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25);
+}
+
+.about-btn-primary.is-dark {
+    @apply bg-[#D4B5FF] hover:bg-[#E9D5FF] text-[#2D164E];
+    box-shadow: 0 4px 20px rgba(212, 181, 255, 0.2);
+}
+
+.about-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98];
+}
+
+.about-btn-secondary.is-light {
+    @apply bg-white hover:bg-slate-100 border border-slate-300/80 text-slate-800 shadow-sm;
+}
+
+.about-btn-secondary.is-dark {
+    @apply bg-[#1A1625] hover:bg-[#2A243A] border border-white/10 text-white;
+}
+
+/* Stats Section */
+.about-stats-container {
+    @apply w-full max-w-7xl mx-auto px-6 md:px-12 -mt-6 mb-24 relative z-20;
+}
+
+.about-stats-grid {
+    @apply grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 p-6 md:p-8 rounded-3xl border backdrop-blur-xl transition-all;
+}
+
+.about-stats-grid.is-light {
+    @apply bg-white/80 border-slate-200/90 shadow-xl shadow-slate-200/40;
+}
+
+.about-stats-grid.is-dark {
+    @apply bg-[#110c1f]/80 border-white/10 shadow-2xl shadow-purple-950/20;
+}
+
+.about-stat-item {
+    @apply flex flex-col items-center text-center p-4 rounded-2xl transition-all;
+}
+
+.about-stat-value {
+    @apply text-3xl md:text-5xl font-black font-serif tracking-tight mb-2;
+}
+
+.about-stat-value.is-light {
+    @apply text-slate-900;
+}
+
+.about-stat-value.is-dark {
+    @apply text-white;
+}
+
+.about-stat-label {
+    @apply text-xs md:text-sm font-medium tracking-wide uppercase;
+}
+
+.about-stat-label.is-light {
+    @apply text-slate-500;
+}
+
+.about-stat-label.is-dark {
+    @apply text-[#9c93ab];
+}
+
+/* Section Shared Wrapper */
+.about-section {
+    @apply relative w-full max-w-7xl mx-auto py-24 px-6 md:px-12 border-t;
+}
+
+.about-section.is-light {
+    @apply border-slate-200/80;
+}
+
+.about-section.is-dark {
+    @apply border-white/5;
+}
+
+.about-section-header {
+    @apply text-center max-w-3xl mx-auto mb-16;
+}
+
+.about-section-eyebrow {
+    @apply text-xs md:text-sm font-bold tracking-widest uppercase mb-3 block;
+}
+
+.about-section-title {
+    @apply text-3xl md:text-5xl font-bold font-serif mb-5 tracking-tight;
+}
+
+.about-section-title.is-light {
+    @apply text-slate-900;
+}
+
+.about-section-title.is-dark {
+    @apply text-white;
+}
+
+.about-section-subtitle {
+    @apply text-base md:text-lg leading-relaxed;
+}
+
+.about-section-subtitle.is-light {
+    @apply text-slate-600;
+}
+
+.about-section-subtitle.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Story Section */
+.about-story-grid {
+    @apply grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center;
+}
+
+.about-story-text-col {
+    @apply lg:col-span-7 flex flex-col gap-6 text-left;
+}
+
+.about-story-visual-col {
+    @apply lg:col-span-5 relative w-full;
+}
+
+.about-story-card {
+    @apply relative p-8 md:p-10 rounded-3xl border backdrop-blur-xl overflow-hidden transition-all duration-500;
+}
+
+.about-story-card.is-light {
+    @apply bg-white/90 border-slate-200/90 shadow-2xl shadow-slate-200/50;
+}
+
+.about-story-card.is-dark {
+    @apply bg-[#130d24]/90 border-white/10 shadow-2xl shadow-purple-950/30;
+}
+
+.about-story-paragraph {
+    @apply text-base md:text-lg leading-relaxed;
+}
+
+.about-story-paragraph.is-light {
+    @apply text-slate-600;
+}
+
+.about-story-paragraph.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.about-story-highlight {
+    @apply p-6 rounded-2xl border flex items-start gap-4 transition-all;
+}
+
+.about-story-highlight.is-light {
+    @apply bg-violet-50/60 border-violet-200/80 text-violet-950;
+}
+
+.about-story-highlight.is-dark {
+    @apply bg-violet-950/30 border-violet-800/30 text-[#e9d5ff];
+}
+
+/* Core Values Section */
+.about-values-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+}
+
+.about-value-card {
+    @apply relative p-8 rounded-3xl border transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1;
+}
+
+.about-value-card.is-light {
+    @apply bg-white/80 border-slate-200/80 shadow-lg shadow-slate-200/30 hover:shadow-xl hover:border-violet-300;
+}
+
+.about-value-card.is-dark {
+    @apply bg-[#110c1f]/80 border-white/5 hover:border-white/15 hover:bg-[#161028];
+}
+
+.about-value-icon {
+    @apply w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110;
+}
+
+.about-value-title {
+    @apply text-xl font-bold font-serif mb-3;
+}
+
+.about-value-title.is-light {
+    @apply text-slate-900;
+}
+
+.about-value-title.is-dark {
+    @apply text-white;
+}
+
+.about-value-desc {
+    @apply text-sm leading-relaxed;
+}
+
+.about-value-desc.is-light {
+    @apply text-slate-600;
+}
+
+.about-value-desc.is-dark {
+    @apply text-[#a19bb0];
+}
+
+/* Architecture & Tech Section */
+.about-tech-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+}
+
+.about-tech-card {
+    @apply p-8 rounded-3xl border relative overflow-hidden transition-all duration-300 flex flex-col justify-between hover:border-violet-500/30;
+}
+
+.about-tech-card.is-light {
+    @apply bg-white border-slate-200/90 shadow-md shadow-slate-100;
+}
+
+.about-tech-card.is-dark {
+    @apply bg-[#120e22] border-white/5;
+}
+
+.about-tech-metric {
+    @apply mt-6 pt-6 border-t flex items-center justify-between;
+}
+
+.about-tech-metric.is-light {
+    @apply border-slate-100;
+}
+
+.about-tech-metric.is-dark {
+    @apply border-white/5;
+}
+
+/* Leadership & Team Section */
+.about-team-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.about-team-card {
+    @apply p-6 rounded-3xl border transition-all duration-300 flex flex-col items-center text-center group hover:-translate-y-1;
+}
+
+.about-team-card.is-light {
+    @apply bg-white border-slate-200/80 shadow-md hover:shadow-xl hover:border-violet-200;
+}
+
+.about-team-card.is-dark {
+    @apply bg-[#110c1f] border-white/5 hover:border-white/15 hover:bg-[#150f26];
+}
+
+.about-team-avatar-wrapper {
+    @apply relative w-28 h-28 mb-5 rounded-2xl overflow-hidden p-1 border transition-transform duration-300 group-hover:scale-105;
+}
+
+.about-team-avatar-wrapper.is-light {
+    @apply border-slate-200 bg-slate-100;
+}
+
+.about-team-avatar-wrapper.is-dark {
+    @apply border-violet-500/30 bg-violet-950/40;
+}
+
+.about-team-avatar {
+    @apply w-full h-full object-cover rounded-xl;
+}
+
+.about-team-name {
+    @apply text-lg font-bold font-serif mb-1;
+}
+
+.about-team-name.is-light {
+    @apply text-slate-900;
+}
+
+.about-team-name.is-dark {
+    @apply text-white;
+}
+
+.about-team-role {
+    @apply text-xs font-semibold tracking-wider uppercase mb-3;
+}
+
+.about-team-role.is-light {
+    @apply text-violet-700;
+}
+
+.about-team-role.is-dark {
+    @apply text-[#C49BFF];
+}
+
+.about-team-bio {
+    @apply text-sm leading-relaxed mb-5;
+}
+
+.about-team-bio.is-light {
+    @apply text-slate-600;
+}
+
+.about-team-bio.is-dark {
+    @apply text-[#a19bb0];
+}
+
+.about-team-socials {
+    @apply flex items-center gap-3 mt-auto pt-4 border-t w-full justify-center;
+}
+
+.about-team-socials.is-light {
+    @apply border-slate-100 text-slate-400;
+}
+
+.about-team-socials.is-dark {
+    @apply border-white/5 text-[#7e778d];
+}
+
+.about-team-social-link {
+    @apply p-2 rounded-xl transition-colors;
+}
+
+.about-team-social-link.is-light {
+    @apply hover:text-violet-700 hover:bg-slate-100;
+}
+
+.about-team-social-link.is-dark {
+    @apply hover:text-white hover:bg-white/5;
+}
+
+/* Timeline / Milestones Section */
+.about-timeline-wrapper {
+    @apply relative max-w-4xl mx-auto py-8;
+}
+
+.about-timeline-line {
+    @apply absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2;
+}
+
+.about-timeline-line.is-light {
+    @apply bg-gradient-to-b from-violet-300 via-purple-300 to-transparent;
+}
+
+.about-timeline-line.is-dark {
+    @apply bg-gradient-to-b from-violet-700/60 via-purple-800/40 to-transparent;
+}
+
+.about-timeline-item {
+    @apply relative flex flex-col md:flex-row items-start mb-12 last:mb-0;
+}
+
+.about-timeline-badge {
+    @apply absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 flex items-center justify-center z-10;
+}
+
+.about-timeline-badge.is-light {
+    @apply bg-white border-violet-600 shadow-md shadow-violet-200;
+}
+
+.about-timeline-badge.is-dark {
+    @apply bg-[#0e0a1b] border-violet-400 shadow-lg shadow-purple-950;
+}
+
+.about-timeline-content {
+    @apply ml-12 md:ml-0 md:w-[45%] p-6 rounded-2xl border transition-all;
+}
+
+.about-timeline-content.is-light {
+    @apply bg-white/90 border-slate-200/90 shadow-sm;
+}
+
+.about-timeline-content.is-dark {
+    @apply bg-[#130d22] border-white/5;
+}
+
+/* CTA Section */
+.about-cta-section {
+    @apply relative w-full max-w-7xl mx-auto py-24 px-6 md:px-12;
+}
+
+.about-cta-card {
+    @apply relative overflow-hidden rounded-3xl p-10 md:p-16 border text-center flex flex-col items-center justify-center;
+}
+
+.about-cta-card.is-light {
+    @apply bg-gradient-to-b from-violet-600 via-purple-700 to-indigo-800 text-white border-violet-400/30 shadow-2xl shadow-violet-700/25;
+}
+
+.about-cta-card.is-dark {
+    @apply bg-gradient-to-b from-[#19102c] to-[#0d0718] text-white border-white/10 shadow-2xl shadow-purple-950/40;
+}
+
+.about-cta-glow {
+    @apply absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-purple-500/20 rounded-full blur-[100px] pointer-events-none;
+}

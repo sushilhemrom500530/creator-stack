@@ -49,10 +49,15 @@ export default function Footer() {
                             Organization
                         </h4>
                         <ul className="flex flex-col gap-4 items-center md:items-start">
-                            {['Strategic Insights', 'Performance Team', 'Client Success', 'Privacy Core'].map((item) => (
-                                <li key={item}>
-                                    <Link href="#" className={`text-[13px] transition-colors ${isLight ? "text-slate-600 hover:text-violet-700" : "text-slate-400 hover:text-white"}`}>
-                                        {item}
+                            {[
+                                { name: 'About Us', href: '/about-us' },
+                                { name: 'Strategic Insights', href: '/solutions' },
+                                { name: 'Client Success', href: '#' },
+                                { name: 'Privacy Architecture', href: '/privacy-policy' },
+                            ].map((item) => (
+                                <li key={item.name}>
+                                    <Link href={item.href} className={`text-[13px] transition-colors ${isLight ? "text-slate-600 hover:text-violet-700" : "text-slate-400 hover:text-white"}`}>
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}

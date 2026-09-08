@@ -58,8 +58,8 @@ export default function PrivacyPolicy() {
             {/* Header / Title Area */}
             <div
                 className={`border-b ${isLight
-                        ? "border-slate-200/80 bg-white"
-                        : "border-white/10 bg-[#100e17]"
+                    ? "border-slate-200/80 bg-white"
+                    : "border-white/10 bg-[#100e17]"
                     }`}
             >
                 <div className="max-w-5xl mx-auto px-6 py-12 md:py-16">
@@ -113,8 +113,8 @@ export default function PrivacyPolicy() {
                     <aside className="hidden lg:block lg:col-span-4">
                         <div
                             className={`sticky top-28 p-5 rounded-xl border text-sm ${isLight
-                                    ? "bg-white border-slate-200 shadow-sm"
-                                    : "bg-[#12101b] border-white/10"
+                                ? "bg-white border-slate-200 shadow-sm"
+                                : "bg-[#12101b] border-white/10"
                                 }`}
                         >
                             <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-200 dark:border-white/10 font-semibold text-xs tracking-wider uppercase">
@@ -132,12 +132,12 @@ export default function PrivacyPolicy() {
                                             key={item.id}
                                             href={`#${item.id}`}
                                             className={`block px-3 py-1.5 rounded-md text-xs transition-colors ${isActive
-                                                    ? isLight
-                                                        ? "bg-violet-50 text-violet-700 font-semibold"
-                                                        : "bg-violet-950/40 text-violet-300 font-semibold"
-                                                    : isLight
-                                                        ? "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                                                        : "text-slate-400 hover:text-white hover:bg-white/5"
+                                                ? isLight
+                                                    ? "bg-violet-50 text-violet-700 font-semibold"
+                                                    : "bg-violet-950/40 text-violet-300 font-semibold"
+                                                : isLight
+                                                    ? "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                                                    : "text-slate-400 hover:text-white hover:bg-white/5"
                                                 }`}
                                         >
                                             {item.label}
@@ -167,8 +167,8 @@ export default function PrivacyPolicy() {
                         <section id="overview" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 1. Overview & Scope
@@ -191,8 +191,8 @@ export default function PrivacyPolicy() {
                         <section id="information-collected" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 2. Information We Collect
@@ -281,8 +281,8 @@ export default function PrivacyPolicy() {
                         <section id="how-we-use-data" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 3. How We Use Your Information
@@ -322,8 +322,8 @@ export default function PrivacyPolicy() {
                         <section id="meta-social-data" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 4. Social Platforms & Meta API Compliance
@@ -335,8 +335,8 @@ export default function PrivacyPolicy() {
 
                             <div
                                 className={`p-4 rounded-lg border text-sm space-y-3 ${isLight
-                                        ? "bg-slate-50 border-slate-200 text-slate-700"
-                                        : "bg-[#14121f] border-white/10 text-slate-300"
+                                    ? "bg-slate-50 border-slate-200 text-slate-700"
+                                    : "bg-[#14121f] border-white/10 text-slate-300"
                                     }`}
                             >
                                 <div className="font-semibold text-base flex items-center gap-2">
@@ -361,8 +361,8 @@ export default function PrivacyPolicy() {
                         <section id="security-encryption" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 5. Data Security & Cryptographic Storage
@@ -399,8 +399,8 @@ export default function PrivacyPolicy() {
                         <section id="data-retention-deletion" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 6. Data Retention & User Data Deletion Instructions
@@ -412,8 +412,8 @@ export default function PrivacyPolicy() {
 
                             <div
                                 className={`p-5 rounded-lg border space-y-4 ${isLight
-                                        ? "bg-slate-50 border-slate-200 text-slate-700"
-                                        : "bg-[#14121f] border-white/10 text-slate-300"
+                                    ? "bg-slate-50 border-slate-200 text-slate-700"
+                                    : "bg-[#14121f] border-white/10 text-slate-300"
                                     }`}
                             >
                                 <div className="flex items-center gap-2 font-semibold text-base text-red-500 dark:text-red-400">
@@ -429,8 +429,8 @@ export default function PrivacyPolicy() {
                                 <div className="space-y-3 text-xs md:text-sm">
                                     <div
                                         className={`p-3 rounded-md border ${isLight
-                                                ? "bg-white border-slate-200"
-                                                : "bg-[#0f0d18] border-white/10"
+                                            ? "bg-white border-slate-200"
+                                            : "bg-[#0f0d18] border-white/10"
                                             }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
@@ -446,8 +446,8 @@ export default function PrivacyPolicy() {
 
                                     <div
                                         className={`p-3 rounded-md border ${isLight
-                                                ? "bg-white border-slate-200"
-                                                : "bg-[#0f0d18] border-white/10"
+                                            ? "bg-white border-slate-200"
+                                            : "bg-[#0f0d18] border-white/10"
                                             }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
@@ -461,8 +461,8 @@ export default function PrivacyPolicy() {
 
                                     <div
                                         className={`p-3 rounded-md border ${isLight
-                                                ? "bg-white border-slate-200"
-                                                : "bg-[#0f0d18] border-white/10"
+                                            ? "bg-white border-slate-200"
+                                            : "bg-[#0f0d18] border-white/10"
                                             }`}
                                     >
                                         <strong className={isLight ? "text-slate-900" : "text-white"}>
@@ -488,8 +488,8 @@ export default function PrivacyPolicy() {
                         <section id="user-rights" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 7. Your Privacy Rights (GDPR & CCPA/CPRA)
@@ -527,8 +527,8 @@ export default function PrivacyPolicy() {
                         <section id="cookies-tracking" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 8. Cookies & Tracking Technologies
@@ -547,8 +547,8 @@ export default function PrivacyPolicy() {
                         <section id="third-parties" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 9. Third-Party Service Providers
@@ -581,8 +581,8 @@ export default function PrivacyPolicy() {
                         <section id="policy-changes" className="scroll-mt-28 space-y-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 10. Changes to This Privacy Policy
@@ -599,8 +599,8 @@ export default function PrivacyPolicy() {
                         <section id="contact-us" className="scroll-mt-28 space-y-4 pt-4">
                             <h2
                                 className={`text-xl md:text-2xl font-bold pb-2 border-b ${isLight
-                                        ? "text-slate-900 border-slate-200"
-                                        : "text-white border-white/10"
+                                    ? "text-slate-900 border-slate-200"
+                                    : "text-white border-white/10"
                                     }`}
                             >
                                 11. Contact Information
@@ -612,8 +612,8 @@ export default function PrivacyPolicy() {
 
                             <div
                                 className={`p-5 rounded-lg border space-y-2 text-sm ${isLight
-                                        ? "bg-white border-slate-200"
-                                        : "bg-[#12101b] border-white/10"
+                                    ? "bg-white border-slate-200"
+                                    : "bg-[#12101b] border-white/10"
                                     }`}
                             >
                                 <p className={`font-semibold ${isLight ? "text-slate-900" : "text-white"}`}>
