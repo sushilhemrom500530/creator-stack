@@ -1,0 +1,14 @@
+@reference "../../../../styles/style.globals.css";
+
+/* Related Guides Section */
+.resource-related-section {
+    @apply w-full mt-16 pt-16 border-t transition-colors duration-300;
+}
+
+.resource-related-section.is-light {
+    @apply border-slate-200;
+}
+
+.resource-related-section.is-dark {
+    @apply border-white/10;
+}
