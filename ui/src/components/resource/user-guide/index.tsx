@@ -6,7 +6,7 @@ import UserGuideCard from "@/components/reuseable/user-guide-card";
 
 const GUIDE_CARDS_DATA = [
     {
-        id: "onboarding",
+        id: "1525",
         category: "Getting Started",
         title: "Onboarding Workshop",
         description: "Learn how to connect your accounts and configure your first AI-driven content calendar in under 10 minutes.",
@@ -16,7 +16,7 @@ const GUIDE_CARDS_DATA = [
         buttonText: "Read Guide"
     },
     {
-        id: "methodology",
+        id: "1526",
         category: "Methodology",
         title: "Audience Analysis",
         description: "Deep dive into the neural networks behind our audience sentiment analysis and how to leverage it for viral reach.",
@@ -26,7 +26,7 @@ const GUIDE_CARDS_DATA = [
         buttonText: "Read Guide"
     },
     {
-        id: "strategy",
+        id: "1527",
         category: "Strategy",
         title: "Multi-Channel Sync",
         description: "Master the art of cross-platform narrative consistency using SocialFlow's automated tone adjustment algorithms.",
@@ -60,6 +60,7 @@ export default function UserGuideSection() {
                 {GUIDE_CARDS_DATA.map((card) => (
                     <UserGuideCard
                         key={card.id}
+                        id={card.id}
                         category={card.category}
                         title={card.title}
                         description={card.description}
