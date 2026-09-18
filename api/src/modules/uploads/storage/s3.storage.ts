@@ -1,6 +1,6 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import * as path from 'path';
 import { StorageProvider, UploadResult } from './storage.interface';
 
@@ -54,7 +54,7 @@ export class S3StorageProvider implements StorageProvider {
     if (!bucket || !accessKeyId || !secretAccessKey) {
       this.logger.warn('AWS S3 credentials not fully configured. Using fallback S3 storage layout.');
       const ext = path.extname(file.originalname).toLowerCase();
-      const key = `${folder}/${uuidv4()}${ext}`;
+      const key = `${folder}/${randomUUID()}${ext}`;
       const mockUrl = `https://${bucket || 'creator-stack-assets'}.s3.${region}.amazonaws.com/${key}`;
 
       return {
@@ -69,7 +69,7 @@ export class S3StorageProvider implements StorageProvider {
     }
 
     const ext = path.extname(file.originalname).toLowerCase();
-    const key = `${folder}/${uuidv4()}${ext}`;
+    const key = `${folder}/${randomUUID()}${ext}`;
     const s3Url = `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
 
     this.logger.log(`Uploaded to AWS S3: ${s3Url}`);

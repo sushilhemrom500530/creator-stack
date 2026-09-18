@@ -30,11 +30,7 @@ out/
 # Environment variables & secrets
 !.env.example
 !**/.env.example
-.env
-.env.*
-.env.production
 .env.production.*
-.env.local
 .env.local.*
 .env.dev
 .env.dev.*
@@ -51,7 +47,10 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 .idea/
-.vscode/
 *.swp
 *.swo
 config.bat
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

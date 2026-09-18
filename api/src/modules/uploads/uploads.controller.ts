@@ -16,7 +16,7 @@ import {
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { UploadsService } from './uploads.service';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 
 @ApiTags('Media & Uploads')

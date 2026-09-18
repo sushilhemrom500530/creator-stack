@@ -14,9 +14,9 @@ import {
   SocialPlatform,
 } from './schemas/social-account.schema';
 import { ConnectAccountDto, UpdateAccountDto } from './dto';
-import { encryptToken, decryptToken, generateOAuthState, validateOAuthState } from 'src/common/utils';
+import { encryptToken, decryptToken, generateOAuthState, validateOAuthState } from '../../common/utils';
 import { Workspace, WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
-import { SocialProviderFactory } from 'src/providers/social/social-provider.factory';
+import { SocialProviderFactory } from '../../providers/social/social-provider.factory';
 
 @Injectable()
 export class SocialAccountsService {
@@ -88,6 +88,7 @@ export class SocialAccountsService {
     workspaceId: string,
     userId: string,
     redirectUri?: string,
+    frontendUrl?: string,
   ): Promise<{ authUrl: string; state: string; platform: SocialPlatform }> {
     const workspace = await this.verifyWorkspaceAccess(workspaceId, userId);
 
@@ -99,6 +100,8 @@ export class SocialAccountsService {
       userId,
       workspaceId: workspace._id.toString(),
       platform,
+      frontendUrl,
+      redirectUri,
     });
 
     const provider = this.socialProviderFactory.getProvider(platform);
@@ -129,7 +132,7 @@ export class SocialAccountsService {
     await this.verifyWorkspaceAccess(workspaceId, userId);
 
     const provider = this.socialProviderFactory.getProvider(platform);
-    const tokenResult = await provider.exchangeCode(code);
+    const tokenResult = await provider.exchangeCode(code, statePayload.redirectUri);
     const profile = await provider.getAccount(tokenResult.accessToken);
 
     const platformAccountId = profile.platformAccountId || tokenResult.metadata?.instagramUserId || tokenResult.metadata?.pageId || 'unknown';

@@ -16,7 +16,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const nodeEnv = configService.get<string>('app.nodeEnv') || 'development';
-  const port = configService.get<number>('app.port') || 8080;
+  const port = process.env.PORT || configService.get<number>('app.port') || 8080;
   const apiPrefix = (configService.get<string>('app.apiPrefix') || 'api').split('/')[0];
   const corsOrigins = configService.get<string[]>('cors.origin');
   const cookieSecret = configService.get<string>('COOKIE_SECRET');

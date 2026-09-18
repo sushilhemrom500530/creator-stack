@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { AnalyticsService } from './analytics.service';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 
 @ApiTags('Cross-Platform Analytics')

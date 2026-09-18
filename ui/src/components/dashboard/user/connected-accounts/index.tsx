@@ -302,7 +302,8 @@ function ConnectedAccountsInner() {
 
         try {
             const wsId = await getOrFetchWorkspaceId();
-            const data = await socialAccountsApi.getOAuthUrl(connectModalAccount.platform, wsId);
+            const frontendUrl = typeof window !== 'undefined' ? window.location.origin : undefined;
+            const data = await socialAccountsApi.getOAuthUrl(connectModalAccount.platform, wsId, undefined, frontendUrl);
             if (data?.authUrl) {
                 message.loading(`Redirecting to ${connectModalAccount.name} OAuth...`, 1.5);
                 window.location.href = data.authUrl;

@@ -4,6 +4,8 @@ export interface OAuthStatePayload {
   userId: string;
   workspaceId: string;
   platform: string;
+  frontendUrl?: string;
+  redirectUri?: string;
   nonce: string;
   timestamp: number;
 }
