@@ -8,8 +8,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Post, PostDocument, PostStatus, PostTargetStatus } from '../posts/schemas/post.schema';
 import { SocialAccountsService } from '../social-accounts/social-accounts.service';
-import { SocialProviderFactory } from 'src/providers/social/social-provider.factory';
-import { SocialAccountContext, PublishPostInput } from 'src/providers/social/social-provider.types';
+import { SocialProviderFactory } from '../../providers/social/social-provider.factory';
+import { SocialAccountContext, PublishPostInput } from '../../providers/social/social-provider.types';
 import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()

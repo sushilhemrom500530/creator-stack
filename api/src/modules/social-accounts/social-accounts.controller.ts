@@ -14,13 +14,14 @@ import {
   Res,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 import { SocialAccountsService } from './social-accounts.service';
 import { ConnectAccountDto, UpdateAccountDto } from './dto';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 import { SocialPlatform } from './schemas/social-account.schema';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from '../../common/decorators/public.decorator';
+import { validateOAuthState } from '../../common/utils/oauth-state.util';
 
 @ApiTags('Social Accounts')
 @Controller('social-accounts')
@@ -37,14 +38,24 @@ export class SocialAccountsController {
   @ApiParam({ name: 'platform', enum: SocialPlatform })
   @ApiQuery({ name: 'workspaceId', required: true })
   @ApiQuery({ name: 'redirectUri', required: false })
+  @ApiQuery({ name: 'frontendUrl', required: false })
   @ApiResponse({ status: HttpStatus.OK, description: 'Authorization URL and state generated' })
   async getAuthorizationUrl(
     @Param('platform') platform: SocialPlatform,
     @Query('workspaceId') workspaceId: string,
     @CurrentUser('userId') userId: string,
     @Query('redirectUri') redirectUri?: string,
+    @Query('frontendUrl') frontendUrlQuery?: string,
+    @Req() req?: Request,
   ) {
-    return this.socialAccountsService.getAuthorizationUrl(platform, workspaceId, userId, redirectUri);
+    let cleanFrontendUrl: string | undefined;
+    const origin = frontendUrlQuery || (req?.headers?.origin as string) || (req?.headers?.referer as string);
+    if (origin) {
+      try {
+        cleanFrontendUrl = new URL(origin).origin;
+      } catch (_) {}
+    }
+    return this.socialAccountsService.getAuthorizationUrl(platform, workspaceId, userId, redirectUri, cleanFrontendUrl);
   }
 
   /**
@@ -66,7 +77,15 @@ export class SocialAccountsController {
     @Query('error_description') errorDescription: string,
     @Res() res: Response,
   ) {
-    const frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
+    let frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
+    if (state) {
+      try {
+        const payload = validateOAuthState(state);
+        if (payload.frontendUrl) {
+          frontendUrl = payload.frontendUrl;
+        }
+      } catch (_) {}
+    }
 
     if (error || !code) {
       const errorMsg = errorDescription || error || 'Authorization was denied or cancelled.';

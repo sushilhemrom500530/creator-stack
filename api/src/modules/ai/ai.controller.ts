@@ -17,7 +17,7 @@ import {
   GenerateThreadDto,
   AiChatDto,
 } from './dto';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 
 @ApiTags('AI Content Studio')

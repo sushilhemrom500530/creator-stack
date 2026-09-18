@@ -105,9 +105,11 @@ export const socialAccountsApi = {
     return api.get<any>('/social-accounts/health', params);
   },
 
-  getOAuthUrl: (platform: string, workspaceId?: string) => {
+  getOAuthUrl: (platform: string, workspaceId?: string, redirectUri?: string, frontendUrl?: string) => {
     const params: Record<string, any> = {};
     if (workspaceId && workspaceId !== '[object Object]') params.workspaceId = workspaceId;
+    if (redirectUri) params.redirectUri = redirectUri;
+    if (frontendUrl) params.frontendUrl = frontendUrl;
     return api.get<{ authUrl: string; state: string; platform: string }>(
       `/social-accounts/oauth/${platform}/authorize`,
       params

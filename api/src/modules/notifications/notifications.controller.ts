@@ -14,7 +14,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
 
 @ApiTags('Notifications & Alerts')

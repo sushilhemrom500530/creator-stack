@@ -13,9 +13,9 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { WhatsAppService } from './whatsapp.service';
 import { SendTextMessageDto, SendMediaMessageDto, SendTemplateMessageDto } from './dto';
-import { CurrentUser } from 'src/common/decorators';
+import { CurrentUser } from '../../common/decorators';
 import { JwtAuthGuard } from '../auth/guards';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from '../../common/decorators/public.decorator';
 import type { WhatsAppWebhookPayload } from './whatsapp.types';
 
 @ApiTags('WhatsApp Messaging')

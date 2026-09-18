@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString, IsArray } from 'class-validator';
-import { SocialPlatform } from 'src/modules/social-accounts/schemas/social-account.schema';
+import { SocialPlatform } from '../../social-accounts/schemas/social-account.schema';
 
 export class PostTargetDto {
   @ApiProperty({ example: '66a123456789abcdef123456', description: 'SocialAccount MongoDB ID' })

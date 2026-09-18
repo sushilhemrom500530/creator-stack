@@ -1,5 +1,5 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
-import { SocialPlatform } from 'src/modules/social-accounts/schemas/social-account.schema';
+import { SocialPlatform } from '../../../modules/social-accounts/schemas/social-account.schema';
 import { SocialProvider } from '../social-provider.interface';
 import {
   TokenResult,

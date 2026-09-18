@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 import { PostStatus } from '../schemas/post.schema';
-import { SocialPlatform } from 'src/modules/social-accounts/schemas/social-account.schema';
+import { SocialPlatform } from '../../social-accounts/schemas/social-account.schema';
 
 export class PostFilterDto {
   @ApiProperty({ example: '66a123456789abcdef123456' })

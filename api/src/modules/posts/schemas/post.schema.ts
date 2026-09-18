@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { SocialPlatform } from 'src/modules/social-accounts/schemas/social-account.schema';
+import { SocialPlatform } from '../../social-accounts/schemas/social-account.schema';
 
 export type PostDocument = Post & Document;
 
