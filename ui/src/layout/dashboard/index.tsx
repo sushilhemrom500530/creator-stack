@@ -2,7 +2,7 @@
 import Header from "@/components/header";
 import Sidebar from "@/components/header/sidebar";
 import { IDashboardLayoutProps } from "@/types";
-import { ReactNode, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 
