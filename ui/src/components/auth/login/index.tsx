@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Input, Button, Checkbox, Modal, message } from "antd";
+import { Input, Button, Checkbox, Modal, App } from "antd";
 import {
     Mail,
     Lock,
@@ -21,7 +21,8 @@ import { FaGoogle, FaFacebook } from "react-icons/fa6";
 import Logo from "@/components/reuseable/logo";
 import { authApi } from "@/lib/api";
 
-export default function LoginContent() {
+function LoginForm() {
+    const { message } = App.useApp();
     const router = useRouter();
 
     const [email, setEmail] = useState("");
@@ -436,5 +437,13 @@ export default function LoginContent() {
                 </div>
             </Modal>
         </div>
+    );
+}
+
+export default function LoginContent() {
+    return (
+        <App>
+            <LoginForm />
+        </App>
     );
 }
