@@ -38,7 +38,7 @@ export default function ApiDocSection() {
                         </div>
                     </div>
 
-                    <button className={`api-docs-btn ${themeClass}`}>
+                    <button className={"btn " + (`api-docs-btn ${themeClass}`)}>
                         Explore API Specs
                     </button>
                 </div>

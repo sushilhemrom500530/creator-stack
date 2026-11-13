@@ -109,7 +109,7 @@ export default function Blogs() {
                                 <button
                                     key={filter}
                                     onClick={() => setActiveFilter(filter)}
-                                    className={`cursor-pointer ${isActive ? "blog-filter-btn-active" : "blog-filter-btn"} ${themeClass}`}
+                                    className={"btn " + (`cursor-pointer ${isActive ? "blog-filter-btn-active" : "blog-filter-btn"} ${themeClass}`)}
                                 >
                                     {filter}
                                 </button>

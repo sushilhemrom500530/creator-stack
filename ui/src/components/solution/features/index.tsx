@@ -101,7 +101,7 @@ export default function FeaturesSection() {
                                     </li>
                                 ))}
                             </ul>
-                            <button className={`solutions-feature-cta is-${feature.colorVariant} ${themeClass}`}>
+                            <button className={"btn " + (`solutions-feature-cta is-${feature.colorVariant} ${themeClass}`)}>
                                 {feature.ctaText} <span aria-hidden="true">&rarr;</span>
                             </button>
                         </div>

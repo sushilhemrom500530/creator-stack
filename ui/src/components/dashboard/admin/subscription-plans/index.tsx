@@ -341,10 +341,10 @@ function SubscriptionsContent() {
                                 <button
                                     key={tab.id}
                                     onClick={() => setBillingCycle(tab.id)}
-                                    className={`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${isActive
+                                    className={"btn " + (`cursor-pointer px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${isActive
                                         ? "bg-primary text-white"
                                         : "text-muted-foreground hover:text-foreground"
-                                        }`}
+                                        }`)}
                                 >
                                     <span>{tab.label}</span>
                                 </button>
@@ -356,7 +356,7 @@ function SubscriptionsContent() {
                         type="primary"
                         icon={<Plus className="w-4 h-4" />}
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 text-xs sm:text-sm"
+                        className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-primary/20 text-xs sm:text-sm"
                     >
                         Create New Plan
                     </Button>
@@ -409,7 +409,7 @@ function SubscriptionsContent() {
                                             <Tooltip title="Edit Plan">
                                                 <button
                                                     onClick={() => handleOpenEdit(plan)}
-                                                    className="cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted/80 transition-colors"
+                                                    className="btn cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted/80 transition-colors"
                                                 >
                                                     <Edit3 className="w-4 h-4" />
                                                 </button>
@@ -423,7 +423,7 @@ function SubscriptionsContent() {
                                                 cancelText="Cancel"
                                                 okButtonProps={{ danger: true }}
                                             >
-                                                <button className="cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-muted/80 transition-colors">
+                                                <button className="btn cursor-pointer p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-muted/80 transition-colors">
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </Popconfirm>
@@ -481,7 +481,7 @@ function SubscriptionsContent() {
                                         {plan.features.length > 4 && (
                                             <button
                                                 onClick={() => toggleExpandCard(plan.id)}
-                                                className="cursor-pointer mt-2 text-[11px] font-bold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
+                                                className="btn cursor-pointer mt-2 text-[11px] font-bold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
                                             >
                                                 {isExpanded ? (
                                                     <>
@@ -503,7 +503,7 @@ function SubscriptionsContent() {
                                 <div className="mt-6 pt-4 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between">
                                     <button
                                         onClick={() => handleTogglePopular(plan.id)}
-                                        className="cursor-pointer text-xs font-semibold text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+                                        className="btn cursor-pointer text-xs font-semibold text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
                                     >
                                         <Star className={`w-3.5 h-3.5 ${plan.isPopular ? "fill-amber-500 text-amber-500" : ""}`} />
                                         <span>{plan.isPopular ? "Featured" : "Set Popular"}</span>
@@ -514,7 +514,7 @@ function SubscriptionsContent() {
                                         size="small"
                                         icon={<Edit3 className="w-3.5 h-3.5" />}
                                         onClick={() => handleOpenEdit(plan)}
-                                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl text-xs font-semibold"
+                                        className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl text-xs font-semibold"
                                     >
                                         Edit Tier
                                     </Button>
@@ -632,7 +632,7 @@ function SubscriptionsContent() {
                                     type="primary"
                                     onClick={handleAddCreateFeature}
                                     icon={<Plus className="w-4 h-4" />}
-                                    className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
+                                    className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
                                 >
                                     Add
                                 </Button>
@@ -652,7 +652,7 @@ function SubscriptionsContent() {
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveCreateFeature(idx)}
-                                            className="cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
+                                            className="btn cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
                                             title="Delete Feature"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -678,13 +678,13 @@ function SubscriptionsContent() {
                         </Form.Item>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                            <Button onClick={() => setIsCreateModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
+                            <Button onClick={() => setIsCreateModalOpen(false)} className="btn cursor-pointer rounded-xl text-xs sm:text-sm">
                                 Cancel
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                                className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                             >
                                 Deploy Plan Tier
                             </Button>
@@ -789,7 +789,7 @@ function SubscriptionsContent() {
                                     type="primary"
                                     onClick={handleAddEditFeature}
                                     icon={<Plus className="w-4 h-4" />}
-                                    className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
+                                    className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl h-10 px-4 flex items-center gap-1 font-semibold text-xs shrink-0"
                                 >
                                     Add
                                 </Button>
@@ -809,7 +809,7 @@ function SubscriptionsContent() {
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveEditFeature(idx)}
-                                            className="cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
+                                            className="btn cursor-pointer p-1 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0"
                                             title="Delete Feature"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />
@@ -829,13 +829,13 @@ function SubscriptionsContent() {
                         </Form.Item>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                            <Button onClick={() => setIsEditModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
+                            <Button onClick={() => setIsEditModalOpen(false)} className="btn cursor-pointer rounded-xl text-xs sm:text-sm">
                                 Cancel
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                                className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                             >
                                 Save Plan Changes
                             </Button>

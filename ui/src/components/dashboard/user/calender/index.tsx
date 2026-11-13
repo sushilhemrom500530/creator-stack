@@ -283,7 +283,7 @@ export default function UserCalender() {
                     <div className="flex flex-wrap items-center gap-3">
                         {/* Ant Design Platform Dropdown */}
                         <Dropdown menu={{ items: platformItems, onClick: handlePlatformClick }} trigger={["click"]}>
-                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                            <button className="btn bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
                                 <span className="text-slate-400 dark:text-zinc-550 font-normal">Platform:</span>
                                 <span>{platform}</span>
                                 <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
@@ -292,7 +292,7 @@ export default function UserCalender() {
 
                         {/* Ant Design Status Dropdown */}
                         <Dropdown menu={{ items: statusItems, onClick: handleStatusClick }} trigger={["click"]}>
-                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                            <button className="btn bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
                                 <span className="text-slate-400 dark:text-zinc-550 font-normal">Status:</span>
                                 <span>{status}</span>
                                 <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
@@ -301,7 +301,7 @@ export default function UserCalender() {
 
                         {/* Ant Design Team Dropdown */}
                         <Dropdown menu={{ items: teamItems, onClick: handleTeamClick }} trigger={["click"]}>
-                            <button className="bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
+                            <button className="btn bg-slate-50 dark:bg-[#1A1D21] border border-slate-100 dark:border-zinc-800/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-300 flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#1E2227] transition-all cursor-pointer">
                                 <span className="text-slate-400 dark:text-zinc-550 font-normal">Team:</span>
                                 <span>{team}</span>
                                 <ChevronDown size={14} className="text-slate-400 dark:text-zinc-500" />
@@ -315,7 +315,7 @@ export default function UserCalender() {
                         <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#1A1D21]/80 border border-slate-100 dark:border-zinc-800/50 p-1.5 rounded-xl">
                             <button
                                 onClick={handlePrevMonth}
-                                className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
+                                className="btn p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
                             >
                                 <ChevronLeft size={16} />
                             </button>
@@ -324,7 +324,7 @@ export default function UserCalender() {
                             </span>
                             <button
                                 onClick={handleNextMonth}
-                                className="p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
+                                className="btn p-1 rounded-lg hover:bg-slate-105 dark:hover:bg-[#1E2227] text-slate-500 dark:text-zinc-400 transition-colors cursor-pointer"
                             >
                                 <ChevronRight size={16} />
                             </button>
@@ -336,10 +336,10 @@ export default function UserCalender() {
                                 <button
                                     key={mode}
                                     onClick={() => setViewMode(mode)}
-                                    className={`px-4 py-1.5 text-xs font-semibold rounded-lg capitalize transition-all duration-300 cursor-pointer ${viewMode === mode
+                                    className={"btn " + (`px-4 py-1.5 text-xs font-semibold rounded-lg capitalize transition-all duration-300 cursor-pointer ${viewMode === mode
                                         ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
                                         : "text-slate-450 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300"
-                                        }`}
+                                        }`)}
                                 >
                                     {mode}
                                 </button>

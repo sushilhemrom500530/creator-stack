@@ -259,7 +259,7 @@ function TransactionsContent() {
                     </span>
                     <button
                         onClick={() => message.info("Opening payout queue details...")}
-                        className="font-extrabold text-indigo-600 hover:text-indigo-700 transition cursor-pointer"
+                        className="btn font-extrabold text-indigo-600 hover:text-indigo-700 transition cursor-pointer"
                     >
                         View details &rarr;
                     </button>
@@ -366,7 +366,7 @@ function TransactionsContent() {
                             setSelectedTx(record);
                             setIsDetailModalOpen(true);
                         }}
-                        className="hover:bg-slate-100 rounded-lg cursor-pointer"
+                        className="btn hover:bg-slate-100 rounded-lg cursor-pointer"
                     />
                 </Tooltip>
             ),
@@ -392,7 +392,7 @@ function TransactionsContent() {
                 <div className="flex items-center gap-3">
                     <Button
                         icon={<Filter className="w-4 h-4 text-slate-600" />}
-                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 shadow-2xs flex items-center gap-2"
+                        className="btn bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 shadow-2xs flex items-center gap-2"
                         onClick={() => message.info("Filter modal opened")}
                     >
                         Filter
@@ -401,7 +401,7 @@ function TransactionsContent() {
                         type="primary"
                         icon={<Download className="w-4 h-4" />}
                         onClick={handleExportCSV}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-sm border-none"
+                        className="btn bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-sm border-none"
                     >
                         Export CSV
                     </Button>
@@ -455,10 +455,10 @@ function TransactionsContent() {
                                 <button
                                     key={tab}
                                     onClick={() => setActiveCategory(tab)}
-                                    className={`px-3.5 py-1.5 rounded-lg text-xs font-extrabold transition cursor-pointer whitespace-nowrap ${activeCategory === tab
+                                    className={"btn " + (`px-3.5 py-1.5 rounded-lg text-xs font-extrabold transition cursor-pointer whitespace-nowrap ${activeCategory === tab
                                         ? "bg-white text-indigo-600 shadow-2xs"
                                         : "text-slate-500 hover:text-slate-800"
-                                        }`}
+                                        }`)}
                                 >
                                     {tab}
                                 </button>
@@ -537,7 +537,7 @@ function TransactionsContent() {
                         </p>
                         <button
                             onClick={() => message.info("Opening Fraud Safety Report...")}
-                            className="text-xs font-extrabold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition cursor-pointer"
+                            className="btn text-xs font-extrabold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition cursor-pointer"
                         >
                             Review Safety Report <ArrowUpRight className="w-4 h-4" />
                         </button>
@@ -556,7 +556,7 @@ function TransactionsContent() {
                 open={isDetailModalOpen}
                 onCancel={() => setIsDetailModalOpen(false)}
                 footer={[
-                    <Button key="close" onClick={() => setIsDetailModalOpen(false)} className="rounded-xl font-bold">
+                    <Button key="close" onClick={() => setIsDetailModalOpen(false)} className="btn rounded-xl font-bold">
                         Close
                     </Button>,
                     <Button
@@ -566,7 +566,7 @@ function TransactionsContent() {
                             message.success("Invoice PDF generated");
                             setIsDetailModalOpen(false);
                         }}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl border-none"
+                        className="btn bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl border-none"
                     >
                         Download PDF
                     </Button>,

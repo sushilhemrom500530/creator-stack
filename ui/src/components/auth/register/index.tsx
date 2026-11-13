@@ -277,7 +277,7 @@ export default function RegisterContent() {
                                 <button
                                     type="button"
                                     onClick={() => message.info("Google OAuth signup initialized")}
-                                    className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
+                                    className="btn flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
                                 >
                                     <FaGoogle className="w-4 h-4 text-red-500" />
                                     <span>Google</span>
@@ -285,7 +285,7 @@ export default function RegisterContent() {
                                 <button
                                     type="button"
                                     onClick={() => message.info("Facebook OAuth signup initialized")}
-                                    className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
+                                    className="btn flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
                                 >
                                     <FaFacebook className="w-4 h-4 text-blue-600" />
                                     <span>Facebook</span>
@@ -349,7 +349,7 @@ export default function RegisterContent() {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="text-slate-400 hover:text-slate-600 focus:outline-none"
+                                                className="btn text-slate-400 hover:text-slate-600 focus:outline-none"
                                             >
                                                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                             </button>
@@ -397,7 +397,7 @@ export default function RegisterContent() {
                                 <button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                                    className="btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                                 >
                                     {isLoading ? (
                                         <span>Sending OTP code...</span>
@@ -443,7 +443,7 @@ export default function RegisterContent() {
                                     type="button"
                                     onClick={handleResendOtp}
                                     disabled={countdown > 0 || isResending}
-                                    className="font-bold text-purple-600 hover:text-purple-700 disabled:opacity-40 disabled:hover:text-purple-600 transition cursor-pointer"
+                                    className="btn font-bold text-purple-600 hover:text-purple-700 disabled:opacity-40 disabled:hover:text-purple-600 transition cursor-pointer"
                                 >
                                     {isResending ? "Resending..." : "Resend OTP"}
                                 </button>
@@ -452,7 +452,7 @@ export default function RegisterContent() {
                             <button
                                 type="submit"
                                 disabled={isLoading || otp.length !== 6}
-                                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                                className="btn w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                             >
                                 {isLoading ? (
                                     <span>Verifying...</span>
@@ -467,7 +467,7 @@ export default function RegisterContent() {
                             <button
                                 type="button"
                                 onClick={() => setStep("form")}
-                                className="w-full text-center text-xs font-semibold text-slate-500 hover:text-slate-700 transition cursor-pointer"
+                                className="btn w-full text-center text-xs font-semibold text-slate-500 hover:text-slate-700 transition cursor-pointer"
                             >
                                 ← Back to edit details
                             </button>

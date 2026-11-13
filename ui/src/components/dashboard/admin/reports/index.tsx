@@ -256,7 +256,7 @@ export default function Reports() {
                 <div className="flex items-center gap-3">
                     <Button
                         icon={<Filter className="w-4 h-4 text-slate-600" />}
-                        className="bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 flex items-center gap-2 cursor-pointer"
+                        className="btn bg-white border-slate-200 hover:border-slate-300 font-bold rounded-xl h-10 text-slate-700 flex items-center gap-2 cursor-pointer"
                         onClick={() => message.info("Filter parameters applied")}
                     >
                         Filters
@@ -265,7 +265,7 @@ export default function Reports() {
                         type="primary"
                         icon={<Download className="w-4 h-4" />}
                         onClick={handleExportCSV}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-10 px-5 flex items-center gap-2 border-none cursor-pointer"
+                        className="btn bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-10 px-5 flex items-center gap-2 border-none cursor-pointer"
                     >
                         Export CSV
                     </Button>
@@ -289,28 +289,28 @@ export default function Reports() {
                             <div className="flex items-center gap-6">
                                 <button
                                     onClick={() => setActiveTab("all")}
-                                    className={`pb-2 text-sm font-bold transition-all border-b-2 cursor-pointer ${activeTab === "all"
+                                    className={"btn " + (`pb-2 text-sm font-bold transition-all border-b-2 cursor-pointer ${activeTab === "all"
                                         ? "border-indigo-600 text-indigo-600"
                                         : "border-transparent text-slate-400 hover:text-slate-600"
-                                        }`}
+                                        }`)}
                                 >
                                     All Reports ({reports.length})
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("pending")}
-                                    className={`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "pending"
+                                    className={"btn " + (`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "pending"
                                         ? "border-indigo-600 text-indigo-600"
                                         : "border-transparent text-slate-400 hover:text-slate-600"
-                                        }`}
+                                        }`)}
                                 >
                                     Pending ({pendingCount})
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("ai")}
-                                    className={`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "ai"
+                                    className={"btn " + (`pb-2 text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 cursor-pointer ${activeTab === "ai"
                                         ? "border-indigo-600 text-indigo-600"
                                         : "border-transparent text-slate-400 hover:text-slate-600"
-                                        }`}
+                                        }`)}
                                 >
                                     Flagged by AI ({aiCount})
                                 </button>
@@ -405,7 +405,7 @@ export default function Reports() {
                                                                 setSelectedReport(row);
                                                                 setIsDetailModalOpen(true);
                                                             }}
-                                                            className="hover:bg-slate-100 rounded-lg cursor-pointer"
+                                                            className="btn hover:bg-slate-100 rounded-lg cursor-pointer"
                                                         />
                                                     </Tooltip>
                                                     {row.status === "PENDING" && (
@@ -415,7 +415,7 @@ export default function Reports() {
                                                                 size="small"
                                                                 icon={<Check className="w-4 h-4 text-emerald-600" />}
                                                                 onClick={() => handleResolve(row.id)}
-                                                                className="hover:bg-emerald-50 rounded-lg cursor-pointer"
+                                                                className="btn hover:bg-emerald-50 rounded-lg cursor-pointer"
                                                             />
                                                         </Tooltip>
                                                     )}
@@ -432,11 +432,11 @@ export default function Reports() {
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-100 mt-6 text-xs text-slate-500 font-medium">
                         <span>Showing {filteredReports.length} of 124 reports</span>
                         <div className="flex items-center gap-1.5">
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&lt;</Button>
-                            <Button size="small" type="primary" className="rounded-lg text-xs font-bold bg-indigo-600 cursor-pointer">1</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">2</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">3</Button>
-                            <Button size="small" className="rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&gt;</Button>
+                            <Button size="small" className="btn rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&lt;</Button>
+                            <Button size="small" type="primary" className="btn rounded-lg text-xs font-bold bg-indigo-600 cursor-pointer">1</Button>
+                            <Button size="small" className="btn rounded-lg text-xs font-bold border-slate-200 cursor-pointer">2</Button>
+                            <Button size="small" className="btn rounded-lg text-xs font-bold border-slate-200 cursor-pointer">3</Button>
+                            <Button size="small" className="btn rounded-lg text-xs font-bold border-slate-200 cursor-pointer">&gt;</Button>
                         </div>
                     </div>
                 </div>
@@ -544,7 +544,7 @@ export default function Reports() {
                         <div className="pt-4 border-t border-slate-100 mt-4 text-center">
                             <button
                                 onClick={() => message.info("Opening full system audit logs...")}
-                                className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center justify-center gap-1 w-full cursor-pointer"
+                                className="btn text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center justify-center gap-1 w-full cursor-pointer"
                             >
                                 View Audit Logs <ArrowUpRight className="w-3.5 h-3.5" />
                             </button>
@@ -566,13 +566,13 @@ export default function Reports() {
                 open={isDetailModalOpen}
                 onCancel={() => setIsDetailModalOpen(false)}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsDetailModalOpen(false)} className="rounded-xl font-bold cursor-pointer">
+                    <Button key="cancel" onClick={() => setIsDetailModalOpen(false)} className="btn rounded-xl font-bold cursor-pointer">
                         Close
                     </Button>,
                     <Button
                         key="escalate"
                         onClick={() => selectedReport && handleEscalate(selectedReport.id)}
-                        className="rounded-xl font-bold border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
+                        className="btn rounded-xl font-bold border-rose-200 text-rose-600 hover:bg-rose-50 cursor-pointer"
                     >
                         Escalate
                     </Button>,
@@ -580,7 +580,7 @@ export default function Reports() {
                         key="resolve"
                         type="primary"
                         onClick={() => selectedReport && handleResolve(selectedReport.id)}
-                        className="bg-emerald-600 hover:bg-emerald-700 font-bold rounded-xl border-none cursor-pointer"
+                        className="btn bg-emerald-600 hover:bg-emerald-700 font-bold rounded-xl border-none cursor-pointer"
                     >
                         Mark as Resolved
                     </Button>,

@@ -352,10 +352,10 @@ function AnalyticsContent() {
                         <button
                             key={tf}
                             onClick={() => setTimeframe(tf)}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${timeframe === tf
+                            className={"btn " + (`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${timeframe === tf
                                 ? "bg-white text-primary shadow-xs border border-slate-200/80 font-extrabold"
                                 : "text-slate-600 hover:text-slate-900 font-bold"
-                                }`}
+                                }`)}
                         >
                             {tf === "7d" ? "7 Days" : tf === "30d" ? "30 Days" : "All Time"}
                         </button>
@@ -451,7 +451,7 @@ function AnalyticsContent() {
                         type="primary"
                         icon={<Sparkles className="w-4 h-4 text-purple-300" />}
                         onClick={() => setIsAiModalOpen(true)}
-                        className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-primary hover:to-indigo-700 border-0 h-11 rounded-2xl font-extrabold text-white shadow-md cursor-pointer"
+                        className="btn w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-primary hover:to-indigo-700 border-0 h-11 rounded-2xl font-extrabold text-white shadow-md cursor-pointer"
                     >
                         Ask AI Analyst
                     </Button>
@@ -549,7 +549,7 @@ function AnalyticsContent() {
                         type="primary"
                         icon={<Sparkles className="w-4 h-4" />}
                         onClick={() => setIsAiModalOpen(true)}
-                        className="bg-purple-600 hover:bg-primary text-white font-bold rounded-2xl h-10 cursor-pointer border-0"
+                        className="btn bg-purple-600 hover:bg-primary text-white font-bold rounded-2xl h-10 cursor-pointer border-0"
                     >
                         Ask AI Analyst →
                     </Button>
@@ -606,7 +606,7 @@ function AnalyticsContent() {
                             type="primary"
                             htmlType="submit"
                             icon={<Send className="w-4 h-4" />}
-                            className="h-11 rounded-xl bg-purple-600 font-bold cursor-pointer"
+                            className="btn h-11 rounded-xl bg-purple-600 font-bold cursor-pointer"
                         />
                     </form>
                 </div>

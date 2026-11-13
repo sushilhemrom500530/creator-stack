@@ -147,7 +147,7 @@ export default function Pricing() {
                                     ))}
                                 </ul>
 
-                                <button className={`${isFeatured ? 'pricing-tier-btn-featured' : 'pricing-tier-btn-standard'} ${themeClass}`}>
+                                <button className={"btn " + (`${isFeatured ? 'pricing-tier-btn-featured' : 'pricing-tier-btn-standard'} ${themeClass}`)}>
                                     {plan.buttonText}
                                 </button>
                             </div>

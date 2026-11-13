@@ -55,7 +55,7 @@ export default function CreatePostComponent() {
                     <button
                         onClick={handleAiGenerate}
                         disabled={isGenerating}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-sm shadow-md hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
+                        className="btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium text-sm shadow-md hover:opacity-90 transition disabled:opacity-50 cursor-pointer"
                     >
                         <Sparkles className="w-4 h-4" />
                         {isGenerating ? "Generating..." : "Generate with AI"}
@@ -82,10 +82,10 @@ export default function CreatePostComponent() {
                                     <button
                                         key={p.id}
                                         onClick={() => togglePlatform(p.id)}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${isSelected
+                                        className={"btn " + (`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${isSelected
                                             ? `${p.color} text-white shadow-sm ring-2 ring-offset-1 ring-slate-300`
                                             : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                            }`}
+                                            }`)}
                                     >
                                         <Icon className="w-4 h-4" />
                                         {p.name}
@@ -112,11 +112,11 @@ export default function CreatePostComponent() {
                         {/* Attachments & Schedule */}
                         <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100">
                             <div className="flex items-center gap-2">
-                                <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-medium transition cursor-pointer">
+                                <button className="btn flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-medium transition cursor-pointer">
                                     <ImageIcon className="w-4 h-4 text-slate-500" />
                                     Add Media
                                 </button>
-                                <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-medium transition cursor-pointer">
+                                <button className="btn flex items-center gap-1.5 px-3 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-medium transition cursor-pointer">
                                     <Globe className="w-4 h-4 text-slate-500" />
                                     Add Link
                                 </button>
@@ -134,11 +134,11 @@ export default function CreatePostComponent() {
 
                     {/* Submit Actions */}
                     <div className="flex items-center justify-end gap-3">
-                        <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:bg-slate-50 transition cursor-pointer">
+                        <button className="btn flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-medium text-sm hover:bg-slate-50 transition cursor-pointer">
                             <Clock className="w-4 h-4 text-slate-500" />
                             Schedule for Later
                         </button>
-                        <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition cursor-pointer">
+                        <button className="btn flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition cursor-pointer">
                             <Send className="w-4 h-4" />
                             Publish Now
                         </button>
@@ -183,7 +183,7 @@ export default function CreatePostComponent() {
                             </p>
                             <button
                                 onClick={handleApplyOptimization}
-                                className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 text-xs font-semibold transition-all hover:text-white cursor-pointer"
+                                className="btn w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 text-xs font-semibold transition-all hover:text-white cursor-pointer"
                             >
                                 Apply Optimization
                             </button>

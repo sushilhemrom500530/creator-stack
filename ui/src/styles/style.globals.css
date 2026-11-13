@@ -319,3 +319,16 @@ body {
 .pricing-tagline-text.is-dark {
     @apply text-[#B3A1C9];
 }
+/* Shared interaction styles for native and Ant Design buttons. */
+@layer components {
+    .btn { cursor: pointer; }
+    .btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+    }
+    .btn:disabled,
+    .btn[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}

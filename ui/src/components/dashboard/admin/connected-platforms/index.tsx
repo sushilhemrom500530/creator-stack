@@ -429,10 +429,10 @@ function ConnectedPlatformsContent() {
                             <button
                                 key={st}
                                 onClick={() => setFilterStatus(st)}
-                                className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${filterStatus === st
+                                className={"btn " + (`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition cursor-pointer ${filterStatus === st
                                     ? "bg-white text-primary shadow-xs"
                                     : "text-slate-600 hover:text-slate-900"
-                                    }`}
+                                    }`)}
                             >
                                 {st}
                             </button>
@@ -442,7 +442,7 @@ function ConnectedPlatformsContent() {
                     <Button
                         icon={<RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-purple-600" : ""}`} />}
                         onClick={handleRefreshAll}
-                        className="h-11 px-4 rounded-2xl font-bold border-slate-200 hover:border-purple-300 cursor-pointer"
+                        className="btn h-11 px-4 rounded-2xl font-bold border-slate-200 hover:border-purple-300 cursor-pointer"
                     >
                         Refresh
                     </Button>
@@ -539,7 +539,7 @@ function ConnectedPlatformsContent() {
                                         block
                                         size="large"
                                         onClick={() => handleReconnect(platform.id, platform.name)}
-                                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
+                                        className="btn bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
                                     >
                                         Reconnect
                                     </Button>
@@ -549,7 +549,7 @@ function ConnectedPlatformsContent() {
                                         block
                                         size="large"
                                         onClick={() => handleResolve(platform.id, platform.name)}
-                                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
+                                        className="btn bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 border-0 text-white font-bold rounded-2xl shadow-md hover:shadow-purple-200 h-11 cursor-pointer"
                                     >
                                         Resolve
                                     </Button>
@@ -558,7 +558,7 @@ function ConnectedPlatformsContent() {
                                         block
                                         size="large"
                                         onClick={() => handleOpenConfigure(platform)}
-                                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border-0 rounded-2xl h-11 cursor-pointer transition"
+                                        className="btn bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold border-0 rounded-2xl h-11 cursor-pointer transition"
                                     >
                                         Configure
                                     </Button>
@@ -621,7 +621,7 @@ function ConnectedPlatformsContent() {
                             <Button
                                 size="small"
                                 onClick={() => message.success("Ping successful! Latency: 98ms")}
-                                className="font-bold text-xs rounded-xl"
+                                className="btn font-bold text-xs rounded-xl"
                             >
                                 Ping API
                             </Button>
@@ -673,7 +673,7 @@ function ConnectedPlatformsContent() {
                                 block
                                 icon={<RefreshCw className="w-4 h-4" />}
                                 onClick={() => message.success("Rotated Secret Key successfully!")}
-                                className="rounded-xl font-bold h-11"
+                                className="btn rounded-xl font-bold h-11"
                             >
                                 Rotate OAuth Secret
                             </Button>
@@ -686,7 +686,7 @@ function ConnectedPlatformsContent() {
                                     setIsConfigureOpen(false);
                                     message.success(`Disconnected ${selectedPlatform.name}`);
                                 }}
-                                className="rounded-xl font-bold h-11"
+                                className="btn rounded-xl font-bold h-11"
                             >
                                 Disconnect Platform Gateway
                             </Button>
@@ -741,10 +741,10 @@ function ConnectedPlatformsContent() {
                     </Form.Item>
 
                     <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                        <Button onClick={() => setIsAddPlatformOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                        <Button onClick={() => setIsAddPlatformOpen(false)} className="btn rounded-xl font-semibold cursor-pointer">
                             Cancel
                         </Button>
-                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                        <Button type="primary" htmlType="submit" className="btn rounded-xl font-bold bg-purple-600 cursor-pointer">
                             Connect Platform
                         </Button>
                     </div>

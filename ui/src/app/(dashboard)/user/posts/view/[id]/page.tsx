@@ -72,7 +72,7 @@ export default function PostDetailsPage({ params }: { params: Promise<{ id: stri
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => router.back()}
-                        className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
+                        className="btn p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
                         title="Back to Posts"
                     >
                         <ArrowLeft className="w-5 h-5" />

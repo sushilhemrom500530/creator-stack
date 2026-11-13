@@ -207,7 +207,7 @@ export default function AdminOverview() {
                 <div className="flex items-center gap-3 shrink-0">
                     <button
                         onClick={() => messageApi.success("Triggered global API diagnostic scan")}
-                        className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition cursor-pointer flex items-center gap-1.5"
+                        className="btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition cursor-pointer flex items-center gap-1.5"
                     >
                         <RefreshCw className="w-3.5 h-3.5" /> Run System Audit
                     </button>

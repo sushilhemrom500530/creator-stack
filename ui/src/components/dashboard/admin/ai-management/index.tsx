@@ -225,7 +225,7 @@ export default function AiManagement() {
                         type="primary"
                         icon={<Settings2 className="w-4 h-4" />}
                         onClick={() => setIsDrawerOpen(true)}
-                        className="bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-full h-9 px-5 flex items-center gap-1.5 border-none"
+                        className="btn bg-indigo-600 hover:bg-indigo-700 font-extrabold rounded-full h-9 px-5 flex items-center gap-1.5 border-none"
                     >
                         Manage AI
                     </Button>

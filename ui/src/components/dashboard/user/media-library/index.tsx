@@ -51,7 +51,7 @@ export default function MediaLibraryComponent() {
                 </div>
 
                 {/* Actions: Upload Media */}
-                <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition shadow-md cursor-pointer">
+                <button className="btn flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:bg-primary/90 transition shadow-md cursor-pointer">
                     <UploadCloud className="w-4 h-4" />
                     Upload Media
                 </button>
@@ -137,10 +137,10 @@ export default function MediaLibraryComponent() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${activeTab === tab.id
+                            className={"btn " + (`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer ${activeTab === tab.id
                                 ? "bg-primary text-white shadow-xs"
                                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                }`}
+                                }`)}
                         >
                             {tab.label}
                         </button>
@@ -194,10 +194,10 @@ export default function MediaLibraryComponent() {
                                     {getIcon()}
                                 </div>
                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
-                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
+                                    <button className="btn p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
                                         <Download className="w-4 h-4" />
                                     </button>
-                                    <button className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer">
+                                    <button className="btn p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 cursor-pointer">
                                         <Trash2 className="w-4 h-4" />
                                     </button>
                                 </div>

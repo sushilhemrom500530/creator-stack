@@ -29,7 +29,7 @@ export default function NewsletterSection() {
                             className={`newsletter-input ${themeClass}`}
                             required
                         />
-                        <button className={`newsletter-btn ${themeClass}`}>
+                        <button className={"btn " + (`newsletter-btn ${themeClass}`)}>
                             Subscribe
                         </button>
                     </form>

@@ -289,7 +289,7 @@ export default function ContentSection() {
                                 </span>
                                 <button
                                     onClick={handleCopyCode}
-                                    className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer text-[11px]"
+                                    className="btn flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer text-[11px]"
                                 >
                                     {codeCopied ? (
                                         <>
@@ -434,19 +434,19 @@ export default function ContentSection() {
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={() => setFeedbackGiven("yes")}
-                                    className={`px-4 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 cursor-pointer transition-colors ${isLight
+                                    className={"btn " + (`px-4 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 cursor-pointer transition-colors ${isLight
                                         ? "bg-white border-slate-200 hover:border-emerald-300 hover:text-emerald-700 shadow-xs"
                                         : "bg-white/5 border-white/10 hover:border-emerald-500/40 hover:text-emerald-300"
-                                        }`}
+                                        }`)}
                                 >
                                     <ThumbsUp size={14} /> Yes, very clear
                                 </button>
                                 <button
                                     onClick={() => setFeedbackGiven("no")}
-                                    className={`px-4 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 cursor-pointer transition-colors ${isLight
+                                    className={"btn " + (`px-4 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 cursor-pointer transition-colors ${isLight
                                         ? "bg-white border-slate-200 hover:border-rose-300 hover:text-rose-700 shadow-xs"
                                         : "bg-white/5 border-white/10 hover:border-rose-500/40 hover:text-rose-300"
-                                        }`}
+                                        }`)}
                                 >
                                     <ThumbsDown size={14} /> Needs more detail
                                 </button>
@@ -515,7 +515,7 @@ export default function ContentSection() {
                         <div className="space-y-2.5">
                             <button
                                 onClick={() => alert("Downloading Creator Stack Onboarding Cheat Sheet (PDF)...")}
-                                className="w-full py-2.5 px-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition-all"
+                                className="btn w-full py-2.5 px-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm transition-all"
                             >
                                 <Download size={14} /> Download Cheat Sheet (PDF)
                             </button>

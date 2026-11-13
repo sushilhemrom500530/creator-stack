@@ -42,10 +42,10 @@ export default function BannerSection() {
 
           {/* Buttons */}
           <div className="flex flex-wrap items-center gap-4 mt-2">
-            <button className="banner-btn-start">
+            <button className="btn banner-btn-start">
               Start Free
             </button>
-            <button className={`banner-btn-demo group ${themeClass}`}>
+            <button className={"btn " + (`banner-btn-demo group ${themeClass}`)}>
               <span className="banner-play-circle group-hover:bg-[#14b8a6]/20">
                 <Play size={14} className="text-[#14b8a6] fill-[#14b8a6] ml-0.5" />
               </span>

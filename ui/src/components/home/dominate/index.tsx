@@ -37,7 +37,7 @@ export function DominateSection() {
                             <p className={`dominate-card-desc mb-6 pr-4 ${themeClass}`}>
                                 Our neural architecture doesn't just suggest — it architects. Plan 30 days of high-converting content across 15 platforms in under 3 minutes.
                             </p>
-                            <button className={`dominate-action-btn group/btn ${themeClass}`}>
+                            <button className={"btn " + (`dominate-action-btn group/btn ${themeClass}`)}>
                                 Explore Neural Engine
                                 <ArrowRight className="dominate-action-btn-icon group-hover/btn:translate-x-1.5" />
                             </button>

@@ -51,7 +51,7 @@ export default function UserGuideSection() {
                         Step by step instructions to help you navigate our platform and optimize your social media presence with AI-generated insights.
                     </p>
                 </div>
-                <button className={`user-guide-action-btn ${themeClass}`}>
+                <button className={"btn " + (`user-guide-action-btn ${themeClass}`)}>
                     View All Guides &rarr;
                 </button>
             </div>

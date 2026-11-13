@@ -528,7 +528,7 @@ function UsersContent() {
                         <Button
                             type="text"
                             shape="circle"
-                            className="flex items-center justify-center hover:bg-purple-50 hover:text-purple-600 text-slate-500 transition cursor-pointer"
+                            className="btn flex items-center justify-center hover:bg-purple-50 hover:text-purple-600 text-slate-500 transition cursor-pointer"
                             icon={<MoreVertical className="w-4 h-4" />}
                         />
                     </Dropdown>
@@ -671,7 +671,7 @@ function UsersContent() {
                                 <Button
                                     onClick={handleResetFilters}
                                     icon={<RotateCcw className="w-3.5 h-3.5" />}
-                                    className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
+                                    className="btn h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
                                 >
                                     Reset Filters
                                 </Button>
@@ -741,10 +741,10 @@ function UsersContent() {
                             <Button
                                 size="small"
                                 onClick={() => handleToggleUserStatus(selectedUser.id)}
-                                className={`font-semibold text-xs rounded-lg cursor-pointer ${selectedUser.status === "Suspended"
+                                className={"btn " + (`font-semibold text-xs rounded-lg cursor-pointer ${selectedUser.status === "Suspended"
                                     ? "bg-emerald-600 text-white hover:bg-emerald-700"
                                     : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100"
-                                    }`}
+                                    }`)}
                             >
                                 {selectedUser.status === "Suspended" ? "Activate User" : "Suspend User"}
                             </Button>
@@ -803,7 +803,7 @@ function UsersContent() {
                                     setIsDetailDrawerOpen(false);
                                     handleOpenEdit(selectedUser);
                                 }}
-                                className="rounded-xl font-semibold cursor-pointer"
+                                className="btn rounded-xl font-semibold cursor-pointer"
                             >
                                 Edit Profile Information
                             </Button>
@@ -811,7 +811,7 @@ function UsersContent() {
                                 block
                                 icon={<RotateCcw className="w-4 h-4" />}
                                 onClick={() => handleResetPassword(selectedUser.email)}
-                                className="rounded-xl font-semibold cursor-pointer"
+                                className="btn rounded-xl font-semibold cursor-pointer"
                             >
                                 Send Password Reset Email
                             </Button>
@@ -886,10 +886,10 @@ function UsersContent() {
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                        <Button onClick={() => setIsCreateModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                        <Button onClick={() => setIsCreateModalOpen(false)} className="btn rounded-xl font-semibold cursor-pointer">
                             Cancel
                         </Button>
-                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                        <Button type="primary" htmlType="submit" className="btn rounded-xl font-bold bg-purple-600 cursor-pointer">
                             Create User
                         </Button>
                     </div>
@@ -972,10 +972,10 @@ function UsersContent() {
                     </Form.Item>
 
                     <div className="flex justify-end gap-2 pt-4 border-t border-slate-100">
-                        <Button onClick={() => setIsEditModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                        <Button onClick={() => setIsEditModalOpen(false)} className="btn rounded-xl font-semibold cursor-pointer">
                             Cancel
                         </Button>
-                        <Button type="primary" htmlType="submit" className="rounded-xl font-bold bg-purple-600 cursor-pointer">
+                        <Button type="primary" htmlType="submit" className="btn rounded-xl font-bold bg-purple-600 cursor-pointer">
                             Save Changes
                         </Button>
                     </div>

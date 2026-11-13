@@ -167,7 +167,7 @@ export default function UserOverviewContent() {
                             <h2 className="text-lg font-bold text-slate-800 dark:text-zinc-100 tracking-tight">
                                 Recent Content
                             </h2>
-                            <button className="text-sm font-semibold text-primary hover:text-primary/90 dark:hover:text-primary hover:underline transition-colors cursor-pointer">
+                            <button className="btn text-sm font-semibold text-primary hover:text-primary/90 dark:hover:text-primary hover:underline transition-colors cursor-pointer">
                                 View All
                             </button>
                         </div>
@@ -220,10 +220,10 @@ export default function UserOverviewContent() {
                             Upcoming Schedule
                         </h2>
                         <div className="flex items-center gap-1">
-                            <button className="p-1 rounded-lg border border-slate-100 dark:border-zinc-800/50 hover:bg-slate-50 dark:hover:bg-[#121316] text-slate-500 dark:text-zinc-400 transition-colors">
+                            <button className="btn p-1 rounded-lg border border-slate-100 dark:border-zinc-800/50 hover:bg-slate-50 dark:hover:bg-[#121316] text-slate-500 dark:text-zinc-400 transition-colors">
                                 <ChevronLeft size={16} />
                             </button>
-                            <button className="p-1 rounded-lg border border-slate-100 dark:border-zinc-800/50 hover:bg-slate-50 dark:hover:bg-[#121316] text-slate-500 dark:text-zinc-400 transition-colors">
+                            <button className="btn p-1 rounded-lg border border-slate-100 dark:border-zinc-800/50 hover:bg-slate-50 dark:hover:bg-[#121316] text-slate-500 dark:text-zinc-400 transition-colors">
                                 <ChevronRight size={16} />
                             </button>
                         </div>
@@ -313,11 +313,11 @@ export default function UserOverviewContent() {
                                     </div>
 
                                     {acct.status === "Active" ? (
-                                        <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors cursor-pointer">
+                                        <button className="btn text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors cursor-pointer">
                                             <Settings size={16} />
                                         </button>
                                     ) : (
-                                        <button className="bg-red-500 hover:bg-red-600 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors cursor-pointer">
+                                        <button className="btn bg-red-500 hover:bg-red-600 dark:bg-red-500/20 dark:hover:bg-red-500/30 text-white dark:text-red-400 text-[10px] font-bold px-3 py-1 rounded-lg border border-transparent dark:border-red-500/35 transition-colors cursor-pointer">
                                             Fix
                                         </button>
                                     )}
@@ -358,7 +358,7 @@ export default function UserOverviewContent() {
                                         </span>
                                     </div>
 
-                                    <button className="text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors ml-4 flex-shrink-0 cursor-pointer">
+                                    <button className="btn text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors ml-4 flex-shrink-0 cursor-pointer">
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>
@@ -372,7 +372,7 @@ export default function UserOverviewContent() {
             <div className="fixed bottom-6 right-6 z-40">
                 <button
                     title="AI Assistant Helper"
-                    className="w-12 h-12 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] hover:scale-105 shadow-xl shadow-purple-500/20 text-white flex items-center justify-center transition-all duration-300 group cursor-pointer relative"
+                    className="btn w-12 h-12 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] hover:scale-105 shadow-xl shadow-purple-500/20 text-white flex items-center justify-center transition-all duration-300 group cursor-pointer relative"
                 >
                     <Sparkles size={20} className="group-hover:rotate-12 transition-transform duration-300" />
                 </button>

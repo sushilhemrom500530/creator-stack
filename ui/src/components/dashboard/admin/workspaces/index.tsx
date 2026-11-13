@@ -484,7 +484,7 @@ function WorkspacesContent() {
                     size="small"
                     icon={<ChevronRight className="w-4 h-4 text-emerald-500" />}
                     onClick={() => handleViewDetails(ws)}
-                    className="cursor-pointer"
+                    className="btn cursor-pointer"
                 >
                     Details
                 </Button>
@@ -543,7 +543,7 @@ function WorkspacesContent() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setIsAiModalOpen(true)}
-                        className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-xs font-bold tracking-wide transition-all cursor-pointer"
+                        className="btn group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 text-xs font-bold tracking-wide transition-all cursor-pointer"
                     >
                         <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
                         <Sparkles className="w-4 h-4 text-emerald-500 animate-pulse" />
@@ -554,7 +554,7 @@ function WorkspacesContent() {
                         type="primary"
                         icon={<Plus className="w-4 h-4" />}
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-emerald-600 hover:bg-emerald-500 border-none font-semibold h-10 px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-600/20"
+                        className="btn bg-emerald-600 hover:bg-emerald-500 border-none font-semibold h-10 px-5 rounded-xl flex items-center gap-2 shadow-lg shadow-emerald-600/20"
                     >
                         Create Workspace
                     </Button>
@@ -618,7 +618,7 @@ function WorkspacesContent() {
                                 type="text"
                                 icon={<RotateCcw className="w-3.5 h-3.5" />}
                                 onClick={handleResetFilters}
-                                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
+                                className="btn text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
                             >
                                 Reset
                             </Button>
@@ -629,20 +629,20 @@ function WorkspacesContent() {
                     <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-gray-200 dark:border-zinc-800">
                         <button
                             onClick={() => setViewMode("grid")}
-                            className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "grid"
+                            className={"btn " + (`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "grid"
                                 ? "bg-background text-foreground shadow-sm font-semibold"
                                 : "text-muted-foreground hover:text-foreground"
-                                }`}
+                                }`)}
                         >
                             <GridIcon className="w-4 h-4" />
                             <span className="hidden sm:inline">Grid</span>
                         </button>
                         <button
                             onClick={() => setViewMode("table")}
-                            className={`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "table"
+                            className={"btn " + (`p-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === "table"
                                 ? "bg-background text-foreground shadow-sm font-semibold"
                                 : "text-muted-foreground hover:text-foreground"
-                                }`}
+                                }`)}
                         >
                             <ListIcon className="w-4 h-4" />
                             <span className="hidden sm:inline">Table</span>
@@ -710,7 +710,7 @@ function WorkspacesContent() {
                                                 trigger={["click"]}
                                                 placement="bottomRight"
                                             >
-                                                <button className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
+                                                <button className="btn p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
                                                     <MoreVertical className="w-4 h-4" />
                                                 </button>
                                             </Dropdown>
@@ -771,7 +771,7 @@ function WorkspacesContent() {
                                     </span>
                                     <button
                                         onClick={() => handleViewDetails(ws)}
-                                        className="text-xs font-semibold text-emerald-500 hover:text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform cursor-pointer"
+                                        className="btn text-xs font-semibold text-emerald-500 hover:text-emerald-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform cursor-pointer"
                                     >
                                         Open Suite
                                         <ChevronRight className="w-3.5 h-3.5" />
@@ -914,13 +914,13 @@ function WorkspacesContent() {
                     </Form.Item>
 
                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                        <Button onClick={() => setIsCreateModalOpen(false)} className="rounded-xl">
+                        <Button onClick={() => setIsCreateModalOpen(false)} className="btn rounded-xl">
                             Cancel
                         </Button>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold"
+                            className="btn bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold"
                         >
                             Deploy Workspace
                         </Button>
@@ -987,13 +987,13 @@ function WorkspacesContent() {
                     </Form.Item>
 
                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                        <Button onClick={() => setIsEditModalOpen(false)} className="rounded-xl">
+                        <Button onClick={() => setIsEditModalOpen(false)} className="btn rounded-xl">
                             Cancel
                         </Button>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold"
+                            className="btn bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl px-6 font-semibold"
                         >
                             Save Changes
                         </Button>
@@ -1191,7 +1191,7 @@ function WorkspacesContent() {
                         <Button
                             type="primary"
                             onClick={() => setIsAiModalOpen(false)}
-                            className="bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl"
+                            className="btn bg-emerald-600 hover:bg-emerald-500 border-none rounded-xl"
                         >
                             Close Insights
                         </Button>

@@ -837,7 +837,7 @@ export default function Subscribers() {
                                 size="small"
                                 icon={<Eye className="w-4 h-4 text-muted-foreground hover:text-primary transition-colors" />}
                                 onClick={() => handleViewDetails(record)}
-                                className="cursor-pointer hover:bg-muted/80 rounded-lg"
+                                className="btn cursor-pointer hover:bg-muted/80 rounded-lg"
                             />
                         </Tooltip>
 
@@ -846,7 +846,7 @@ export default function Subscribers() {
                                 type="text"
                                 size="small"
                                 icon={<MoreVertical className="w-4 h-4 text-muted-foreground" />}
-                                className="cursor-pointer hover:bg-muted/80 rounded-lg"
+                                className="btn cursor-pointer hover:bg-muted/80 rounded-lg"
                             />
                         </Dropdown>
                     </div>
@@ -878,7 +878,7 @@ export default function Subscribers() {
                     <Button
                         icon={<Download className="w-4 h-4" />}
                         onClick={handleExportCSV}
-                        className="cursor-pointer border-gray-200 dark:border-zinc-800 font-semibold h-10 px-4 rounded-xl text-foreground hover:bg-muted text-xs sm:text-sm"
+                        className="btn cursor-pointer border-gray-200 dark:border-zinc-800 font-semibold h-10 px-4 rounded-xl text-foreground hover:bg-muted text-xs sm:text-sm"
                     >
                         Export CSV
                     </Button>
@@ -887,7 +887,7 @@ export default function Subscribers() {
                         type="primary"
                         icon={<Plus className="w-4 h-4" />}
                         onClick={() => setIsAddModalOpen(true)}
-                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 text-xs sm:text-sm"
+                        className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none font-semibold h-10 px-4 sm:px-5 rounded-xl flex items-center gap-2 text-xs sm:text-sm"
                     >
                         Add New Subscriber
                     </Button>
@@ -964,7 +964,7 @@ export default function Subscribers() {
                                 <Button
                                     onClick={handleResetFilters}
                                     icon={<X className="w-3.5 h-3.5" />}
-                                    className="cursor-pointer border-gray-200 dark:border-zinc-800 rounded-xl text-xs font-semibold h-10 text-muted-foreground hover:text-foreground"
+                                    className="btn cursor-pointer border-gray-200 dark:border-zinc-800 rounded-xl text-xs font-semibold h-10 text-muted-foreground hover:text-foreground"
                                 >
                                     Clear
                                 </Button>
@@ -1046,7 +1046,7 @@ export default function Subscribers() {
                                     setIsDrawerOpen(false);
                                     handleOpenUpgrade(selectedSubscriber);
                                 }}
-                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl text-xs font-semibold px-3"
+                                className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl text-xs font-semibold px-3"
                             >
                                 Upgrade Tier
                             </Button>
@@ -1165,7 +1165,7 @@ export default function Subscribers() {
                                                 </Tag>
                                                 <button
                                                     onClick={() => message.info(`Downloading PDF receipt for ${inv.id}...`)}
-                                                    className="cursor-pointer p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
+                                                    className="btn cursor-pointer p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
                                                 >
                                                     <Download className="w-3.5 h-3.5" />
                                                 </button>
@@ -1261,13 +1261,13 @@ export default function Subscribers() {
                     </div>
 
                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                        <Button onClick={() => setIsAddModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
+                        <Button onClick={() => setIsAddModalOpen(false)} className="btn cursor-pointer rounded-xl text-xs sm:text-sm">
                             Cancel
                         </Button>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                            className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                         >
                             Create Account & Activate
                         </Button>
@@ -1322,13 +1322,13 @@ export default function Subscribers() {
                         </Form.Item>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-zinc-800">
-                            <Button onClick={() => setIsUpgradeModalOpen(false)} className="cursor-pointer rounded-xl text-xs sm:text-sm">
+                            <Button onClick={() => setIsUpgradeModalOpen(false)} className="btn cursor-pointer rounded-xl text-xs sm:text-sm">
                                 Cancel
                             </Button>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
+                                className="btn cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground border-none rounded-xl px-6 font-semibold text-xs sm:text-sm"
                             >
                                 Apply Subscription Update
                             </Button>

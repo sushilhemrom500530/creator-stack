@@ -206,7 +206,7 @@ export default function AccountManagePage() {
                         okText="Refresh"
                         cancelText="Cancel"
                     >
-                        <button className="px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer">
+                        <button className="btn px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer">
                             Sync Cache
                         </button>
                     </Popconfirm>
@@ -261,10 +261,10 @@ export default function AccountManagePage() {
                                 <button
                                     key={tab}
                                     onClick={() => setHubFilter(tab)}
-                                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition cursor-pointer ${hubFilter === tab
+                                    className={"btn " + (`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition cursor-pointer ${hubFilter === tab
                                         ? "bg-primary text-white"
                                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                        }`}
+                                        }`)}
                                 >
                                     {tab}
                                 </button>

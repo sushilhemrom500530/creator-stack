@@ -154,10 +154,10 @@ export default function Overview() {
                                 <button
                                     key={tab}
                                     onClick={() => setSelectedTab(tab)}
-                                    className={`px-3 py-1 text-xs font-semibold rounded-lg capitalize transition-all duration-300 ${selectedTab === tab
+                                    className={"btn " + (`px-3 py-1 text-xs font-semibold rounded-lg capitalize transition-all duration-300 ${selectedTab === tab
                                         ? "bg-[#C39DFE]/25 dark:bg-[#9760EC]/30 text-purple-700 dark:text-[#E2D6FF] shadow-xs"
                                         : "text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300"
-                                        }`}
+                                        }`)}
                                 >
                                     {tab}
                                 </button>

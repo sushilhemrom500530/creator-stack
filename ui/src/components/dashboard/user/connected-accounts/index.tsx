@@ -452,7 +452,7 @@ function ConnectedAccountsInner() {
                 <button
                     onClick={loadAccounts}
                     disabled={isLoading}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-medium transition-all backdrop-blur-sm border border-white/10 active:scale-95"
+                    className="btn flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-sm font-medium transition-all backdrop-blur-sm border border-white/10 active:scale-95"
                 >
                     <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                     Sync Status
@@ -499,10 +499,10 @@ function ConnectedAccountsInner() {
                         <button
                             key={tab}
                             onClick={() => setFilterTab(tab)}
-                            className={`flex-1 sm:flex-none px-4 py-1.5 text-xs font-medium rounded-lg transition-all capitalize ${filterTab === tab
+                            className={"btn " + (`flex-1 sm:flex-none px-4 py-1.5 text-xs font-medium rounded-lg transition-all capitalize ${filterTab === tab
                                 ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm font-semibold"
                                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-                                }`}
+                                }`)}
                         >
                             {tab}
                         </button>
@@ -572,7 +572,7 @@ function ConnectedAccountsInner() {
                                     <>
                                         <button
                                             onClick={() => setManageModalAccount(account)}
-                                            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 text-xs font-medium rounded-xl transition-colors"
+                                            className="btn flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 text-xs font-medium rounded-xl transition-colors"
                                         >
                                             <Settings className="w-3.5 h-3.5" />
                                             Manage
@@ -585,7 +585,7 @@ function ConnectedAccountsInner() {
                                             cancelText="Cancel"
                                             okButtonProps={{ danger: true }}
                                         >
-                                            <button className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-colors">
+                                            <button className="btn p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-colors">
                                                 <XCircle className="w-4 h-4" />
                                             </button>
                                         </Popconfirm>
@@ -593,7 +593,7 @@ function ConnectedAccountsInner() {
                                 ) : (
                                     <button
                                         onClick={() => handleOpenConnect(account)}
-                                        className="w-full flex items-center justify-center gap-1.5 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-xl transition-colors shadow-sm active:scale-95"
+                                        className="btn w-full flex items-center justify-center gap-1.5 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-xl transition-colors shadow-sm active:scale-95"
                                     >
                                         <Plus className="w-3.5 h-3.5" />
                                         Connect {account.platform.toUpperCase()}
@@ -638,14 +638,14 @@ function ConnectedAccountsInner() {
                     <div className="flex justify-end gap-2 pt-2">
                         <button
                             onClick={() => setConnectModalAccount(null)}
-                            className="px-4 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
+                            className="btn px-4 py-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleConfirmConnect}
                             disabled={isConnecting}
-                            className="flex items-center gap-2 px-5 py-2 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-50"
+                            className="btn flex items-center gap-2 px-5 py-2 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition-all shadow-md active:scale-95 disabled:opacity-50"
                         >
                             {isConnecting ? (
                                 <>
@@ -700,7 +700,7 @@ function ConnectedAccountsInner() {
                             <button
                                 onClick={handleRefreshToken}
                                 disabled={isRefreshingToken}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-600 rounded-lg text-xs font-medium transition-all"
+                                className="btn flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-600 rounded-lg text-xs font-medium transition-all"
                             >
                                 <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingToken ? 'animate-spin' : ''}`} />
                                 Refresh Token
@@ -755,13 +755,13 @@ function ConnectedAccountsInner() {
                                 cancelText="Cancel"
                                 okButtonProps={{ danger: true }}
                             >
-                                <button className="text-xs text-red-600 hover:text-red-700 font-semibold">
+                                <button className="btn text-xs text-red-600 hover:text-red-700 font-semibold">
                                     Disconnect Account
                                 </button>
                             </Popconfirm>
                             <button
                                 onClick={() => setManageModalAccount(null)}
-                                className="px-4 py-1.5 text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl"
+                                className="btn px-4 py-1.5 text-xs font-medium bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl"
                             >
                                 Done
                             </button>

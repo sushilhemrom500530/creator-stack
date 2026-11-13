@@ -217,7 +217,7 @@ function LoginForm() {
                         <button
                             type="button"
                             onClick={() => message.info("Google OAuth login initialized")}
-                            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
+                            className="btn flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
                         >
                             <FaGoogle className="w-4 h-4 text-red-500" />
                             <span>Google</span>
@@ -225,7 +225,7 @@ function LoginForm() {
                         <button
                             type="button"
                             onClick={() => message.info("Facebook OAuth login initialized")}
-                            className="flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
+                            className="btn flex items-center justify-center gap-2.5 px-4 py-2.5 border border-slate-200 hover:border-slate-300 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
                         >
                             <FaFacebook className="w-4 h-4 text-blue-600" />
                             <span>Facebook</span>
@@ -274,7 +274,7 @@ function LoginForm() {
                                         setForgotStep("email");
                                         setForgotModalVisible(true);
                                     }}
-                                    className="text-xs font-semibold text-purple-600 hover:text-purple-700 transition cursor-pointer"
+                                    className="btn text-xs font-semibold text-purple-600 hover:text-purple-700 transition cursor-pointer"
                                 >
                                     Forgot password?
                                 </button>
@@ -289,7 +289,7 @@ function LoginForm() {
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="text-slate-400 hover:text-slate-600 focus:outline-none"
+                                            className="btn text-slate-400 hover:text-slate-600 focus:outline-none"
                                         >
                                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                         </button>
@@ -317,7 +317,7 @@ function LoginForm() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                            className="btn w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-purple-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                         >
                             {isLoading ? (
                                 <span>Signing in...</span>
@@ -383,7 +383,7 @@ function LoginForm() {
                                 block
                                 loading={isForgotLoading}
                                 onClick={handleSendForgotOtp}
-                                className="rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
+                                className="btn rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
                             >
                                 Send Reset Code
                             </Button>
@@ -406,7 +406,7 @@ function LoginForm() {
                                 block
                                 loading={isForgotLoading}
                                 onClick={handleVerifyForgotOtp}
-                                className="rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
+                                className="btn rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
                             >
                                 Verify Code
                             </Button>
@@ -428,7 +428,7 @@ function LoginForm() {
                                 block
                                 loading={isForgotLoading}
                                 onClick={handleResetPassword}
-                                className="rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
+                                className="btn rounded-xl bg-purple-600 hover:bg-purple-700 font-bold"
                             >
                                 Set New Password
                             </Button>

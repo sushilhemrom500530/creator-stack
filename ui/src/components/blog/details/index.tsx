@@ -251,8 +251,8 @@ export default function BlogDetails({ blogId }: { blogId: string }) {
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={handleCopyLink}
-                                className={`p-2.5 cursor-pointer rounded-full border transition-colors flex items-center gap-2 text-xs font-semibold ${isLight ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-100" : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
-                                    }`}
+                                className={"btn " + (`p-2.5 cursor-pointer rounded-full border transition-colors flex items-center gap-2 text-xs font-semibold ${isLight ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-100" : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
+                                    }`)}
                                 title="Copy Link"
                             >
                                 {copied ? <Check className="w-4 h-4 text-teal-500" /> : <Share2 className="w-4 h-4" />}
@@ -354,7 +354,7 @@ export default function BlogDetails({ blogId }: { blogId: string }) {
                                             }`}
                                         required
                                     />
-                                    <button className="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs tracking-wider uppercase py-3 rounded-xl transition-colors cursor-pointer">
+                                    <button className="btn w-full bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs tracking-wider uppercase py-3 rounded-xl transition-colors cursor-pointer">
                                         Subscribe
                                     </button>
                                 </form>

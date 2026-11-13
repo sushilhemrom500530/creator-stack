@@ -177,7 +177,7 @@ export default function AnalyticsComponent() {
                     <button
                         onClick={loadAnalytics}
                         disabled={isLoading}
-                        className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+                        className="btn p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
                         title="Refresh Analytics"
                     >
                         <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -186,19 +186,19 @@ export default function AnalyticsComponent() {
                     <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-medium text-slate-600">
                         <button
                             onClick={() => setTimeframe("7d")}
-                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "7d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                            className={"btn " + (`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "7d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`)}
                         >
                             7 Days
                         </button>
                         <button
                             onClick={() => setTimeframe("30d")}
-                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "30d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                            className={"btn " + (`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "30d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`)}
                         >
                             30 Days
                         </button>
                         <button
                             onClick={() => setTimeframe("90d")}
-                            className={`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "90d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`}
+                            className={"btn " + (`px-3 py-1.5 rounded-lg font-semibold transition cursor-pointer ${timeframe === "90d" ? "bg-white shadow-xs text-purple-600" : "hover:text-slate-800"}`)}
                         >
                             90 Days
                         </button>

@@ -327,7 +327,7 @@ function AdminPostsContent() {
                             size="small"
                             onClick={() => router.push(`/admin/posts/view/${record.id}`)}
                             icon={<Eye className="w-3.5 h-3.5 text-primary" />}
-                            className="rounded-xl font-semibold border-slate-200 hover:border-purple-300 hover:text-primary flex items-center justify-center cursor-pointer"
+                            className="btn rounded-xl font-semibold border-slate-200 hover:border-purple-300 hover:text-primary flex items-center justify-center cursor-pointer"
                         >
                         </Button>
                     </Tooltip>
@@ -343,7 +343,7 @@ function AdminPostsContent() {
                                 setIsDeleteModalOpen(true);
                             }}
                             icon={<Trash2 className="w-4 h-4 text-rose-600" />}
-                            className="hover:bg-rose-50 rounded-xl flex items-center justify-center cursor-pointer"
+                            className="btn hover:bg-rose-50 rounded-xl flex items-center justify-center cursor-pointer"
                         />
                     </Tooltip>
 
@@ -354,7 +354,7 @@ function AdminPostsContent() {
                                 size="small"
                                 onClick={() => handleRetryPost(record.id)}
                                 icon={<RotateCcw className="w-4 h-4 text-indigo-600" />}
-                                className="hover:bg-indigo-50 rounded-xl flex items-center justify-center cursor-pointer"
+                                className="btn hover:bg-indigo-50 rounded-xl flex items-center justify-center cursor-pointer"
                             />
                         </Tooltip>
                     )}
@@ -483,7 +483,7 @@ function AdminPostsContent() {
                                         message.info("Filters reset");
                                     }}
                                     icon={<RotateCcw className="w-3.5 h-3.5" />}
-                                    className="h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
+                                    className="btn h-10 px-3 text-xs font-semibold text-slate-600 bg-slate-100 border-0 hover:bg-slate-200 rounded-xl cursor-pointer"
                                 >
                                     Reset Filters
                                 </Button>
@@ -536,7 +536,7 @@ function AdminPostsContent() {
                             setIsDeleteModalOpen(false);
                             setDeleteModalPost(null);
                         }}
-                        className="rounded-xl font-semibold cursor-pointer"
+                        className="btn rounded-xl font-semibold cursor-pointer"
                     >
                         Cancel
                     </Button>,
@@ -545,7 +545,7 @@ function AdminPostsContent() {
                         type="primary"
                         danger
                         onClick={confirmDeletePost}
-                        className="rounded-xl font-bold bg-rose-600 cursor-pointer"
+                        className="btn rounded-xl font-bold bg-rose-600 cursor-pointer"
                     >
                         Yes, Delete Post
                     </Button>,

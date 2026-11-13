@@ -238,7 +238,7 @@ function UserPostsInner() {
                     {target.status === "failed" && (
                         <button
                             onClick={() => handleRetryTarget(record._id, accountId, target.platform)}
-                            className="ml-1 px-1.5 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-700 text-[10px] font-bold transition-all"
+                            className="btn ml-1 px-1.5 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-700 text-[10px] font-bold transition-all"
                         >
                             Retry
                         </button>
@@ -392,7 +392,7 @@ function UserPostsInner() {
                             <button
                                 onClick={() => handlePublishNow(record._id)}
                                 disabled={actionLoadingId === record._id}
-                                className="p-2 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-600 transition cursor-pointer"
+                                className="btn p-2 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-600 transition cursor-pointer"
                             >
                                 <Send className={`w-4 h-4 ${actionLoadingId === record._id ? 'animate-spin' : ''}`} />
                             </button>
@@ -404,7 +404,7 @@ function UserPostsInner() {
                         <Tooltip title="Edit Post">
                             <button
                                 onClick={() => handleOpenEdit(record)}
-                                className="p-2 rounded-lg bg-slate-100 hover:bg-amber-50 text-slate-600 hover:text-amber-600 transition cursor-pointer"
+                                className="btn p-2 rounded-lg bg-slate-100 hover:bg-amber-50 text-slate-600 hover:text-amber-600 transition cursor-pointer"
                             >
                                 <Edit3 className="w-4 h-4" />
                             </button>
@@ -421,7 +421,7 @@ function UserPostsInner() {
                             cancelText="Cancel"
                             okButtonProps={{ danger: true }}
                         >
-                            <button className="p-2 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 transition cursor-pointer">
+                            <button className="btn p-2 rounded-lg bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 transition cursor-pointer">
                                 <Trash2 className="w-4 h-4" />
                             </button>
                         </Popconfirm>
@@ -447,7 +447,7 @@ function UserPostsInner() {
                     <button
                         onClick={loadPosts}
                         disabled={isLoading}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all"
+                        className="btn flex items-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all"
                     >
                         <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                         Sync
@@ -518,7 +518,7 @@ function UserPostsInner() {
                     {(searchTerm || channelFilter !== "all" || statusFilter !== "all") && (
                         <button
                             onClick={resetFilters}
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 transition cursor-pointer"
+                            className="btn inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 transition cursor-pointer"
                         >
                             <RotateCcw className="w-3.5 h-3.5" /> Reset Filters
                         </button>

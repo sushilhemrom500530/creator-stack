@@ -33,13 +33,13 @@ export default function PricingSection() {
                 <div className={`pricing-toggle-container ${themeClass}`}>
                     <button
                         onClick={() => setBillingCycle("monthly")}
-                        className={`pricing-toggle-btn ${billingCycle === "monthly" ? "is-active" : `is-inactive ${themeClass}`}`}
+                        className={"btn " + (`pricing-toggle-btn ${billingCycle === "monthly" ? "is-active" : `is-inactive ${themeClass}`}`)}
                     >
                         Monthly
                     </button>
                     <button
                         onClick={() => setBillingCycle("yearly")}
-                        className={`pricing-toggle-btn flex items-center gap-2 ${billingCycle === "yearly" ? "is-active" : `is-inactive ${themeClass}`}`}
+                        className={"btn " + (`pricing-toggle-btn flex items-center gap-2 ${billingCycle === "yearly" ? "is-active" : `is-inactive ${themeClass}`}`)}
                     >
                         Annual
                         <span className="pricing-save-badge">
@@ -88,7 +88,7 @@ export default function PricingSection() {
                             </ul>
                         </div>
 
-                        <button className={`pricing-btn-standard ${themeClass}`}>
+                        <button className={"btn " + (`pricing-btn-standard ${themeClass}`)}>
                             Get Started
                         </button>
                     </div>
@@ -138,7 +138,7 @@ export default function PricingSection() {
                             </ul>
                         </div>
 
-                        <button className="pricing-btn-featured">
+                        <button className="btn pricing-btn-featured">
                             Start Free Trial
                             <ArrowRight className="w-4 h-4" />
                         </button>
@@ -181,7 +181,7 @@ export default function PricingSection() {
                             </ul>
                         </div>
 
-                        <button className={`pricing-btn-standard ${themeClass}`}>
+                        <button className={"btn " + (`pricing-btn-standard ${themeClass}`)}>
                             Contact Sales
                         </button>
                     </div>

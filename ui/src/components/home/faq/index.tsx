@@ -58,7 +58,7 @@ export default function FAQSection() {
                                 <button
                                     key={idx}
                                     onClick={() => setActiveIndex(idx)}
-                                    className={`faq-question-btn ${stateClass} ${themeClass}`}
+                                    className={"btn " + (`faq-question-btn ${stateClass} ${themeClass}`)}
                                 >
                                     <span className={`faq-question-title ${stateClass} ${themeClass}`}>
                                         {q.title}

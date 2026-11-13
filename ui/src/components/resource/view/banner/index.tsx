@@ -120,7 +120,7 @@ export default function BannerSection({ resourceId = "1525" }: BannerSectionProp
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleCopyLink}
-                        className={`resource-action-btn ${themeClass}`}
+                        className={"btn " + (`resource-action-btn ${themeClass}`)}
                         title="Copy Shareable Link"
                     >
                         {copiedLink ? (
@@ -138,7 +138,7 @@ export default function BannerSection({ resourceId = "1525" }: BannerSectionProp
 
                     <button
                         onClick={() => setIsBookmarked(!isBookmarked)}
-                        className={`resource-action-btn ${themeClass} ${isBookmarked ? "active" : ""}`}
+                        className={"btn " + (`resource-action-btn ${themeClass} ${isBookmarked ? "active" : ""}`)}
                         title="Bookmark Guide"
                     >
                         <Bookmark size={14} className={isBookmarked ? "fill-white text-white" : ""} />

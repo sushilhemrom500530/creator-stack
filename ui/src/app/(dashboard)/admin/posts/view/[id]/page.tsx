@@ -105,7 +105,7 @@ function PostDetailsContent({ postId }: { postId: string }) {
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => router.push("/admin/posts")}
-                        className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
+                        className="btn p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition cursor-pointer"
                         title="Back to Admin Posts"
                     >
                         <ArrowLeft className="w-5 h-5" />
@@ -130,7 +130,7 @@ function PostDetailsContent({ postId }: { postId: string }) {
                     <Button
                         icon={<RotateCcw className="w-4 h-4" />}
                         onClick={handleResyncGateway}
-                        className="rounded-xl font-bold h-10 cursor-pointer"
+                        className="btn rounded-xl font-bold h-10 cursor-pointer"
                     >
                         Resync Gateway
                     </Button>
@@ -139,7 +139,7 @@ function PostDetailsContent({ postId }: { postId: string }) {
                         danger
                         icon={<Trash2 className="w-4 h-4" />}
                         onClick={() => setIsDeleteModalOpen(true)}
-                        className="rounded-xl font-bold bg-rose-600 h-10 cursor-pointer"
+                        className="btn rounded-xl font-bold bg-rose-600 h-10 cursor-pointer"
                     >
                         Delete Post
                     </Button>
@@ -457,10 +457,10 @@ function PostDetailsContent({ postId }: { postId: string }) {
                 open={isDeleteModalOpen}
                 onCancel={() => setIsDeleteModalOpen(false)}
                 footer={[
-                    <Button key="cancel" onClick={() => setIsDeleteModalOpen(false)} className="rounded-xl font-semibold cursor-pointer">
+                    <Button key="cancel" onClick={() => setIsDeleteModalOpen(false)} className="btn rounded-xl font-semibold cursor-pointer">
                         Cancel
                     </Button>,
-                    <Button key="delete" type="primary" danger onClick={handleDeleteConfirm} className="rounded-xl font-bold bg-rose-600 cursor-pointer">
+                    <Button key="delete" type="primary" danger onClick={handleDeleteConfirm} className="btn rounded-xl font-bold bg-rose-600 cursor-pointer">
                         Yes, Delete Post
                     </Button>,
                 ]}

@@ -86,10 +86,10 @@ function NavbarContent() {
                         <button
                             onClick={toggleTheme}
                             aria-label="Toggle Light and Dark Mode"
-                            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${isLight
+                            className={"btn " + (`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${isLight
                                 ? "bg-slate-100 hover:bg-slate-200 border-slate-300/80 text-slate-800 shadow-sm"
                                 : "bg-white/5 hover:bg-white/10 border-white/10 text-violet-300 hover:text-violet-200"
-                                }`}
+                                }`)}
                         >
                             {isLight ? (
                                 <Moon size={18} className="text-slate-800 transition-transform duration-300 hover:rotate-12" />
@@ -106,7 +106,7 @@ function NavbarContent() {
                             Login
                         </Link>
                         <Link href="/auth/register">
-                            <button className="text-[15px] font-bold px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:scale-105 cursor-pointer">
+                            <button className="btn text-[15px] font-bold px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:scale-105 cursor-pointer">
                                 Get Started
                             </button>
                         </Link>
@@ -117,18 +117,18 @@ function NavbarContent() {
                         <button
                             onClick={toggleTheme}
                             aria-label="Toggle Theme"
-                            className={`p-2 rounded-lg border transition-colors cursor-pointer flex items-center justify-center ${isLight
+                            className={"btn " + (`p-2 rounded-lg border transition-colors cursor-pointer flex items-center justify-center ${isLight
                                 ? "bg-slate-100 border-slate-300 text-slate-800"
                                 : "bg-white/5 border-white/10 text-amber-300"
-                                }`}
+                                }`)}
                         >
                             {isLight ? <Moon size={18} /> : <Sun size={18} />}
                         </button>
                         <button
-                            className={`cursor-pointer flex items-center justify-center backdrop-blur-md p-2 rounded-lg border ${isLight
+                            className={"btn " + (`cursor-pointer flex items-center justify-center backdrop-blur-md p-2 rounded-lg border ${isLight
                                 ? "bg-slate-100 border-slate-200 text-slate-900"
                                 : "text-white bg-white/5 border-white/10"
-                                }`}
+                                }`)}
                             onClick={toggleMenu}
                             aria-label="Open menu"
                         >
@@ -158,10 +158,10 @@ function NavbarContent() {
                         <span className="text-xl font-bold tracking-tight font-serif">Creator Stack</span>
                         <button
                             onClick={toggleMenu}
-                            className={`cursor-pointer rounded-full p-2 transition-colors ${isLight
+                            className={"btn " + (`cursor-pointer rounded-full p-2 transition-colors ${isLight
                                 ? "text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200"
                                 : "text-white/70 hover:text-white bg-white/5 hover:bg-white/10"
-                                }`}
+                                }`)}
                             aria-label="Close menu"
                         >
                             <X size={18} />
@@ -201,7 +201,7 @@ function NavbarContent() {
                             Login
                         </Link>
                         <Link href="/auth/register" onClick={() => setMenuOpen(false)}>
-                            <button className="w-full text-sm font-bold px-4 py-3.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all cursor-pointer">
+                            <button className="btn w-full text-sm font-bold px-4 py-3.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all cursor-pointer">
                                 Get Started
                             </button>
                         </Link>

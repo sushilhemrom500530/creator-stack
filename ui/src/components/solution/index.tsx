@@ -43,10 +43,10 @@ export default function Solutions() {
 
                         {/* Buttons */}
                         <div className="flex flex-col sm:flex-row items-center gap-4">
-                            <button className={`solutions-btn-primary ${themeClass}`}>
+                            <button className={"btn " + (`solutions-btn-primary ${themeClass}`)}>
                                 Request Demo
                             </button>
-                            <button className={`solutions-btn-secondary ${themeClass}`}>
+                            <button className={"btn " + (`solutions-btn-secondary ${themeClass}`)}>
                                 View Whitepaper
                             </button>
                         </div>

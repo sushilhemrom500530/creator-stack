@@ -329,10 +329,10 @@ export default function Support() {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${isActive
+                                    className={"btn " + (`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${isActive
                                         ? "bg-white text-slate-900"
                                         : "text-slate-500 hover:text-slate-800"
-                                        }`}
+                                        }`)}
                                 >
                                     {tab.label} ({count})
                                 </button>
@@ -433,7 +433,7 @@ export default function Support() {
                             <div className="flex items-center gap-2">
                                 <Button
                                     onClick={handleMarkResolved}
-                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl h-9 px-4 text-xs border-none flex items-center gap-1.5 cursor-pointer"
+                                    className="btn bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl h-9 px-4 text-xs border-none flex items-center gap-1.5 cursor-pointer"
                                 >
                                     <CheckCircle2 className="w-4 h-4" /> Resolve
                                 </Button>
@@ -454,7 +454,7 @@ export default function Support() {
                             <Button
                                 size="small"
                                 onClick={handleInsertAiDraft}
-                                className="bg-white border-indigo-200 text-indigo-600 hover:bg-indigo-50 font-extrabold rounded-lg text-[11px] shrink-0"
+                                className="btn bg-white border-indigo-200 text-indigo-600 hover:bg-indigo-50 font-extrabold rounded-lg text-[11px] shrink-0"
                             >
                                 Insert AI Draft
                             </Button>
@@ -524,19 +524,19 @@ export default function Support() {
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={() => setIsInternalNote(false)}
-                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer ${!isInternalNote
+                                    className={"btn " + (`px-3 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer ${!isInternalNote
                                         ? "bg-indigo-600 text-white"
                                         : "bg-slate-100 text-slate-500 hover:text-slate-800"
-                                        }`}
+                                        }`)}
                                 >
                                     Public Reply
                                 </button>
                                 <button
                                     onClick={() => setIsInternalNote(true)}
-                                    className={`px-3 py-1 rounded-lg text-xs font-extrabold transition flex items-center gap-1 cursor-pointer ${isInternalNote
+                                    className={"btn " + (`px-3 py-1 rounded-lg text-xs font-extrabold transition flex items-center gap-1 cursor-pointer ${isInternalNote
                                         ? "bg-amber-500 text-white"
                                         : "bg-slate-100 text-slate-500 hover:text-slate-800"
-                                        }`}
+                                        }`)}
                                 >
                                     <Lock className="w-3 h-3" /> Internal Note
                                 </button>
@@ -546,13 +546,13 @@ export default function Support() {
                             <div className="hidden sm:flex items-center gap-1.5">
                                 <button
                                     onClick={() => setReplyText("Could you please provide the system console logs?")}
-                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
+                                    className="btn text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
                                 >
                                     + Ask Logs
                                 </button>
                                 <button
                                     onClick={() => setReplyText("We have deployed a hotfix. Please refresh your browser.")}
-                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
+                                    className="btn text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-md transition cursor-pointer"
                                 >
                                     + Confirm Fix
                                 </button>
@@ -576,10 +576,10 @@ export default function Support() {
 
                             <div className="flex justify-between items-center mt-2.5">
                                 <div className="flex items-center gap-2 text-slate-400">
-                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
+                                    <button className="btn p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
                                         <Paperclip className="w-4 h-4" />
                                     </button>
-                                    <button className="p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
+                                    <button className="btn p-1.5 hover:bg-slate-100 rounded-lg transition text-slate-500 cursor-pointer">
                                         <Smile className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -588,8 +588,8 @@ export default function Support() {
                                     type="primary"
                                     icon={<Send className="w-4 h-4" />}
                                     onClick={handleSendReply}
-                                    className={`font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-xs border-none ${isInternalNote ? "bg-amber-600 hover:bg-amber-700" : "bg-indigo-600 hover:bg-indigo-700"
-                                        }`}
+                                    className={"btn " + (`font-extrabold rounded-xl h-10 px-5 flex items-center gap-2 shadow-xs border-none ${isInternalNote ? "bg-amber-600 hover:bg-amber-700" : "bg-indigo-600 hover:bg-indigo-700"
+                                        }`)}
                                 >
                                     {isInternalNote ? "Add Note" : "Send Reply"}
                                 </Button>

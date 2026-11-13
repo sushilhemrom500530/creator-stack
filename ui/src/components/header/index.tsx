@@ -26,7 +26,7 @@ export default function Header({ navOpened, setNavOpened, user }: any) {
                         <button
                             onClick={toggleTheme}
                             aria-label="Toggle Light and Dark Mode"
-                            className={`cursor-pointer flex items-center justify-center`}
+                            className={"btn " + (`cursor-pointer flex items-center justify-center`)}
                         >
                             {isLight ? (
                                 <Moon size={22} className="text-slate-800 dark:text-zinc-200 transition-transform duration-300 hover:rotate-12 " />

@@ -61,7 +61,7 @@ export default function UserGuideCard({
 
             {buttonText && (
                 onButtonClick ? (
-                    <button onClick={onButtonClick} className={`reusable-card-link ${themeClass}`}>
+                    <button onClick={onButtonClick} className={"btn " + (`reusable-card-link ${themeClass}`)}>
                         {buttonText}
                     </button>
                 ) : (
