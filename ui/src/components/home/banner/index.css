@@ -105,7 +105,7 @@
 
 /* Buttons */
 .banner-btn-start {
-    @apply px-8 py-3.5 rounded-xl bg-violet-600 text-white font-bold text-[15px] hover:bg-violet-500 transition-all transform hover:scale-105 cursor-pointer shadow-[0_0_20px_rgba(139,92,246,0.3)];
+    @apply px-8 py-3.5 rounded-xl bg-violet-600 text-white font-bold text-[15px] hover:bg-violet-500 transition-all transform hover:-translate-y-1 cursor-pointer shadow-[0_0_20px_rgba(139,92,246,0.3)];
 }
 
 .banner-btn-demo {

@@ -332,3 +332,16 @@ body {
         opacity: 0.5;
     }
 }
+
+/* Smooth shared button hover motion, including transition utility overrides. */
+.btn {
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+}
+
+@media (hover: hover) {
+    .btn:where(:not(:disabled):not([aria-disabled="true"])):hover {
+        translate: 0 -0.25rem;
+    }
+}

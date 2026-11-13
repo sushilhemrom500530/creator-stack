@@ -372,7 +372,7 @@ export default function UserOverviewContent() {
             <div className="fixed bottom-6 right-6 z-40">
                 <button
                     title="AI Assistant Helper"
-                    className="btn w-12 h-12 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] hover:scale-105 shadow-xl shadow-purple-500/20 text-white flex items-center justify-center transition-all duration-300 group cursor-pointer relative"
+                    className="btn w-12 h-12 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] hover:-translate-y-1 shadow-xl shadow-purple-500/20 text-white flex items-center justify-center transition-all duration-300 group cursor-pointer relative"
                 >
                     <Sparkles size={20} className="group-hover:rotate-12 transition-transform duration-300" />
                 </button>

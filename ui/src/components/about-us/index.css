@@ -116,7 +116,7 @@
 
 /* Action Buttons */
 .about-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer shadow-sm hover:-translate-y-1 active:scale-[0.98];
 }
 
 .about-btn-primary.is-light {
@@ -130,7 +130,7 @@
 }
 
 .about-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer hover:-translate-y-1 active:scale-[0.98];
 }
 
 .about-btn-secondary.is-light {

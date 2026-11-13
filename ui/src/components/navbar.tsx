@@ -106,7 +106,7 @@ function NavbarContent() {
                             Login
                         </Link>
                         <Link href="/auth/register">
-                            <button className="btn text-[15px] font-bold px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:scale-105 cursor-pointer">
+                            <button className="btn text-[15px] font-bold px-6 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:-translate-y-1 cursor-pointer">
                                 Get Started
                             </button>
                         </Link>

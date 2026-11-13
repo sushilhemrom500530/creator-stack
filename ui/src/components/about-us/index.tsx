@@ -557,13 +557,13 @@ export default function AboutUs() {
                         <div className="flex flex-wrap items-center justify-center gap-4">
                             <Link
                                 href="/pricing"
-                                className="px-8 py-3.5 rounded-xl font-semibold text-sm bg-white text-slate-950 hover:bg-slate-100 transition-all duration-300 shadow-xl cursor-pointer hover:scale-[1.02]"
+                                className="px-8 py-3.5 rounded-xl font-semibold text-sm bg-white text-slate-950 hover:bg-slate-100 transition-all duration-300 shadow-xl cursor-pointer hover:-translate-y-1"
                             >
                                 Start Free 14-Day Trial
                             </Link>
                             <Link
                                 href="/solutions"
-                                className="px-8 py-3.5 rounded-xl font-semibold text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                                className="px-8 py-3.5 rounded-xl font-semibold text-sm bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 cursor-pointer hover:-translate-y-1"
                             >
                                 Explore Solutions
                             </Link>
