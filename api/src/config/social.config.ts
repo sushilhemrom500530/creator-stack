@@ -4,6 +4,7 @@ export const socialConfig = registerAs('social', () => ({
   encryptionKey: process.env.ENCRYPTION_KEY || process.env.TOKEN_ENCRYPTION_KEY || process.env.JWT_SECRET,
 
   meta: {
+    webhookVerifyToken: process.env.META_WEBHOOK_VERIFY_TOKEN,
     appId: process.env.META_APP_ID || process.env.FACEBOOK_CLIENT_ID,
     appSecret: process.env.META_APP_SECRET || process.env.FACEBOOK_CLIENT_SECRET,
     callbackUrl: process.env.FACEBOOK_REDIRECT_URI || process.env.META_CALLBACK_URL || 'http://localhost:8080/api/v1/social-accounts/oauth/facebook/callback',

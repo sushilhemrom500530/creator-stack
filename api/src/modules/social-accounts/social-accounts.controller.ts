@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
 import type { Response, Request } from 'express';
+import { ConfigService } from '@nestjs/config';
 import { SocialAccountsService } from './social-accounts.service';
 import { ConnectAccountDto, UpdateAccountDto } from './dto';
 import { CurrentUser } from '../../common/decorators';
@@ -26,7 +27,32 @@ import { validateOAuthState } from '../../common/utils/oauth-state.util';
 @ApiTags('Social Accounts')
 @Controller('social-accounts')
 export class SocialAccountsController {
-  constructor(private readonly socialAccountsService: SocialAccountsService) {}
+  constructor(
+    private readonly socialAccountsService: SocialAccountsService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  @Public()
+  @Get('webhooks/facebook')
+  @ApiOperation({ summary: 'Verify the Meta Facebook webhook subscription' })
+  verifyFacebookWebhook(
+    @Query('hub.mode') mode: string,
+    @Query('hub.verify_token') token: string,
+    @Query('hub.challenge') challenge: string,
+    @Res() res: Response,
+  ) {
+    const verifyToken = this.configService.get<string>('social.meta.webhookVerifyToken');
+    if (
+      verifyToken &&
+      mode === 'subscribe' &&
+      token === verifyToken &&
+      typeof challenge === 'string'
+    ) {
+      return res.status(HttpStatus.OK).type('text/plain').send(challenge);
+    }
+
+    return res.sendStatus(HttpStatus.FORBIDDEN);
+  }
 
   /**
    * PHASE 04: Generate OAuth authorization URL

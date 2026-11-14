@@ -29,6 +29,7 @@ export const envValidationSchema = Joi.object({
   // Social OAuth & Meta APIs (Optional in dev, required in prod social publishing)
   META_APP_ID: Joi.string().optional().allow(''),
   META_APP_SECRET: Joi.string().optional().allow(''),
+  META_WEBHOOK_VERIFY_TOKEN: Joi.string().optional().allow(''),
   META_CALLBACK_URL: Joi.string().optional().allow(''),
   META_GRAPH_VERSION: Joi.string().default('v21.0'),
 
