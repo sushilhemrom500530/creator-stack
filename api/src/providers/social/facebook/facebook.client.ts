@@ -1,12 +1,31 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
 import {
   FacebookPostResponse,
   FacebookPhotoResponse,
   FacebookVideoResponse,
   FacebookInsightsResponse,
   FacebookPageAccount,
+  FacebookSendMessageResponse,
+  FacebookUserProfile,
+  FacebookConversationsResponse,
+  FACEBOOK_PAGE_WEBHOOK_FIELDS,
 } from './facebook.types';
+import { FacebookGraphError } from './facebook.errors';
+
+type HttpMethod = 'GET' | 'POST' | 'DELETE';
+
+interface GraphRequestOptions {
+  accessToken: string;
+  query?: Record<string, string | number | boolean | undefined>;
+  body?: Record<string, unknown>;
+  fallbackError: string;
+  /** Request timeout. Video uploads by URL can take a while on Meta's side. */
+  timeoutMs?: number;
+}
+
+const DEFAULT_TIMEOUT_MS = 30_000;
 
 @Injectable()
 export class FacebookClient {
@@ -19,20 +38,71 @@ export class FacebookClient {
     return `https://graph.facebook.com/${version}`;
   }
 
+  private getAppSecret(): string | undefined {
+    return this.configService.get<string>('social.meta.appSecret') || undefined;
+  }
+
+  /**
+   * appsecret_proof proves the call comes from our server. Required when
+   * "Require App Secret" is enabled on the Meta app, harmless otherwise.
+   */
+  private buildAppSecretProof(accessToken: string): string | undefined {
+    const secret = this.getAppSecret();
+    if (!secret || !accessToken) return undefined;
+    return crypto.createHmac('sha256', secret).update(accessToken).digest('hex');
+  }
+
+  /**
+   * Single entry point for every Graph API call: adds auth + appsecret_proof,
+   * enforces a timeout and normalises errors into FacebookGraphError.
+   */
+  private async graphRequest<T>(method: HttpMethod, path: string, options: GraphRequestOptions): Promise<T> {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(options.query || {})) {
+      if (value !== undefined && value !== null && value !== '') params.append(key, String(value));
+    }
+    params.append('access_token', options.accessToken);
+    const proof = this.buildAppSecretProof(options.accessToken);
+    if (proof) params.append('appsecret_proof', proof);
+
+    const url = `${this.getGraphApiUrl()}/${path.replace(/^\//, '')}?${params.toString()}`;
+
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method,
+        headers: options.body ? { 'Content-Type': 'application/json' } : undefined,
+        body: options.body ? JSON.stringify(options.body) : undefined,
+        signal: AbortSignal.timeout(options.timeoutMs ?? DEFAULT_TIMEOUT_MS),
+      });
+    } catch (error: any) {
+      const reason = error?.name === 'TimeoutError' ? 'Facebook did not respond in time' : 'Could not reach Facebook';
+      this.logger.error(`Graph ${method} /${path} network failure: ${error?.message}`);
+      throw new FacebookGraphError(undefined, `${reason}. Please try again.`);
+    }
+
+    const data: any = await response.json().catch(() => ({}));
+
+    if (!response.ok || data?.error) {
+      const graphError = new FacebookGraphError(data?.error, options.fallbackError);
+      this.logger.error(
+        `Graph ${method} /${path.split('?')[0]} failed [code=${graphError.code} subcode=${graphError.subcode} trace=${graphError.fbtraceId}]: ${data?.error?.message || response.status}`,
+      );
+      throw graphError;
+    }
+
+    return data as T;
+  }
+
   /**
    * Fetches full details for a single Facebook Page.
    */
   async getPageDetails(pageId: string, pageAccessToken: string): Promise<FacebookPageAccount> {
-    const url = `${this.getGraphApiUrl()}/${pageId}?fields=id,name,category,picture{url},fan_count,followers_count&access_token=${pageAccessToken}`;
-
-    const response = await fetch(url, { method: 'GET' });
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      throw new BadRequestException(data.error?.message || `Failed to fetch details for page ${pageId}`);
-    }
-
-    return data as FacebookPageAccount;
+    return this.graphRequest<FacebookPageAccount>('GET', pageId, {
+      accessToken: pageAccessToken,
+      query: { fields: 'id,name,category,picture{url},fan_count,followers_count' },
+      fallbackError: `Failed to fetch details for page ${pageId}`,
+    });
   }
 
   /**
@@ -44,16 +114,14 @@ export class FacebookClient {
     message: string,
     linkUrl?: string,
     scheduledPublishTime?: number,
+    attachedMediaIds?: string[],
   ): Promise<FacebookPostResponse> {
-    const url = `${this.getGraphApiUrl()}/${pageId}/feed`;
+    const body: Record<string, unknown> = { message };
 
-    const body: Record<string, any> = {
-      message,
-      access_token: pageAccessToken,
-    };
+    if (linkUrl) body.link = linkUrl;
 
-    if (linkUrl) {
-      body.link = linkUrl;
+    if (attachedMediaIds && attachedMediaIds.length > 0) {
+      body.attached_media = attachedMediaIds.map((id) => ({ media_fbid: id }));
     }
 
     if (scheduledPublishTime) {
@@ -61,56 +129,33 @@ export class FacebookClient {
       body.scheduled_publish_time = scheduledPublishTime;
     }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    return this.graphRequest<FacebookPostResponse>('POST', `${pageId}/feed`, {
+      accessToken: pageAccessToken,
+      body,
+      fallbackError: 'Failed to publish post to Facebook feed.',
     });
-
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      this.logger.error(`Facebook Feed publish failed: ${JSON.stringify(data.error || data)}`);
-      throw new BadRequestException(data.error?.message || 'Failed to publish post to Facebook feed.');
-    }
-
-    return data as FacebookPostResponse;
   }
 
   /**
    * Publishes a single photo post to the Facebook Page.
+   * Pass `published: false` to upload a photo that will be attached to a multi-photo feed post.
    */
   async publishPhoto(
     pageId: string,
     pageAccessToken: string,
     photoUrl: string,
     caption?: string,
+    published = true,
   ): Promise<FacebookPhotoResponse> {
-    const url = `${this.getGraphApiUrl()}/${pageId}/photos`;
+    const body: Record<string, unknown> = { url: photoUrl };
+    if (caption) body.caption = caption;
+    if (!published) body.published = false;
 
-    const body: Record<string, any> = {
-      url: photoUrl,
-      access_token: pageAccessToken,
-    };
-
-    if (caption) {
-      body.caption = caption;
-    }
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    return this.graphRequest<FacebookPhotoResponse>('POST', `${pageId}/photos`, {
+      accessToken: pageAccessToken,
+      body,
+      fallbackError: 'Failed to publish photo to Facebook.',
     });
-
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      this.logger.error(`Facebook Photo publish failed: ${JSON.stringify(data.error || data)}`);
-      throw new BadRequestException(data.error?.message || 'Failed to publish photo to Facebook.');
-    }
-
-    return data as FacebookPhotoResponse;
   }
 
   /**
@@ -123,45 +168,46 @@ export class FacebookClient {
     description?: string,
     title?: string,
   ): Promise<FacebookVideoResponse> {
-    const url = `${this.getGraphApiUrl()}/${pageId}/videos`;
-
-    const body: Record<string, any> = {
-      file_url: videoUrl,
-      access_token: pageAccessToken,
-    };
-
+    const body: Record<string, unknown> = { file_url: videoUrl };
     if (description) body.description = description;
     if (title) body.title = title;
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    return this.graphRequest<FacebookVideoResponse>('POST', `${pageId}/videos`, {
+      accessToken: pageAccessToken,
+      body,
+      fallbackError: 'Failed to publish video to Facebook.',
+      timeoutMs: 120_000,
     });
+  }
 
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      this.logger.error(`Facebook Video publish failed: ${JSON.stringify(data.error || data)}`);
-      throw new BadRequestException(data.error?.message || 'Failed to publish video to Facebook.');
+  /**
+   * Resolves the public permalink of a post/video. Best effort — returns undefined on failure.
+   */
+  async getPermalink(objectId: string, pageAccessToken: string): Promise<string | undefined> {
+    try {
+      const data = await this.graphRequest<{ permalink_url?: string }>('GET', objectId, {
+        accessToken: pageAccessToken,
+        query: { fields: 'permalink_url' },
+        fallbackError: 'Failed to resolve permalink',
+        timeoutMs: 10_000,
+      });
+      if (!data.permalink_url) return undefined;
+      return data.permalink_url.startsWith('http')
+        ? data.permalink_url
+        : `https://www.facebook.com${data.permalink_url}`;
+    } catch {
+      return undefined;
     }
-
-    return data as FacebookVideoResponse;
   }
 
   /**
    * Deletes a published post by external Post ID.
    */
   async deletePost(postId: string, pageAccessToken: string): Promise<boolean> {
-    const url = `${this.getGraphApiUrl()}/${postId}?access_token=${pageAccessToken}`;
-
-    const response = await fetch(url, { method: 'DELETE' });
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      throw new BadRequestException(data.error?.message || `Failed to delete post ${postId}`);
-    }
-
+    const data = await this.graphRequest<{ success?: boolean }>('DELETE', postId, {
+      accessToken: pageAccessToken,
+      fallbackError: `Failed to delete post ${postId}`,
+    });
     return data.success === true;
   }
 
@@ -181,18 +227,104 @@ export class FacebookClient {
       'page_post_engagements',
     ].join(',');
 
-    let url = `${this.getGraphApiUrl()}/${pageId}/insights?metric=${metrics}&access_token=${pageAccessToken}`;
-    if (since) url += `&since=${since}`;
-    if (until) url += `&until=${until}`;
-
-    const response = await fetch(url, { method: 'GET' });
-    const data = await response.json();
-
-    if (!response.ok || data.error) {
-      this.logger.warn(`Failed to fetch Facebook Page insights: ${JSON.stringify(data.error || data)}`);
+    try {
+      return await this.graphRequest<FacebookInsightsResponse>('GET', `${pageId}/insights`, {
+        accessToken: pageAccessToken,
+        query: { metric: metrics, since, until },
+        fallbackError: 'Failed to fetch Facebook Page insights',
+      });
+    } catch (error: any) {
+      this.logger.warn(`Failed to fetch Facebook Page insights: ${error.message}`);
       return { data: [] };
     }
+  }
 
-    return data as FacebookInsightsResponse;
+  // ─────────────────────────────── Webhooks ───────────────────────────────
+
+  /**
+   * Subscribes the Page to this app so Meta delivers Messenger + feed webhooks.
+   * Requires the `pages_manage_metadata` permission.
+   */
+  async subscribePageToWebhooks(
+    pageId: string,
+    pageAccessToken: string,
+    fields: readonly string[] = FACEBOOK_PAGE_WEBHOOK_FIELDS,
+  ): Promise<boolean> {
+    const data = await this.graphRequest<{ success?: boolean }>('POST', `${pageId}/subscribed_apps`, {
+      accessToken: pageAccessToken,
+      query: { subscribed_fields: fields.join(',') },
+      fallbackError: 'Failed to subscribe the Facebook Page to webhooks.',
+    });
+    return data.success === true;
+  }
+
+  /**
+   * Removes this app's webhook subscription from the Page (used on disconnect).
+   */
+  async unsubscribePageFromWebhooks(pageId: string, pageAccessToken: string): Promise<boolean> {
+    const data = await this.graphRequest<{ success?: boolean }>('DELETE', `${pageId}/subscribed_apps`, {
+      accessToken: pageAccessToken,
+      fallbackError: 'Failed to unsubscribe the Facebook Page from webhooks.',
+    });
+    return data.success === true;
+  }
+
+  // ─────────────────────────────── Messenger ───────────────────────────────
+
+  /**
+   * Sends a Messenger text reply from the Page to a user (PSID).
+   * Standard messaging is only allowed within 24h of the user's last message.
+   */
+  async sendMessengerText(
+    pageId: string,
+    pageAccessToken: string,
+    recipientPsid: string,
+    text: string,
+  ): Promise<FacebookSendMessageResponse> {
+    return this.graphRequest<FacebookSendMessageResponse>('POST', `${pageId}/messages`, {
+      accessToken: pageAccessToken,
+      body: {
+        recipient: { id: recipientPsid },
+        messaging_type: 'RESPONSE',
+        message: { text },
+      },
+      fallbackError: 'Failed to send the Messenger reply.',
+    });
+  }
+
+  /**
+   * Fetches the public profile of a Messenger user (PSID). Returns null if not permitted.
+   */
+  async getMessengerUserProfile(psid: string, pageAccessToken: string): Promise<FacebookUserProfile | null> {
+    try {
+      return await this.graphRequest<FacebookUserProfile>('GET', psid, {
+        accessToken: pageAccessToken,
+        query: { fields: 'first_name,last_name,name,profile_pic' },
+        fallbackError: 'Failed to fetch Messenger user profile',
+        timeoutMs: 10_000,
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Lists recent Messenger conversations of the Page, with their latest messages.
+   */
+  async getPageConversations(
+    pageId: string,
+    pageAccessToken: string,
+    limit = 25,
+    messagesPerConversation = 20,
+  ): Promise<FacebookConversationsResponse> {
+    return this.graphRequest<FacebookConversationsResponse>('GET', `${pageId}/conversations`, {
+      accessToken: pageAccessToken,
+      query: {
+        platform: 'messenger',
+        limit,
+        fields: `participants,updated_time,messages.limit(${messagesPerConversation}){id,message,created_time,from,to,attachments{mime_type,name,image_data,video_data,file_url}}`,
+      },
+      fallbackError: 'Failed to load Messenger conversations.',
+    });
   }
 }

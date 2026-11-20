@@ -14,6 +14,8 @@ import {
     CheckCircle2,
     Info,
     ExternalLink,
+    MessageCircle,
+    MessagesSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { notificationsApi } from "@/lib/api";
@@ -23,7 +25,8 @@ interface NotificationItem {
     title: string;
     message: string;
     type: "success" | "error" | "warning" | "info";
-    category: "publishing" | "token_expiry" | "ai" | "security" | "billing" | "system";
+    category: "publishing" | "token_expiry" | "ai" | "security" | "billing" | "system" | "inbox" | "engagement";
+    groupCount?: number;
     link?: string;
     read: boolean;
     createdAt: string;
@@ -102,6 +105,18 @@ export default function NotificationsComponent() {
                 color: "text-emerald-600 bg-emerald-50 border-emerald-100",
             };
         }
+        if (item.category === "inbox") {
+            return {
+                icon: MessageCircle,
+                color: "text-blue-600 bg-blue-50 border-blue-100",
+            };
+        }
+        if (item.category === "engagement") {
+            return {
+                icon: MessagesSquare,
+                color: "text-indigo-600 bg-indigo-50 border-indigo-100",
+            };
+        }
         if (item.category === "ai") {
             return {
                 icon: Sparkles,
@@ -153,6 +168,8 @@ export default function NotificationsComponent() {
                     { id: "all", label: "All Alerts" },
                     { id: "unread", label: `Unread (${unreadCount})` },
                     { id: "publishing", label: "Publishing" },
+                    { id: "inbox", label: "Messages" },
+                    { id: "engagement", label: "Comments" },
                     { id: "token_expiry", label: "Security & Tokens" },
                     { id: "ai", label: "AI Studio" },
                 ].map((tab) => (
@@ -188,6 +205,11 @@ export default function NotificationsComponent() {
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
                                             <h4 className="text-sm font-bold text-slate-800">{item.title}</h4>
+                                            {(item.groupCount || 1) > 1 && (
+                                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                                    {item.groupCount} new
+                                                </span>
+                                            )}
                                             {!item.read && (
                                                 <span className="w-2 h-2 rounded-full bg-purple-600 inline-block animate-pulse" />
                                             )}

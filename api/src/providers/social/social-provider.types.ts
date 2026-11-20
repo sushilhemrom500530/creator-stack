@@ -4,7 +4,8 @@ export interface TokenResult {
   accessToken: string;
   refreshToken?: string;
   expiresIn?: number;
-  tokenExpiresAt?: Date;
+  /** `null` means the access token does not expire (e.g. Facebook Page tokens). */
+  tokenExpiresAt?: Date | null;
   scopes?: string[];
   metadata?: Record<string, any>;
 }
@@ -14,6 +15,7 @@ export interface SocialProfile {
   accountName: string;
   username?: string;
   profilePictureUrl?: string;
+  followersCount?: number;
   metadata?: Record<string, any>;
 }
 
@@ -26,6 +28,11 @@ export interface SocialAccountContext {
   accessToken: string;
   refreshToken?: string;
   metadata?: Record<string, any>;
+}
+
+/** Minimal identity of a stored account, used where the provider must target one specific account. */
+export interface SocialAccountRef {
+  platformAccountId: string;
 }
 
 export interface PublishPostInput {
@@ -42,7 +49,16 @@ export interface PublishResult {
   platformPostUrl?: string;
   publishedAt?: Date;
   errorMessage?: string;
+  /** Platform error code, when available, for diagnostics. */
+  errorCode?: string;
+  /** True when the failure was caused by an expired/revoked token and the user must reconnect. */
+  requiresReauth?: boolean;
   rawResponse?: Record<string, any>;
+}
+
+export interface AccountConnectedResult {
+  /** Metadata to merge into the stored account (e.g. webhook subscription state). */
+  metadata?: Record<string, any>;
 }
 
 export interface AnalyticsParams {

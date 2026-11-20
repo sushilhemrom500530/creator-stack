@@ -1,11 +1,22 @@
 import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
 import {
   MetaTokenResponse,
   MetaLongLivedTokenResponse,
   FacebookAccountsResponse,
   FacebookPageAccount,
+  FacebookPermissionsResponse,
 } from './facebook.types';
+
+export const DEFAULT_FACEBOOK_SCOPES = [
+  'public_profile',
+  'pages_show_list',
+  'pages_read_engagement',
+  'pages_manage_posts',
+  'pages_manage_metadata',
+  'pages_messaging',
+];
 
 @Injectable()
 export class FacebookOAuth {
@@ -47,11 +58,7 @@ export class FacebookOAuth {
 
   private getScopes(): string[] {
     return (
-      this.configService.get<string[]>('social.meta.scopes.facebook') || [
-        'public_profile',
-        'pages_show_list',
-        'pages_read_engagement',
-      ]
+      this.configService.get<string[]>('social.meta.scopes.facebook') || DEFAULT_FACEBOOK_SCOPES
     );
   }
 
@@ -146,26 +153,70 @@ export class FacebookOAuth {
     }
   }
 
+  private appSecretProof(accessToken: string): string | undefined {
+    const secret = this.getAppSecret();
+    return secret ? crypto.createHmac('sha256', secret).update(accessToken).digest('hex') : undefined;
+  }
+
+  private withAuth(params: Record<string, string>, accessToken: string): string {
+    const search = new URLSearchParams({ ...params, access_token: accessToken });
+    const proof = this.appSecretProof(accessToken);
+    if (proof) search.append('appsecret_proof', proof);
+    return search.toString();
+  }
+
   /**
-   * Fetches all Facebook Pages managed by the authenticated user with permanent Page Access Tokens.
+   * Fetches all Facebook Pages managed by the authenticated user with Page Access Tokens.
+   * Follows pagination so users managing many Pages still get all of them.
    */
   async fetchManagedPages(userAccessToken: string): Promise<FacebookPageAccount[]> {
-    const url = `${this.getGraphApiUrl()}/me/accounts?fields=id,name,category,access_token,tasks,picture{url},fan_count,followers_count&access_token=${userAccessToken}`;
+    const query = this.withAuth(
+      { fields: 'id,name,category,access_token,tasks,picture{url},fan_count,followers_count', limit: '100' },
+      userAccessToken,
+    );
+    let url: string | undefined = `${this.getGraphApiUrl()}/me/accounts?${query}`;
+    const pages: FacebookPageAccount[] = [];
 
     try {
-      const response = await fetch(url, { method: 'GET' });
-      const data: FacebookAccountsResponse = await response.json();
+      // Hard cap on result pages to avoid unbounded loops.
+      for (let i = 0; url && i < 10; i++) {
+        const response = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(30_000) });
+        const data: FacebookAccountsResponse = await response.json();
 
-      if (!response.ok || (data as any).error) {
-        const err = (data as any).error;
-        this.logger.error(`Failed to fetch Facebook Pages: ${JSON.stringify(err || data)}`);
-        throw new BadRequestException(err?.message || 'Failed to fetch managed Facebook Pages.');
+        if (!response.ok || (data as any).error) {
+          const err = (data as any).error;
+          this.logger.error(`Failed to fetch Facebook Pages: ${JSON.stringify(err || data)}`);
+          throw new BadRequestException(err?.message || 'Failed to fetch managed Facebook Pages.');
+        }
+
+        pages.push(...(data.data || []));
+        url = data.paging?.next;
       }
-
-      return data.data || [];
+      return pages;
     } catch (error: any) {
       this.logger.error(`Failed to retrieve managed pages: ${error.message}`);
       throw new BadRequestException(error.message);
+    }
+  }
+
+  /**
+   * Returns the permissions the user actually granted in the OAuth dialog.
+   * Users can untick permissions, so we must not assume every requested scope was granted.
+   * Returns null when the permission list could not be read (unknown, not "none").
+   */
+  async fetchGrantedPermissions(userAccessToken: string): Promise<string[] | null> {
+    const url = `${this.getGraphApiUrl()}/me/permissions?${this.withAuth({}, userAccessToken)}`;
+    try {
+      const response = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(15_000) });
+      const data: FacebookPermissionsResponse = await response.json();
+      if (!response.ok || (data as any).error) {
+        this.logger.warn(`Could not read granted Facebook permissions: ${JSON.stringify((data as any).error || data)}`);
+        return null;
+      }
+      return (data.data || []).filter((p) => p.status === 'granted').map((p) => p.permission);
+    } catch (error: any) {
+      this.logger.warn(`Could not read granted Facebook permissions: ${error.message}`);
+      return null;
     }
   }
 }

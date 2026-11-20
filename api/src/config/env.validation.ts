@@ -32,6 +32,7 @@ export const envValidationSchema = Joi.object({
   META_WEBHOOK_VERIFY_TOKEN: Joi.string().optional().allow(''),
   META_CALLBACK_URL: Joi.string().optional().allow(''),
   META_GRAPH_VERSION: Joi.string().default('v21.0'),
+  META_FACEBOOK_SCOPES: Joi.string().optional().allow(''),
 
   GOOGLE_CLIENT_ID: Joi.string().optional().allow(''),
   GOOGLE_CLIENT_SECRET: Joi.string().optional().allow(''),

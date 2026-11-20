@@ -71,3 +71,72 @@ export interface FacebookInsightMetric {
 export interface FacebookInsightsResponse {
   data: FacebookInsightMetric[];
 }
+
+export interface FacebookPermission {
+  permission: string;
+  status: 'granted' | 'declined' | 'expired';
+}
+
+export interface FacebookPermissionsResponse {
+  data: FacebookPermission[];
+}
+
+export interface FacebookSendMessageResponse {
+  recipient_id: string;
+  message_id: string;
+}
+
+export interface FacebookUserProfile {
+  id: string;
+  name?: string;
+  first_name?: string;
+  last_name?: string;
+  profile_pic?: string;
+}
+
+export interface FacebookConversationMessage {
+  id: string;
+  message?: string;
+  created_time: string;
+  from?: { id: string; name?: string; email?: string };
+  to?: { data: Array<{ id: string; name?: string }> };
+  attachments?: {
+    data: Array<{
+      mime_type?: string;
+      name?: string;
+      image_data?: { url: string; preview_url?: string };
+      video_data?: { url: string; preview_url?: string };
+      file_url?: string;
+    }>;
+  };
+}
+
+export interface FacebookConversation {
+  id: string;
+  updated_time: string;
+  participants?: { data: Array<{ id: string; name?: string; email?: string }> };
+  messages?: { data: FacebookConversationMessage[] };
+}
+
+export interface FacebookConversationsResponse {
+  data: FacebookConversation[];
+  paging?: { next?: string };
+}
+
+/** Fields we subscribe a Page to so Meta pushes Messenger + feed events to our webhook. */
+export const FACEBOOK_PAGE_WEBHOOK_FIELDS = [
+  'messages',
+  'messaging_postbacks',
+  'message_echoes',
+  'feed',
+] as const;
+
+/** Permissions without which a connected Page cannot be published to. */
+export const FACEBOOK_REQUIRED_PUBLISH_PERMISSIONS = [
+  'pages_show_list',
+  'pages_read_engagement',
+  'pages_manage_posts',
+] as const;
+
+/** Permissions that unlock Messenger inbox + webhook delivery. */
+export const FACEBOOK_MESSAGING_PERMISSIONS = ['pages_messaging', 'pages_manage_metadata'] as const;

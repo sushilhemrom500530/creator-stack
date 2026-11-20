@@ -22,6 +22,8 @@ export const socialConfig = registerAs('social', () => ({
           'pages_show_list',
           'pages_read_engagement',
           'pages_manage_posts',
+          'pages_manage_metadata',
+          'pages_messaging',
         ],
       instagram: [
         'instagram_basic',

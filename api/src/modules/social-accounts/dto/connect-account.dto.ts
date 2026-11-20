@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsArray, IsDateString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, IsArray, IsDateString, IsInt, Min } from 'class-validator';
 import { SocialPlatform } from '../schemas/social-account.schema';
 
 export class ConnectAccountDto {
@@ -51,6 +51,12 @@ export class ConnectAccountDto {
   @IsArray()
   @IsOptional()
   scopes?: string[];
+
+  @ApiPropertyOptional({ example: 1250 })
+  @IsInt()
+  @Min(0)
+  @IsOptional()
+  followersCount?: number;
 
   @ApiPropertyOptional({ example: { pageCategory: 'Marketing' } })
   @IsOptional()

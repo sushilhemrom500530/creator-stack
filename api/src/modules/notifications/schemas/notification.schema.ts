@@ -26,10 +26,10 @@ export class Notification {
 
   @Prop({
     type: String,
-    enum: ['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system'],
+    enum: ['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system', 'inbox', 'engagement'],
     default: 'system',
   })
-  category: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system';
+  category: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system' | 'inbox' | 'engagement';
 
   @Prop({ trim: true })
   link?: string;
@@ -39,8 +39,16 @@ export class Notification {
 
   @Prop({ default: false })
   emailSent: boolean;
+
+  /** Groups repeated events (e.g. several Messenger messages from one person) into one unread notification. */
+  @Prop({ type: String, default: null })
+  groupKey?: string | null;
+
+  @Prop({ default: 1 })
+  groupCount: number;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
 
 NotificationSchema.index({ userId: 1, read: 1, createdAt: -1 });
+NotificationSchema.index({ userId: 1, groupKey: 1, read: 1 }, { partialFilterExpression: { groupKey: { $type: 'string' } } });

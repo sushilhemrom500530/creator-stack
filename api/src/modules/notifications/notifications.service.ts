@@ -50,6 +50,61 @@ export class NotificationsService {
     return saved;
   }
 
+  /**
+   * Creates a notification, or — if an unread one with the same groupKey exists — updates it in place
+   * and bumps its counter. Keeps the bell from being flooded by bursts of platform events.
+   */
+  async sendGroupedNotification(
+    dto: CreateNotificationDto & { groupKey: string },
+  ): Promise<NotificationDocument> {
+    const userObjectId = new Types.ObjectId(dto.userId);
+
+    const updated = await this.notificationModel.findOneAndUpdate(
+      { userId: userObjectId, groupKey: dto.groupKey, read: false },
+      {
+        $set: {
+          title: dto.title,
+          message: dto.message,
+          type: dto.type || 'info',
+          category: dto.category || 'system',
+          link: dto.link,
+        },
+        $inc: { groupCount: 1 },
+      },
+      { new: true, sort: { createdAt: -1 } },
+    );
+
+    if (updated) {
+      return updated;
+    }
+
+    const notification = new this.notificationModel({
+      userId: userObjectId,
+      workspaceId: dto.workspaceId ? new Types.ObjectId(dto.workspaceId) : undefined,
+      title: dto.title,
+      message: dto.message,
+      type: dto.type || 'info',
+      category: dto.category || 'system',
+      link: dto.link,
+      read: false,
+      emailSent: false,
+      groupKey: dto.groupKey,
+      groupCount: 1,
+    });
+    return notification.save();
+  }
+
+  /**
+   * Marks every unread notification of a group as read (e.g. when the user opens that conversation).
+   */
+  async markGroupAsRead(userId: string, groupKey: string): Promise<{ updatedCount: number }> {
+    const res = await this.notificationModel.updateMany(
+      { userId: new Types.ObjectId(userId), groupKey, read: false },
+      { $set: { read: true } },
+    );
+    return { updatedCount: res.modifiedCount };
+  }
+
   private async dispatchEmailAlert(userId: string, title: string, message: string) {
     const user = await this.userModel.findById(userId).select('email name');
     if (!user || !user.email) return;

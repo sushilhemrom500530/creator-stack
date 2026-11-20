@@ -292,7 +292,7 @@ export const notificationsApi = {
         title: string;
         message: string;
         type: 'success' | 'error' | 'warning' | 'info';
-        category: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system';
+        category: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system' | 'inbox' | 'engagement';
         link?: string;
         read: boolean;
         createdAt: string;
@@ -397,3 +397,88 @@ export const authApi = {
     api.post<{ message: string }>('/auth/logout'),
 };
 
+
+// Inbox (Facebook Messenger) API Endpoints
+export interface InboxAccount {
+  _id: string;
+  accountName: string;
+  platform: string;
+  profilePictureUrl?: string;
+  status: string;
+  messagingEnabled: boolean;
+  messagingIssue: string | null;
+}
+
+export interface InboxConversation {
+  _id: string;
+  socialAccountId: string;
+  platform: string;
+  participantId: string;
+  participantName?: string | null;
+  participantAvatarUrl?: string | null;
+  lastMessageText: string;
+  lastMessageAt?: string | null;
+  lastMessageDirection: 'inbound' | 'outbound';
+  lastInboundAt?: string | null;
+  unreadCount: number;
+  canReply: boolean;
+  account: { _id: string; accountName: string; platform: string; profilePictureUrl?: string; status: string } | null;
+}
+
+export interface InboxMessage {
+  _id: string;
+  conversationId: string;
+  platformMessageId?: string | null;
+  direction: 'inbound' | 'outbound';
+  text: string;
+  attachments: Array<{ type: string; url?: string; name?: string }>;
+  status: 'received' | 'sent' | 'failed';
+  sentAt: string;
+  sentByUserId?: string | null;
+}
+
+export const inboxApi = {
+  getConversations: (params: { workspaceId: string; accountId?: string; search?: string; page?: number; limit?: number }) =>
+    api.get<{
+      data: InboxConversation[];
+      meta: { total: number; page: number; limit: number; totalPages: number };
+      accounts: InboxAccount[];
+    }>('/inbox/conversations', params),
+
+  getUnreadCount: (workspaceId: string) =>
+    api.get<{ unreadCount: number; unreadConversations: number }>('/inbox/unread-count', { workspaceId }),
+
+  getMessages: (conversationId: string, params?: { before?: string; limit?: number }) =>
+    api.get<{ conversation: InboxConversation; data: InboxMessage[]; hasMore: boolean }>(
+      `/inbox/conversations/${conversationId}/messages`,
+      params,
+    ),
+
+  sendMessage: (conversationId: string, text: string) =>
+    api.post<InboxMessage>(`/inbox/conversations/${conversationId}/messages`, { text }),
+
+  markAsRead: (conversationId: string) =>
+    api.patch<{ success: boolean }>(`/inbox/conversations/${conversationId}/read`),
+
+  syncAccount: (accountId: string) =>
+    api.post<{ conversationsSynced: number; messagesImported: number }>(`/inbox/accounts/${accountId}/sync`),
+};
+
+/**
+ * Returns the active workspace id, falling back to the user's first workspace (and remembering it).
+ */
+export async function ensureActiveWorkspaceId(): Promise<string> {
+  const current = getActiveWorkspaceId();
+  if (current && current.length === 24) return current;
+
+  const workspaces = await workspacesApi.getWorkspaces();
+  const first = workspaces?.[0]?._id;
+  if (typeof first === 'string' && first.length === 24) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('active_workspace_id', first);
+      localStorage.setItem('activeWorkspaceId', first);
+    }
+    return first;
+  }
+  return '';
+}

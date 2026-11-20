@@ -12,8 +12,18 @@ import { Model, Types } from 'mongoose';
 import { Post, PostDocument, PostStatus, PostTargetStatus } from './schemas/post.schema';
 import { CreatePostDto, UpdatePostDto, PostFilterDto } from './dto';
 import { Workspace, WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
-import { SocialAccount, SocialAccountDocument, SocialPlatform } from '../social-accounts/schemas/social-account.schema';
+import {
+  SocialAccount,
+  SocialAccountDocument,
+  SocialAccountStatus,
+  SocialPlatform,
+} from '../social-accounts/schemas/social-account.schema';
 import { PublishingService } from '../publishing/publishing.service';
+import {
+  FACEBOOK_MAX_PHOTOS,
+  FACEBOOK_MAX_POST_LENGTH,
+  isFacebookVideoUrl,
+} from '../../providers/social/facebook/facebook.provider';
 
 @Injectable()
 export class PostsService {
@@ -60,6 +70,41 @@ export class PostsService {
       if (target.platform === SocialPlatform.INSTAGRAM && media.length === 0) {
         throw new BadRequestException('Instagram requires at least one image or video to create a post.');
       }
+
+      if (target.platform === SocialPlatform.FACEBOOK) {
+        if (content.length > FACEBOOK_MAX_POST_LENGTH) {
+          throw new BadRequestException(`Content for Facebook exceeds maximum limit of ${FACEBOOK_MAX_POST_LENGTH} characters.`);
+        }
+        const videos = media.filter(isFacebookVideoUrl);
+        if (videos.length > 0 && media.length > 1) {
+          throw new BadRequestException('Facebook posts can contain either one video or up to 10 photos, not both.');
+        }
+        if (media.length > FACEBOOK_MAX_PHOTOS) {
+          throw new BadRequestException(`Facebook posts support up to ${FACEBOOK_MAX_PHOTOS} photos.`);
+        }
+      }
+    }
+  }
+
+  /**
+   * Ensures each target's platform matches the selected account and that the account can publish.
+   */
+  private validateTargetAccounts(dto: CreatePostDto, accounts: SocialAccountDocument[]) {
+    for (const target of dto.targets) {
+      const account = accounts.find((a) => a._id.toString() === target.accountId);
+      if (!account) continue;
+
+      if (account.platform !== target.platform) {
+        throw new BadRequestException(
+          `Selected account "${account.accountName}" is a ${account.platform} account, not ${target.platform}.`,
+        );
+      }
+
+      if (account.status === SocialAccountStatus.NEEDS_REAUTH || account.status === SocialAccountStatus.REVOKED) {
+        throw new BadRequestException(
+          `Your ${account.platform} account "${account.accountName}" needs to be reconnected before you can post to it.`,
+        );
+      }
     }
   }
 
@@ -86,6 +131,8 @@ export class PostsService {
     if (validAccounts.length !== accountIds.length) {
       throw new BadRequestException('One or more selected social accounts do not belong to this workspace or are deleted.');
     }
+
+    this.validateTargetAccounts(dto, validAccounts);
 
     // Determine Post Status
     let status = dto.status || PostStatus.DRAFT;

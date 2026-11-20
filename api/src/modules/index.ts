@@ -16,3 +16,4 @@ export * from './settings';
 export * from './audit-log';
 export * from './health';
 export * from './docs';
+export * from './inbox';

@@ -17,6 +17,7 @@ import { ConnectAccountDto, UpdateAccountDto } from './dto';
 import { encryptToken, decryptToken, generateOAuthState, validateOAuthState } from '../../common/utils';
 import { Workspace, WorkspaceDocument } from '../workspaces/schemas/workspace.schema';
 import { SocialProviderFactory } from '../../providers/social/social-provider.factory';
+import { SocialAccountContext } from '../../providers/social/social-provider.types';
 
 @Injectable()
 export class SocialAccountsService {
@@ -142,19 +143,69 @@ export class SocialAccountsService {
     const username = profile.username || tokenResult.metadata?.instagramUsername;
     const profilePictureUrl = profile.profilePictureUrl || tokenResult.metadata?.profilePicture;
 
-    return this.connect(userId, {
+    const account = await this.connect(userId, {
       workspaceId,
       platform,
       platformAccountId,
       accountName,
       username,
       profilePictureUrl,
+      followersCount: profile.followersCount,
       accessToken: tokenResult.accessToken,
       refreshToken: tokenResult.refreshToken,
       tokenExpiresAt: tokenResult.tokenExpiresAt ? tokenResult.tokenExpiresAt.toISOString() : undefined,
       scopes: tokenResult.scopes || [],
       metadata: { ...profile.metadata, ...tokenResult.metadata },
     });
+
+    // Post-connect hook (e.g. Facebook webhook subscription). Failures here must not break the connection.
+    if (provider.onAccountConnected) {
+      try {
+        const hookResult = await provider.onAccountConnected(
+          this.buildAccountContext(account, tokenResult.accessToken, tokenResult.refreshToken),
+        );
+        if (hookResult?.metadata) {
+          account.metadata = { ...(account.metadata || {}), ...hookResult.metadata };
+          account.markModified('metadata');
+          await account.save();
+        }
+      } catch (error: any) {
+        this.logger.warn(`Post-connect hook failed for [${platform}:${platformAccountId}]: ${error.message}`);
+      }
+    }
+
+    return account;
+  }
+
+  /**
+   * Builds the execution context passed to social providers.
+   */
+  buildAccountContext(
+    account: SocialAccountDocument,
+    accessToken: string,
+    refreshToken?: string,
+  ): SocialAccountContext {
+    return {
+      accountId: account._id.toString(),
+      workspaceId: account.workspaceId.toString(),
+      userId: account.userId.toString(),
+      platform: account.platform,
+      platformAccountId: account.platformAccountId,
+      accessToken,
+      refreshToken,
+      metadata: account.metadata,
+    };
+  }
+
+  /**
+   * Flags an account whose token was rejected by the platform so the user is prompted to reconnect.
+   */
+  async markNeedsReauth(accountId: string, reason: string): Promise<SocialAccountDocument | null> {
+    return this.socialAccountModel.findOneAndUpdate(
+      { _id: new Types.ObjectId(accountId), isDeleted: false },
+      { $set: { status: SocialAccountStatus.NEEDS_REAUTH, lastError: reason } },
+      { new: true },
+    );
   }
 
   /**
@@ -179,9 +230,14 @@ export class SocialAccountsService {
       existing.profilePictureUrl = dto.profilePictureUrl || existing.profilePictureUrl;
       existing.accessTokenEncrypted = accessTokenEncrypted;
       if (refreshTokenEncrypted) existing.refreshTokenEncrypted = refreshTokenEncrypted;
-      if (dto.tokenExpiresAt) existing.tokenExpiresAt = new Date(dto.tokenExpiresAt);
+      // A reconnect replaces the token, so its expiry must follow the new token (null = non-expiring).
+      existing.tokenExpiresAt = dto.tokenExpiresAt ? new Date(dto.tokenExpiresAt) : null;
       if (dto.scopes) existing.scopes = dto.scopes;
-      if (dto.metadata) existing.metadata = { ...existing.metadata, ...dto.metadata };
+      if (dto.followersCount !== undefined) existing.followersCount = dto.followersCount;
+      if (dto.metadata) {
+        existing.metadata = { ...existing.metadata, ...dto.metadata };
+        existing.markModified('metadata');
+      }
       existing.status = SocialAccountStatus.ACTIVE;
       existing.lastError = null;
       existing.lastSyncedAt = new Date();
@@ -203,6 +259,7 @@ export class SocialAccountsService {
       refreshTokenEncrypted,
       tokenExpiresAt: dto.tokenExpiresAt ? new Date(dto.tokenExpiresAt) : null,
       scopes: dto.scopes || [],
+      followersCount: dto.followersCount ?? 0,
       metadata: dto.metadata || {},
       status: SocialAccountStatus.ACTIVE,
       lastSyncedAt: new Date(),
@@ -236,18 +293,33 @@ export class SocialAccountsService {
 
     try {
       const plainRefreshToken = decryptToken(account.refreshTokenEncrypted);
-      const tokenResult = await provider.refreshToken(plainRefreshToken);
+      const tokenResult = await provider.refreshToken(plainRefreshToken, {
+        platformAccountId: account.platformAccountId,
+      });
 
       account.accessTokenEncrypted = encryptToken(tokenResult.accessToken);
       if (tokenResult.refreshToken) {
         account.refreshTokenEncrypted = encryptToken(tokenResult.refreshToken);
       }
-      if (tokenResult.tokenExpiresAt) {
+      // undefined = provider did not say; null = token does not expire.
+      if (tokenResult.tokenExpiresAt !== undefined) {
         account.tokenExpiresAt = tokenResult.tokenExpiresAt;
       }
       account.status = SocialAccountStatus.ACTIVE;
       account.lastError = null;
       account.lastSyncedAt = new Date();
+
+      // Retry a previously failed post-connect setup (e.g. webhook subscription) with the fresh token.
+      // (also covers accounts connected before webhook subscription existed: flag is undefined)
+      if (provider.onAccountConnected && account.metadata?.webhooksSubscribed !== true) {
+        const hookResult = await provider.onAccountConnected(
+          this.buildAccountContext(account, tokenResult.accessToken, tokenResult.refreshToken),
+        );
+        if (hookResult?.metadata) {
+          account.metadata = { ...(account.metadata || {}), ...hookResult.metadata };
+          account.markModified('metadata');
+        }
+      }
 
       const saved = await account.save();
       this.logger.log(`Successfully refreshed access token for social account [${account.platform}:${account.platformAccountId}]`);
@@ -323,6 +395,21 @@ export class SocialAccountsService {
    */
   async disconnect(accountId: string, userId: string): Promise<{ message: string }> {
     const account = await this.findOne(accountId, userId);
+
+    // Best-effort platform cleanup (e.g. stop Facebook webhooks for this Page).
+    if (this.socialProviderFactory.hasProvider(account.platform)) {
+      const provider = this.socialProviderFactory.getProvider(account.platform);
+      if (provider.onAccountDisconnected && account.accessTokenEncrypted) {
+        try {
+          await provider.onAccountDisconnected(
+            this.buildAccountContext(account, decryptToken(account.accessTokenEncrypted)),
+          );
+        } catch (error: any) {
+          this.logger.warn(`Disconnect hook failed for account ${accountId}: ${error.message}`);
+        }
+      }
+    }
+
     account.isDeleted = true;
     account.status = SocialAccountStatus.REVOKED;
     account.deletedAt = new Date();

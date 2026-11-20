@@ -103,11 +103,16 @@ export class SocialAccountsController {
     @Query('error_description') errorDescription: string,
     @Res() res: Response,
   ) {
-    let frontendUrl = process.env.CORS_ORIGIN?.split(',')[0] || 'http://localhost:3000';
+    const allowedOrigins = (process.env.CORS_ORIGIN || '')
+      .split(',')
+      .map((o) => o.trim().replace(/\/$/, ''))
+      .filter(Boolean);
+    let frontendUrl = allowedOrigins[0] || 'http://localhost:3000';
     if (state) {
       try {
         const payload = validateOAuthState(state);
-        if (payload.frontendUrl) {
+        // Only redirect back to a known frontend origin (prevents open redirects).
+        if (payload.frontendUrl && allowedOrigins.includes(payload.frontendUrl.replace(/\/$/, ''))) {
           frontendUrl = payload.frontendUrl;
         }
       } catch (_) {}

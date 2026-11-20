@@ -3,10 +3,12 @@ import {
   TokenResult,
   SocialProfile,
   SocialAccountContext,
+  SocialAccountRef,
   PublishPostInput,
   PublishResult,
   AnalyticsParams,
   AnalyticsResult,
+  AccountConnectedResult,
 } from './social-provider.types';
 
 export interface SocialProvider {
@@ -29,8 +31,19 @@ export interface SocialProvider {
 
   /**
    * Refreshes an expired or expiring access token if supported by the platform.
+   * `account` identifies which stored account is being refreshed (e.g. which Facebook Page).
    */
-  refreshToken?(refreshToken: string): Promise<TokenResult>;
+  refreshToken?(refreshToken: string, account?: SocialAccountRef): Promise<TokenResult>;
+
+  /**
+   * Post-connect hook (e.g. subscribe the account to webhooks). Must not throw for non-critical failures.
+   */
+  onAccountConnected?(account: SocialAccountContext): Promise<AccountConnectedResult>;
+
+  /**
+   * Pre-disconnect hook (e.g. remove webhook subscription). Best effort.
+   */
+  onAccountDisconnected?(account: SocialAccountContext): Promise<void>;
 
   /**
    * Publishes a post (text, link, media) to the target social account.

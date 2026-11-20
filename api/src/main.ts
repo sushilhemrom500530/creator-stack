@@ -12,7 +12,8 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   // Create NestJS Express application instance
-  const app = await NestFactory.create(AppModule);
+  // rawBody: keeps the exact request bytes so Meta webhook signatures (X-Hub-Signature-256) can be verified
+  const app = await NestFactory.create(AppModule, { rawBody: true });
 
   const configService = app.get(ConfigService);
   const nodeEnv = configService.get<string>('app.nodeEnv') || 'development';

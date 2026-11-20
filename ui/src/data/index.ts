@@ -23,6 +23,7 @@ import {
     Flag,
     FileText,
     BadgeDollarSign,
+    MessageCircle,
 } from "lucide-react";
 import { TbMatrix, TbBulb, TbServer, TbAffiliate, TbWorld } from "react-icons/tb";
 import { MdDashboardCustomize } from "react-icons/md";
@@ -89,6 +90,11 @@ export const userMenuData: MenuData = {
                     label: "AI Assistant",
                     href: "/user/ai-assistant",
                     icon: TbBulb,
+                },
+                {
+                    label: "Inbox",
+                    href: "/user/inbox",
+                    icon: MessageCircle,
                 },
                 {
                     label: "Connected Accounts",

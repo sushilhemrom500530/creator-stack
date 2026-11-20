@@ -28,12 +28,12 @@ export class CreateNotificationDto {
   type?: 'success' | 'error' | 'warning' | 'info';
 
   @ApiPropertyOptional({
-    enum: ['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system'],
+    enum: ['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system', 'inbox', 'engagement'],
     default: 'system',
   })
-  @IsEnum(['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system'])
+  @IsEnum(['publishing', 'token_expiry', 'ai', 'security', 'billing', 'system', 'inbox', 'engagement'])
   @IsOptional()
-  category?: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system';
+  category?: 'publishing' | 'token_expiry' | 'ai' | 'security' | 'billing' | 'system' | 'inbox' | 'engagement';
 
   @ApiPropertyOptional({ example: '/user/posts' })
   @IsString()

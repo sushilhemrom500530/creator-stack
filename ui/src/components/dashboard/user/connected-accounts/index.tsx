@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Modal, Switch, Input, App, Popconfirm, Tooltip, Tag, Spin } from "antd";
 import {
     Share2,
@@ -38,9 +38,13 @@ export interface SocialAccountCard {
     autoSyncAnalytics: boolean;
     notifyErrors: boolean;
     tokenExpiry: string;
-    status: 'active' | 'expired' | 'revoked' | 'error' | 'disconnected';
+    status: 'active' | 'expired' | 'revoked' | 'error' | 'needs_reauth' | 'disconnected';
     lastError?: string;
+    needsReconnect?: boolean;
+    metadata?: Record<string, any>;
 }
+
+const RECONNECT_STATUSES = ['needs_reauth', 'expired', 'error', 'revoked'];
 
 const DEFAULT_PLATFORMS: SocialAccountCard[] = [
     {
@@ -192,6 +196,8 @@ const DEFAULT_PLATFORMS: SocialAccountCard[] = [
 function ConnectedAccountsInner() {
     const { message } = App.useApp();
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
     const [accounts, setAccounts] = useState<SocialAccountCard[]>(DEFAULT_PLATFORMS);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -238,9 +244,11 @@ function ConnectedAccountsInner() {
 
             setAccounts((prev) => {
                 return prev.map((template) => {
-                    const match = liveAccounts.find(
+                    const matches = liveAccounts.filter(
                         (a) => a.platform?.toLowerCase() === template.platform.toLowerCase()
                     );
+                    // Prefer a healthy connection when several exist for the platform.
+                    const match = matches.find((a) => a.status === "active") || matches[0];
 
                     if (match) {
                         return {
@@ -259,6 +267,8 @@ function ConnectedAccountsInner() {
                             status: match.status,
                             date: `Connected ${new Date(match.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`,
                             lastError: match.lastError,
+                            needsReconnect: RECONNECT_STATUSES.includes(match.status),
+                            metadata: match.metadata,
                         };
                     }
                     return template;
@@ -279,12 +289,18 @@ function ConnectedAccountsInner() {
         const errorMsg = searchParams.get("message");
 
         if (status === "success" && platform) {
-            message.success(`Successfully connected ${platform.toUpperCase()} account!`);
+            const label = platform === "facebook" ? "Facebook Page" : platform.toUpperCase();
+            message.success(`${label} connected successfully! You can now publish to it.`);
             loadAccounts();
         } else if (status === "error" && errorMsg) {
-            message.error(`Connection failed: ${decodeURIComponent(errorMsg)}`);
+            message.error({ content: `Connection failed: ${errorMsg}`, duration: 8 });
         }
-    }, [searchParams, loadAccounts, message]);
+
+        // Clear the OAuth result from the URL so a refresh doesn't repeat the toast.
+        if (status) {
+            router.replace(pathname, { scroll: false });
+        }
+    }, [searchParams, loadAccounts, message, router, pathname]);
 
     useEffect(() => {
         loadAccounts();
@@ -344,7 +360,10 @@ function ConnectedAccountsInner() {
 
         setIsRefreshingToken(true);
         try {
-            await socialAccountsApi.refreshToken(manageModalAccount.dbId);
+            const refreshed = await socialAccountsApi.refreshToken(manageModalAccount.dbId);
+            setManageModalAccount((prev) =>
+                prev ? { ...prev, metadata: refreshed?.metadata ?? prev.metadata, status: "active", connected: true, needsReconnect: false } : prev
+            );
             message.success("OAuth Token refreshed & verified with platform!");
             loadAccounts();
         } catch (error: any) {
@@ -531,10 +550,12 @@ function ConnectedAccountsInner() {
                                     <Tag
                                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium border ${account.connected
                                             ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800"
-                                            : "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700"
+                                            : account.needsReconnect
+                                                ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-800"
+                                                : "bg-zinc-100 text-zinc-600 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700"
                                             }`}
                                     >
-                                        {account.connected ? "Active" : "Not Linked"}
+                                        {account.connected ? "Active" : account.needsReconnect ? "Reconnect needed" : "Not Linked"}
                                     </Tag>
                                 </div>
 
@@ -556,6 +577,13 @@ function ConnectedAccountsInner() {
                                             <span className="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider">Token Expiry</span>
                                             <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">{account.tokenExpiry}</p>
                                         </div>
+                                    </div>
+                                ) : account.needsReconnect ? (
+                                    <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-start gap-1.5">
+                                        <AlertCircle className="w-3.5 h-3.5 text-amber-600 mt-0.5 shrink-0" />
+                                        <p className="text-xs text-amber-700 dark:text-amber-400 line-clamp-3">
+                                            {account.lastError || "The platform revoked access. Reconnect to keep publishing."}
+                                        </p>
                                     </div>
                                 ) : (
                                     <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80">
@@ -595,8 +623,8 @@ function ConnectedAccountsInner() {
                                         onClick={() => handleOpenConnect(account)}
                                         className="btn w-full flex items-center justify-center gap-1.5 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-xl transition-colors shadow-sm active:scale-95"
                                     >
-                                        <Plus className="w-3.5 h-3.5" />
-                                        Connect {account.platform.toUpperCase()}
+                                        {account.needsReconnect ? <RefreshCw className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                                        {account.needsReconnect ? "Reconnect" : "Connect"} {account.platform.toUpperCase()}
                                     </button>
                                 )}
                             </div>
@@ -626,6 +654,14 @@ function ConnectedAccountsInner() {
                     <p className="text-xs text-zinc-600 dark:text-zinc-400">
                         You will be securely redirected to the official {connectModalAccount?.name} OAuth authorization page. We will request permissions to publish content and sync analytics.
                     </p>
+
+                    {connectModalAccount?.platform === "facebook" && (
+                        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 rounded-xl p-3.5 text-xs text-blue-900 dark:text-blue-200 space-y-1.5">
+                            <span className="font-semibold block">In the Facebook dialog:</span>
+                            <p>1. Select the Page you want to manage here.</p>
+                            <p>2. Keep all permissions switched on — publishing needs <b>Create content</b>, and the Messenger inbox needs <b>Manage messages</b>.</p>
+                        </div>
+                    )}
 
                     <div className="bg-purple-50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900 rounded-xl p-3.5 flex items-start gap-3">
                         <ShieldCheck className="w-5 h-5 text-purple-600 mt-0.5 shrink-0" />
@@ -706,6 +742,32 @@ function ConnectedAccountsInner() {
                                 Refresh Token
                             </button>
                         </div>
+
+                        {/* Facebook Messenger / webhook health */}
+                        {manageModalAccount.platform === "facebook" && (() => {
+                            const meta = manageModalAccount.metadata || {};
+                            const missing: string[] = Array.isArray(meta.missingMessagingPermissions) ? meta.missingMessagingPermissions : [];
+                            const enabled = meta.webhooksSubscribed === true && missing.length === 0;
+                            return (
+                                <div className={`p-3.5 rounded-xl border ${enabled
+                                    ? "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-900"
+                                    : "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-900"}`}
+                                >
+                                    <span className="text-xs font-semibold block text-zinc-800 dark:text-zinc-200">
+                                        Messenger inbox & notifications: {enabled ? "Active" : "Not active"}
+                                    </span>
+                                    <span className="text-[11px] text-zinc-600 dark:text-zinc-400 block mt-0.5">
+                                        {enabled
+                                            ? "New messages and comments arrive in your Inbox and notifications in real time."
+                                            : missing.length > 0
+                                                ? `Missing permissions: ${missing.join(", ")}. Disconnect and reconnect, keeping all permissions on.`
+                                                : meta.webhookError
+                                                    ? `${meta.webhookError} Click "Refresh Token" to retry.`
+                                                    : "Click \"Refresh Token\" to activate."}
+                                    </span>
+                                </div>
+                            );
+                        })()}
 
                         {/* Settings Toggles */}
                         <div className="space-y-3 pt-2">
